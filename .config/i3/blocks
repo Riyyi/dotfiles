@@ -81,7 +81,7 @@ interval=1
 #
 [time]
 label=
-command=date '+%I:%M %p'
+command=date '+%I:%M %p '
 interval=5
 
 # Generic media player support

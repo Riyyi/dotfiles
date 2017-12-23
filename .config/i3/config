@@ -189,6 +189,8 @@ client.urgent		$bg-color-urgent	$bg-color-urgent	$text-color		#00FF00
 
 #Keybindings
 bindsym $mod+Mod1+l exec $HOME/.config/i3/scripts/lock.sh
+bindsym $mod+F3 exec xbacklight -inc 10 # increase screen brightness
+bindsym $mod+F2 exec xbacklight -dec 10 # increase screen brightness
 
 # Window appearance
 smart_gaps on
@@ -198,7 +200,7 @@ hide_edge_borders both
 for_window [class=".*"] border pixel 2
 
 # Application startup
-exec_always --no-startup-id feh --bg-scale $HOME/Pictures/wallpaper.jpg
+exec_always --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper.jpg
 exec --no-startup-id firefox
 exec --no-startup-id urxvt
 exec --no-startup-id thunar --daemon
@@ -206,3 +208,6 @@ exec --no-startup-id thunar
 
 # Reload Xresources
 # xrdb -load ~/.Xresources
+
+# Get window name
+# xprop -> WM_CLASS

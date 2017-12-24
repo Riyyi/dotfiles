@@ -11,4 +11,14 @@ case $BLOCK_BUTTON in
 	5) xbacklight -dec 10 ;;
 esac
 
-printf "%.0f" "$(xbacklight -get)"
+percentage=$(printf  "%.0f" "$(xbacklight)")
+
+if (( $percentage >= 75 )); then
+	icon=""
+elif (( $percentage >= 25 )); then
+	icon=""
+else 
+	icon=""
+fi
+
+echo $icon $percentage%

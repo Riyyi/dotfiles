@@ -43,7 +43,6 @@ interval=1
 signal=10
 
 [brightness]
-label=
 command=$HOME/.config/i3/scripts/brightness.sh
 interval=1
 

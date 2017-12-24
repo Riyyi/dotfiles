@@ -187,10 +187,13 @@ client.unfocused	$bg-color-inactive	$bg-color-inactive	$text-color-inactive	#00F
 client.focused_inactive	$bg-color-inactive	$bg-color-inactive	$text-color-inactive	#00FF00
 client.urgent		$bg-color-urgent	$bg-color-urgent	$text-color		#00FF00
 
-#Keybindings
+# Keybindings
 bindsym $mod+Mod1+l exec $HOME/.config/i3/scripts/lock.sh
-bindsym $mod+F3 exec xbacklight -inc 10 # increase screen brightness
-bindsym $mod+F2 exec xbacklight -dec 10 # increase screen brightness
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% 			# Increase sound volume; Pulse Audio
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% 			# Decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle 			# Mute sound
+bindsym $mod+F3 exec xbacklight -inc 10								# Increase screen brightness
+bindsym $mod+F2 exec xbacklight -dec 10								# Decrease screen brightness
 
 # Window appearance
 smart_gaps on

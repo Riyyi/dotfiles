@@ -1,3 +1,4 @@
+! Colors
 ! special
 *.foreground:   #c5c8c6
 *.background:   #1d1f21
@@ -37,6 +38,14 @@
 
 Xcursor.theme: capitaine-cursors
 
+! Font config
+Xft.dpi: 192
+Xft.autohint: 0
+Xft.hintstyle: hintslight
+Xft.hinting: 1
+Xft.antialias: 1
+
+! Terminal config
 URxvt*font: xft:DejaVu Sans Mono:size=9:antialias=true
 URxvt*boltfont: xft:DejaVu Sans Mono:bold:size=9:antialias=true
 URxvt*letterSpace: -1

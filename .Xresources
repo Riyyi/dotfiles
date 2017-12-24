@@ -50,11 +50,21 @@ URxvt*font: xft:DejaVu Sans Mono:size=9:antialias=true
 URxvt*boltfont: xft:DejaVu Sans Mono:bold:size=9:antialias=true
 URxvt*letterSpace: -1
 URxvt*scrollBar: false
+URxvt*saveLines: 2000
 
-URxvt.perl-ext-common: default,matcher,selection-to-clipboard
+! Extensions
+URxvt.perl-ext-common: default,matcher,eval
 URxvt.url-launcher: /usr/bin/xdg-open
 URxvt.matcher.button: 1
 URxvt.matcher.rend.0: Uline Bold fg5
+
+! Copy / paste keybinds
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+
+! Disable Ctrl+Shift feature
+URxvt.iso14755: false
+URxvt.iso14755_52: false
 
 ! Rofi
 !			bg       fg       bgalt    hlbg     hlfg

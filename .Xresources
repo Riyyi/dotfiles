@@ -39,6 +39,7 @@
 Xcursor.theme: capitaine-cursors
 
 ! Font config
+*dpi: 192
 Xft.dpi: 192
 Xft.autohint: 0
 Xft.hintstyle: hintslight

@@ -1,24 +1,20 @@
 #!/bin/bash
 
 case $BLOCK_BUTTON in
-	# right click
-	3) xbacklight -set 30;;
-	
-	# scroll up
-	4) xbacklight -inc 10 ;;
-	
-	# scroll down
-	5) xbacklight -dec 10 ;;
+	3) xbacklight -set 30 ;; # right click
+	4) xbacklight -inc 10 ;; # scroll up
+	5) xbacklight -dec 10 ;; # scroll down
 esac
 
-percentage=$(printf  "%.0f" "$(xbacklight)")
+PERCENTAGE=$(printf  "%.0f" "$(xbacklight)")
 
-if (( $percentage >= 75 )); then
-	icon=""
-elif (( $percentage >= 25 )); then
-	icon=""
+if (( $PERCENTAGE >= 75 )); then
+	ICON=""
+elif (( $PERCENTAGE >= 25 )); then
+	ICON=""
 else 
-	icon=""
+	ICON=""
 fi
 
-echo $icon $percentage%
+echo $ICON $PERCENTAGE%
+

@@ -189,14 +189,17 @@ client.urgent		$bg-color-urgent	$bg-color-urgent	$text-color		#00FF00
 
 # Keybindings
 bindsym $mod+Mod1+l exec $HOME/.config/i3/scripts/lock.sh
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% 			# Increase sound volume; Pulse Audio
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% 			# Decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle 			# Mute sound
-bindsym $mod+F3 exec xbacklight -inc 10								# Increase screen brightness
-bindsym $mod+F2 exec xbacklight -dec 10								# Decrease screen brightness
-bindsym --release Print exec scrot -e "mv \$f $HOME/Pictures/screen_captures/"			# Fullscreen screenshot
-bindsym --release Shift+Print exec scrot -s -e "mv \$f $HOME/Pictures/screen_captures/"		# Selection screenshot
-bindsym --release $mod+Print exec scrot -u -e "mv \$f $HOME/Pictures/screen_captures/"		# Focused window screenshot
+# Volume
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse sset Master 5%+ unmute && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse sset Master 5%- unmute && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute exec --no-startup-id amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
+# Screen brightness
+bindsym $mod+F3 exec xbacklight -inc 10 && pkill -RTMIN+2 i3blocks
+bindsym $mod+F2 exec xbacklight -dec 10 && pkill -RTMIN+2 i3blocks
+# Screenshot
+bindsym --release Print exec scrot -e "mv \$f $HOME/Pictures/screen_captures/"		# Fullscreen
+bindsym --release Shift+Print exec scrot -s -e "mv \$f $HOME/Pictures/screen_captures/"	# Selection
+bindsym --release $mod+Print exec scrot -u -e "mv \$f $HOME/Pictures/screen_captures/"	# Focused window
 
 # Window appearance
 smart_gaps on

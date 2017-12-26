@@ -30,21 +30,19 @@ markup=none
 
 # Volume indicator
 #
-# The first parameter sets the step (and units to display)
-# The second parameter overrides the mixer selection
-# See the script for details.
 [volume]
-#label=VOL
-#label=♪
-label=
+command=$HOME/.config/i3/scripts/volume.sh
+markup=pango
 instance=Master
-#instance=PCM
-interval=1
-signal=10
+interval=once
+signal=1
 
+# Brightness indicator
+#
 [brightness]
 command=$HOME/.config/i3/scripts/brightness.sh
-interval=1
+interval=once
+signal=2
 
 # Network interface monitoring
 #

@@ -130,6 +130,7 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 assign [class="Firefox"] $workspace1
+assign [class="Chromium"] $workspace1
 assign [class="URxvt"] $workspace3
 assign [class="Thunar"] $workspace4
 

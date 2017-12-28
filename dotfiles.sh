@@ -40,20 +40,23 @@ elif [ "$1" == "list" ]; then
 	done
 
 elif [ "$1" == "get" ] && [ "$2" != "" ]; then
-	mkdir -p $(pwd)/$(dirname $2)
-	cp $2 $(pwd)/$2
+	FILE=$(readlink -f $2)
+	mkdir -p $(pwd)/$(dirname $FILE)
+	cp $FILE $(pwd)/$FILE
 
 elif [ "$1" == "pull" ] || [ "$1" == "push" ]; then
 	for f in $FILES; do
 		# Remove the first character (.) from the string
 		f=${f:1}
+		# Resolved symbolic link
+		fr=$(readlink -f $f)
 
-		# The filepath contains '/etc/'
-		if [ -n "$(echo $f | sed -nr 's/(\/etc\/)/\1/p')" ]; then
+		# The filepath starts with '/boot/', '/etc/', '/usr/share/'
+		if [ -n "$(echo $fr | sed -nr 's/^(\/(boot|etc|usr\/share)\/).*$/\1/p')" ]; then
 			if [ "$1" == "pull" ]; then
-				sudo cp $f $(pwd)/$f
+				sudo cp $fr $(pwd)/$fr
 			else
-				sudo cp $(pwd)/$f $f
+				sudo cp $(pwd)/$fr $fr
 			fi
 		else
 			if [ "$1" == "pull" ]; then

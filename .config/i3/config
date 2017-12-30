@@ -189,7 +189,7 @@ client.focused_inactive	$bg-color-inactive	$bg-color-inactive	$text-color-inacti
 client.urgent		$bg-color-urgent	$bg-color-urgent	$text-color		#00FF00
 
 # Keybindings
-bindsym $mod+Mod1+l exec $HOME/.config/i3/scripts/lock.sh
+bindsym $mod+Mod1+l exec $HOME/.scripts/wm/lock.sh
 # Volume
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse sset Master 5%+ unmute && pkill -RTMIN+1 i3blocks
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse sset Master 5%- unmute && pkill -RTMIN+1 i3blocks

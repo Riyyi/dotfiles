@@ -42,9 +42,11 @@ Xcursor.theme: capitaine-cursors
 *dpi: 192
 Xft.dpi: 192
 Xft.autohint: 0
+Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintslight
 Xft.hinting: 1
 Xft.antialias: 1
+Xft.rgba: rgb
 
 ! Terminal config
 URxvt*font: xft:DejaVu Sans Mono:size=9:antialias=true

@@ -210,7 +210,7 @@ hide_edge_borders both
 for_window [class=".*"] border pixel 2
 
 # Application startup
-exec_always --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper.jpg
+exec_always --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper.jpg --no-fehbg
 exec --no-startup-id firefox
 exec --no-startup-id urxvt
 exec --no-startup-id thunar --daemon

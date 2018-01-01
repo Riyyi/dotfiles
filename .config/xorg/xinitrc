@@ -8,6 +8,6 @@ export GDK_DPI_SCALE=0.5
 
 # Screensaver
 xset s off
-xset -dmps
+xset -dpms
 
 exec i3

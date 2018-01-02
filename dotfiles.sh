@@ -40,8 +40,17 @@ elif [ "$1" == "list" ]; then
 
 elif [ "$1" == "get" ] && [ "$2" != "" ]; then
 	FILE=$(readlink -f $2)
-	mkdir -p $(pwd)/$(dirname $FILE)
-	cp $FILE $(pwd)/$FILE
+	FILE_CUT_HOME="$(echo $FILE | sed -nr 's/^\/home\/'$USER'\/(.*)$/\1/p')"
+	
+	# /home/<user>/
+	if [ -n "$FILE_CUT_HOME" ]; then
+		mkdir -p $(pwd)/$(dirname $FILE_CUT_HOME)
+		cp $FILE $(pwd)/$FILE_CUT_HOME
+	# /
+	else
+		mkdir -p $(pwd)/$(dirname $FILE)
+		cp $FILE $(pwd)/$FILE
+	fi
 
 elif [ "$1" == "pull" ] || [ "$1" == "push" ]; then
 	for f in $FILES; do

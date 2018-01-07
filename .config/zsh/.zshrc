@@ -45,6 +45,13 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' menu select
 
+# Bind keys
+bindkey '\eOd' backward-word
+bindkey '\eOc' forward-word
+bindkey '\e[7~' beginning-of-line
+bindkey '\e[3~' delete-char
+bindkey '\e[8~' end-of-line
+
 # History
 setopt APPEND_HISTORY
 setopt EXTENDED_HISTORY

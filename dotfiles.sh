@@ -6,6 +6,8 @@ if [ "$(dirname $0)" != "." ]; then
 fi
 
 FILES=$(find . \( -path ./.git -o \
+		  -path ./README.md -o \
+		  -path ./screenshot.png -o \
 		  -path ./dotfiles.sh \) -prune -o -type f -print)
 
 if [ "$1" == "help" ] || [ "$1" == "" ]; then

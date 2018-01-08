@@ -8,9 +8,9 @@ esac
 
 PERCENTAGE=$(printf  "%.0f" "$(xbacklight)")
 
-if $(( $PERCENTAGE >= 75 )); then
+if [ "$PERCENTAGE" -ge "75" ]; then
 	ICON=""
-elif $(( $PERCENTAGE >= 25 )); then
+elif [ "$PERCENTAGE" -ge "25" ]; then
 	ICON=""
 else 
 	ICON=""

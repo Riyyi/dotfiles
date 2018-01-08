@@ -85,6 +85,7 @@ All packages that are manually installed via pacman -S, dependencies not include
     python2-click-5.1 (AUR)
     platformio (AUR)
     vim
+    checkbashisms (AUR)
 
 ### Configuration:
 

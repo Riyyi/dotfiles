@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ICON="$HOME/Pictures/lock.png"
 TMPBG='/tmp/screen.png'

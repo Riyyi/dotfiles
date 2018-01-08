@@ -202,6 +202,8 @@ bindsym $mod+F2 exec xbacklight -dec 10 && pkill -RTMIN+2 i3blocks
 bindsym --release Print exec scrot -e "mv \$f $HOME/Pictures/screen_captures/"		# Fullscreen
 bindsym --release Shift+Print exec scrot -s -e "mv \$f $HOME/Pictures/screen_captures/"	# Selection
 bindsym --release $mod+Print exec scrot -u -e "mv \$f $HOME/Pictures/screen_captures/"	# Focused window
+# Touchscreen toggle
+bindsym $mod+F7 exec $HOME/.scripts/wm/touchscreen.sh
 
 # Window appearance
 smart_gaps on

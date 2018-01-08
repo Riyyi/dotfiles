@@ -1,7 +1,6 @@
 #!/bin/sh
 
 ICON="$HOME/Pictures/lock.png"
-TMPBG='/tmp/screen.png'
 
 revert() {
 	xset dpms 0 0 0
@@ -10,11 +9,7 @@ revert() {
 trap revert HUP INT TERM
 xset +dpms dpms 30 30 30
 
-scrot "$TMPBG"
-convert "$TMPBG" -scale 10% -scale 1000% "$TMPBG"
-convert "$TMPBG" "$ICON" -gravity center -composite -matte "$TMPBG"
-
-i3lock -n -i "$TMPBG" -e \
+i3lock -n -i "$ICON" -B 5 -e \
 	--textcolor=00000000 \
 	--insidecolor=00000000 \
 	--insidevercolor=00000000 --insidewrongcolor=00000000 \

@@ -133,10 +133,6 @@ Pacman colors:
     nano /etc/pacman.conf
     (uncomment)Color
 
-Thunar automount:
-
-    (inside Thunar menu) -> Edit -> Preferences -> Advanced -> Configure -> Check first two boxes under 'Removable Storage'
-
 Git:
 
     git config --global user.email "<email address>"

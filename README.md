@@ -100,6 +100,7 @@ Predictable network interface names:
 Give wheel users sudo permission:
 
     nano /etc/sudoers
+    (add)Defaults insults
     (uncomment)%wheel ALL=(ALL) ALL
 
 Add user:

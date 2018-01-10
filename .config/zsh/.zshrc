@@ -33,9 +33,9 @@ RPROMPT='%t'
 # Git
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' stagedstr "$fg[green]A$reset_color"
-zstyle ':vcs_info:*' unstagedstr "$fg[red]M$reset_color"
-zstyle ':vcs_info:*' formats "$fg[cyan]($fg[red]%b$fg[cyan])$reset_color %c%u"
+zstyle ':vcs_info:*' stagedstr "%F{green}A%f"
+zstyle ':vcs_info:*' unstagedstr "%F{red}M%f"
+zstyle ':vcs_info:*' formats '%F{cyan}(%F{red}%b%F{cyan})%f %c%u'
 
 # Autocompletion
 compinit -d $XDG_CACHE_HOME/zcompdump

@@ -25,7 +25,7 @@ precmd() {
 
 USR_HOST="$fg[cyan]%n$reset_color@$fg[cyan]%m$reset_color"
 DIRECTORY="$fg[green]%~$reset_color"
-ARROW="%(?::$fg[red])➤$reset_color"
+ARROW="%(?..%{$fg[red]%})➤$reset_color"
 PROMPT='╭─${USR_HOST} ${DIRECTORY} ${vcs_info_msg_0_}
 ╰─${ARROW} '
 RPROMPT='%t'

@@ -131,6 +131,7 @@ bindsym $mod+Shift+0 move container to workspace 10
 
 assign [class="Firefox"] $workspace1
 assign [class="Chromium"] $workspace1
+assign [class="jetbrains-idea"] $workspace2
 assign [class="Gedit"] $workspace2
 assign [class="URxvt"] $workspace3
 assign [class="Thunar"] $workspace4
@@ -205,12 +206,13 @@ bindsym --release $mod+Print exec scrot -u -e "mv \$f $HOME/Pictures/screen_capt
 # Touchscreen toggle
 bindsym $mod+F7 exec $HOME/.scripts/wm/touchscreen.sh
 
-# Window appearance
+# Window rules
 smart_gaps on
 gaps inner 10
 gaps outer 10
 hide_edge_borders both
 for_window [class=".*"] border pixel 2
+for_window [class="feh"] floating enable
 
 # Application startup
 exec_always --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper.jpg --no-fehbg

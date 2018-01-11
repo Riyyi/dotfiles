@@ -9,7 +9,7 @@ revert() {
 trap revert HUP INT TERM
 xset +dpms dpms 30 30 30
 
-i3lock -n -i "$ICON" -B 5 -e \
+i3lock -n -i "$ICON" -B 10 -e \
 	--textcolor=00000000 \
 	--insidecolor=00000000 \
 	--insidevercolor=00000000 --insidewrongcolor=00000000 \

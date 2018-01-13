@@ -89,7 +89,7 @@ alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold bl
 # Laptop
 alias offtouchpad='sudo rmmod i2c_hid'
 alias ontouchpad='sudo modprobe i2c_hid'
-alias homenetwork='sudo netctl start wlan0-merlin-router5GHz'
+alias nw="$HOME/.scripts/network.sh"
 
 # Other
 source $ZDOTDIR/.zshrc_extended

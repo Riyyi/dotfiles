@@ -160,3 +160,7 @@ Mail gpg:
 
     gpg --decrypt <backup.pgp> | gpg --import
     gpg --search-keys <email address>
+
+Network:
+
+    systemctl enable netctl-auto@wlan0.service

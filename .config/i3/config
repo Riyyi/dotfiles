@@ -204,7 +204,7 @@ bindsym --release Print exec scrot -e "mv \$f $HOME/Pictures/screen_captures/"		
 bindsym --release Shift+Print exec scrot -s -e "mv \$f $HOME/Pictures/screen_captures/"	# Selection
 bindsym --release $mod+Print exec scrot -u -e "mv \$f $HOME/Pictures/screen_captures/"	# Focused window
 # Touchscreen toggle
-bindsym $mod+F7 exec $HOME/.scripts/wm/touchscreen.sh
+bindsym $mod+F7 exec $HOME/.scripts/touchscreen.sh
 
 # Window rules
 smart_gaps on

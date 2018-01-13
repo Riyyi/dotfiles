@@ -8,7 +8,7 @@ STEP="5%"
 case $BLOCK_BUTTON in
 	1) pavucontrol ;; # left click, start sound settings
 	2) amixer -q -D $MIXER sset $INSTANCE 0 unmute ;; # scroll click, set 0
-	3) amixer -q -D $MIXER sset $INSTANCE toggle ;;  # right click, mute/unmute
+	3) amixer -q -D $MIXER sset $INSTANCE toggle ;; # right click, mute/unmute
 	4) amixer -q -D $MIXER sset $INSTANCE ${STEP}+ unmute ;; # scroll up, increase
 	5) amixer -q -D $MIXER sset $INSTANCE ${STEP}- unmute ;; # scroll down, decrease
 esac

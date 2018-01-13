@@ -86,6 +86,7 @@ All packages that are manually installed via pacman -S, dependencies not include
     platformio (AUR)
     vim
     checkbashisms (AUR)
+    xss-lock-git (AUR)
 
 ### Configuration:
 

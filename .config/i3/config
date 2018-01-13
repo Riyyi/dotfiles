@@ -220,6 +220,7 @@ exec --no-startup-id firefox
 exec --no-startup-id urxvt
 exec --no-startup-id thunar --daemon
 exec --no-startup-id thunar
+exec --no-startup-id xss-lock -- $HOME/.scripts/wm/lock.sh &
 
 # Reload Xresources
 # xrdb -load ~/.Xresources

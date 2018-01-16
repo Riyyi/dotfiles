@@ -91,76 +91,78 @@ All packages that are manually installed via pacman -S, dependencies not include
 ### Configuration:
 
 Below are all the system changes that were made.<br>
+$ = command<br>
 <> = variable<br>
 () = action
 
 Predictable network interface names:
-
-    ln -s /dev/null /etc/systemd/network/99-default.link
-
+```
+$ ln -s /dev/null /etc/systemd/network/99-default.link
+```
 Give wheel users sudo permission:
-
-    nano /etc/sudoers
-    (add)Defaults insults
-    (uncomment)%wheel ALL=(ALL) ALL
-
+```sh
+$ nano /etc/sudoers
+(add)Defaults insults
+(uncomment)%wheel ALL=(ALL) ALL
+```
 Add user:
-
-    useradd -m -G wheel -s /bin/bash <username>
-    passwd <username>
-
+```sh
+$ useradd -m -G wheel -s /bin/bash <username>
+$ passwd <username>
+```
 Installing pacaur:
+```sh
+$ gpg --recv-keys <pubkey>
 
-    gpg --recv-keys <pubkey>
+$ git clone cower
+$ cd cower
+$ makepkg -si
+$ cd ..
 
-    git clone cower
-    cd cower
-    makepkg -si
-    cd ..
+$ git clone pacaur
+$ cd pacaur
+$ makepkg -si
+$ cd ..
 
-    git clone pacaur
-    cd pacaur
-    makepkg -si
-    cd ..
-
-    pacaur -S cower pacaur
-    rm -rf cower pacaur
-
+$ pacaur -S cower pacaur
+$ rm -rf cower pacaur
+```
 Switch shell to zsh:
-
-    chsh -s /bin/zsh
-
+```sh
+$ chsh -s /bin/zsh
+```
 Pacman colors:
-
-    nano /etc/pacman.conf
-    (uncomment)Color
-
+```sh
+$ nano /etc/pacman.conf
+(uncomment)Color
+```
 Git:
-
-    git config --global user.email "<email address>"
-    git config --global user.name "<name>"
-
+```sh
+$ git config --global user.email "<email address>"
+$ git config --global user.name "<name>"
+```
 Tlp:
+```sh
+$ systemctl enable tlp.service
+$ systemctl enable tlp-sleep.service
 
-    systemctl enable tlp.service
-    systemctl enable tlp-sleep.service
-
-    nano /etc/default/tlp
-    (edit)SOUND_POWER_SAVE_ON_BAT=0
-
+$ nano /etc/default/tlp
+(edit)SOUND_POWER_SAVE_ON_BAT=0
+```
 Trim:
-
-    systemctl enable fstrim.timer
-
+```sh
+$ systemctl enable fstrim.timer
+```
 Clock internet sync:
-
-    timedatectl set-ntp true
-
+```sh
+$ timedatectl set-ntp true
+```
 Mail gpg:
-
-    gpg --decrypt <backup.pgp> | gpg --import
-    gpg --search-keys <email address>
-
+```sh
+$ gpg --decrypt <backup.pgp> | gpg --import
+$ gpg --search-keys <email address>
+```
 Network:
-
-    systemctl enable netctl-auto@wlan0.service
+```sh
+$ systemctl enable netctl-auto@wlan0.service
+```

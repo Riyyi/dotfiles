@@ -87,6 +87,7 @@ All packages that are manually installed via pacman -S, dependencies not include
     vim
     checkbashisms (AUR)
     xss-lock-git (AUR)
+    cura
 
 ### Configuration:
 

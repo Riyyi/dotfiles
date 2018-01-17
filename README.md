@@ -167,3 +167,7 @@ Network:
 ```sh
 $ systemctl enable netctl-auto@wlan0.service
 ```
+Give permission to /dev/ttyUSB0 for PlatformIO
+```sh
+$ gpasswd -a <user> uucp:
+```

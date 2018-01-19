@@ -1,7 +1,6 @@
 #!/bin/sh
 
-BAT_NUMBER=${BLOCK_INSTANCE:-"$(acpi -b | grep ': [^Unknown]' | awk '{ print int($2) }')"}
-BAT_INFO="$(acpi -b | grep Battery\ $BAT_NUMBER:)"
+BAT_INFO=${BLOCK_INSTANCE:-"$(acpi -b | grep ': [^Unknown]')"}
 
 CAPACITY=$(echo $BAT_INFO | awk '{ print int($4) }')
 TIME="$(echo $BAT_INFO | awk '{ print substr($5, 0, length($5) - 3) }')"

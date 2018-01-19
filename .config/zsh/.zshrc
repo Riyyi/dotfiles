@@ -66,6 +66,7 @@ SAVEHIST=10000
 
 ## Aliases
 
+alias q='exit'
 alias la='ls -laGh --color'
 alias ls='ls --color'
 alias rm='rm -i'
@@ -76,12 +77,13 @@ alias install='sudo pacman -S'
 alias remove='sudo pacman -Rns'
 alias update='sudo pacman -Syy; sudo pacman -Syu'
 alias clean='sudo pacman -Rns $(pacman -Qtdq)'
+alias depend='pacman -Qtd'
 
 alias poweroff='systemctl poweroff'
 alias reboot='systemctl reboot'
 
-alias upl='platformio run --target=upload'
-alias ser='platformio serialports monitor --baud 9600'
+alias upl='pio run -t=upload'
+alias ser='pio serialports monitor -b 9600'
 
 # Git
 alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"

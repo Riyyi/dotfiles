@@ -65,10 +65,7 @@ separator=true
 #
 # The battery instance defaults to 0.
 [battery]
-#label=BAT
-#label=⚡
-label=
-#instance=1
+command=$HOME/.scripts/wm/battery.sh
 interval=30
 
 # Date Time

@@ -5,6 +5,9 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 
+# VIM
+export EDITOR="vim"
+
 # X11
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
@@ -86,7 +89,14 @@ alias upl='pio run -t=upload'
 alias ser='pio serialports monitor -b 9600'
 
 # Git
-alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
+alias g="git"
+alias ga="g add"
+alias gs="g status"
+alias gc="g commit"
+alias gp="g push"
+alias gd="g diff"
+alias gdc="gd --cached"
+alias gl="g log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
 # Laptop
 alias offtouchpad='sudo rmmod i2c_hid'
@@ -95,6 +105,12 @@ alias nw="$HOME/.scripts/network.sh"
 
 # Other
 source $ZDOTDIR/.zshrc_extended
+
+# Fun
+spurdo() {
+    sed "s/kek/geg/gI;s/epic/ebin/gI;s/america/clapistan/gI;s/right/rite/gI;s/your/ur/gI;s/\./ :DD/gI;s/'//gI;s/,/XDD/gI;s/wh/w/gI;s/th/d/gI;s/af/ab/gI;s/ap/ab/gI;s/ca/ga/gI;s/ck/gg/gI;s/co/go/gI;s/ev/eb/gI;s/ex/egz/gI;s/et/ed/gI;s/iv/ib/gI;s/it/id/gI;s/ke/ge/gI;s/nt/nd/gI;s/op/ob/gI;s/ot/od/gI;s/po/bo/gI;s/pe/be/gI;s/pi/bi/gI;s/up/ub/gI;s/va/ba/gI;s/ck/gg/gI;s/cr/gr/gI;s/kn/gn/gI;s/lt/ld/gI;s/mm/m/gI;s/nt/dn/gI;s/pr/br/gI;s/ts/dz/gI;s/tr/dr/gI;s/bs/bz/gI;s/ds/dz/gI;s/es/es/gI;s/fs/fz/gI;s/gs/gz/gI;s/ is/iz/gI;s/as/az/gI;s/ls/lz/gI;s/ms/mz/gI;s/ns/nz/gI;s/rs/rz/gI;s/ss/sz/gI;s/ts/tz/gI;s/us/uz/gI;s/ws/wz/gI;s/ys/yz/gI;s/alk/olk/gI;s/ing/ign/gI;s/ic/ig/gI;s/ng/nk/gI" \
+    <<< "${@:-$(cat /dev/stdin)}"
+}
 
 ## Login
 

@@ -85,7 +85,7 @@ alias depend='pacman -Qtd'
 alias poweroff='systemctl poweroff'
 alias reboot='systemctl reboot'
 
-alias upl='pio run -t=upload'
+alias upl='pio run --target=upload'
 alias ser='pio serialports monitor -b 9600'
 
 # Git

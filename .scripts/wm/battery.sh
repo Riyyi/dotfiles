@@ -12,6 +12,7 @@ else
 	TIME=""
 fi
 
+COLOR="#FFFFFF"
 if [ "$(echo $BAT_INFO | awk '{ print $6 }')" = "remaining" ]; then
 	if [ "$CAPACITY" -ge "80" ]; then
 		ICON=""
@@ -23,6 +24,7 @@ if [ "$(echo $BAT_INFO | awk '{ print $6 }')" = "remaining" ]; then
 		ICON=""
 	else 
 		ICON=""
+		COLOR="#DC7A43"
 	fi
 else	
 	ICON=""
@@ -30,4 +32,4 @@ fi
 
 echo "$ICON $CAPACITY%$TIME"
 echo "$ICON $CAPACITY%"
-echo "#FFFFFF"
+echo "$COLOR"

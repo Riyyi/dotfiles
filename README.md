@@ -80,14 +80,15 @@ All packages that are manually installed via pacman -S, dependencies not include
     chromium
     zathura
     zathura-pdf-mupdf
-    gpicview
     python2-setuptools
     python2-click-5.1 (AUR)
     platformio (AUR)
     vim
     checkbashisms (AUR)
     xss-lock-git (AUR)
+    inkscape
     cura
+    wpa_actiond
 
 ### Configuration:
 

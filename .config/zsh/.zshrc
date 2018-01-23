@@ -24,6 +24,8 @@ setopt PROMPT_SUBST
 
 precmd() {
 	vcs_info
+
+	print -Pn "\e]0;%n@%m %~\a"
 }
 
 USR_HOST="%F{cyan}%n%f@%F{cyan}%m%f"

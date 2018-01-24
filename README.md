@@ -101,6 +101,10 @@ Predictable network interface names:
 ```
 $ ln -s /dev/null /etc/systemd/network/99-default.link
 ```
+Network:
+```sh
+$ systemctl enable netctl-auto@wlan0.service
+```
 Give wheel users sudo permission:
 ```sh
 $ nano /etc/sudoers
@@ -164,11 +168,11 @@ Mail gpg:
 $ gpg --decrypt <backup.pgp> | gpg --import
 $ gpg --search-keys <email address>
 ```
-Network:
-```sh
-$ systemctl enable netctl-auto@wlan0.service
-```
 Give permission to /dev/ttyUSB0 for PlatformIO:
 ```sh
 $ gpasswd -a <user> uucp
+```
+Set Firefox as default browser:
+```sh
+$ xdg-settings set default-web-browser firefox.desktop
 ```

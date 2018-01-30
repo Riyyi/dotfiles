@@ -83,7 +83,7 @@ All packages that are manually installed via pacman -S, dependencies not include
     python2-setuptools
     python2-click-5.1 (AUR)
     platformio (AUR)
-    vim
+    gvim
     checkbashisms (AUR)
     xss-lock-git (AUR)
     inkscape
@@ -175,4 +175,10 @@ $ gpasswd -a <user> uucp
 Set Firefox as default browser:
 ```sh
 $ xdg-settings set default-web-browser firefox.desktop
+```
+Prevent bricking motherboard by mounting efivars read-only:<br>
+https://wiki.archlinux.org/index.php/Unified_Extensible_Firmware_Interface#Mount_efivarfs
+```sh
+$ nano /etc/fstab
+(add)efivarfs    /sys/firmware/efi/efivars    efivarfs    ro,nosuid,nodev,noexec,noatime 0 0
 ```

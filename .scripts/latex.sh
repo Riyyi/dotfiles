@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$1" = "kill" ]; then
-    kill -9 $(pgrep latex.sh)
+    pkill latex.sh
 else
     DIR="$1"
     OUT="$DIR/out"

@@ -108,6 +108,7 @@ alias nw="$HOME/.scripts/network.sh"
 
 # Scripts
 alias ltx="$HOME/.scripts/latex.sh"
+alias vimplugin="$HOME/.scripts/vimplugin.sh"
 
 # Fun
 spurdo() {

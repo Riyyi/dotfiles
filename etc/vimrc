@@ -1,5 +1,20 @@
-set nocompatible                " Use Vim defaults instead of 100% vi compatibility
-set backspace=indent,eol,start  " more powerful backspacing
+" Disable unused components
+set nobackup
+set nocompatible
+
+"" General
+
+filetype plugin on
+
+" Indentation
+set autoindent
+filetype indent on
+
+set backspace=indent,eol,start
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
 
 " Now we set some defaults for the editor
 set history=1000                " keep 50 lines of command line history
@@ -11,3 +26,4 @@ set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.i
 
 " Default clipboard register "+ (CLIPBOARD buffer in X)
 set clipboard=unnamedplus
+

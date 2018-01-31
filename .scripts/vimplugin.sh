@@ -124,7 +124,8 @@ update() {
 
 remove() {
     list
-    echo "Enter the number to remove: " && read OPTION
+    echo -n "Enter the number to remove: "
+    read OPTION
 
     if [ -z "$(echo $OPTION | sed -nr 's/^([0-9]+)$/\1/p')" ]; then
         echo "Please select a number"

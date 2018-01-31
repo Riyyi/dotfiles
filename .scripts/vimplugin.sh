@@ -77,7 +77,8 @@ install() {
             cd ".."
             echo "Updated: $REPO"
         else
-            # @ToDo: Add to config file after cloning the repository
+            sudo git clone "$1" 2> /dev/null
+
             # Add git URL to config file
             if [ -z "$2" ]; then
                 # Append before 'opt:'
@@ -92,7 +93,6 @@ install() {
                 fi
             fi
             
-            sudo git clone "$1" 2> /dev/null
             echo "Installed: $REPO"
         fi
     fi

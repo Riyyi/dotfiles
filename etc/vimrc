@@ -29,3 +29,6 @@ set clipboard=unnamedplus
 
 set background=dark
 colorscheme hybrid_reverse
+
+" Autoremove trailing whitespace in the following filetypes
+autocmd FileType c,cpp,ino,sh,java,php autocmd BufWritePre <buffer> %s/\s\+$//e

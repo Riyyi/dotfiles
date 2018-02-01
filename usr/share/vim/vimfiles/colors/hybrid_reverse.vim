@@ -1,0 +1,1 @@
+/etc/vim/pack/plugins/opt/vim-hybrid-material/colors/hybrid_reverse.vim

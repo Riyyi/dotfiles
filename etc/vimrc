@@ -27,3 +27,5 @@ set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.i
 " Default clipboard register "+ (CLIPBOARD buffer in X)
 set clipboard=unnamedplus
 
+set background=dark
+colorscheme hybrid_reverse

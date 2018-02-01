@@ -12,30 +12,30 @@ help() {
     BOLD=$(tput bold)
     NORMAL=$(tput sgr0)
 
-    	echo "${BOLD}NAME${NORMAL}"
-	echo "        vimplugin - vim plugin manager"
-	echo ""
-	echo "${BOLD}SYNOPSIS${NORMAL}"
-       	echo "        ./vimplugin.sh <command> [<arg1> <arg2>]"
-	echo ""
-	echo "${BOLD}COMMANDS${NORMAL}"
-	echo "        init"
-	echo "                Creates all the required directories/files."
-	echo ""
-	echo "        install <url> [\"start\"/\"opt\"]"
-	echo "                Install a new plugin, <url> need to be a valid \
+    echo "${BOLD}NAME${NORMAL}"
+    echo "        vimplugin - vim plugin manager"
+    echo ""
+    echo "${BOLD}SYNOPSIS${NORMAL}"
+    echo "        ./vimplugin.sh <command> [<arg1> <arg2>]"
+    echo ""
+    echo "${BOLD}COMMANDS${NORMAL}"
+    echo "        init"
+    echo "                Creates all the required directories/files."
+    echo ""
+    echo "        install <url> [\"start\"/\"opt\"]"
+    echo "                Install a new plugin, <url> need to be a valid \
 GitHub URL,
                 start/opt to install the plugin in the start/opt directory \
 (default: start)."
-	echo ""
-	echo "        list <number>"
-	echo "                Prints all the installed plugins, <number> prints \
+    echo ""
+    echo "        list <number>"
+    echo "                Prints all the installed plugins, <number> prints \
 just the plugin in that position."
-	echo "        remove"
-	echo "                Remove plugin, script will prompt a selection menu."
+    echo "        remove"
+    echo "                Remove plugin, script will prompt a selection menu."
     echo "        update"
-	echo "                Installs/updates all plugins from the config file."
-	echo ""
+    echo "                Installs/updates all plugins from the config file."
+    echo ""
 }
 
 init() {

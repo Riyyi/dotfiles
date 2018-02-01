@@ -1,9 +1,12 @@
 #!/bin/sh
 
-DIR="/etc/vim/pack/plugins"
+#----
+BASE="/etc/vim/pack"
+#----
+DIR="$BASE/plugins"
+LIST="$BASE/list"
 START="$DIR/start"
 OPT="$DIR/opt"
-LIST="/etc/vim/pack/list"
 
 help() {
     BOLD=$(tput bold)
@@ -16,9 +19,8 @@ help() {
        	echo "        ./vimplugin.sh <command> [<arg1> <arg2>]"
 	echo ""
 	echo "${BOLD}COMMANDS${NORMAL}"
-	echo "        list <number>"
-	echo "                Prints all the installed plugins, <number> prints \
-just the plugin in that position."
+	echo "        init"
+	echo "                Creates all the required directories/files."
 	echo ""
 	echo "        install <url> [\"start\"/\"opt\"]"
 	echo "                Install a new plugin, <url> need to be a valid \
@@ -26,11 +28,25 @@ GitHub URL,
                 start/opt to install the plugin in the start/opt directory \
 (default: start)."
 	echo ""
-	echo "        update"
-	echo "                Installs/updates all plugins from the config file."
-	echo ""
+	echo "        list <number>"
+	echo "                Prints all the installed plugins, <number> prints \
+just the plugin in that position."
 	echo "        remove"
 	echo "                Remove plugin, script will prompt a selection menu."
+    echo "        update"
+	echo "                Installs/updates all plugins from the config file."
+	echo ""
+}
+
+init() {
+    sudo mkdir -p $START
+    sudo mkdir -p $OPT
+    sudo touch $LIST
+    if [ ! -s $LIST ]; then
+        # Append to empty file
+        sudo sh -c 'echo "start:" >> '$LIST
+        sudo sh -c 'echo "opt:" >> '$LIST
+    fi
 }
 
 list() {
@@ -62,12 +78,10 @@ install() {
         if [ -z "$2" ]; then
             # Default is directory 'start'
             cd "$START"
-        elif [ "$2" != script ]; then
-            if [ "$2" = "start" ]; then
-                cd "$START"
-            elif [ "$2" = "opt" ]; then
-                cd "$OPT"
-            fi
+        elif [ "$2" = "start" ]; then
+            cd "$START"
+        elif [ "$2" = "opt" ]; then
+            cd "$OPT"
         fi
 
         REPO="$(basename $1 .git)"
@@ -83,14 +97,12 @@ install() {
             if [ -z "$2" ]; then
                 # Append before 'opt:'
                 sudo sed -i '/opt:/ i '$1 $LIST
-            elif [ "$2" != "script" ]; then
-                if [ "$2" = "start"  ]; then
-                    # Append before 'opt:'
-                    sudo sed -i '/opt:/ i '$1 $LIST
-                elif [ "$2" = "opt" ]; then
-                    # Append at the end of the file
-                    sudo sed -i '$ a '$1 $LIST
-                fi
+            elif [ "$2" = "start"  ]; then
+                # Append before 'opt:'
+                sudo sed -i '/opt:/ i '$1 $LIST
+            elif [ "$2" = "opt" ]; then
+                # Append at the end of the file
+                sudo sed -i '$ a '$1 $LIST
             fi
             
             echo "Installed: $REPO"
@@ -101,15 +113,8 @@ install() {
 update() {
     echo "Updating.."
 
-    sudo mkdir -p $START
-    sudo mkdir -p $OPT
-    sudo touch $LIST
-    if [ ! -s $LIST ]; then
-        # Append to empty file
-        sudo sh -c 'echo "start:" >> '$LIST
-        sudo sh -c 'echo "opt:" >> '$LIST
-    fi
-   
+    init
+
     cd $START
     while read l; do
         if [ "$l" = "start:"  ]; then

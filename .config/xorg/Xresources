@@ -49,8 +49,8 @@ Xft.antialias: 1
 Xft.rgba: rgb
 
 ! Terminal config
-URxvt*font: xft:DejaVu Sans Mono:size=9:antialias=true
-URxvt*boltfont: xft:DejaVu Sans Mono:bold:size=9:antialias=true
+URxvt*font: xft:DejaVu Sans Mono for Powerline:size=9
+URxvt*boltfont: xft:DejaVu Sans Mono:bold:size=9
 URxvt*letterSpace: -1
 URxvt*scrollBar: false
 URxvt*saveLines: 2000

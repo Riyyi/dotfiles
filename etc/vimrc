@@ -2,33 +2,78 @@
 set nobackup
 set nocompatible
 
+" Setup paths
+set viminfo+=n~/.cache/vim_history
+
 "" General
 
 filetype plugin on
+
+" Behavior
+set clipboard=unnamedplus
+set encoding=utf-8
+set fileencoding=utf-8
+set hidden
+
+set history=1000
+set undolevels=1000
+
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.png,.jpg
+set wildignore=*.bak,*.swp,*.o,*.info,*.aux,*.log,*.dvi,*.bbl,*.blg,*.brf,*.cb,*.ind,*.idx,*.ilg,*.inx,*.out,*.toc,*.png,*.jpg
+
+" Editing
+set number
+set ruler
+
+set background=dark
+colorscheme hybrid_reverse
+
+set cursorline
+autocmd! ColorScheme * hi clear CursorLine
 
 " Indentation
 set autoindent
 filetype indent on
 
 set backspace=indent,eol,start
+set shiftround
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set expandtab
 
-" Now we set some defaults for the editor
-set history=1000                " keep 50 lines of command line history
-set ruler                       " show the cursor position all the time
+" UI
+set laststatus=2
+set noshowmode
+set nowrap
 
-" Suffixes that get lower priority when doing tab completion for filenames.
-" These are files we are not likely to want to edit or read.
-set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.png,.jpg
+" Plugins
+let g:lightline = {}
+let g:lightline.colorscheme  = 'Tomorrow_Night_Bright'
+let g:lightline.separator    =  {'left': "\ue0b0", 'right': "\ue0b2"}
+let g:lightline.subseparator =  {'left': "\ue0b1", 'right': "\ue0b3"}
 
-" Default clipboard register "+ (CLIPBOARD buffer in X)
-set clipboard=unnamedplus
+let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'buffers': 'tabsel'}
 
-set background=dark
-colorscheme hybrid_reverse
+let g:lightline#bufferline#min_buffer_count = 2
 
-" Autoremove trailing whitespace in the following filetypes
-autocmd FileType c,cpp,ino,sh,java,php autocmd BufWritePre <buffer> %s/\s\+$//e
+"" Autocommands
+
+" Remove trailing whitespace in the following filetypes
+autocmd FileType c,cpp,ino,java,py,php,sh,tex autocmd BufWritePre <buffer> %s/\s\+$//e
+
+"" Keybindings
+
+" Tab/Shift+Tab functionality
+nnoremap <Tab> >>_
+nnoremap <S-Tab> <<_
+inoremap <S-Tab> <C-D>
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+" Buffer switching
+nnoremap <C-h> :bprevious<CR>
+nnoremap <C-l> :bnext<CR>
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+

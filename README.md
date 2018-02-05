@@ -41,6 +41,7 @@ All packages that are manually installed via pacman -S, dependencies not include
     zsh-completions
     libx264
     ttf-dejavu
+    ttf-dejavu-sans-mono-powerline-git (AUR)
     firefox
     libnotify
     pulseaudio

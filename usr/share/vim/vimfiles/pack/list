@@ -1,3 +1,5 @@
 start:
+https://github.com/itchyny/lightline.vim.git
+https://github.com/mgee/lightline-bufferline.git
 opt:
 https://github.com/kristijanhusak/vim-hybrid-material.git

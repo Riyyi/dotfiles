@@ -48,13 +48,13 @@ set nowrap
 
 "" Plugin configuration
 
-" Lightline
+" lightline.vim
 let g:lightline = {}
 let g:lightline.colorscheme  = 'Tomorrow_Night_Bright'
 let g:lightline.separator    =  {'left': "\ue0b0", 'right': "\ue0b2"}
 let g:lightline.subseparator =  {'left': "\ue0b1", 'right': "\ue0b3"}
 
-" Lightline-bufferline
+" lightline-bufferline
 let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
 let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
 let g:lightline.component_type   = {'buffers': 'tabsel'}
@@ -69,6 +69,10 @@ let g:NERDTrimTrailingWhitespace=1
 " NERD Tree
 let g:NERDTreeMinimalUI=1
 let g:NERDTreeAutoDeleteBuffer=1
+
+" vimtex
+let g:tex_flavor = 'latex'
+let g:vimtex_view_method = 'zathura'
 
 "" Autocommands
 

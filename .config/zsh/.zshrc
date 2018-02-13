@@ -93,6 +93,16 @@ alias reboot='systemctl reboot'
 alias upl='pio run --target=upload'
 alias ser='pio serialports monitor -b 9600'
 
+jr() { mkdir -p "./out"; javac -d "./out" "$1.java"; java -cp "./out" "$1" }
+raspberry() {
+	sudo systemctl start avahi-daemon.service
+	if ! ip a show usb0 | grep -q 'inet6'; then
+		sudo dhcpcd usb0
+	fi
+	ssh -6 pi@$(avahi-resolve-host-name raspberrypi.local | awk '{ print $2 }')%usb0
+	sudo systemctl stop avahi-daemon.service
+}
+
 # Git
 alias g="git"
 alias ga="g add"

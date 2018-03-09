@@ -6,91 +6,9 @@ This is a collection of dotfiles and scripts for my i3 setup, previewed below:
 
 ### Software:
 
-All packages that are manually installed via pacman -S, dependencies not included.
+All packages that are manually installed via pacman -S, can be found in the packages file,
+dependencies are not included.
 
-    -- installed during installation
-    base
-    base-devel
-    sudo
-    iw
-    wpa_supplicant
-    dialog
-    -- installed after booting into system
-    git
-    openssh
-    pacaur
-    xorg-server
-    xorg-xinit
-    xorg-xrandr
-    xorg-xbacklight
-    xf86-video-intel
-    i3-gaps
-    rofi
-    feh
-    i3blocks
-    i3lock-color-git (AUR)
-    acpi
-    playerctl
-    alsa-utils
-    sysstat
-    screenfetch
-    scrot
-    imagemagick
-    rxvt-unicode
-    zsh
-    zsh-completions
-    libx264
-    ttf-dejavu
-    ttf-dejavu-sans-mono-powerline-git (AUR)
-    firefox
-    libnotify
-    pulseaudio
-    pulseaudio-alsa
-    pavucontrol
-    thunar
-    thunar-volman
-    gvfs
-    tumbler
-    ffmpegthumbnailer
-    poppler-glib
-    gtk-theme-arc-git (AUR)
-    arc-icon-theme-git (AUR)
-    moka-icon-theme-git (AUR)
-    lxappearance
-    ntfs-3g
-    exfat-utils
-    gedit
-    thunderbird
-    qbittorrent
-    filezilla
-    tlp
-    smartmontools
-    x86_energy_perf_policy
-    intel-ucode
-    mpv
-    youtube-dl
-    rtmpdump
-    xarchiver
-    zip
-    unzip
-    unrar
-    p7zip
-    texlive-most
-    gvfs-mtp
-    gvfs-gphoto2
-    chromium
-    zathura
-    zathura-pdf-mupdf
-    xdotool
-    python2-setuptools
-    python2-click-5.1 (AUR)
-    platformio (AUR)
-    gvim
-    checkbashisms (AUR)
-    xss-lock-git (AUR)
-    inkscape
-    cura
-    wpa_actiond
 
 ### Configuration:
 

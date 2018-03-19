@@ -8,7 +8,6 @@ checkbashisms
 chromium
 clang
 cower
-cura
 dialog
 domoticz-git
 dos2unix
@@ -18,6 +17,7 @@ feh
 ffmpegthumbnailer
 filezilla
 firefox
+fritzing
 gedit
 git
 gnome-themes-standard
@@ -97,8 +97,8 @@ wpa_actiond
 wpa_supplicant
 x86_energy_perf_policy
 xarchiver
+xcape
 xdotool
-xf86-video-intel
 xorg-server
 xorg-xbacklight
 xorg-xinit

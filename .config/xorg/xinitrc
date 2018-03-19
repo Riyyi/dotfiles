@@ -2,6 +2,10 @@
 
 xrdb "$XDG_CONFIG_HOME/xorg/Xresources"
 
+# Qt application scaling
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+export QT_SCREEN_SCALE_FACTORS=2
+
 # GTK application scaling
 export GDK_SCALE=2
 export GDK_DPI_SCALE=0.5
@@ -9,5 +13,16 @@ export GDK_DPI_SCALE=0.5
 # Screensaver
 xset s off
 xset -dpms
+
+## Custom keybinds
+
+# Clear all mappings
+setxkbmap -option ''
+
+# Make CapsLock behave like Ctrl
+setxkbmap -option ctrl:nocaps
+
+# Make short-pressed Ctrl behave like Escape
+xcape -e 'Control_L=Escape'
 
 exec i3

@@ -12,6 +12,9 @@ export EDITOR="vim"
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
+# Qt5
+export QT_QPA_PLATFORMTHEME="qt5ct"
+
 ## ZSH
 
 autoload -Uz promptinit colors vcs_info compinit

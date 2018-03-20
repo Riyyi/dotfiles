@@ -19,10 +19,7 @@ xset -dpms
 # Clear all mappings
 setxkbmap -option ''
 
-# Make CapsLock behave like Ctrl
-setxkbmap -option ctrl:nocaps
-
-# Make short-pressed Ctrl behave like Escape
-xcape -e 'Control_L=Escape'
+# Swap capslock with escape
+setxkbmap -option caps:swapescape
 
 exec i3

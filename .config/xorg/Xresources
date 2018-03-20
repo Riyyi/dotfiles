@@ -65,6 +65,10 @@ URxvt.matcher.rend.0: Uline Bold fg5
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 
+! Scroll 1 line
+URxvt.keysym.Shift-Up: command:\033]720;1\007
+URxvt.keysym.Shift-Down: command:\033]721;1\007
+
 ! Disable Ctrl+Shift feature
 URxvt.iso14755: false
 URxvt.iso14755_52: false

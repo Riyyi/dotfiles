@@ -3,14 +3,15 @@ adobe-source-han-sans-otc-fonts
 alsa-utils
 arandr
 arc-icon-theme-git
+brightnessctl
 capitaine-cursors
 checkbashisms
 chromium
-clang
 cower
 dialog
 domoticz-git
 dos2unix
+doxygen
 efibootmgr
 exfat-utils
 feh
@@ -21,6 +22,7 @@ fritzing
 gedit
 git
 gnome-themes-standard
+graphviz
 gtk-theme-arc-git
 gucharmap
 gvfs
@@ -55,7 +57,6 @@ pavucontrol
 platformio
 playerctl
 poppler-glib
-powertop
 pulseaudio
 pulseaudio-alsa
 python2-click-5.1
@@ -100,7 +101,6 @@ xarchiver
 xcape
 xdotool
 xorg-server
-xorg-xbacklight
 xorg-xinit
 xorg-xinput
 xorg-xprop

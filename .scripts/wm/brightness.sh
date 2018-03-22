@@ -1,18 +1,18 @@
 #!/bin/sh
 
 case $BLOCK_BUTTON in
-	3) xbacklight -set 30 ;; # right click
-	4) xbacklight -inc 10 ;; # scroll up
-	5) xbacklight -dec 10 ;; # scroll down
+	3) brightnessctl -q s 30% ;; # right click
+	4) brightnessctl -q s +10% ;; # scroll up
+	5) brightnessctl -q s 10%- ;; # scroll down
 esac
 
-PERCENTAGE=$(printf  "%.0f" "$(xbacklight)")
+PERCENTAGE=$(brightnessctl | awk '/\([0-9]+%\)/ { print substr($4, 2, length($4) - 3) }')
 
 if [ "$PERCENTAGE" -ge "75" ]; then
 	ICON=""
 elif [ "$PERCENTAGE" -ge "25" ]; then
 	ICON=""
-else 
+else
 	ICON=""
 fi
 

@@ -105,6 +105,10 @@ raspberry() {
 	ssh -6 pi@$(avahi-resolve-host-name raspberrypi.local | awk '{ print $2 }')%usb0
 	sudo systemctl stop avahi-daemon.service
 }
+alias qmake='qmake -makefile ../ && make'
+
+# Programs
+alias mysql-workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench 1>/dev/null 2>&1 &; disown"
 
 # Git
 alias g="git"
@@ -119,7 +123,7 @@ alias gl="g log --graph --abbrev-commit --decorate --format=format:'%C(bold blue
 
 # Laptop
 alias offtouchpad='sudo rmmod i2c_hid'
-alias ontouchpad='sudo modprobe i2c_hid'
+alias ontouchpad='sudo modprobe i2c_hid && $HOME/.scripts/touchscreen.sh 0'
 alias nw="$HOME/.scripts/network.sh"
 
 # Scripts

@@ -17,6 +17,22 @@ $ = command<br>
 <> = variable<br>
 () = action
 
+Boot defaults:
+```
+$ vim /boot/loader/loader.conf
+timeout 3
+default arch
+```
+Boot config:
+```
+<uuid> = $ blkid # from the / 'root' partition
+$ vim /boot/loader/entries/arch.conf
+title Arch Linux
+linux /vmlinuz-linux
+inird /intel-ucode.img
+initrd /initramfs-linux.img
+options root=PARTUUID=<uuid> rw
+```
 Predictable network interface names:
 ```
 $ ln -s /dev/null /etc/systemd/network/99-default.link

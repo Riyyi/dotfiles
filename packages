@@ -7,7 +7,6 @@ brightnessctl
 capitaine-cursors
 checkbashisms
 chromium
-cower
 dialog
 domoticz-git
 dos2unix
@@ -54,7 +53,6 @@ ntfs-3g
 openssh
 os-prober
 p7zip
-pacaur
 pavucontrol
 platformio
 playerctl
@@ -91,6 +89,7 @@ thunar
 thunar-volman
 thunderbird
 tlp
+trizen
 ttf-dejavu
 ttf-dejavu-sans-mono-powerline-git
 tumbler

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ICON="$HOME/Pictures/lock.png"
+ICON="$HOME/.scripts/wm/lock.png"
 
 revert() {
 	xset dpms 0 0 0

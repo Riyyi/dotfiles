@@ -7,6 +7,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 
 # VIM
 export EDITOR="vim"
+export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
 
 # X11
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"

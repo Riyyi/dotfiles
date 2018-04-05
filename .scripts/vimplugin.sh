@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #----
-BASE="/usr/share/vim/vimfiles/pack"
+BASE="$XDG_CONFIG_HOME/vim/pack"
 #----
 DIR="$BASE/plugins"
 LIST="$BASE/list"

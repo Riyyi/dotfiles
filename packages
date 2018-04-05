@@ -21,7 +21,7 @@ firefox
 fritzing
 gedit
 git
-gnome-themes-standard
+gnome-themes-extra
 graphviz
 gtk-theme-arc-git
 gucharmap
@@ -41,7 +41,9 @@ jdk9-openjdk
 krita
 libmtp
 libnotify
+libva-intel-driver
 libx264
+linux-lts
 lxappearance
 mariadb
 moka-icon-theme-git
@@ -98,7 +100,6 @@ wpa_actiond
 wpa_supplicant
 x86_energy_perf_policy
 xarchiver
-xcape
 xdotool
 xorg-server
 xorg-xinit

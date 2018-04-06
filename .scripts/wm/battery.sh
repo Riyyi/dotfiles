@@ -22,11 +22,13 @@ if [ "$(echo $BAT_INFO | awk '{ print $6 }')" = "remaining" ]; then
 		ICON=""
 	elif [ "$CAPACITY" -ge "20" ]; then
 		ICON=""
-	else 
+	else
 		ICON=""
 		COLOR="#DC7A43"
+
+		notify-send -u critical -r 1 "Battery critically low!"
 	fi
-else	
+else
 	ICON=""
 fi
 

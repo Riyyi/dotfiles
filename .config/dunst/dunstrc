@@ -1,0 +1,57 @@
+[global]
+
+### Display ###
+
+geometry = "0x0-20-58"
+horizontal_padding = 15
+idle_threshold = 120
+indicate_hidden = false
+padding = 10
+shrink = false
+
+frame_width = 3
+frame_color = "#676E7D"
+separator_height = 3
+separator_color = frame
+
+### Text ###
+
+alignment = left
+font = Dejavu Sans Mono 8
+format = "<b>%s</b>\n%b %p"
+markup = full
+word_wrap = true
+show_indicators = false
+
+### History ###
+
+sticky_history = false
+history_length = 20
+
+### Misc/Advanced ###
+
+browser = firefox
+dmenu = rofi -dmenu -p dunst
+
+[shortcuts]
+close = ctrl+space
+close_all = ctrl+shift+space
+
+history = ctrl+grave
+context = ctrl+shift+period
+
+[urgency_low]
+background = "#404552"
+foreground = "#FFFFFF"
+timeout = 10
+
+[urgency_normal]
+background = "#404552"
+foreground = "#FFFFFF"
+timeout = 10
+
+[urgency_critical]
+background = "#524040"
+foreground = "#FFFFFF"
+frame_color = "#DC7A43"
+timeout = 0

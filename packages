@@ -11,6 +11,7 @@ dialog
 domoticz-git
 dos2unix
 doxygen
+dunst
 efibootmgr
 exfat-utils
 feh
@@ -39,7 +40,7 @@ iw
 jdk9-openjdk
 krita
 libmtp
-libnotify
+libnotify-id
 libva-intel-driver
 libx264
 linux-lts

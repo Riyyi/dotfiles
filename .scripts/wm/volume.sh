@@ -13,10 +13,11 @@ case $BLOCK_BUTTON in
 	5) amixer -q -D $MIXER sset $INSTANCE ${STEP}- unmute ;; # scroll down, decrease
 esac
 
-INFO=$(amixer -D $MIXER get $INSTANCE)
+INFO="amixer -D $MIXER get $INSTANCE"
 
 volume() {
-	VOLUME=$(echo $INFO | sed -nr 's/.*\[([0-9]*)%\].*/\1/p' | head -n 1)
+	VOLUME="$(${INFO} | \
+		awk '/\[[0-9]+%\]/ { print substr($5, 2, length($5) - 3); exit }')"
 }
 
 symbol() {
@@ -31,13 +32,13 @@ symbol() {
 }
 
 setOutput() {
-	# If sound is not muted	
-	if [ -n "$(echo $INFO | sed -nr 's/(\[on\])/\1/p')" ]; then
+	# If sound is not muted
+	if [ -n "$(${INFO} | sed -nr 's/(\[on\])/\1/p')" ]; then
 		COLOR="#FFF"
 		volume
 		symbol
 		VOLUME="$VOLUME%"
-	else	
+	else
 		COLOR="#676E7D"
 		VOLUME="MUTE"
 		SYMBOL=""

@@ -29,7 +29,7 @@ Boot config:
 $ vim /boot/loader/entries/arch.conf
 title Arch Linux
 linux /vmlinuz-linux
-inird /intel-ucode.img
+initrd /intel-ucode.img
 initrd /initramfs-linux.img
 options root=PARTUUID=<uuid> rw
 ```
@@ -54,20 +54,13 @@ $ passwd <username>
 ```
 Installing pacaur:
 ```sh
-$ gpg --recv-keys <pubkey>
-
-$ git clone cower
-$ cd cower
+$ git clone https://aur.archlinux.org/trizen.git
+$ cd trizen
 $ makepkg -si
 $ cd ..
 
-$ git clone pacaur
-$ cd pacaur
-$ makepkg -si
-$ cd ..
-
-$ pacaur -S cower pacaur
-$ rm -rf cower pacaur
+$ trizen -S trizen
+$ rm -rf trizen
 ```
 Switch shell to zsh:
 ```sh

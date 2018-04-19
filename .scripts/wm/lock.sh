@@ -10,7 +10,11 @@ trap revert HUP INT TERM
 xset +dpms dpms 30 30 30
 
 i3lock -n -i "$ICON" -B 10 -e \
-	--textcolor=00000000 \
+	--verifcolor=00000000 \
+	--wrongcolor=00000000 \
+	--timecolor=00000000 \
+	--datecolor=00000000 \
+	--layoutcolor=00000000 \
 	--insidecolor=00000000 \
 	--insidevercolor=00000000 --insidewrongcolor=00000000 \
 	--ringcolor=00000000 \
@@ -20,7 +24,8 @@ i3lock -n -i "$ICON" -B 10 -e \
 	-k \
 	--timesize=64 --datesize=24 \
 	--timestr="%I:%M %p" --datestr="%A, %B %e" \
-	--timepos="ix-200:iy-250" --datepos="ix-200:iy-210" \
-	--timecolor=FFFFFFC0 --datecolor=FFFFFFC0
+	--timepos="ix:iy-250" --datepos="ix:iy-200" \
+	--timecolor=FFFFFFC0 --datecolor=FFFFFFC0 \
+	--screen 1 \
 
 revert

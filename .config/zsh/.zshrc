@@ -76,8 +76,8 @@ SAVEHIST=10000
 ## Aliases
 
 alias q='exit'
-alias la='ls -laGh --color'
-alias ls='ls --color'
+alias la='ls -laGh --color --group-directories-first'
+alias ls='ls --color --group-directories-first'
 alias rm='rm -i'
 alias vim='vim --servername VIM'
 alias svim='sudoedit'

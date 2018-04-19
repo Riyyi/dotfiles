@@ -2,6 +2,7 @@ acpi
 adobe-source-han-sans-otc-fonts
 alsa-utils
 arandr
+arc-gtk-theme-git
 arc-icon-theme-git
 brightnessctl
 capitaine-cursors
@@ -23,7 +24,6 @@ gedit
 git
 gnome-themes-extra
 graphviz
-gtk-theme-arc-git
 gucharmap
 gvfs
 gvfs-gphoto2
@@ -45,6 +45,7 @@ libva-intel-driver
 libx264
 linux-lts
 lxappearance
+lxsession
 mariadb
 moka-icon-theme-git
 mpv
@@ -67,10 +68,12 @@ qt5ct
 qt5-serialport
 qt5-styleplugins
 qt5-tools
+reflector
 rofi
 rtmpdump
 rxvt-unicode
 scrot
+signal
 sloccount
 smartmontools
 sysstat

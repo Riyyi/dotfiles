@@ -52,7 +52,7 @@ Add user:
 $ useradd -m -G wheel -s /bin/bash <username>
 $ passwd <username>
 ```
-Installing pacaur:
+Installing AUR helper:
 ```sh
 $ git clone https://aur.archlinux.org/trizen.git
 $ cd trizen

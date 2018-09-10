@@ -22,7 +22,7 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 
 ## ZSH
 
-autoload -Uz promptinit colors vcs_info compinit
+autoload -Uz promptinit colors vcs_info compinit history-search-end
 
 # Prompt
 promptinit
@@ -59,11 +59,17 @@ zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' menu select
 
 # Bind keys
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+
 bindkey '\eOd' backward-word
 bindkey '\eOc' forward-word
 bindkey '\e[7~' beginning-of-line
 bindkey '\e[3~' delete-char
 bindkey '\e[8~' end-of-line
+bindkey '\e[A' history-beginning-search-backward-end
+bindkey '\e[B' history-beginning-search-forward-end
+bindkey '^R' history-incremental-pattern-search-backward
 
 # History
 setopt APPEND_HISTORY

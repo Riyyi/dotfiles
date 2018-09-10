@@ -90,6 +90,7 @@ alias remove='sudo pacman -Rns'
 alias update='sudo pacman -Syy; sudo pacman -Syu'
 alias clean='sudo pacman -Rns $(pacman -Qtdq)'
 alias depend='pacman -Qtd'
+alias cache='paccache -r'
 
 alias poweroff='systemctl poweroff'
 alias reboot='systemctl reboot'

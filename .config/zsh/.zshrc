@@ -5,6 +5,10 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 
+# Files
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export PLATFORMIO_HOME_DIR="$XDG_DATA_HOME/platformio"
+
 # VIM
 export EDITOR="vim"
 export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"

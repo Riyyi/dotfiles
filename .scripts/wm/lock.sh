@@ -10,6 +10,8 @@ trap revert HUP INT TERM
 xset +dpms dpms 30 30 30
 
 i3lock -n -i "$ICON" -B 10 -e \
+	--radius=47 \
+	--ring-width=5.0 \
 	--verifcolor=00000000 \
 	--wrongcolor=00000000 \
 	--timecolor=00000000 \

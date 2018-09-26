@@ -43,7 +43,7 @@ $ systemctl enable netctl-auto@wlan0.service
 ```
 Give wheel users sudo permission:
 ```sh
-$ nano /etc/sudoers
+$ vim /etc/sudoers
 (add)Defaults insults
 (uncomment)%wheel ALL=(ALL) ALL
 ```
@@ -68,7 +68,7 @@ $ chsh -s /bin/zsh
 ```
 Pacman colors:
 ```sh
-$ nano /etc/pacman.conf
+$ vim /etc/pacman.conf
 (uncomment)Color
 ```
 Git:
@@ -81,7 +81,7 @@ Tlp:
 $ systemctl enable tlp.service
 $ systemctl enable tlp-sleep.service
 
-$ nano /etc/default/tlp
+$ vim /etc/default/tlp
 (edit)SOUND_POWER_SAVE_ON_BAT=0
 ```
 Trim:
@@ -101,6 +101,11 @@ Give permission to /dev/ttyUSB0 for PlatformIO:
 ```sh
 $ gpasswd -a <user> uucp
 ```
+Give permisson to change brightness for brightnessctl:
+```sh
+$ gpasswd -a <user> input
+$ gpasswd -a <user> video
+```
 Set Firefox as default browser:
 ```sh
 $ xdg-settings set default-web-browser firefox.desktop
@@ -108,6 +113,6 @@ $ xdg-settings set default-web-browser firefox.desktop
 Prevent bricking motherboard by mounting efivars read-only:<br>
 https://wiki.archlinux.org/index.php/Unified_Extensible_Firmware_Interface#Mount_efivarfs
 ```sh
-$ nano /etc/fstab
+$ vim /etc/fstab
 (add)efivarfs    /sys/firmware/efi/efivars    efivarfs    ro,nosuid,nodev,noexec,noatime 0 0
 ```

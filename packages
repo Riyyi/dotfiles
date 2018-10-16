@@ -4,6 +4,7 @@ alsa-utils
 arandr
 arc-gtk-theme
 arc-icon-theme
+breeze-icons-git
 brightnessctl
 capitaine-cursors
 checkbashisms
@@ -11,6 +12,7 @@ chromium
 dialog
 domoticz-git
 dos2unix
+downgrade
 doxygen
 dunst
 efibootmgr
@@ -19,7 +21,9 @@ feh
 ffmpegthumbnailer
 filezilla
 firefox
+frei0r-plugins
 fritzing
+galculator-gtk2
 gedit
 git
 gnome-calculator
@@ -40,11 +44,11 @@ inkscape
 intel-ucode
 iw
 jdk10-openjdk
+kdenlive
 krita
 libmtp
 libnotify-id
 libva-intel-driver
-libva-mesa-driver
 linux-lts
 lxappearance
 lxsession
@@ -105,13 +109,13 @@ ttf-dejavu-sans-mono-powerline-git
 tumbler
 unrar
 unzip
+wmctrl
 wpa_actiond
 wpa_supplicant
 x264
 x86_energy_perf_policy
 xarchiver
 xdotool
-xf86-video-vesa
 xorg-server
 xorg-xinit
 xorg-xinput

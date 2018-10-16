@@ -85,65 +85,58 @@ SAVEHIST=10000
 
 ## Aliases
 
+# General
 alias q='exit'
 alias la='ls -laGh --color --group-directories-first'
 alias ls='ls --color --group-directories-first'
 alias rm='rm -i'
 alias vim='vim --servername VIM'
 alias svim='sudoedit'
-alias zrc='$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc'
-alias lzrc='source $ZDOTDIR/.zshrc'
 alias fuck='sudo $(fc -ln -1)'
 
-alias install='sudo pacman -S'
+# Config
+alias vrc="$EDITOR $XDG_CONFIG_HOME/vim/vimrc"
+alias zrc="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
+alias lzrc="source $ZDOTDIR/.zshrc"
+
+# Pacman
+alias install='sudo pacman -S --needed'
 alias remove='sudo pacman -Rns'
-alias update='sudo pacman -Syy; sudo pacman -Syu'
+alias update='sudo pacman -Syyu'
 alias clean='sudo pacman -Rns $(pacman -Qtdq)'
-alias depend='pacman -Qtd'
-alias cache='paccache -r'
+alias cache='sudo paccache -r'
+alias depend="$HOME/.scripts/alias.sh depend"
 
-alias poweroff='systemctl poweroff'
-alias reboot='systemctl reboot'
-
-alias upl='pio run --target=upload'
+# Programming
+alias raspbian="$HOME/.scripts/alias.sh raspbian"
+alias jdoc="$HOME/.scripts/alias.sh jdoc"
+alias jr="$HOME/.scripts/alias.sh jr"
+alias upl='pio run -t upload'
 alias ser='pio serialports monitor -b 9600'
-
-jr() { mkdir -p "./out"; javac -d "./out" "$1.java"; java -cp "./out" "$1" }
-raspberry() {
-	sudo systemctl start avahi-daemon.service
-	if ! ip a show usb0 | grep -q 'inet6'; then
-		sudo dhcpcd usb0
-	fi
-	ssh -6 pi@$(avahi-resolve-host-name raspberrypi.local | awk '{ print $2 }')%usb0
-	sudo systemctl stop avahi-daemon.service
-}
 alias qmake='qmake -makefile ../ && make'
-
-# Programs
-alias mysql-workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench 1>/dev/null 2>&1 &; disown"
 
 # Git
 alias g="git"
-alias ga="g add"
-alias gs="g status"
-alias gc="g commit"
-alias gp="g pull"
-alias gps="g push"
-alias gd="g diff"
-alias gdc="gd --cached"
-alias gl="g log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
+alias ga="git add"
+alias gs="git status"
+alias gc="git commit"
+alias gp="git pull"
+alias gps="git push"
+alias gd="git diff"
+alias gdc="git diff --cached"
+alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
 # Laptop
 alias offtouchpad='sudo rmmod i2c_hid'
-alias ontouchpad='sudo modprobe i2c_hid && $HOME/.scripts/touchscreen.sh 0'
+alias ontouchpad="sudo modprobe i2c_hid && $HOME/.scripts/touchscreen.sh 0"
 alias nw="$HOME/.scripts/network.sh"
 
 # Scripts
-alias ltx="$HOME/.scripts/latex.sh"
 alias vimplugin="$HOME/.scripts/vimplugin.sh"
 
 # Other
-alias weather="curl -s 'http://wttr.in/Dordrecht?q&n&p' | head -n -3"
+alias mysql-workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench 1>/dev/null 2>&1 &; disown"
+alias weather="curl -s 'http://wttr.in/dordrecht?q&n&p' | head -n -3"
 
 source $ZDOTDIR/.zshrc_extended
 

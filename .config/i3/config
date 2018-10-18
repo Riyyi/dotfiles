@@ -185,10 +185,10 @@ bindsym $mod+Shift+Down     move down
 bindsym $mod+Shift+Up       move up
 bindsym $mod+Shift+Right    move right
 # Resize window
-bindsym $mod+Mod1+Left      resize shrink width 10 px or 10 ppt
-bindsym $mod+Mod1+Down      resize shrink height 10 px or 10 ppt
-bindsym $mod+Mod1+Up        resize grow height 10 px or 10 ppt
-bindsym $mod+Mod1+Right     resize grow width 10 px or 10 ppt
+bindsym $mod+$mod2+Left      resize shrink width 10 px or 10 ppt
+bindsym $mod+$mod2+Down      resize shrink height 10 px or 10 ppt
+bindsym $mod+$mod2+Up        resize grow height 10 px or 10 ppt
+bindsym $mod+$mod2+Right     resize grow width 10 px or 10 ppt
 
 #--- Media key bindings ---#
 

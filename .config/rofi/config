@@ -1,0 +1,14 @@
+rofi.color-enabled:     true
+!                       bg       border   separator
+rofi.color-window:      #404552, #2e3137, #2e3137
+!                       bg	     fg       bgalt    hlbg     hlfg
+rofi.color-normal:  	#404552, #d3dae3, #3f4350, #5294e2, #d3dae3
+!rofi.color-active:  	#
+!rofi.color-urgent:  	#
+
+rofi.font:              DejaVu Sans Mono 12
+rofi.lines:             8
+rofi.width:             30
+rofi.bw:                4
+rofi.separator-style:   solid
+rofi.hide-scrollbar:    true

@@ -84,7 +84,7 @@ bindsym $mod+Shift+space    floating toggle
 #--- Letter key bindings ---#
 
 # Start rofi (program launcher)
-bindsym $mod+d exec rofi -show run -lines 8 -separator-style "solid" -hide-scrollbar -font "DejaVu Sans Mono 12"
+bindsym $mod+d exec rofi -show run
 
 # Split
 bindsym $mod+h split h # horizontal orientation

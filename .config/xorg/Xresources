@@ -72,15 +72,3 @@ URxvt.keysym.Shift-Down: command:\033]721;1\007
 ! Disable Ctrl+Shift feature
 URxvt.iso14755: false
 URxvt.iso14755_52: false
-
-! Rofi
-!			bg       fg       bgalt    hlbg     hlfg
-!rofi.color-normal:	#FFFFFF, #58637B, #F5F5F5, #5294E2, #F3F4F5
-!rofi.color-active:	#
-!rofi.color-urgent:	#	
-
-!			bg       border   seperator
-!rofi.color-window:	#FFFFFF, #434A59, #434A59
-
-rofi.color-normal:	#404552, #D3DAE3, #3F4350, #5294E2, #D3DAE3
-rofi.color-window:	#404552, #2B2E39, #2B2E39

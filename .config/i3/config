@@ -61,7 +61,7 @@ bar {
 		inactive_workspace  $bg-color-inactive  $bg-color-inactive  $text-color-inactive
 		urgent_workspace    $bg-color-urgent    $bg-color-urgent    $text-color
 	}
-	font pango:DejaVu Sans Mono 8
+	font pango:DejaVu Sans Mono, FontAwesome5Free Solid, FontAwesome5Brands 8
 	status_command i3blocks -c $HOME/.config/i3/blocks
 	#strip_workspace_numbers yes
 	tray_output primary
@@ -107,7 +107,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 #--- Workspace bindings ---#
 
 set $ws1  "1 "
-set $ws2  "2 "
+set $ws2  "2 "
 set $ws3  "3 "
 set $ws4  "4 "
 set $ws5  "5"

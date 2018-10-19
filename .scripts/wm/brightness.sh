@@ -13,7 +13,7 @@ if [ "$PERCENTAGE" -ge "75" ]; then
 elif [ "$PERCENTAGE" -ge "25" ]; then
 	ICON=""
 else
-	ICON=""
+	ICON=""
 fi
 
 echo $ICON $PERCENTAGE%

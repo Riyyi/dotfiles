@@ -109,11 +109,11 @@ alias cache='sudo paccache -r'
 alias depend="$HOME/.scripts/alias.sh depend"
 
 # Programming
+alias jdoc="$HOME/.scripts/alias.sh java-doc"
+alias jr="$HOME/.scripts/alias.sh java-run"
 alias raspbian="$HOME/.scripts/alias.sh raspbian"
-alias jdoc="$HOME/.scripts/alias.sh jdoc"
-alias jr="$HOME/.scripts/alias.sh jr"
-alias upl='pio run -t upload'
 alias ser='pio serialports monitor -b 9600'
+alias upl='pio run -t upload'
 alias qmake='qmake -makefile ../ && make'
 
 # Git
@@ -137,6 +137,7 @@ alias offtouchpad='sudo rmmod i2c_hid'
 alias ontouchpad="sudo modprobe i2c_hid && $HOME/.scripts/touchscreen.sh 0"
 
 # Other
+alias man="$HOME/.scripts/alias.sh man"
 alias mysql-workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench 1>/dev/null 2>&1 &; disown"
 alias weather="curl -s 'http://wttr.in/dordrecht?q&n&p' | head -n -3"
 

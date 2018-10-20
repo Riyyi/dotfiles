@@ -55,6 +55,11 @@ URxvt*letterSpace: -1
 URxvt*scrollBar: false
 URxvt*saveLines: 2000
 
+! Terminal text colors
+URxvt.colorIT: #8c9440
+URxvt.colorBD: #c5c8c6
+URxvt.colorUL: #81a2be
+
 ! Extensions
 URxvt.perl-ext-common: default,matcher,eval
 URxvt.url-launcher: /usr/bin/xdg-open

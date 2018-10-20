@@ -14,39 +14,40 @@ FILES=$(find . \( -path ./.git -o \
 		  -path ./screenshot.png \) -prune -o -type f -print)
 
 if [ "$1" == "help" ] || [ "$1" == "" ]; then
-	BOLD=$(tput bold)
-	NORMAL=$(tput sgr0)
+	B=$(tput bold)
+	N=$(tput sgr0)
 
-	echo "${BOLD}NAME${NORMAL}"
-	echo "        dotfiles - file copy script for this repository"
-	echo ""
-	echo "${BOLD}SYNOPSIS${NORMAL}"
-       	echo "        ./dotfiles.sh <command> [<args>]"
-	echo ""
-	echo "${BOLD}COMMANDS${NORMAL}"
-	echo "        list"
-	echo "                Prints all the dotfiles added to this directory."
-	echo ""
-	echo "        get <filepath>"
-	echo "                Add file to this directory."
-	echo ""
-	echo "        pull"
-	echo "                For each file in this directory, copy that file \
-on the system to this directory."
-	echo ""
-	echo "        push"
-	echo "                For each file in this directory, copy that file \
-to its location on the system."
-	echo ""
-	echo "        package [list]"
-	echo "                List all the packages installed on the system."
-	echo ""
-	echo "        package store"
-	echo "                Store the list of all the installed packages on the \
-system."
-	echo ""
-	echo "        package install"
-	echo "                Install all the core packages of the list."
+	cat << EOF
+${B}NAME${N}
+	dotfiles - file copy script for the dotfiles repository
+
+${B}SYNOPSIS${N}
+	./dotfiles.sh <command> [<args>]
+
+${B}COMMANDS${N}
+	${B}list${N}
+		Print all files added to the dotfiles directory.
+
+	${B}get <filepath>${N}
+		Add file to the dotfiles directory.
+
+	${B}pull${N}
+		For each file in the dotfiles directory, copy that file on the system to
+		the dotfiles directory.
+
+	${B}push${N}
+		For each file in the dotfiles directory, copy that file to its location
+		on the system.
+
+	${B}packages [list]${N}
+		List all the packages installed on the system.
+
+	${B}packages store${N}
+		Store the list of all the installed packages on the system.
+
+	${B}packages install${N}
+		Install all the core packages of the list.
+EOF
 
 elif [ "$1" == "list" ]; then
 	for f in $FILES; do
@@ -91,7 +92,7 @@ elif [ "$1" == "pull" ] || [ "$1" == "push" ]; then
 		fi
 	done
 
-elif [ "$1" == "package" ]; then
+elif [ "$1" == "packages" ]; then
 	PACKAGE_LIST=$(comm -23 <(pacman -Qeq | sort) <(pacman -Qgq base base-devel | sort))
 
 	if [  "$2" == "list" ] || [ "$2" == "" ]; then

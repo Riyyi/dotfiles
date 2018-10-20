@@ -9,33 +9,33 @@ START="$DIR/start"
 OPT="$DIR/opt"
 
 help() {
-	BOLD=$(tput bold)
-	NORMAL=$(tput sgr0)
+	B=$(tput bold)
+	N=$(tput sgr0)
 
-	echo "${BOLD}NAME${NORMAL}"
-	echo "        vimplugin - vim plugin manager"
-	echo ""
-	echo "${BOLD}SYNOPSIS${NORMAL}"
-	echo "        ./vimplugin.sh <command> [<arg1> <arg2>]"
-	echo ""
-	echo "${BOLD}COMMANDS${NORMAL}"
-	echo "        init"
-	echo "                Creates all the required directories/files."
-	echo ""
-	echo "        install <url> [\"start\"/\"opt\"]"
-	echo "                Install a new plugin, <url> need to be a valid \
-GitHub URL,
-                start/opt to install the plugin in the start/opt directory \
-(default: start)."
-	echo ""
-	echo "        list <number>"
-	echo "                Prints all the installed plugins, <number> prints \
-just the plugin in that position."
-	echo "        remove"
-	echo "                Remove plugin, script will prompt a selection menu."
-	echo "        update"
-	echo "                Installs/updates all plugins from the config file."
-	echo ""
+	cat << EOF
+${B}NAME${N}
+	vimplugin - vim plugin manager
+
+${B}SYNOPSIS${N}
+	./vimplugin.sh <command> [<arg1> <arg2>]
+
+${B}COMMANDS${N}
+	${B}init${N}
+		Creates all the required directories/files.
+
+	${B}install <url> ["start"/"opt"]${N}
+		Install a new plugin, <url> need to be a valid GitHub URL,
+		start/opt to install the plugin in the start/opt directory
+		(default: start).
+
+	${B}list <number>${N}
+		Prints all the installed plugins,
+		<number> prints just the plugin in that position.
+	${B}remove${N}
+		Remove plugin, script will prompt a selection menu.
+	${B}update${N}
+		Installs/updates all plugins from the config file.
+EOF
 }
 
 init() {
@@ -146,6 +146,6 @@ remove() {
 if type "$1" 2> /dev/null | grep -q "function"; then
 	"$@"
 else
-	echo "script: command not found: $1"
+	help
 fi
 

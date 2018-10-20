@@ -126,13 +126,14 @@ alias gd="git diff"
 alias gdc="git diff --cached"
 alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
+# Scripts
+alias mc="$HOME/.scripts/mediacontrol.sh"
+alias nw="$HOME/.scripts/network.sh"
+alias vp="$HOME/.scripts/vimplugin.sh"
+
 # Laptop
 alias offtouchpad='sudo rmmod i2c_hid'
 alias ontouchpad="sudo modprobe i2c_hid && $HOME/.scripts/touchscreen.sh 0"
-alias nw="$HOME/.scripts/network.sh"
-
-# Scripts
-alias vimplugin="$HOME/.scripts/vimplugin.sh"
 
 # Other
 alias mysql-workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench 1>/dev/null 2>&1 &; disown"

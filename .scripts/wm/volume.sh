@@ -1,26 +1,22 @@
 #!/bin/sh
 
-# default (ALSA), pulse, jack
-MIXER="pulse"
-INSTANCE=${BLOCK_INSTANCE:-"Master"}
-STEP="5%"
+MEDIACONTROL="$HOME/.scripts/mediacontrol.sh"
 
 case $BLOCK_BUTTON in
-	1) pavucontrol ;; # left click, start sound settings
-	2) amixer -q -D $MIXER sset $INSTANCE 0 unmute ;; # scroll click, set 0
-	3) amixer -q -D $MIXER sset $INSTANCE toggle ;; # right click, mute/unmute
-	4) amixer -q -D $MIXER sset $INSTANCE ${STEP}+ unmute ;; # scroll up, increase
-	5) amixer -q -D $MIXER sset $INSTANCE ${STEP}- unmute ;; # scroll down, decrease
+	1) pavucontrol ;;           # Left click
+	2) $MEDIACONTROL set 0 ;;   # Scroll click
+	3) $MEDIACONTROL toggle ;;  # Right click
+	4) $MEDIACONTROL up 5 ;;    # Scroll up
+	5) $MEDIACONTROL down 5 ;;  # Scroll down
 esac
 
-INFO="amixer -D $MIXER get $INSTANCE"
-
-volume() {
-	VOLUME="$(${INFO} | \
-		awk '/\[[0-9]+%\]/ { print substr($5, 2, length($5) - 3); exit }')"
-}
-
-symbol() {
+if [ "$($MEDIACONTROL getmute)" == "0" ]; then
+	COLOR="#676E7D"
+	VOLUME="MUTE"
+	SYMBOL=""
+else
+	COLOR="#FFF"
+	VOLUME="$($MEDIACONTROL getvolume)%"
 
 	if [ "$VOLUME" -ge "50" ]; then
 		SYMBOL=""
@@ -29,23 +25,6 @@ symbol() {
 	else
 		SYMBOL=""
 	fi
-}
-
-setOutput() {
-	# If sound is not muted
-	if [ -n "$(${INFO} | sed -nr 's/(\[on\])/\1/p')" ]; then
-		COLOR="#FFF"
-		volume
-		symbol
-		VOLUME="$VOLUME%"
-	else
-		COLOR="#676E7D"
-		VOLUME="MUTE"
-		SYMBOL=""
-	fi
-}
-
-setOutput
+fi
 
 echo "<span color='$COLOR'>$SYMBOL</span> $VOLUME"
-

@@ -1,14 +1,16 @@
 ##--- General ---##
 
 # Basic definitions
-set $mod  Mod4
-set $mod2 Mod1
+for_window [class="^.*"] border pixel 2
 smart_gaps on
 gaps inner 10
 gaps outer 0
 hide_edge_borders both
-for_window [class="^.*"] border pixel 2
-# Use Mouse+$mod to drag floating windows to their wanted position
+set $mod  Mod4
+set $mod2 Mod1
+set $mc $HOME/.scripts/mediacontrol.sh
+
+# Use Mouse+$mod to drag floating windows
 floating_modifier $mod
 
 # Application startup
@@ -198,6 +200,6 @@ bindsym --release Shift+Print   exec scrot -s -e "mv \$f $HOME/Pictures/screen_c
 bindsym --release $mod+Print    exec scrot -u -e "mv \$f $HOME/Pictures/screen_captures/" # Focused window
 
 # Volume
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse sset Master 5%+ unmute && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse sset Master 5%- unmute && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioMute        exec --no-startup-id amixer -q -D pulse sset Master     toggle && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume exec --no-startup-id $mc up 5
+bindsym XF86AudioLowerVolume exec --no-startup-id $mc down 5
+bindsym XF86AudioMute        exec --no-startup-id $mc toggle

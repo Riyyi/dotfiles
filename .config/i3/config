@@ -87,9 +87,9 @@ bindsym $mod+Shift+space    floating toggle
 # Start rofi (program launcher)
 bindsym $mod+d exec rofi -show run
 
-# Split
-bindsym $mod+h split h # horizontal orientation
-bindsym $mod+v split v # vertical orientation
+# Split horizontal / vertical
+bindsym $mod+h split h
+bindsym $mod+v split v
 
 # Container
 bindsym $mod+f fullscreen toggle
@@ -100,10 +100,12 @@ bindsym $mod+e layout toggle split
 # Lock
 bindsym $mod+$mod2+l exec $HOME/.scripts/wm/lock.sh
 
-# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# Restart i3 inplace
 bindsym $mod+Shift+r restart
-# Exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# Exit i3
+bindsym $mod+Shift+e exec --no-startup-id prompt.sh "Logout and exit i3?" "i3-msg exit"
+bindsym $mod+Shift+s exec --no-startup-id prompt.sh "Shutdown computer?" "poweroff"
+bindsym $mod+Shift+w exec --no-startup-id prompt.sh "Reboot computer?" "reboot"
 
 #--- Workspace bindings ---#
 
@@ -170,9 +172,6 @@ for_window [class="QtBank"] floating enable
 bindsym $mod+F3 exec brightnessctl -q s +10% && pkill -RTMIN+2 i3blocks
 bindsym $mod+F2 exec brightnessctl -q s 10%- && pkill -RTMIN+2 i3blocks
 
-# Touchscreen toggle
-bindsym $mod+F7 exec touchscreen.sh
-
 #--- Arrow key bindings ---#
 
 # Change focus
@@ -202,3 +201,6 @@ bindsym --release $mod+Print    exec scrot -u -e "mv \$f $HOME/Pictures/screen_c
 bindsym XF86AudioRaiseVolume exec --no-startup-id mediacontrol.sh up 5
 bindsym XF86AudioLowerVolume exec --no-startup-id mediacontrol.sh down 5
 bindsym XF86AudioMute        exec --no-startup-id mediacontrol.sh toggle
+
+# Touchscreen toggle
+bindsym XF86HomePage         exec --no-startup-id touchscreen.sh

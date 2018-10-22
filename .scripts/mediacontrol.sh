@@ -34,7 +34,7 @@ ${B}COMMANDS${N}
 
 	${B}m*, mute${N}
 
-	${B}u*, unmute${N}
+	${B}n*, notmute${N}
 
 	${B}getv*, getvolume${N}
 
@@ -48,7 +48,7 @@ case "$1" in
 	s*)     pulsemixer --set-volume "$NUM" ; $RELOAD ;;
 	t*)     pulsemixer --toggle-mute ; $RELOAD ;;
 	m*)     pulsemixer --mute ; $RELOAD ;;
-	u*)     pulsemixer --unmute ; $RELOAD ;;
+	n*)     pulsemixer --unmute ; $RELOAD ;;
 	getv*)  pulsemixer --get-volume | awk '{print $1}' ;;
 	getm*)  pulsemixer --get-mute ;;
 	*) help ;;

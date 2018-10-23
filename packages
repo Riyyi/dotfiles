@@ -69,6 +69,7 @@ playerctl
 poppler-glib
 pulseaudio
 pulseaudio-alsa
+pulsemixer
 pwgen
 python2-click-5.1
 python2-setuptools

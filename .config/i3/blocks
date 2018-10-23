@@ -24,52 +24,30 @@
 #
 # The top properties below are applied to every block, but can be overridden.
 # Each block command defaults to the script name to avoid boilerplate.
-command=/usr/lib/i3blocks/$BLOCK_NAME
-separator_block_width=15
+command=$HOME/.scripts/wm/$BLOCK_NAME
+separator_block_width=20
 markup=none
+# separator=false
+align=center
 
-# Volume indicator
-#
-[volume]
-command=$HOME/.scripts/wm/volume.sh
+[volume.sh]
 markup=pango
-instance=Master
 interval=once
 signal=1
 
-# Brightness indicator
-#
-[brightness]
-command=$HOME/.scripts/wm/brightness.sh
+[brightness.sh]
 interval=once
 signal=2
 
-# Network interface monitoring
-#
-# If the instance is not specified, use the interface used for default route.
-# The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
-[wifi]
-command=$HOME/.scripts/wm/wifi.sh
-#instance=wlp3s0
+[wifi.sh]
 interval=10
-separator=true
 
-[iface]
-command=$HOME/.scripts/wm/iface.sh
-#instance=wlan0
-#color=#00FF00
+[iface.sh]
 interval=10
-separator=true
 
-# Battery indicator
-#
-# The battery instance defaults to 0.
-[battery]
-command=$HOME/.scripts/wm/battery.sh
+[battery.sh]
 interval=30
 
-# Date Time
-#
 [time]
 label=
 command=date '+%I:%M %p '

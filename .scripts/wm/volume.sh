@@ -18,9 +18,9 @@ else
 	COLOR="#FFF"
 	VOLUME="$($MEDIACONTROL getvolume)%"
 
-	if [ "$VOLUME" -ge "50" ]; then
+	if [ "${VOLUME%?}" -ge "50" ]; then
 		SYMBOL=""
-	elif [ "$VOLUME" -ge "25" ]; then
+	elif [ "${VOLUME%?}" -ge "25" ]; then
 		SYMBOL=""
 	else
 		SYMBOL=""

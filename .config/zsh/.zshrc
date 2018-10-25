@@ -10,6 +10,9 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export PLATFORMIO_HOME_DIR="$XDG_DATA_HOME/platformio"
 
+# Qt5
+export QT_QPA_PLATFORMTHEME="qt5ct"
+
 # VIM
 export EDITOR="vim"
 export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
@@ -18,8 +21,8 @@ export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
-# Qt5
-export QT_QPA_PLATFORMTHEME="qt5ct"
+# General
+export LESSHISTFILE=-
 
 ## ZSH
 

@@ -1,41 +1,48 @@
-/* Hide Firefox top tab bar */
-#TabsToolbar {
-	visibility: hidden !important;
-}
+@-moz-document url(chrome://browser/content/browser.xul) {
+	/* Hide Firefox top tab bar */
+	#TabsToolbar {
+		visibility: hidden !important;
+	}
 
-/*  Move navigation bar up to fill tab bar space */
-#nav-bar {
-	border-width: 1px !important;
-	border-style: solid !important;
-	border-color: transparent !important;
+	/*  Move navigation bar up to fill tab bar space */
+	#nav-bar {
+		border-width: 1px !important;
+		border-style: solid !important;
+		border-color: transparent !important;
 
-	margin-bottom: -1px !important;
-	margin-top: -29px !important;
-	margin-right: 0px !important;
-	margin-left: 0px !important;
-}
+		margin-bottom: -1px !important;
+		margin-top: -29px !important;
+		margin-right: 0px !important;
+		margin-left: 0px !important;
+	}
 
-/* Navigation bar color */
-#nav-bar {
-	background: #2b2e39 !important;
-}
+	/* Navigation bar color */
+	#nav-bar {
+		background: #2b2e39 !important;
+	}
 
-/* Url bar color */
-#urlbar {
-	background: #404552 !important;
-}
+	/* Url bar color */
+	#urlbar {
+		background: #404552 !important;
+	}
 
-/* Url bar autocomplete menu color*/
-#PopupAutoCompleteRichResult {
-	background: #2b2e39 !important;
-}
+	/* Url bar autocomplete menu color*/
+	#PopupAutoCompleteRichResult {
+		background: #2b2e39 !important;
+	}
 
-/* Hide TreeStyleTab header */
-#sidebar-header {
-	display: none;
-}
+	/* Hide TreeStyleTab header */
+	#sidebar-header {
+		display: none;
+	}
 
-/* Hide TreeStyleTab splitter */
-#sidebar-splitter {
-	display: none;
+	/* Hide TreeStyleTab splitter */
+	#sidebar-splitter {
+		display: none;
+	}
+
+	/* Https lock icon */
+	#connection-icon {
+		fill: #bac1c9 !important;
+	}
 }

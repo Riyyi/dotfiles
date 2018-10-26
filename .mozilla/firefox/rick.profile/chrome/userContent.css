@@ -1,0 +1,16 @@
+@-moz-document domain("boards.4chan.org") {
+	/* Hide unnecessary elements */
+	#bannerCnt { display: none; }
+	form[name=post] { display: none; }
+	hr.aboveMidAd { display: none; }
+	hr.abovePostForm { display: none; }
+	#toggleMsgBtn { display: none; }
+	#globalMessage { display: none; }
+	.middlead.center { display: none !important; }
+	.adg-rects.desktop { display: none; }
+	#op.desktop { display: none; }
+	#absbot { display: none; }
+	
+	/* Make posts the full width */
+	.postContainer.replyContainer .post.reply { width: 100% }
+}

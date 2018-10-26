@@ -16,5 +16,6 @@ else
 	ICON=""
 fi
 
-echo $ICON $PERCENTAGE%
-
+echo "$ICON $PERCENTAGE%"
+echo "$ICON $PERCENTAGE%"
+echo "$COLOR15"

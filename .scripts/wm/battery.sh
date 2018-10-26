@@ -12,7 +12,7 @@ else
 	TIME=""
 fi
 
-COLOR="#FFFFFF"
+COLOR="$COLOR15"
 if [ "$(echo $BAT_INFO | awk '{ print $6 }')" = "remaining" ]; then
 	if [ "$CAPACITY" -ge "80" ]; then
 		ICON=""
@@ -24,7 +24,7 @@ if [ "$(echo $BAT_INFO | awk '{ print $6 }')" = "remaining" ]; then
 		ICON=""
 	else
 		ICON=""
-		COLOR="#DC7A43"
+		COLOR="$COLOR9"
 
 		notify-send -u critical -r 1 "Battery critically low!"
 	fi

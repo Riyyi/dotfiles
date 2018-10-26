@@ -7,7 +7,7 @@ echo ""
 if [ ! -d /sys/class/net/${WIRED} ] ||
 	[ "$(cat /sys/class/net/$WIRED/operstate)" = 'down' ] ||
 	[ "$(ip a | grep $WIRED | awk '/inet / {print $2}')" = "" ]; then
-	echo "#676E7D"
+	echo "$COLOR7"
 else
-	echo "#FFFFFF"
+	echo "$COLOR15"
 fi

@@ -2,6 +2,7 @@
 
 xrdb "$XDG_CONFIG_HOME/xorg/Xresources"
 
+# Setup display
 xrandr --newmode "3000x2000_48.00" 405.25 3000 3232 3552 4104 2000 2003 2013 2058 -hsync +vsync
 xrandr --addmode eDP-1 3000x2000_48.00
 xrandr --output eDP-1 --mode 3000x2000_48.00 --primary
@@ -29,5 +30,9 @@ setxkbmap -option ''
 
 # Swap capslock with escape
 setxkbmap -option caps:swapescape
+
+# Export Xresources colors
+COLORS="$(xrdb -query | grep '^*.color' | sort -V | awk '{print $NF}')"
+$(echo "$COLORS" | awk '$0 = "export COLOR" NR - 1 "=" $0')
 
 exec i3

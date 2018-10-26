@@ -11,11 +11,11 @@ case $BLOCK_BUTTON in
 esac
 
 if [ "$($MEDIACONTROL getmute)" == "0" ]; then
-	COLOR="#676E7D"
+	COLOR="$COLOR7"
 	VOLUME="MUTE"
 	SYMBOL=""
 else
-	COLOR="#FFF"
+	COLOR="$COLOR15"
 	VOLUME="$($MEDIACONTROL getvolume)%"
 
 	if [ "${VOLUME%?}" -ge "50" ]; then
@@ -27,4 +27,4 @@ else
 	fi
 fi
 
-echo "<span color='$COLOR'>$SYMBOL</span> $VOLUME"
+echo "<span color='$COLOR'>$SYMBOL $VOLUME</span>"

@@ -27,7 +27,7 @@
 command=$HOME/.scripts/wm/$BLOCK_NAME
 separator_block_width=20
 markup=none
-# separator=false
+separator=false
 align=center
 
 [volume.sh]

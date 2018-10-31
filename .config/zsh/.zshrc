@@ -40,12 +40,14 @@ precmd() {
 	print -Pn "\e]0;%n@%m %~\a"
 }
 
+# ZSH parameters
 USR_HOST="%F{cyan}%n%f@%F{cyan}%m%f"
 DIRECTORY="%F{green}%~%f"
 ARROW="%(?..%F{red})➤%f"
 PROMPT='╭─${USR_HOST} ${DIRECTORY} ${vcs_info_msg_0_}
 ╰─${ARROW} '
 RPROMPT='%t'
+TIMEFMT=$'\nreal\t%*Es\nuser\t%*Us\nsys\t%*Ss'
 
 # Git
 zstyle ':vcs_info:*' enable git

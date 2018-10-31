@@ -24,6 +24,10 @@ export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 # General
 export LESSHISTFILE=-
 
+## Terminal
+
+stty -ixon
+
 ## ZSH
 
 autoload -Uz promptinit colors vcs_info compinit history-search-end
@@ -95,6 +99,8 @@ SAVEHIST=10000
 alias q='exit'
 alias la='ls -laGh --color --group-directories-first'
 alias ls='ls --color --group-directories-first'
+alias grep='grep --color'
+alias md='mkdir -p'
 alias rm='rm -i'
 alias vim='vim --servername VIM'
 alias svim='sudoedit'

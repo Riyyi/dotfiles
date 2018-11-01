@@ -13,7 +13,7 @@ set $mod2 Mod1
 floating_modifier $mod
 
 # Application startup
-exec_always --no-startup-id feh --bg-fill --no-fehbg $HOME/Pictures/wallpaper.jpg
+exec_always --no-startup-id feh --bg-fill --no-fehbg "$HOME/Pictures/wallpaper.jpg"
 exec --no-startup-id firefox
 exec --no-startup-id urxvt
 exec --no-startup-id thunar --daemon
@@ -61,6 +61,7 @@ bar {
 		#                   border             background         text
 		focused_workspace   $bgcolor           $bgcolor           $white
 		inactive_workspace  $bgcolor-inactive  $bgcolor-inactive  $darkwhite
+		active_workspace    $bgcolor-inactive  $bgcolor-inactive  $darkwhite
 		urgent_workspace    $bgcolor-urgent    $bgcolor-urgent    $white
 	}
 	font pango:DejaVu Sans, FontAwesome5Free Solid, FontAwesome5Brands 8

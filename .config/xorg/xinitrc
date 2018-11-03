@@ -31,8 +31,12 @@ setxkbmap -option ''
 # Swap capslock with escape
 setxkbmap -option caps:swapescape
 
-# Export Xresources colors
-COLORS="$(xrdb -query | grep '^*.color' | sort -V | awk '{print $NF}')"
-$(echo "$COLORS" | awk '$0 = "export COLOR" NR - 1 "=" $0')
+# Export terminal colors
+$(xrdb -query | awk '/^*.color/{print "export " toupper(substr($1, 3, length($1) - 3)) "=" $2}')
+# Example:  *.color0: #282a2e         ->  export COLOR0=#282a2e
+
+# Export wm colors
+$(xrdb -query | awk '/Wmcolor./{print "export " toupper(substr($1, 9, length($1) - 9)) "=" $2}')
+# Example:  Wmcolor.bgcolor: #404552  ->  export BGCOLOR=#404552
 
 exec i3

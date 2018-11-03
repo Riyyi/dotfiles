@@ -21,11 +21,11 @@ exec --no-startup-id thunar
 exec --no-startup-id xss-lock -- $HOME/.scripts/wm/lock.sh &
 
 # Colors
-set $bgcolor            #404552
-set $bgcolor-inactive   #2b2e39
-set $bgcolor-urgent     #dc7a43
-set $text-color         #ffffff
-set $textcolor-inactive #676e7d
+set_from_resource $bgcolor          Wmcolor.bgcolor           #000000
+set_from_resource $bgcolor_inactive Wmcolor.bgcolor_Inactive  #000000
+set_from_resource $bgcolor_urgent   Wmcolor.bgcolor_Urgent    #000000
+set_from_resource $fgcolor          Wmcolor.fgcolor           #000000
+set_from_resource $fgcolor_inactive Wmcolor.fgcolor_Inactive  #000000
 
 # Xresources colors
 set_from_resource $darkblack    color0  #000000
@@ -47,24 +47,25 @@ set_from_resource $white        color15 #000000
 set $transparent                #00000000
 
 # Window colors
-#                       border                 background             text        indicator
-client.focused          $textcolor-inactive    $textcolor-inactive    $white      $darkgreen
-client.unfocused        $bgcolor-inactive      $bgcolor-inactive      $darkwhite  $darkgreen
-client.focused_inactive $bgcolor-inactive      $bgcolor-inactive      $darkwhite  $darkgreen
-client.urgent           $bgcolor-urgent        $bgcolor-urgent        $white      $darkgreen
+#                       border              background          text        indicator
+client.focused          $fgcolor_inactive   $fgcolor_inactive   $white      $darkgreen
+client.unfocused        $bgcolor_inactive   $bgcolor_inactive   $darkwhite  $darkgreen
+client.focused_inactive $bgcolor_inactive   $bgcolor_inactive   $darkwhite  $darkgreen
+client.urgent           $bgcolor_urgent     $bgcolor_urgent     $white      $darkgreen
 
 bar {
 	colors {
-		background          $bgcolor-inactive
+		background          $bgcolor_inactive
 		separator           $darkwhite
 		statusline          $white
 		#                   border             background         text
 		focused_workspace   $bgcolor           $bgcolor           $white
-		inactive_workspace  $bgcolor-inactive  $bgcolor-inactive  $darkwhite
-		active_workspace    $bgcolor-inactive  $bgcolor-inactive  $darkwhite
-		urgent_workspace    $bgcolor-urgent    $bgcolor-urgent    $white
+		inactive_workspace  $bgcolor_inactive  $bgcolor_inactive  $darkwhite
+		active_workspace    $bgcolor_inactive  $bgcolor_inactive  $darkwhite
+		urgent_workspace    $bgcolor_urgent    $bgcolor_urgent    $white
 	}
 	font pango:DejaVu Sans, FontAwesome5Free Solid, FontAwesome5Brands 8
+	# position top
 	status_command i3blocks -c $HOME/.config/i3/blocks
 	#strip_workspace_numbers yes
 	tray_output primary

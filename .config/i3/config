@@ -14,7 +14,7 @@ floating_modifier $mod
 
 # Application startup
 exec_always --no-startup-id feh --bg-fill --no-fehbg "$HOME/Pictures/wallpaper.jpg"
-exec --no-startup-id firefox
+exec --no-startup-id qutebrowser
 exec --no-startup-id urxvt
 exec --no-startup-id thunar --daemon
 exec --no-startup-id thunar
@@ -161,6 +161,7 @@ bindsym $mod+Control+Right move workspace to output right
 # Get window name
 # xprop -> WM_CLASS
 assign [class="Firefox"] $ws1
+assign [class="qutebrowser"] $ws1
 assign [class="URxvt"] $ws3
 assign [class="Thunar"] $ws4
 assign [class="krita"] $ws5

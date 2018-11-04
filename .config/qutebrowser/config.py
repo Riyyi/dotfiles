@@ -54,6 +54,7 @@ c.content.host_blocking.lists = [
 ]
 # c.content.host_blocking.whitelist = ['piwik.org']
 c.fonts.monospace = '"DejaVu Sans", "xos4 Terminus", Terminus, Monospace, Monaco, "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, "Liberation Mono", monospace, Fixed, Consolas, Terminal'
+c.scrolling.bar = 'always'
 c.session.lazy_restore = True
 c.tabs.indicator.width = 0
 c.tabs.padding = {'top': 3, 'bottom': 3, 'left': 5, 'right': 5}

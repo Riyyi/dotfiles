@@ -65,7 +65,7 @@ bar {
 		urgent_workspace    $bgcolor_urgent    $bgcolor_urgent    $white
 	}
 	font pango:DejaVu Sans, FontAwesome5Free Solid, FontAwesome5Brands 8
-	# position top
+	position top
 	status_command i3blocks -c $HOME/.config/i3/blocks
 	#strip_workspace_numbers yes
 	tray_output primary

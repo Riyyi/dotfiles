@@ -50,12 +50,16 @@ c.content.headers.custom = {"accept": "text/html,application/xhtml+xml,applicati
 c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'
 c.content.host_blocking.lists = [
     'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts',
-    'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext&useip=0.0.0.0',
+    'https://www.malwaredomainlist.com/hostslist/hosts.txt',
+    'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext&useip=0.0.0.0'
 ]
 # c.content.host_blocking.whitelist = ['piwik.org']
 c.fonts.monospace = '"DejaVu Sans", "xos4 Terminus", Terminus, Monospace, Monaco, "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, "Liberation Mono", monospace, Fixed, Consolas, Terminal'
+# c.hints.chars = 'asdfghjkl'
 c.scrolling.bar = 'always'
 c.session.lazy_restore = True
+c.statusbar.padding = {'top': 1, 'bottom': 3, 'left': 5, 'right': 5}
+c.statusbar.position = 'top'
 c.tabs.background = True
 c.tabs.indicator.width = 0
 c.tabs.last_close = 'blank'
@@ -65,10 +69,13 @@ c.tabs.title.format = '{index}: {audio}{title}'
 c.tabs.width = 240
 c.url.default_page = 'about:blank'
 c.url.searchengines = {
-    'DEFAULT': 'https://www.google.com/search?q={}',
-    "a": "https://www.archlinux.org/packages/?q={}",
-    "au": "https://aur.archlinux.org/packages?K={}",
-    "aw": "https://wiki.archlinux.org/?search={}",
+    'DEFAULT': 'https://google.com/search?q={}',
+    '4': 'https://4chan.org/{}',
+    'a': 'https://archlinux.org/packages/?q={}',
+    'au': 'https://aur.archlinux.org/packages?K={}',
+    'aw': 'https://wiki.archlinux.org/?search={}',
+    'i': 'https://google.com/search?tbm=isch&q={}',
+    'yt': 'https://youtube.com/results?search_query={}',
 }
 
 # Colors

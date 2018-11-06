@@ -54,6 +54,7 @@ c.content.host_blocking.lists = [
     'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext&useip=0.0.0.0'
 ]
 # c.content.host_blocking.whitelist = ['piwik.org']
+c.content.pdfjs = True
 c.fonts.monospace = '"DejaVu Sans", "xos4 Terminus", Terminus, Monospace, Monaco, "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, "Liberation Mono", monospace, Fixed, Consolas, Terminal'
 # c.hints.chars = 'asdfghjkl'
 c.scrolling.bar = 'always'

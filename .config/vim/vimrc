@@ -75,8 +75,12 @@ let g:NERDSpaceDelims=1
 let g:NERDTrimTrailingWhitespace=1
 
 " NERD Tree
-let g:NERDTreeMinimalUI=1
+let g:NERDTreeIgnore = ['\.git']
 let g:NERDTreeAutoDeleteBuffer=1
+let g:NERDTreeDirArrowExpandable = ' '
+" let g:NERDTreeDirArrowCollapsible = ' '
+let g:NERDTreeMinimalUI=1
+let g:NERDTreeShowHidden=1
 
 " vimtex
 let g:tex_flavor = 'latex'

@@ -5,6 +5,7 @@ setlocal textwidth=80
 
 " Document structuring
 nnoremap ;be i\begin{(<>)}<Return><Tab><Return>\end{(<>)}<Esc>kk^
+nnoremap ;s i\section{}<Return>(<>)<Esc>k$i
 
 " Text formatting
 inoremap ;b \textbf{}(<>)<Esc>T{i

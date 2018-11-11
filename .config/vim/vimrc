@@ -93,10 +93,14 @@ let g:vimtex_view_method = 'zathura'
 "" Autocommands
 
 " Remove trailing whitespace in the following filetypes
-autocmd FileType c,cpp,ino,java,py,php,sh,tex autocmd BufWritePre <buffer> %s/\s\+$//e
+augroup TrailingWhitespace
+	autocmd! FileType c,cpp,ino,java,py,php,sh,tex autocmd BufWritePre <buffer> %s/\s\+$//e
+augroup END
 
 " Close vim if only window is NERD Tree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup CloseVimTree
+	autocmd! bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
 
 "" Functions
 

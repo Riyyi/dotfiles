@@ -21,4 +21,6 @@ noremap <F7> <Esc>:setlocal spell spelllang=en_us,nl<CR>
 noremap <F8> <Esc>:setlocal nospell<CR>
 
 " Start spell check when vim is run
-autocmd VimEnter * call feedkeys("\<F7>")
+augroup SpellCheck
+	autocmd! VimEnter * call feedkeys("\<F7>")
+augroup END

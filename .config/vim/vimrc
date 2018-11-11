@@ -36,6 +36,10 @@ colorscheme hybrid_reverse
 
 set cursorline
 highlight clear CursorLine
+highlight CursorLineNr cterm=bold
+
+highlight clear SpellBad
+highlight SpellBad ctermbg=8 ctermfg=15
 
 " Indentation
 set autoindent

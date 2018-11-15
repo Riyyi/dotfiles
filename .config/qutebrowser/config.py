@@ -59,6 +59,8 @@ c.fonts.monospace = '"DejaVu Sans", "xos4 Terminus", Terminus, Monospace, Monaco
 # c.hints.chars = 'asdfghjkl'
 c.scrolling.bar = 'always'
 c.session.lazy_restore = True
+# $ /usr/share/qutebrowser/scripts/dictcli.py install en-US nl-NL
+c.spellcheck.languages = ['en-US', 'nl-NL']
 c.statusbar.padding = {'top': 1, 'bottom': 3, 'left': 5, 'right': 5}
 c.statusbar.position = 'top'
 c.tabs.background = True

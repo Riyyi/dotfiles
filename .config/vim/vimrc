@@ -115,13 +115,13 @@ function! CloseTab()
 	let currentFile = expand('%:t')
 
 	if nerdTreeStatus
-		execute "NERDTreeClose"
-		if currentFile !~# "NERD_tree"
-			execute "bw "bufNr
-			execute "NERDTreeToggle"
+		execute 'NERDTreeClose'
+		if currentFile !~# 'NERD_tree'
+			execute 'bw 'bufNr
+			execute 'NERDTreeToggle'
 		endif
 	else
-		execute "bw "bufNr
+		execute 'bw 'bufNr
 	endif
 endfunction
 
@@ -129,10 +129,10 @@ function! PreventBuffersInNERDTree()
 	if bufname('#') =~ 'NERD_tree' && bufname('%') !~ 'NERD_tree'
 				\ && exists('t:nerdtree_winnr') && bufwinnr('%') == t:nerdtree_winnr
 				\ && &buftype == ''
-		let bufnum = bufnr('%')
+		let bufNr = bufnr('%')
 		close
-		execute 'b ' . bufnum
-		execute ':NERDTree'
+		execute 'b 'bufNr
+		execute 'NERDTreeToggle'
 		execute "normal! \<c-w>\<c-w>"
 	endif
 endfunction

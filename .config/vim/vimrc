@@ -102,6 +102,11 @@ augroup CloseVimTree
 	autocmd! bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 
+augroup PreventBuffer
+	autocmd FileType nerdtree let t:nerdtree_winnr = bufwinnr('%')
+	autocmd BufWinEnter * call PreventBuffersInNERDTree()
+augroup END
+
 "" Functions
 
 function! CloseTab()
@@ -117,6 +122,18 @@ function! CloseTab()
 		endif
 	else
 		execute "bw "bufNr
+	endif
+endfunction
+
+function! PreventBuffersInNERDTree()
+	if bufname('#') =~ 'NERD_tree' && bufname('%') !~ 'NERD_tree'
+				\ && exists('t:nerdtree_winnr') && bufwinnr('%') == t:nerdtree_winnr
+				\ && &buftype == ''
+		let bufnum = bufnr('%')
+		close
+		execute 'b ' . bufnum
+		execute ':NERDTree'
+		execute "normal! \<c-w>\<c-w>"
 	endif
 endfunction
 

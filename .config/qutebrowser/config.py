@@ -32,7 +32,7 @@ config.bind('<Space>', 'scroll-page 0 0.5')
 # j open downloads
 
 # mpv spawning
-config.bind('<Ctrl-m>', 'spawn umpv {url} ;; message-info "Sending video to mpv..."')
+config.bind('<Ctrl-m>', 'spawn mpv {url} ;; message-info "Sending video to mpv..."')
 config.bind('<Ctrl-Shift-m>', 'hint links spawn umpv {hint-url}')
 config.bind(';M', 'hint --rapid links spawn umpv {hint-url}')
 

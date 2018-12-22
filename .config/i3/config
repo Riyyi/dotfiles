@@ -53,6 +53,9 @@ client.unfocused        $bgcolor_inactive   $bgcolor_inactive   $darkwhite  $dar
 client.focused_inactive $bgcolor_inactive   $bgcolor_inactive   $darkwhite  $darkgreen
 client.urgent           $bgcolor_urgent     $bgcolor_urgent     $white      $darkgreen
 
+# Font
+font pango:DejaVu Sans, FontAwesome5Free Solid, FontAwesome5Brands 8
+
 bar {
 	colors {
 		background          $bgcolor_inactive
@@ -64,7 +67,6 @@ bar {
 		active_workspace    $bgcolor_inactive  $bgcolor_inactive  $darkwhite
 		urgent_workspace    $bgcolor_urgent    $bgcolor_urgent    $white
 	}
-	font pango:DejaVu Sans, FontAwesome5Free Solid, FontAwesome5Brands 8
 	# position top
 	status_command i3blocks -c $HOME/.config/i3/blocks
 	#strip_workspace_numbers yes

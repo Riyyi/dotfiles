@@ -107,8 +107,15 @@ alias svim='sudoedit'
 alias fuck='sudo $(fc -ln -1)'
 
 # Config
+alias i3b="$EDITOR $XDG_CONFIG_HOME/i3/blocks"
+alias i3c="$EDITOR $XDG_CONFIG_HOME/i3/config"
 alias vrc="$EDITOR $XDG_CONFIG_HOME/vim/vimrc"
+alias xrc="$EDITOR $XDG_CONFIG_HOME/xorg/xinitrc"
+alias Xr="$EDITOR $XDG_CONFIG_HOME/xorg/Xresources"
 alias zrc="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
+
+alias li3='i3-msg restart'
+alias lXr="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
 alias lzrc="source $ZDOTDIR/.zshrc"
 
 # Pacman
@@ -128,14 +135,14 @@ alias upl='pio run -t upload'
 alias qmake='qmake -makefile ../ && make'
 
 # Git
-alias g="git"
-alias ga="git add"
-alias gs="git status"
-alias gc="git commit"
-alias gp="git pull"
-alias gps="git push"
-alias gd="git diff"
-alias gdc="git diff --cached"
+alias g='git'
+alias ga='git add'
+alias gs='git status'
+alias gc='git commit'
+alias gp='git pull'
+alias gps='git push'
+alias gd='git diff'
+alias gdc='git diff --cached'
 alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
 # Scripts

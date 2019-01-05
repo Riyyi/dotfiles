@@ -41,6 +41,11 @@ highlight CursorLineNr cterm=bold
 highlight clear SpellBad
 highlight SpellBad ctermbg=8 ctermfg=15
 
+" Cursor shape
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
+
 " Indentation
 set autoindent
 filetype indent on
@@ -94,7 +99,7 @@ let g:vimtex_view_method = 'zathura'
 
 " Remove trailing whitespace in the following filetypes
 augroup TrailingWhitespace
-	autocmd! FileType c,cpp,ino,java,py,php,sh,tex autocmd BufWritePre <buffer> %s/\s\+$//e
+	autocmd! FileType c,cpp,h,ino,java,py,php,sh,tex autocmd BufWritePre <buffer> %s/\s\+$//e
 augroup END
 
 " Close vim if only window is NERD Tree
@@ -154,4 +159,3 @@ nmap <Leader>1 <Plug>lightline#bufferline#go(1)
 
 " Toggle NERD Tree
 nnoremap <silent> <C-t> :NERDTreeToggle<CR>
-

@@ -9,6 +9,7 @@ user_pref("widget.content.gtk-theme-override", "Arc");
 user_pref("full-screen-api.warning.timeout", 0);
 
 // Disable tracking
+user_pref("privacy.resistFingerprinting", true);
 user_pref("geo.enabled", false);
 // https://spyware.neocities.org/guides/firefox.html
 user_pref("browser.startup.homepage", "about:blank");

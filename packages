@@ -83,13 +83,14 @@ qt5-styleplugins
 qt5-tools
 qutebrowser
 r
+redshift
 reflector
 rofi
 rsync
 rtmpdump
 rxvt-unicode
 scrot
-signal
+signal-desktop-bin
 sloccount
 smartmontools
 sysstat

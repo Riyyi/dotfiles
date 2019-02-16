@@ -17,6 +17,7 @@ $(xrdb -query | awk '/Wmcolor./{print "export " toupper(substr($1, 9, length($1)
 
 # Program starting
 dunst &
+redshift &
 
 # Qt application scaling
 export QT_AUTO_SCREEN_SCALE_FACTOR=0

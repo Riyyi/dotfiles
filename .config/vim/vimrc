@@ -88,7 +88,7 @@ let g:NERDSpaceDelims=1
 let g:NERDTrimTrailingWhitespace=1
 
 " NERD Tree
-let g:NERDTreeIgnore = ['\.git']
+let g:NERDTreeIgnore = ['\.git', '\.bak']
 let g:NERDTreeAutoDeleteBuffer=1
 let g:NERDTreeDirArrowExpandable = ' '
 " let g:NERDTreeDirArrowCollapsible = ' '
@@ -163,3 +163,10 @@ nmap <Leader>1 <Plug>lightline#bufferline#go(1)
 
 " Toggle NERD Tree
 nnoremap <silent> <C-t> :NERDTreeToggle<CR>
+
+"" Commands
+
+:command WQ wq
+:command Wq wq
+:command W w
+:command Q q

@@ -29,6 +29,10 @@ if [ "$(echo $BAT_INFO | awk '{ print $6 }')" = "remaining" ]; then
 		notify-send -u critical -r 1 "Battery critically low!"
 	fi
 else
+	if [ "$CAPACITY" -ge "95" ]; then
+		notify-send -u low -r 1 "You should probably unplug."
+	fi
+
 	ICON=""
 fi
 

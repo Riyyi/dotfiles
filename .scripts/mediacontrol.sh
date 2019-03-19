@@ -43,9 +43,9 @@ EOF
 }
 
 case "$1" in
-	u*)     pulsemixer --change-volume +"$NUM" ; $RELOAD ;;
-	d*)     pulsemixer --change-volume -"$NUM" ; $RELOAD ;;
-	s*)     pulsemixer --set-volume "$NUM" ; $RELOAD ;;
+	u*)     pulsemixer --change-volume +"$NUM" --max-volume 100 ; $RELOAD ;;
+	d*)     pulsemixer --change-volume -"$NUM" --max-volume 100 ; $RELOAD ;;
+	s*)     pulsemixer --set-volume "$NUM" --max-volume 100 ; $RELOAD ;;
 	t*)     pulsemixer --toggle-mute ; $RELOAD ;;
 	m*)     pulsemixer --mute ; $RELOAD ;;
 	n*)     pulsemixer --unmute ; $RELOAD ;;

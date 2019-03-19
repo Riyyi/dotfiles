@@ -10,13 +10,14 @@ case $BLOCK_BUTTON in
 	5) $MEDIACONTROL down 5 ;;  # Scroll down
 esac
 
+VOLUME="$($MEDIACONTROL getvolume)%"
+
 if [ "$($MEDIACONTROL getmute)" = "1" ]; then
 	COLOR="$COLOR7"
-	VOLUME="MUTE"
+
 	SYMBOL=""
 else
 	COLOR="$COLOR15"
-	VOLUME="$($MEDIACONTROL getvolume)%"
 
 	if [ "${VOLUME%?}" -ge "50" ]; then
 		SYMBOL=""

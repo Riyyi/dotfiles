@@ -55,4 +55,4 @@ case "$CHOOSE" in
 esac
 
 # Reload background
-feh --bg-fill --no-fehbg "$HOME/Pictures/wallpaper.jpg"
+$HOME/.scripts/wm/wallpaper.sh

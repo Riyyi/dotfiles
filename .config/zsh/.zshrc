@@ -96,14 +96,14 @@ SAVEHIST=10000
 ## Aliases
 
 # General
-alias q='exit'
-alias la='ls -laGh --color --group-directories-first'
-alias ls='ls --color --group-directories-first'
-alias grep='grep --color'
-alias md='mkdir -p'
-alias rm='rm -i'
-alias vim='vim --servername VIM'
-alias svim='sudoedit'
+alias q="exit"
+alias la="ls -laGh --color --group-directories-first"
+alias ls="ls --color --group-directories-first"
+alias grep="grep --color"
+alias md="mkdir -p"
+alias rm="rm -i"
+alias vim="vim --servername VIM"
+alias svim="sudoedit"
 alias fuck='sudo $(fc -ln -1)'
 
 # Config
@@ -114,35 +114,35 @@ alias xrc="$EDITOR $XDG_CONFIG_HOME/xorg/xinitrc"
 alias Xr="$EDITOR $XDG_CONFIG_HOME/xorg/Xresources"
 alias zrc="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
 
-alias li3='i3-msg restart'
+alias li3="i3-msg restart"
 alias lXr="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
 alias lzrc="source $ZDOTDIR/.zshrc"
 
 # Pacman
-alias install='sudo pacman -S --needed'
-alias remove='sudo pacman -Rns'
-alias update='sudo pacman -Syyu'
-alias clean='sudo pacman -Rns $(pacman -Qtdq)'
-alias cache='sudo paccache -r'
+alias install="sudo pacman -S --needed"
+alias remove="sudo pacman -Rns"
+alias update="sudo pacman -Syyu"
+alias clean="sudo pacman -Rns $(pacman -Qtdq)"
+alias cache="sudo paccache -r -k 2"
 alias depend="$HOME/.scripts/alias.sh depend"
 
 # Programming
 alias jdoc="$HOME/.scripts/alias.sh java-doc"
 alias jr="$HOME/.scripts/alias.sh java-run"
 alias raspbian="$HOME/.scripts/alias.sh raspbian"
-alias ser='pio serialports monitor -b 9600'
-alias upl='pio run -t upload'
-alias qmake='qmake -makefile ../ && make'
+alias ser="pio serialports monitor -b 9600"
+alias upl="pio run -t upload"
+alias qmake="qmake -makefile ../ && make"
 
 # Git
-alias g='git'
-alias ga='git add'
-alias gs='git status'
-alias gc='git commit'
-alias gp='git pull'
-alias gps='git push'
-alias gd='git diff'
-alias gdc='git diff --cached'
+alias g="git"
+alias ga="git add"
+alias gs="git status"
+alias gc="git commit"
+alias gp="git pull"
+alias gps="git push"
+alias gd="git diff"
+alias gdc="git diff --cached"
 alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
 # Scripts

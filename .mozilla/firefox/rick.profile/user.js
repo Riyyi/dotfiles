@@ -2,6 +2,9 @@
 user_pref("browser.newtabpage.enabled", false);
 user_pref("browser.newtab.url", "about:blank");
 
+// Do not save logins
+lockPref("signon.rememberSignons", false);
+
 // Fix dark GTK themes
 user_pref("widget.content.gtk-theme-override", "Arc");
 

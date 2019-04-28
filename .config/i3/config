@@ -112,6 +112,9 @@ bindsym $mod+Shift+e exec --no-startup-id prompt.sh "Logout and exit i3?" "i3-ms
 bindsym $mod+Shift+s exec --no-startup-id prompt.sh "Shutdown computer?" "poweroff"
 bindsym $mod+Shift+w exec --no-startup-id prompt.sh "Reboot computer?" "reboot"
 
+# Sticky floating window
+bindsym $mod+Shift+f fullscreen disable, floating enable, sticky enable; exec --no-startup-id $HOME/.scripts/wm/hover.sh
+
 #--- Workspace bindings ---#
 
 set $ws1  "1 "

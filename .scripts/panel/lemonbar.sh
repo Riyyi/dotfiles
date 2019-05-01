@@ -114,11 +114,3 @@ if type "$1" 2> /dev/null | grep -q "function"; then
 else
 	start
 fi
-
-#@Todo:
-# v lemonbar.sh get_pipe() {}
-# v implement in workspaces
-# v rewrite workspaces getter
-#
-# v pipes in volume en brightness widget
-# - i3 bindings

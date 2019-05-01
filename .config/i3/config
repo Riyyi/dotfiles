@@ -13,6 +13,7 @@ set $mod2 Mod1
 floating_modifier $mod
 
 # Application startup
+exec_always --no-startup-id "pkill lemonbar.sh; $HOME/.scripts/panel/lemonbar.sh &"
 exec_always --no-startup-id $HOME/.scripts/wm/wallpaper.sh &
 exec --no-startup-id qutebrowser
 exec --no-startup-id urxvt
@@ -54,7 +55,7 @@ client.focused_inactive $bgcolor_inactive   $bgcolor_inactive   $darkwhite  $dar
 client.urgent           $bgcolor_urgent     $bgcolor_urgent     $white      $darkgreen
 
 # Font
-font pango:DejaVu Sans, FontAwesome5Free Solid, FontAwesome5Brands 8
+font pango:DejaVu Sans 8
 
 ##--- Bindings ---##
 
@@ -161,8 +162,8 @@ for_window [class="QtBank"] floating enable
 #--- Function key bindings ---#
 
 # Screen brightness
-bindsym $mod+F3 exec brightnessctl -q s +10% && pkill -RTMIN+2 i3blocks
-bindsym $mod+F2 exec brightnessctl -q s 10%- && pkill -RTMIN+2 i3blocks
+bindsym $mod+F3 exec --no-startup-id "brightnessctl -q s +10%; $HOME/.scripts/panel/brightness.sh"
+bindsym $mod+F2 exec --no-startup-id "brightnessctl -q s 10%-; $HOME/.scripts/panel/brightness.sh"
 
 #--- Arrow key bindings ---#
 
@@ -191,9 +192,9 @@ bindsym --release Shift+Print exec scrot -s -e "mv \$f "$capture # Selection
 bindsym --release $mod+Print  exec scrot -u -e "mv \$f "$capture # Focused window
 
 # Volume
-bindsym XF86AudioRaiseVolume exec --no-startup-id mediacontrol.sh up 5
-bindsym XF86AudioLowerVolume exec --no-startup-id mediacontrol.sh down 5
-bindsym XF86AudioMute        exec --no-startup-id mediacontrol.sh toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id "mediacontrol.sh up 5; $HOME/.scripts/panel/volume.sh"
+bindsym XF86AudioLowerVolume exec --no-startup-id "mediacontrol.sh down 5; $HOME/.scripts/panel/volume.sh"
+bindsym XF86AudioMute        exec --no-startup-id "mediacontrol.sh toggle; $HOME/.scripts/panel/volume.sh"
 
 # Touchscreen toggle
 bindsym XF86HomePage         exec --no-startup-id touchscreen.sh

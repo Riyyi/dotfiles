@@ -56,23 +56,6 @@ client.urgent           $bgcolor_urgent     $bgcolor_urgent     $white      $dar
 # Font
 font pango:DejaVu Sans, FontAwesome5Free Solid, FontAwesome5Brands 8
 
-bar {
-	colors {
-		background          $bgcolor_inactive
-		separator           $darkwhite
-		statusline          $white
-		#                   border             background         text
-		focused_workspace   $bgcolor           $bgcolor           $white
-		inactive_workspace  $bgcolor_inactive  $bgcolor_inactive  $darkwhite
-		active_workspace    $bgcolor_inactive  $bgcolor_inactive  $darkwhite
-		urgent_workspace    $bgcolor_urgent    $bgcolor_urgent    $white
-	}
-	# position top
-	status_command i3blocks -c $HOME/.config/i3/blocks
-	#strip_workspace_numbers yes
-	tray_output primary
-}
-
 ##--- Bindings ---##
 
 #--- Basic bindings ---#

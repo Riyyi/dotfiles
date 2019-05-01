@@ -6,7 +6,7 @@ PANEL="lemonbar_panel"
 title() {
 	# Grabs focused window's title
 	ID="$(printf "%s" "$1" | awk '{print $5}')"
-	if [ "$ID" == "0x0" ]; then
+	if [ "$ID" = "0x0" ]; then
 		TITLE=""
 	else
 		TITLE="$(xprop -id "$ID" WM_NAME \

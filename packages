@@ -65,6 +65,7 @@ os-prober
 otf-font-awesome
 p7zip
 pacman-contrib
+pamixer
 pavucontrol
 pdfjs
 platformio
@@ -72,7 +73,6 @@ playerctl
 poppler-glib
 pulseaudio
 pulseaudio-alsa
-pulsemixer-git
 pwgen
 python2-click-5.1
 python2-setuptools

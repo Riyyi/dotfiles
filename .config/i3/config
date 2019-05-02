@@ -162,8 +162,8 @@ for_window [class="QtBank"] floating enable
 #--- Function key bindings ---#
 
 # Screen brightness
-bindsym $mod+F3 exec --no-startup-id "brightnessctl -q s +10%; $HOME/.scripts/panel/brightness.sh"
-bindsym $mod+F2 exec --no-startup-id "brightnessctl -q s 10%-; $HOME/.scripts/panel/brightness.sh"
+bindsym $mod+F3 exec --no-startup-id brightnesscontrol.sh u 10
+bindsym $mod+F2 exec --no-startup-id brightnesscontrol.sh d 10
 
 #--- Arrow key bindings ---#
 
@@ -192,9 +192,9 @@ bindsym --release Shift+Print exec scrot -s -e "mv \$f "$capture # Selection
 bindsym --release $mod+Print  exec scrot -u -e "mv \$f "$capture # Focused window
 
 # Volume
-bindsym XF86AudioRaiseVolume exec --no-startup-id "mediacontrol.sh up 5; $HOME/.scripts/panel/volume.sh"
-bindsym XF86AudioLowerVolume exec --no-startup-id "mediacontrol.sh down 5; $HOME/.scripts/panel/volume.sh"
-bindsym XF86AudioMute        exec --no-startup-id "mediacontrol.sh toggle; $HOME/.scripts/panel/volume.sh"
+bindsym XF86AudioRaiseVolume exec --no-startup-id mediacontrol.sh up 5
+bindsym XF86AudioLowerVolume exec --no-startup-id mediacontrol.sh down 5
+bindsym XF86AudioMute        exec --no-startup-id mediacontrol.sh toggle
 
 # Touchscreen toggle
 bindsym XF86HomePage         exec --no-startup-id touchscreen.sh

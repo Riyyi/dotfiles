@@ -2,7 +2,7 @@
 
 # General audio management
 
-RELOAD="pkill -RTMIN+1 i3blocks"
+RELOAD="$HOME/.scripts/panel/volume.sh"
 
 [ -z "$2" ] && NUM="2" || NUM="$2"
 
@@ -43,13 +43,14 @@ EOF
 }
 
 case "$1" in
-	u*)     pulsemixer --change-volume +"$NUM" --max-volume 100 ; $RELOAD ;;
-	d*)     pulsemixer --change-volume -"$NUM" --max-volume 100 ; $RELOAD ;;
-	s*)     pulsemixer --set-volume "$NUM" --max-volume 100 ; $RELOAD ;;
-	t*)     pulsemixer --toggle-mute ; $RELOAD ;;
-	m*)     pulsemixer --mute ; $RELOAD ;;
-	n*)     pulsemixer --unmute ; $RELOAD ;;
-	getv*)  pulsemixer --get-volume | awk '{print $1}' ;;
-	getm*)  pulsemixer --get-mute ;;
-	*) help ;;
+	u*)    pamixer --increase "$NUM" ; $RELOAD ;;
+	d*)    pamixer --decrease "$NUM" ; $RELOAD ;;
+	s*)    pamixer --set-volume "$NUM" ; $RELOAD ;;
+	t*)    [ "$(pamixer --get-mute)" = "false" ] && \
+	           pamixer --mute || pamixer --unmute ; $RELOAD ;;
+	m*)    pamixer --mute ; $RELOAD ;;
+	n*)    pamixer --unmute ; $RELOAD ;;
+	getv*) pamixer --get-volume ;;
+	getm*) pamixer --get-mute ;;
+	*)     help ;;
 esac

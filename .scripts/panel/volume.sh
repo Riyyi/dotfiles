@@ -1,18 +1,18 @@
 #!/bin/sh
 
-MEDIACONTROL="$HOME/.scripts/mediacontrol.sh"
+MEDIA_CONTROL="$HOME/.scripts/mediacontrol.sh"
 
 # Left click, scroll click, right click, scroll up and scroll down
 L="A1:pavucontrol:"
-S="A2:$MEDIACONTROL set 0; $0:"
-R="A3:$MEDIACONTROL toggle; $0:"
-U="A4:$MEDIACONTROL up 5; $0:"
-D="A5:$MEDIACONTROL down 5; $0:"
+S="A2:$MEDIA_CONTROL set 0:"
+R="A3:$MEDIA_CONTROL toggle:"
+U="A4:$MEDIA_CONTROL up 5:"
+D="A5:$MEDIA_CONTROL down 5:"
 
-VOLUME="$($MEDIACONTROL getvolume)"
+VOLUME="$($MEDIA_CONTROL getvolume)"
 
 COLOR="-"
-if [ "$($MEDIACONTROL getmute)" = "1" ]; then
+if [ "$($MEDIA_CONTROL getmute)" = "true" ]; then
 	COLOR="$COLOR7"
 
 	SYMBOL=""

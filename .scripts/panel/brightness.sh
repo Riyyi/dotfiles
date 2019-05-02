@@ -1,9 +1,11 @@
 #!/bin/sh
 
+BRIGHTNESS_CONTROL="$HOME/.scripts/brightnesscontrol.sh"
+
 # Right click, scroll up, scroll down
-R="A3:brightnessctl -q s 30%; $0:"
-U="A4:brightnessctl -q s +10%; $0:"
-D="A5:brightnessctl -q s 10%-; $0:"
+R="A3:$BRIGHTNESS_CONTROL s 30:"
+U="A4:$BRIGHTNESS_CONTROL u 10:"
+D="A5:$BRIGHTNESS_CONTROL d 10:"
 
 PERCENTAGE=$(brightnessctl \
 	| awk '/\([0-9]+%\)/ { print substr($4, 2, length($4) - 3) }')

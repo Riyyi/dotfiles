@@ -15,7 +15,7 @@ floating_modifier $mod
 # Application startup
 exec_always --no-startup-id "pkill lemonbar.sh; $HOME/.scripts/panel/lemonbar.sh &"
 exec_always --no-startup-id $HOME/.scripts/wm/wallpaper.sh &
-exec --no-startup-id qutebrowser
+exec --no-startup-id firefox
 exec --no-startup-id urxvt
 exec --no-startup-id thunar --daemon
 exec --no-startup-id thunar

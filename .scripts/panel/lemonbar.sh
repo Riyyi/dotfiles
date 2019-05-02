@@ -52,12 +52,12 @@ start() {
 	# Directory of this script
 	DIR="$(dirname "$0")"
 
-	# Setup workspaces with xprop events
+	# Setup workspaces block with xprop events
 	xprop -root -spy _NET_CURRENT_DESKTOP | while read -r line; do
 		"$DIR"/workspaces.sh
 	done > "$PIPE" &
 
-	# Setup window title with xprop events
+	# Setup window title block with xprop events
 	xprop -root -spy _NET_ACTIVE_WINDOW | while read -r line; do
 		title "$line"
 	done > "$PIPE" &

@@ -26,7 +26,11 @@ export LESSHISTFILE=-
 
 ## Terminal
 
+# Disable Ctrl+S and Ctrl+Q
 stty -ixon
+
+# vi mode
+bindkey -v
 
 ## ZSH
 

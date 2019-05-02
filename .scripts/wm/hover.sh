@@ -6,7 +6,7 @@ calc() { awk "BEGIN{print $*}"; }
 # Calculate size
 MON_WIDTH=$(xdotool getdisplaygeometry | awk '{print $1}')
 MON_HEIGHT=$(xdotool getdisplaygeometry | awk '{print $2}')
-NEW_WIDTH=$(calc "$MON_WIDTH * 0.25")
+NEW_WIDTH=$(calc "$MON_WIDTH * 0.2")
 NEW_HEIGHT=$(calc "$NEW_WIDTH / 16 * 9")
 
 # Calculate position

@@ -53,7 +53,7 @@ start() {
 	DIR="$(dirname "$0")"
 
 	# Setup workspaces block with xprop events
-	xprop -root -spy _NET_CURRENT_DESKTOP | while read -r line; do
+	xprop -root -spy _NET_CURRENT_DESKTOP _NET_NUMBER_OF_DESKTOPS | while read -r line; do
 		"$DIR"/workspaces.sh
 	done > "$PIPE" &
 

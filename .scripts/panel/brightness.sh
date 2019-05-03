@@ -7,8 +7,7 @@ R="A3:$BRIGHTNESS_CONTROL s 30:"
 U="A4:$BRIGHTNESS_CONTROL u 10:"
 D="A5:$BRIGHTNESS_CONTROL d 10:"
 
-PERCENTAGE=$(brightnessctl \
-	| awk '/\([0-9]+%\)/ { print substr($4, 2, length($4) - 3) }')
+PERCENTAGE=$($BRIGHTNESS_CONTROL getbrightness)
 if [ "$PERCENTAGE" -ge "75" ]; then
 	ICON="" # f111
 elif [ "$PERCENTAGE" -ge "25" ]; then
@@ -20,6 +19,6 @@ fi
 
 INPUT="%{$R}%{$U}%{$D}"
 END="%{A}%{A}%{A}"
-PIPE="$($(dirname $0)/lemonbar.sh getpipe)"
+PIPE="$("$(dirname "$0")"/lemonbar.sh getpipe)"
 
 printf "%s\n" "brightness$INPUT$ICON $PERCENTAGE%$END" > "$PIPE" &

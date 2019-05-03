@@ -29,6 +29,8 @@ ${B}COMMANDS${N}
 	${B}d*, down <amount>${N}
 
 	${B}s*, set <volume>${N}
+
+	${B}g*, getbrightness${N}
 EOF
 }
 
@@ -36,5 +38,6 @@ case "$1" in
 	u*) brightnessctl -q s +"$NUM"% ; $RELOAD ;;
 	d*) brightnessctl -q s "$NUM"%- ; $RELOAD ;;
 	s*) brightnessctl -q s "$NUM"% ; $RELOAD ;;
+	g*) brightnessctl | awk '/%/ {print substr($4, 2, length($4) - 3)}' ;;
 	*)  help ;;
 esac

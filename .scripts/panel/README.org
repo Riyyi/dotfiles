@@ -1,0 +1,24 @@
+#+LANGUAGE: en
+#+OPTIONS: toc:nil num:nil
+
+* Lemonbar
+
+Panel configuration.
+
+** Dependencies
+
+| Package      | Script(s)     |
+|--------------+---------------|
+| acpi         | battery.sh    |
+|--------------+---------------|
+| i3-wm        | workspaces.sh |
+|--------------+---------------|
+| iw           | wifi.sh       |
+|--------------+---------------|
+| lemonbar-xft | lemonbar.sh   |
+|--------------+---------------|
+| libnotify-id | battery.sh    |
+|              | wifi.sh       |
+|--------------+---------------|
+| xorg-xprop   | lemonbar.sh   |
+|              | workspaces.sh |

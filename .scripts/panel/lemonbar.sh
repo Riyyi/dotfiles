@@ -36,11 +36,10 @@ bar() {
 }
 
 start() {
-	# Exit if panel is already running
-	if [ "$(pgrep lemonbar | awk 'END {print FNR}')" -gt "2" ]; then
-		printf "%s\n" "The panel is already running." >&2
-		exit 1
-	fi
+	# Kill existing panel
+	while [ "$(pgrep -cx lemonbar.sh)" -gt 1 ]; do
+		pkill -ox -9 lemonbar.sh;
+	done
 
 	# Trap all subshells
 	trap 'trap - TERM; kill 0' INT TERM QUIT EXIT

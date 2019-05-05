@@ -4,19 +4,26 @@ PIPE="/tmp/lemonbar_pipe"
 PANEL="lemonbar_panel"
 
 title() {
+	# Grab focused window's ID
+	if [ -n "$1" ]; then
+		ID="$(printf "%s" "$1" | cut -f 2)"
+	else
+		ID="$(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2)"
+	fi
+
 	# Grabs focused window's title
-	ID="$(printf "%s" "$1" | awk '{print $5}')"
 	if [ "$ID" = "0x0" ]; then
 		TITLE=""
 	else
-		TITLE="$(xprop -id "$ID" WM_NAME \
-			| awk '{$1=$2=""; print substr($0, 4, length($0) - 4)}')"
+		TITLE="$(xprop -id "$ID" ' $0' WM_NAME | awk '{
+			$1=""; $0=substr($0, 3, length($0) - 3);
+			if (length($0) <= 75)
+				print $0
+			else
+				print substr($0, 1, 72)"..."
+		}')"
 	fi
 	printf "%s\n" "title$TITLE"
-
-	# Grabs focused window's title
-	# TITLE=$(xdotool getactivewindow getwindowname 2> /dev/null)
-	# printf "%s\n" "title$TITLE"
 }
 
 clock() {
@@ -57,7 +64,7 @@ start() {
 	done > "$PIPE" &
 
 	# Setup window title block with xprop events
-	xprop -root -spy _NET_ACTIVE_WINDOW | while read -r line; do
+	xprop -root -spy '\t$0\n' _NET_ACTIVE_WINDOW | while read -r line; do
 		title "$line"
 	done > "$PIPE" &
 
@@ -66,6 +73,7 @@ start() {
 	"$DIR"/brightness.sh
 
 	# Setup block timers
+	while :; do title;             sleep 1; done > "$PIPE" &
 	while :; do "$DIR"/wifi.sh;    sleep 10; done > "$PIPE" &
 	while :; do "$DIR"/iface.sh;   sleep 10; done > "$PIPE" &
 	while :; do "$DIR"/battery.sh; sleep 30; done > "$PIPE" &

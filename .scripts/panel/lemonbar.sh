@@ -28,10 +28,10 @@ clock() {
 bar() {
 	lemonbar \
 		-a 20 -g x38 -n "$PANEL" \
-		-f "DejaVu Sans-8" \
-		-f "FontAwesome5Free Solid-8" \
-		-f "FontAwesome5Free Regular-8" \
-		-f "FontAwesome5 Brands-8" \
+		-f "DejaVu Sans-8" -o 0 \
+		-f "FontAwesome5Free Solid-8" -o -3 \
+		-f "FontAwesome5Free Regular-8" -o -3 \
+		-f "FontAwesome5 Brands-8" -o -3 \
 		-B "$BGCOLOR_INACTIVE" -F "$COLOR15"
 }
 

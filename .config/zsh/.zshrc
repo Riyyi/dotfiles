@@ -1,30 +1,3 @@
-## Settings
-
-# Directories
-export PATH="$PATH:$HOME/.scripts"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-mkdir -p "$XDG_CACHE_HOME/zsh"
-
-# Files
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-export PLATFORMIO_HOME_DIR="$XDG_DATA_HOME/platformio"
-
-# Qt5
-export QT_QPA_PLATFORMTHEME="qt5ct"
-
-# VIM
-export EDITOR="vim"
-export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
-
-# X11
-export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"
-export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
-
-# General
-export LESSHISTFILE=-
-
 ## Terminal
 
 # Disable Ctrl+S and Ctrl+Q
@@ -160,13 +133,8 @@ alias offtouchpad='sudo rmmod i2c_hid'
 alias ontouchpad="sudo modprobe i2c_hid && $HOME/.scripts/touchscreen.sh 0"
 
 # Other
-alias man="$HOME/.scripts/alias.sh man"
 alias mysql-workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench 1>/dev/null 2>&1 &; disown"
 alias weather="curl -s 'http://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias mpvshuffle='mpv "$(xclip -o)" --no-video --shuffle --ytdl-format="bestaudio[ext=m4a]"'
 
-source $ZDOTDIR/.zshrc_extended
-
-## Login
-
-[[ $USER == "rick" ]] && [ "$(tty)" = "/dev/tty1" ] && exec xinit -- vt1 &> /dev/null
+[ -f "$ZDOTDIR/.zshrc_extended" ] && source "$ZDOTDIR/.zshrc_extended"

@@ -43,11 +43,11 @@ export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
 # Colors
-# Example:  *.color0:        #282a2e  ->  export COLOR0=#282a2e
-# Example:  Wmcolor.bgcolor: #404552  ->  export BGCOLOR=#404552
-$(awk '
-	/^\*.[a-zA-Z0-9]+: +#/ {print "export " toupper(substr($1, 3, length($1) - 3)) "=" $2}
-	/^Wmcolor./            {print "export " toupper(substr($1, 9, length($1) - 9)) "=" $2}
+# Example:  *.color0:        #282a2e  ->  COLOR0=#282a2e
+# Example:  Wmcolor.bgcolor: #404552  ->  BGCOLOR=#404552
+export $(awk '
+	/^\*.[a-zA-Z0-9]+: +#/ {print toupper(substr($1, 3, length($1) - 3)) "=" $2}
+	/^Wmcolor./            {print toupper(substr($1, 9, length($1) - 9)) "=" $2}
 ' "$XDG_CONFIG_HOME/xorg/Xresources")
 
 ## Login

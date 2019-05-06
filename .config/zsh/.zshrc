@@ -5,6 +5,7 @@ export PATH="$PATH:$HOME/.scripts"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
+mkdir -p "$XDG_CACHE_HOME/zsh"
 
 # Files
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
@@ -65,9 +66,9 @@ zstyle ':vcs_info:*' unstagedstr "%F{red}M%f"
 zstyle ':vcs_info:*' formats '%F{cyan}(%F{red}%b%F{cyan})%f %c%u'
 
 # Autocompletion
-compinit -d $XDG_CACHE_HOME/zcompdump
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path $XDG_CACHE_HOME/zcache
+zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' menu select
@@ -93,7 +94,7 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_SAVE_NO_DUPS
-HISTFILE=$ZDOTDIR/.zsh_history
+HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
 

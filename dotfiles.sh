@@ -126,9 +126,11 @@ packages() {
 		fi
 		echo "$PACKAGE_LIST" > "$PACKAGE_FILE"
 	elif [ "$1" = "install" ]; then
-		# Install core packages
-		sudo pacman -S --needed --noconfirm "$(cat "$PACKAGE_FILE")"
-		# For AUR packages, run: <helper> -S - < packages
+		# Grab everything off enabled official repositories that is in the list
+		CORE_LIST="$(pacman -Ssq | grep -xf $PACKAGE_FILE)"
+
+		# Install core packages, answer no to pacman questions (honor Ignore)
+		yes n | sudo pacman -S --needed $(echo "$CORE_LIST")
 	fi
 }
 

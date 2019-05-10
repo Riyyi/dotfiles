@@ -25,7 +25,7 @@ ${B}NAME${N}
 	dotfiles - file copy script for the dotfiles repository
 
 ${B}SYNOPSIS${N}
-	./dotfiles.sh <OPTIONS> [<ARG>]
+	./dotfiles.sh <OPTION> [<ARG>]
 
 ${B}OPTIONS${N}
 	${B}-a${N} ${U}FILE${N}, ${B}--add${N} ${U}FILE${N}

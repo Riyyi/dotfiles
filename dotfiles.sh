@@ -17,6 +17,7 @@ FILES="$(find . -type f \
 
 help() {
 	B=$(tput bold)
+	U=$(tput smul)
 	N=$(tput sgr0)
 
 	cat << EOF
@@ -24,31 +25,33 @@ ${B}NAME${N}
 	dotfiles - file copy script for the dotfiles repository
 
 ${B}SYNOPSIS${N}
-	./dotfiles.sh <command> [<args>]
+	./dotfiles.sh <OPTIONS> [<ARG>]
 
-${B}COMMANDS${N}
-	${B}list${N}
-		Print all files added to the dotfiles directory.
-
-	${B}get <filepath>${N}
+${B}OPTIONS${N}
+	${B}-a${N} ${U}FILE${N}, ${B}--add${N} ${U}FILE${N}
 		Add file to the dotfiles directory.
 
-	${B}pull${N}
-		For each file in the dotfiles directory, copy that file on the system to
-		the dotfiles directory.
+	${B}-f, --files${N}
+		Display all files added to the dotfiles directory.
 
-	${B}push${N}
-		For each file in the dotfiles directory, copy that file to its location
-		on the system.
+	${B}-h, --help${N}
+		Display usage message and exit.
 
-	${B}packages [list]${N}
-		List all the packages installed on the system.
+	${B}-p${N} [${U}ARG${N}], ${B}--packages${N} [${U}ARG${N}]
+		${B}install${N}
+		Install all core packages of the stored list.
 
-	${B}packages store${N}
-		Store the list of all the installed packages on the system.
+		${B}list${N} (default)
+		Display all packages installed on the system.
 
-	${B}packages install${N}
-		Install all the core packages of the stored list.
+		${B}store${N}
+		Stores a list of all installed packages on the system.
+
+	${B}-l, --pull${N}
+		Pull each added file from the system to the dotfiles directory.
+
+	${B}-s, --push${N}
+		Push each added file to its location on the system.
 EOF
 }
 

@@ -10,6 +10,7 @@ _dotfiles.sh() {
 		'(- *)'{-h,--help}'[display usage message and exit]'
 		'(- *)'{-p,--packages}'[instal, list or store packages]:packages:((
 			install\:"install all core packages of the stored list"
+			install-aur\:"install all AUR packages of the stored list"
 			list\:"display all packages installed on the system (default)"
 			store\:"stores a list of all installed packages"
 		))'

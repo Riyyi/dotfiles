@@ -5,6 +5,8 @@
 PACKAGE_FILE="packages"
 EXCLUDE_FILES="${0#??}|$PACKAGE_FILE|.*.md$|.*README.org$|.git|screenshot.png"
 
+AUR_HELPER="trizen"
+
 # --------------------------------------
 
 if [ "$(dirname "$0")" != "." ]; then
@@ -40,6 +42,9 @@ ${B}OPTIONS${N}
 	${B}-p${N} [${U}ARG${N}], ${B}--packages${N} [${U}ARG${N}]
 		${B}install${N}
 		Install all core packages of the stored list.
+
+		${B}install-aur${N}
+		Install all AUR packages of the stored list.
 
 		${B}list${N} (default)
 		Display all packages installed on the system.
@@ -125,12 +130,21 @@ packages() {
 			truncate -s 0 "$PACKAGE_FILE"
 		fi
 		echo "$PACKAGE_LIST" > "$PACKAGE_FILE"
-	elif [ "$1" = "install" ]; then
+	elif [ "$1" = "install" ] || [ "$1" = "install-aur" ]; then
 		# Grab everything off enabled official repositories that is in the list
 		CORE_LIST="$(pacman -Ssq | grep -xf $PACKAGE_FILE)"
 
-		# Install core packages, answer no to pacman questions (honor Ignore)
-		yes n | sudo pacman -S --needed $(echo "$CORE_LIST")
+		if [ "$1" = "install" ]; then
+			# Install core packages, answer no to pacman questions (honor Ignore)
+			yes n | sudo pacman -S --needed $CORE_LIST
+		fi
+		if [ "$1" = "install-aur" ]; then
+			# Determine which packages in the list are from the AUR
+			AUR_LIST="$(grep -vx "$CORE_LIST" < $PACKAGE_FILE)"
+
+			# Install AUR packages
+			$AUR_HELPER -S --needed --noconfirm $AUR_LIST
+		fi
 	fi
 }
 

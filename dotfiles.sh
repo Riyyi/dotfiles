@@ -1,14 +1,19 @@
 #!/bin/sh
 
+# User-config--------------------------------
+
+PACKAGE_FILE="packages"
+EXCLUDE_FILES=".git|${0#??}|$PACKAGE_FILE|.*.md$|screenshot.png"
+
+# -------------------------------------------
+
 if [ "$(dirname "$0")" != "." ]; then
 	echo "Please run this script from the directory it resides."
 	exit
 fi
 
-PACKAGE_FILE="./packages"
-
-EXCLUDE="./.git|$0|$PACKAGE_FILE|./README.md|./screenshot.png"
-FILES="$(find . -type f | awk -v e="^($EXCLUDE)" '$0 !~ e { print $0 }')"
+FILES="$(find . -type f \
+	| awk -v e="^($EXCLUDE_FILES)" 'substr($0, 3) !~ e { print $0 }')"
 
 help() {
 	B=$(tput bold)
@@ -54,10 +59,7 @@ list() {
 }
 
 get() {
-	if [ "$1" = "" ]; then
-		echo "Missing argument <filepath>"
-		return
-	fi
+	[ "$1" = "" ] && return 1
 
 	FILE=$(readlink -f "$1")
 	FILE_CUT_HOME="$(echo "$FILE" | sed -nr 's/^\/home\/'"$USER"'\/(.*)$/\1/p')"
@@ -73,10 +75,8 @@ get() {
 	fi
 }
 
-pullpush() {
-	if [ "$1" = "" ]; then
-		return
-	fi
+pull_push() {
+	[ "$1" = "" ] && return 1
 
 	for f in $FILES; do
 		# Remove the first character (.) from the string
@@ -103,17 +103,17 @@ pullpush() {
 }
 
 pull() {
-	pullpush "pull"
+	pull_push "pull"
 }
 
 push() {
-	pullpush "push"
+	pull_push "push"
 }
 
 packages() {
 	PACKAGE_LIST="$(pacman -Qqe | sort | grep -vx "$(pacman -Qqg base base-devel | sort)")"
 
-	if [  "$1" = "list" ] || [ "$1" = "" ]; then
+	if [ "$1" = "list" ] || [ "$1" = "" ]; then
 		echo "$PACKAGE_LIST"
 	elif [ "$1" = "store" ]; then
 		if [ ! -s $PACKAGE_FILE ]; then

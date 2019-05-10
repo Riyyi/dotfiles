@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# User-config--------------------------------
+# User-config---------------------------
 
 PACKAGE_FILE="packages"
-EXCLUDE_FILES=".git|${0#??}|$PACKAGE_FILE|.*.md$|screenshot.png"
+EXCLUDE_FILES="${0#??}|$PACKAGE_FILE|.*.md$|.*README.org$|.git|screenshot.png"
 
-# -------------------------------------------
+# --------------------------------------
 
 if [ "$(dirname "$0")" != "." ]; then
 	echo "Please run this script from the directory it resides."

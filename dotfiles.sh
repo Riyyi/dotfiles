@@ -7,11 +7,8 @@ fi
 
 PACKAGE_FILE="./packages"
 
-FILES="$(find . \( -path ./.git -o \
-	-path ./dotfiles.sh -o \
-	-path $PACKAGE_FILE -o \
-	-path ./README.md -o \
-	-path ./screenshot.png \) -prune -o -type f -print)"
+EXCLUDE="./.git|$0|$PACKAGE_FILE|./README.md|./screenshot.png"
+FILES="$(find . -type f | awk -v e="^($EXCLUDE)" '$0 !~ e { print $0 }')"
 
 help() {
 	B=$(tput bold)

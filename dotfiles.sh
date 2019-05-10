@@ -52,13 +52,13 @@ ${B}COMMANDS${N}
 EOF
 }
 
-list() {
+files() {
 	for f in $FILES; do
 		echo "${f#??}"
 	done
 }
 
-get() {
+add() {
 	[ "$1" = "" ] && return 1
 
 	FILE=$(readlink -f "$1")
@@ -129,12 +129,62 @@ packages() {
 	fi
 }
 
-if type "$1" 2> /dev/null | grep -q "function"; then
-	"$@"
-else
-	help
+# --------------------------------------
+
+SCRIPT="$(basename "$0")"
+
+# $1 = -option, $2 message
+option_wrong() {
+	[ -z "$1" ] || [ -z "$2" ] && return 1
+
+	echo "$SCRIPT: $2 '$1'" >&2
+	echo "Try '$SCRIPT -h' or '$SCRIPT --help' for more information." >&2
+	exit 1
+}
+
+# Get all the -options
+OPTIONS=$(echo "$@" | awk '{
+	for(i=1; i<=NF; i++) { if ($i ~ /^-/) printf "%s ", $i }
+}' | wc -w)
+
+# Check if -options are valid
+if [ "$OPTIONS" -gt 1 ]; then
+	LAST="$(echo "$@" | cut -d ' ' -f $#)"
+	option_wrong "$LAST" "option too many"
+elif [ "$#" -gt 2 ]; then
+	LAST="$(echo "$@" | cut -d ' ' -f $#)"
+	option_wrong "$LAST" "argument too many"
 fi
+
+OPT="$(echo "$* " | cut -d ' ' -f 1)"
+ARG="$(echo "$* " | cut -d ' ' -f 2)"
+
+# Parse -options and call functions
+case $OPT in
+	-a | --add)
+		add "$ARG" || option_wrong "$OPT" 'option requires an argument'
+		;;
+	-f | --files)
+		files
+		;;
+	-h | --help)
+		help
+		;;
+	-p | --packages)
+		packages "$ARG"
+		;;
+	-l | --pull)
+		pull
+		;;
+	-s | --push)
+		push
+		;;
+	*)
+		option_wrong "$OPT" 'invalid option'
+		;;
+esac
 
 # @Todo:
 # get function to support symlinks
+# get function to add entire new directory including contents
 # push function to push just one file

@@ -69,18 +69,18 @@ files() {
 add() {
 	[ "$1" = "" ] && return 1
 
-	FILE="$(readlink -f $(dirname $1))/$(basename $1)"
+	FILE="$(readlink -f "$(dirname "$1")")/$(basename "$1")"
 	FILE_CUT_HOME="$(echo "$FILE" \
 		| awk -v m="^$HOME/" '$0 ~ m { print substr($0, length(m)) }')"
 
 	# /home/<user>/
 	if [ -n "$FILE_CUT_HOME" ]; then
 		mkdir -p "$(pwd)/$(dirname "$FILE_CUT_HOME")"
-		cp -Ppr "$FILE" "$(pwd)/$FILE_CUT_HOME"
+		cp -a "$FILE" "$(pwd)/$FILE_CUT_HOME"
 	# /
 	else
 		mkdir -p "$(pwd)/$(dirname "$FILE")"
-		cp -PPr "$FILE" "$(pwd)/$FILE"
+		cp -a "$FILE" "$(pwd)/$FILE"
 	fi
 }
 
@@ -94,7 +94,7 @@ pull_push() {
 		fr=$(readlink -f "$f")
 
 		# The filepath starts with '/boot/', '/etc/', '/usr/share/'
-		if [ -n "$(echo "$fr" | sed -nr 's/^(\/(boot|etc|usr\/share)\/).*$/\1/p')" ]; then
+		if [ -n "$(echo "$fr" | sed -nE 's/^(\/(boot|etc|usr\/share)\/).*$/\1/p')" ]; then
 			if [ "$1" = "pull" ]; then
 				sudo cp "$fr" "$(pwd)/$fr"
 			elif [ "$1" = "push" ]; then
@@ -144,7 +144,7 @@ packages() {
 			AUR_LIST="$(grep -vx "$CORE_LIST" < $PACKAGE_FILE)"
 
 			# Install AUR packages
-			$AUR_HELPER -S --needed --noconfirm $AUR_LIST
+			"$AUR_HELPER" -S --needed --noconfirm $AUR_LIST
 		fi
 	fi
 }

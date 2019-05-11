@@ -69,17 +69,18 @@ files() {
 add() {
 	[ "$1" = "" ] && return 1
 
-	FILE=$(readlink -f "$1")
-	FILE_CUT_HOME="$(echo "$FILE" | sed -nr 's/^\/home\/'"$USER"'\/(.*)$/\1/p')"
+	FILE="$(readlink -f $(dirname $1))/$(basename $1)"
+	FILE_CUT_HOME="$(echo "$FILE" \
+		| awk -v m="^$HOME/" '$0 ~ m { print substr($0, length(m)) }')"
 
 	# /home/<user>/
 	if [ -n "$FILE_CUT_HOME" ]; then
 		mkdir -p "$(pwd)/$(dirname "$FILE_CUT_HOME")"
-		cp "$FILE" "$(pwd)/$FILE_CUT_HOME"
+		cp -Ppr "$FILE" "$(pwd)/$FILE_CUT_HOME"
 	# /
 	else
 		mkdir -p "$(pwd)/$(dirname "$FILE")"
-		cp "$FILE" "$(pwd)/$FILE"
+		cp -PPr "$FILE" "$(pwd)/$FILE"
 	fi
 }
 
@@ -204,6 +205,4 @@ case $OPT in
 esac
 
 # @Todo:
-# get function to support symlinks
-# get function to add entire new directory including contents
 # push function to push just one file

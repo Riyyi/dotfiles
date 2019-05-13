@@ -2,9 +2,16 @@
 
 # User-config---------------------------
 
+# File which holds all installed packages
 PACKAGE_FILE="packages"
+
+# Files that are stored in the repository but shouldn't get copied (regex)
 EXCLUDE_FILES="${0#??}|$PACKAGE_FILE|.*.md$|.*README.org$|.git|screenshot.png"
 
+# Directories that are treated like a system directory (/) (regex)
+SYSTEM_DIR='boot|etc|usr/share'
+
+# Arch User Repository helper program name (needs pacman flag compatibility!)
 AUR_HELPER="trizen"
 
 # --------------------------------------
@@ -59,14 +66,14 @@ EOF
 
 set_files() {
 	FILES="$(find . -type f -o -type l \
-		| awk -v e="^($EXCLUDE_FILES)" 'substr($0, 3) !~ e { print $0 }')"
+		| awk -v e="^./($EXCLUDE_FILES)" '$0 !~ e { print $0 }')"
 }
 
 list_files() {
 	# If unset
 	[ -z "${FILES+x}" ] && set_files
 
-	# Remove ./ from beginning of filepaths
+	# Remove leading ./ from filepaths
 	echo "$FILES" | sed 's/^\.\///'
 }
 
@@ -95,26 +102,31 @@ pull_push() {
 	# If unset
 	[ -z "${FILES+x}" ] && set_files
 
-	for f in $FILES; do
-		# Remove the first character (.) from the string
-		f=${f#?}
-		# Resolved symbolic link
-		fr=$(readlink -f "$f")
+	MATCH="^./($SYSTEM_DIR)/"
 
-		# The filepath starts with '/boot/', '/etc/', '/usr/share/'
-		if [ -n "$(echo "$fr" | sed -nE 's/^(\/(boot|etc|usr\/share)\/).*$/\1/p')" ]; then
-			if [ "$1" = "pull" ]; then
-				sudo cp "$fr" "$(pwd)/$fr"
-			elif [ "$1" = "push" ]; then
-				sudo cp "$(pwd)/$fr" "$fr"
-			fi
-		else
-			if [ "$1" = "pull" ]; then
-				# cp /home/<user>/<file> /home/<user>/[<some dir>/]dotfiles/<file>
-				cp "$HOME$f" "$(pwd)/$f"
-			elif [ "$1" = "push" ]; then
-				cp "$(pwd)/$f" "$HOME$f"
-			fi
+	# Filter system directories and remove leading ./ from filepaths
+	HOME_FILES="$(echo "$FILES" \
+			| awk -v m="$MATCH" '$0 !~ m { print substr($0, 3) }')"
+
+	for f in $HOME_FILES; do
+		if [ "$1" = "pull" ]; then
+			# cp /home/<user>/<file> /[<some dir>/]dotfiles/<file>
+			cp -a "$HOME/$f" "$(pwd)/$f"
+		elif [ "$1" = "push" ]; then
+			cp -a "$(pwd)/$f" "$HOME/$f"
+		fi
+	done
+
+	# Filter non-system directories and remove leading ./ from filepaths
+	SYSTEM_FILES="$(echo "$FILES" \
+		| awk -v m="$MATCH" '$0 ~ m { print substr($0, 3) }')"
+
+	for f in $SYSTEM_FILES; do
+		if [ "$1" = "pull" ]; then
+			# cp /<file> /[<some dir>/]dotfiles/<file>
+			sudo cp -a "/$f" "$(pwd)/$f"
+		elif [ "$1" = "push" ]; then
+			sudo cp -a "$(pwd)/$f" "/$f"
 		fi
 	done
 }

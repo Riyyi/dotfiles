@@ -14,9 +14,6 @@ if [ "$(dirname "$0")" != "." ]; then
 	exit
 fi
 
-FILES="$(find . -type f \
-	| awk -v e="^($EXCLUDE_FILES)" 'substr($0, 3) !~ e { print $0 }')"
-
 help() {
 	B=$(tput bold)
 	U=$(tput smul)
@@ -60,14 +57,21 @@ ${B}OPTIONS${N}
 EOF
 }
 
-files() {
-	for f in $FILES; do
-		echo "${f#??}"
-	done
+set_files() {
+	FILES="$(find . -type f -o -type l \
+		| awk -v e="^($EXCLUDE_FILES)" 'substr($0, 3) !~ e { print $0 }')"
+}
+
+list_files() {
+	# If unset
+	[ -z "${FILES+x}" ] && set_files
+
+	# Remove ./ from beginning of filepaths
+	echo "$FILES" | sed 's/^\.\///'
 }
 
 add() {
-	[ "$1" = "" ] && return 1
+	[ -z "$1" ] && return 1
 
 	FILE="$(readlink -f "$(dirname "$1")")/$(basename "$1")"
 	FILE_CUT_HOME="$(echo "$FILE" \
@@ -80,12 +84,16 @@ add() {
 	# /
 	else
 		mkdir -p "$(pwd)/$(dirname "$FILE")"
-		cp -a "$FILE" "$(pwd)/$FILE"
+		sudo cp -a "$FILE" "$(pwd)/$FILE"
 	fi
 }
 
 pull_push() {
-	[ "$1" = "" ] && return 1
+	# If unset or empty string
+	[ -z "$1" ] && return 1
+
+	# If unset
+	[ -z "${FILES+x}" ] && set_files
 
 	for f in $FILES; do
 		# Remove the first character (.) from the string
@@ -185,7 +193,7 @@ case $OPT in
 		add "$ARG" || option_wrong "$OPT" 'option requires an argument'
 		;;
 	-f | --files)
-		files
+		list_files
 		;;
 	-h | --help)
 		help

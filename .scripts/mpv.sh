@@ -1,0 +1,110 @@
+#!/bin/sh
+
+PIPE="$XDG_CACHE_HOME/mpv/umpv_fifo"
+
+help() {
+	B=$(tput bold)
+	U=$(tput smul)
+	N=$(tput sgr0)
+
+	cat << EOF
+${B}NAME${N}
+	mpv.sh - mpv playback functions
+
+${B}SYNOPSIS${N}
+	${B}./mpv.sh${N} [${U}OPTION${N}] [${U}ARGS${N}...]
+
+${B}DESCRIPTION${N}
+	mpv.sh is a script to manage different mpv viewing bahavior.
+	If no ${U}URLS${N} argument is provided, it is read from clipboard instead.
+	The queue option starts a mpv window with a playlist, which all videos of
+	subsequent queue calls get added to.
+
+${B}OPTIONS${N}
+	${B}help${N}
+		Display usage message and exit.
+
+	[${B}play${N}] [${U}URLS${N}...] (default)
+		Plays videos in a new mpv window.
+
+	${B}shuffle${N} [${U}URLS${N}...]
+		Shuffle audio playlist (disables video playback).
+
+	${B}queue${N} [${U}URLS${N}...]
+		Add multiple videos to the unique mpv's queue.
+EOF
+}
+
+CLIP="$(xclip -se c -o)"
+
+play() {
+	if [ -z "$1" ]; then
+		MPV="mpv $CLIP"
+		# Cut off everything after space
+		LINK=" $(echo $CLIP | sed -nE 's/^(\S+).*/\1/p')"
+	else
+		MPV="mpv $*"
+		# Determain which argument holds the urls
+		[ "$1" = "${1#-}" ] && DISPLAY="$1" || DISPLAY="$2"
+		# Cut off everything after space
+		LINK=" $(echo $DISPLAY | sed -nE 's/^(\S+).*/\1/p')"
+	fi
+
+	notify-send -t 2500 "Loading video: $LINK"
+	# Attempt to load video
+	[ "$($MPV)" ] && notify-send -u critical -t 4000 "Loading video failed.."
+}
+
+shuffle() {
+	# Skip first argument
+	shift 1
+	mpv --no-video --shuffle --ytdl-format='bestaudio[ext=m4a]' "${@:-$CLIP}"
+}
+
+queue() {
+	OPTIONS="--no-terminal --force-window --input-file=$PIPE"
+
+	# Create mpv cache directory
+	DIR="$(dirname "$PIPE")"
+	[ ! -d "$DIR" ] && mkdir -p "$DIR"
+
+	# Delete named pipe if no umpv is running
+	if ! pgrep -f 'mpv $OPTIONS' > /dev/null; then
+		rm -f "$PIPE"
+	fi
+
+	# Skip first argument
+	shift 1
+	# Set url to argument if provided, clipboard otherwise
+	URLS="${@:-$CLIP}"
+
+	if [ -p $PIPE ]; then
+		notify-send -t 2500 "Added video to queue.."
+		# Add video to named pipe
+		echo "$URLS" \
+			| awk -v RS=' ' '{ print "raw loadfile "$1" append" }' > "$PIPE"
+	else
+		# Create named pipe
+		mkfifo "$PIPE"
+
+		# Play video
+		play "$OPTIONS" "$URLS"
+
+		rm -f "$PIPE"
+	fi
+}
+
+case "$1" in
+	help)
+		help
+		;;
+	shuffle)
+		shuffle "$@"
+		;;
+	queue)
+		queue "$@"
+		;;
+	*)
+		play "$@"
+		;;
+esac

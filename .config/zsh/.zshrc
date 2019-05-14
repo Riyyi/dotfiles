@@ -127,6 +127,7 @@ alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold bl
 alias mc="$HOME/.scripts/mediacontrol.sh"
 alias nw="$HOME/.scripts/network.sh"
 alias vp="$HOME/.scripts/vimplugin.sh"
+alias mpvshuffle="$HOME/.scripts/mpv.sh shuffle"
 
 # Laptop
 alias offtouchpad='sudo rmmod i2c_hid'
@@ -135,6 +136,5 @@ alias ontouchpad="sudo modprobe i2c_hid && $HOME/.scripts/touchscreen.sh 0"
 # Other
 alias mysql-workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench 1>/dev/null 2>&1 &; disown"
 alias weather="curl -s 'http://wttr.in/dordrecht?q&n&p' | head -n -3"
-alias mpvshuffle='mpv "$(xclip -o)" --no-video --shuffle --ytdl-format="bestaudio[ext=m4a]"'
 
 [ -f "$ZDOTDIR/.zshrc_extended" ] && source "$ZDOTDIR/.zshrc_extended"

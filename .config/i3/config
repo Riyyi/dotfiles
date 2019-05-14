@@ -89,6 +89,10 @@ bindsym $mod+e layout toggle split
 # Lock
 bindsym $mod+$mod2+l exec $HOME/.scripts/wm/lock.sh
 
+# mpv
+bindsym $mod+m exec --no-startup-id $HOME/.scripts/mpv.sh
+bindsym $mod+Shift+m exec --no-startup-id $HOME/.scripts/mpv.sh queue
+
 # Restart i3 inplace
 bindsym $mod+Shift+r restart
 # Exit i3

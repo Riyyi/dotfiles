@@ -7,20 +7,25 @@ xrandr --newmode "3000x2000_48.00" 405.25 3000 3232 3552 4104 2000 2003 2013 205
 xrandr --addmode eDP-1 3000x2000_48.00
 xrandr --output eDP-1 --mode 3000x2000_48.00 --primary
 
-# Program starting
-dunst &
-redshift &
-
-# Screensaver
+# Disable screensaver
 xset s off
 xset -dpms
 
-## Custom keybinds
-
-# Clear all mappings
+# Clear all key mappings
 setxkbmap -option ''
 
 # Swap capslock with escape
 setxkbmap -option caps:swapescape
+
+# Set touchpad toggle key symbol
+xmodmap -e "keycode 93 = XF86iTouch"
+
+# Daemon starting
+dunst &
+redshift &
+
+thunar --daemon &
+
+sxhkd "$XDG_CONFIG_HOME/sxhkd/i3" &
 
 exec i3

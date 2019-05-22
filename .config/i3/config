@@ -1,4 +1,4 @@
-##--- General ---##
+#--- General ---#
 
 # Basic definitions
 for_window [class="^.*"] border pixel 2
@@ -13,20 +13,19 @@ set $mod2 Mod1
 floating_modifier $mod
 
 # Application startup
-exec_always --no-startup-id $HOME/.scripts/panel/lemonbar.sh &
 exec_always --no-startup-id $HOME/.scripts/wm/wallpaper.sh &
+exec --no-startup-id $HOME/.scripts/panel/lemonbar.sh &
 exec --no-startup-id firefox
 exec --no-startup-id urxvt
-exec --no-startup-id thunar --daemon
 exec --no-startup-id thunar
 exec --no-startup-id xss-lock -- $HOME/.scripts/wm/lock.sh &
 
 # Colors
-set_from_resource $bgcolor          Wmcolor.bgcolor           #000000
-set_from_resource $bgcolor_inactive Wmcolor.bgcolor_Inactive  #000000
-set_from_resource $bgcolor_urgent   Wmcolor.bgcolor_Urgent    #000000
-set_from_resource $fgcolor          Wmcolor.fgcolor           #000000
-set_from_resource $fgcolor_inactive Wmcolor.fgcolor_Inactive  #000000
+set_from_resource $bgcolor          WmColor.bgcolor           #000000
+set_from_resource $bgcolor_inactive WmColor.bgcolor_Inactive  #000000
+set_from_resource $bgcolor_urgent   WmColor.bgcolor_Urgent    #000000
+set_from_resource $fgcolor          WmColor.fgcolor           #000000
+set_from_resource $fgcolor_inactive WmColor.fgcolor_Inactive  #000000
 
 # Xresources colors
 set_from_resource $darkblack    color0  #000000
@@ -57,64 +56,19 @@ client.urgent           $bgcolor_urgent     $bgcolor_urgent     $white      $dar
 # Font
 font pango:DejaVu Sans 8
 
-##--- Bindings ---##
+#--- Workspaces ---#
 
-#--- Basic bindings ---#
-
-# Start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
-
-# Kill focused window
-bindsym $mod+Shift+q kill
-
-# Floating
-bindsym $mod+space          focus mode_toggle
-bindsym $mod+Shift+space    floating toggle, sticky disable
-
-#--- Letter key bindings ---#
-
-# Start rofi (program launcher)
-bindsym $mod+d exec rofi -show run
-
-# Split horizontal / vertical
-bindsym $mod+h split h
-bindsym $mod+v split v
-
-# Container
-bindsym $mod+f fullscreen toggle
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-# Lock
-bindsym $mod+$mod2+l exec $HOME/.scripts/wm/lock.sh
-
-# mpv
-bindsym $mod+m exec --no-startup-id $HOME/.scripts/mpv.sh
-bindsym $mod+Shift+m exec --no-startup-id $HOME/.scripts/mpv.sh queue
-
-# Restart i3 inplace
-bindsym $mod+Shift+r restart
-# Exit i3
-bindsym $mod+Shift+e exec --no-startup-id prompt.sh "Logout and exit i3?" "i3-msg exit"
-bindsym $mod+Shift+s exec --no-startup-id prompt.sh "Shutdown computer?" "poweroff"
-bindsym $mod+Shift+w exec --no-startup-id prompt.sh "Reboot computer?" "reboot"
-
-# Sticky floating window
-bindsym $mod+Shift+f fullscreen disable, floating enable, sticky enable; exec --no-startup-id $HOME/.scripts/wm/hover.sh
-
-#--- Workspace bindings ---#
-
-set $ws1  "1 "
-set $ws2  "2 "
-set $ws3  "3 "
-set $ws4  "4 "
-set $ws5  "5"
-set $ws6  "6"
-set $ws7  "7"
-set $ws8  "8"
-set $ws9  "9"
-set $ws10 "10"
+# Set workspaces
+set_from_resource $ws1  WmWorkSpace.ws1 0
+set_from_resource $ws2  WmWorkSpace.ws2 0
+set_from_resource $ws3  WmWorkSpace.ws3 0
+set_from_resource $ws4  WmWorkSpace.ws4 0
+set_from_resource $ws5  WmWorkSpace.ws5 0
+set_from_resource $ws6  WmWorkSpace.ws6 0
+set_from_resource $ws7  WmWorkSpace.ws7 0
+set_from_resource $ws8  WmWorkSpace.ws8 0
+set_from_resource $ws9  WmWorkSpace.ws9 0
+set_from_resource $ws10 WmWorkSpace.ws0 0
 
 # Assign workspace to monitor
 workspace $ws1 output eDP-1
@@ -124,81 +78,16 @@ workspace $ws4 output eDP-1
 workspace $ws5 output eDP-1
 
 # Switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
+bindsym $mod+$mod2+0 workspace 0 # Wont load config without
 
-# Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
-
-# Move workspace
-bindsym $mod+Control+Left move workspace to output left
-bindsym $mod+Control+Right move workspace to output right
-
-# Get window name
-# xprop -> WM_CLASS
+# Open program on specific workspace
 assign [class="Firefox"] $ws1
-assign [class="qutebrowser"] $ws1
 assign [class="URxvt"] $ws3
 assign [class="Thunar"] $ws4
 assign [class="krita"] $ws5
 
+# Set program properties
 for_window [class="krita"] focus
 for_window [class="feh"] floating enable
 for_window [class="QtBank"] floating enable
-
-#--- Function key bindings ---#
-
-# Screen brightness
-bindsym $mod+F3 exec --no-startup-id brightnesscontrol.sh u 10
-bindsym $mod+F2 exec --no-startup-id brightnesscontrol.sh d 10
-
-#--- Arrow key bindings ---#
-
-# Change focus
-bindsym $mod+Left           focus left
-bindsym $mod+Down           focus down
-bindsym $mod+Up             focus up
-bindsym $mod+Right          focus right
-# Move focused window
-bindsym $mod+Shift+Left     move left
-bindsym $mod+Shift+Down     move down
-bindsym $mod+Shift+Up       move up
-bindsym $mod+Shift+Right    move right
-# Resize window
-bindsym $mod+$mod2+Left      resize shrink width 10 px or 10 ppt
-bindsym $mod+$mod2+Down      resize shrink height 10 px or 10 ppt
-bindsym $mod+$mod2+Up        resize grow height 10 px or 10 ppt
-bindsym $mod+$mod2+Right     resize grow width 10 px or 10 ppt
-
-#--- Media key bindings ---#
-
-# Screenshot
-set $capture "$HOME/pictures/screen-captures/"
-bindsym --release Print       exec scrot    -e "mv \$f "$capture # Fullscreen
-bindsym --release Shift+Print exec scrot -s -e "mv \$f "$capture # Selection
-bindsym --release $mod+Print  exec scrot -u -e "mv \$f "$capture # Focused window
-
-# Volume
-bindsym XF86AudioRaiseVolume exec --no-startup-id mediacontrol.sh up 5
-bindsym XF86AudioLowerVolume exec --no-startup-id mediacontrol.sh down 5
-bindsym XF86AudioMute        exec --no-startup-id mediacontrol.sh toggle
-
-# Touchscreen toggle
-bindsym XF86HomePage         exec --no-startup-id touchscreen.sh
+for_window [class="Qemu-system-i386"] floating enable

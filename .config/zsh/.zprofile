@@ -1,8 +1,9 @@
 ## Settings
 
 # Directories
-export PATH="$PATH:$HOME/.scripts"
+export CAPTURE="$HOME/pictures/screen-captures"
 export FPATH="$FPATH:$HOME/.scripts/completion"
+export PATH="$PATH:$HOME/.scripts"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -36,6 +37,9 @@ export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export QT_SCREEN_SCALE_FACTORS=2
 export QT_QPA_PLATFORMTHEME="qt5ct"
 
+# Terminal
+export TERMINAL="urxvt"
+
 # Vim
 export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
 
@@ -43,13 +47,18 @@ export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
-# Colors
-# Example:  *.color0:        #282a2e  ->  COLOR0=#282a2e
-# Example:  Wmcolor.bgcolor: #404552  ->  BGCOLOR=#404552
-export $(awk '
-	/^\*.[a-zA-Z0-9]+: +#/ {print toupper(substr($1, 3, length($1) - 3)) "=" $2}
-	/^Wmcolor./            {print toupper(substr($1, 9, length($1) - 9)) "=" $2}
-' "$XDG_CONFIG_HOME/xorg/Xresources")
+# Colors, window manager colors, workspace names
+# Example: *.color0:        #282a2e  ->  COLOR0=#282a2e
+# Example: WmColor.bgcolor: #404552  ->  BGCOLOR=#404552
+# Example: WmWorkSpace.ws0: "10"     ->  WS0="10"
+EXPORTS=$(sed -nE \
+	-e 's/^\*.(\w+): *#/\U\1=#/p' \
+	-e 's/^WmColor.(\w+): */\U\1=/p' \
+	-e 's/^WmWorkSpace.(\w+): */\U\1=/p' \
+	"$XDG_CONFIG_HOME/xorg/Xresources")
+echo "$EXPORTS" | while read -r line; do
+	export $line
+done
 
 ## Login
 

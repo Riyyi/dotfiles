@@ -29,12 +29,24 @@
 *.color7:       #707880
 *.color15:      #c5c8c6
 
-! i3-wm colors
-Wmcolor.bgcolor:          #404552
-Wmcolor.bgcolor_Inactive: #2b2e39
-Wmcolor.bgcolor_Urgent:   #dc7a43
-Wmcolor.fgcolor:          #ffffff
-Wmcolor.fgcolor_Inactive: #676e7d
+! WM colors
+WmColor.bgcolor:          #404552
+WmColor.bgcolor_Inactive: #2b2e39
+WmColor.bgcolor_Urgent:   #dc7a43
+WmColor.fgcolor:          #ffffff
+WmColor.fgcolor_Inactive: #676e7d
+
+! WM workspace names
+WmWorkSpace.ws1: "1 "
+WmWorkSpace.ws2: "2 "
+WmWorkSpace.ws3: "3 "
+WmWorkSpace.ws4: "4 "
+WmWorkSpace.ws5: "5"
+WmWorkSpace.ws6: "6"
+WmWorkSpace.ws7: "7"
+WmWorkSpace.ws8: "8"
+WmWorkSpace.ws9: "9"
+WmWorkSpace.ws0: "10"
 
 Xcursor.theme: capitaine-cursors
 

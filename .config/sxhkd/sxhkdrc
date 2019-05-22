@@ -1,0 +1,52 @@
+# -*-conf-*-
+
+#--- General ---#
+
+# Start a terminal
+super + Return
+	$TERMINAL
+
+# Start rofi (program launcher)
+super + d
+	rofi -show run
+
+# mpv
+super + {_,shift} + m
+	mpv.sh {_,queue}
+
+#--- Control ---#
+
+# Reload sxhkd config and panel
+super + ctrl + r
+	pkill -USR1 -x sxhkd; $HOME/.scripts/panel/lemonbar.sh &
+
+# Lock
+super + alt + l
+	$HOME/.scripts/wm/lock.sh
+
+# Shutdown
+super + shift + s
+	prompt.sh "Shutdown computer?" "poweroff"
+
+# Reboot
+super + shift + w
+	prompt.sh "Reboot computer?" "reboot"
+
+# Screen brightness
+super + {F2,F3}
+	brightnesscontrol.sh {down,up} 10
+
+# Screenshot (fullscreen, selection, focused window)
+{_,shift,super} + @Print
+	scrot {_,-s,-u} -e "mv \$f $CAPTURE"
+
+# Volume
+XF86Audio{LowerVolume,RaiseVolume,Mute}
+	mediacontrol.sh {down 5,up 5,toggle}
+
+# Touchpad toggle
+# XF86iTouch
+
+# Touchscreen toggle
+XF86HomePage
+	touchscreen.sh

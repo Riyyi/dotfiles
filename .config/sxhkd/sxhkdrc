@@ -45,8 +45,9 @@ XF86Audio{LowerVolume,RaiseVolume,Mute}
 	mediacontrol.sh {down 5,up 5,toggle}
 
 # Touchpad toggle
-# XF86iTouch
+XF86HomePage
+	inputctl.sh -d toggle
 
 # Touchscreen toggle
-XF86HomePage
-	touchscreen.sh
+XF86Search
+	inputctl.sh -s toggle

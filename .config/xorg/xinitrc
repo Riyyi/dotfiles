@@ -11,14 +11,12 @@ xrandr --output eDP-1 --mode 3000x2000_48.00 --primary
 xset s off
 xset -dpms
 
-# Clear all key mappings
-setxkbmap -option ''
+# Customize keyboard layout
+inputctl.sh -k off
+inputctl.sh -k on
 
-# Swap capslock with escape
-setxkbmap -option caps:swapescape
-
-# Set touchpad toggle key symbol
-xmodmap -e "keycode 93 = XF86iTouch"
+# Turn off touchscreen
+inputctl.sh -s off
 
 # Daemon starting
 dunst &

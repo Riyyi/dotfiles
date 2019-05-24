@@ -24,6 +24,6 @@ redshift &
 
 thunar --daemon &
 
-sxhkd "$XDG_CONFIG_HOME/sxhkd/i3" &
+sxhkd "$XDG_CONFIG_HOME/sxhkd/$WM" &
 
-exec i3
+exec $WM

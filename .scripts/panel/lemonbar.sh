@@ -52,7 +52,7 @@ start() {
 	trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 
 	# Create named pipe
-	[ -e "$PIPE" ] && rm "$PIPE"
+	[ -p $PIPE ] && rm "$PIPE"
 	mkfifo "$PIPE"
 
 	# Directory of this script

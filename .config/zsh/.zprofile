@@ -43,6 +43,9 @@ export TERMINAL="urxvt"
 # Vim
 export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
 
+# WM
+export WM="i3"
+
 # Xorg
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"

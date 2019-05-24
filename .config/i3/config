@@ -71,14 +71,14 @@ set_from_resource $ws9  WmWorkSpace.ws9 0
 set_from_resource $ws10 WmWorkSpace.ws0 0
 
 # Assign workspace to monitor
-workspace $ws1 output eDP-1
-workspace $ws2 output eDP-1
-workspace $ws3 output eDP-1
-workspace $ws4 output eDP-1
-workspace $ws5 output eDP-1
+workspace "$ws1" output eDP-1
+workspace "$ws2" output eDP-1
+workspace "$ws3" output eDP-1
+workspace "$ws4" output eDP-1
+workspace "$ws5" output eDP-1
 
-# Switch to workspace
-bindsym $mod+$mod2+0 workspace 0 # Wont load config without
+# Switch to workspace (wont load config without)
+bindsym $mod+$mod2+0 workspace 0
 
 # Open program on specific workspace
 assign [class="Firefox"] $ws1

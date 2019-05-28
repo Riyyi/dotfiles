@@ -2,6 +2,7 @@
 
 PIPE="/tmp/lemonbar_pipe"
 PANEL="lemonbar_panel"
+PANEL_HEIGHT=38
 
 title() {
 	# Grab focused window's ID
@@ -34,7 +35,7 @@ clock() {
 
 bar() {
 	lemonbar \
-		-a 20 -g x38 -n "$PANEL" \
+		-a 20 -g x$PANEL_HEIGHT -n "$PANEL" \
 		-f "DejaVu Sans-8" -o 0 \
 		-f "FontAwesome5Free Solid-8" -o -3 \
 		-f "FontAwesome5Free Regular-8" -o -3 \
@@ -107,17 +108,24 @@ start() {
 				;;
 		esac
 		printf "%s\n" "%{l}$workspaces%{c}$title%{r}$volume   $brightness   $wifi   $iface   $battery   $clock "
-	done < "$PIPE" | bar | sh
+	done < "$PIPE" | bar | sh &
 
 	wait
 }
 
-getpipe() {
+get_height() {
+	printf "%s" "$PANEL_HEIGHT"
+}
+
+get_pipe() {
 	printf "%s" "$PIPE"
 }
 
-if type "$1" 2> /dev/null | grep -q "function"; then
-	"$@"
-else
-	start
-fi
+case "$1" in
+	start | get_height | get_pipe)
+		"$1"
+		;;
+	"")
+		start
+		;;
+esac

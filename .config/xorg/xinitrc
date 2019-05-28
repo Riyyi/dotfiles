@@ -19,11 +19,6 @@ inputctl.sh -k on
 inputctl.sh -s off
 
 # Daemon starting
-dunst &
-redshift &
-
-thunar --daemon &
-
-sxhkd "$XDG_CONFIG_HOME/sxhkd/$WM" &
+"$HOME"/.scripts/wm/pidctl.sh -d
 
 exec $WM

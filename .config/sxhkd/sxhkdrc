@@ -16,12 +16,12 @@ super + {_,shift} + m
 
 #--- Control ---#
 
-# Reload sxhkd config and panel
+# Reload sxhkd config
 super + ctrl + r
-	pkill -USR1 -x sxhkd; $HOME/.scripts/panel/lemonbar.sh &
+	pkill -USR1 -x sxhkd
 
 # Lock
-super + alt + l
+super + alt + s
 	$HOME/.scripts/wm/lock.sh
 
 # Shutdown

@@ -19,6 +19,5 @@ fi
 
 INPUT="%{$R}%{$U}%{$D}"
 END="%{A}%{A}%{A}"
-PIPE="$("$(dirname "$0")"/lemonbar.sh get_pipe)"
 
-printf "%s\n" "brightness$INPUT$ICON $PERCENTAGE%$END" > "$PIPE" &
+printf "%s\n" "brightness$INPUT$ICON $PERCENTAGE%$END" > "$PANEL_PIPE" &

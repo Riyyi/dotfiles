@@ -1,9 +1,5 @@
 #!/bin/sh
 
-PIPE="/tmp/lemonbar_pipe"
-PANEL="lemonbar_panel"
-PANEL_HEIGHT=38
-
 title() {
 	# Grab focused window's ID
 	if [ -n "$1" ]; then
@@ -35,7 +31,7 @@ clock() {
 
 bar() {
 	lemonbar \
-		-a 20 -g x$PANEL_HEIGHT -n "$PANEL" \
+		-a 20 -g x$PANEL_HEIGHT -n "$PANEL_NAME" \
 		-f "DejaVu Sans-8" -o 0 \
 		-f "FontAwesome5Free Solid-8" -o -3 \
 		-f "FontAwesome5Free Regular-8" -o -3 \
@@ -53,8 +49,8 @@ start() {
 	trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 
 	# Create named pipe
-	[ -p $PIPE ] && rm "$PIPE"
-	mkfifo "$PIPE"
+	[ -p $PANEL_PIPE ] && rm "$PANEL_PIPE"
+	mkfifo "$PANEL_PIPE"
 
 	# Directory of this script
 	DIR="$(dirname "$0")"
@@ -62,23 +58,23 @@ start() {
 	# Setup workspaces block with xprop events
 	xprop -root -spy _NET_CURRENT_DESKTOP _NET_NUMBER_OF_DESKTOPS | while read -r line; do
 		"$DIR"/workspaces.sh
-	done > "$PIPE" &
+	done > "$PANEL_PIPE" &
 
 	# Setup window title block with xprop events
 	xprop -root -spy '\t$0\n' _NET_ACTIVE_WINDOW | while read -r line; do
 		title "$line"
-	done > "$PIPE" &
+	done > "$PANEL_PIPE" &
 
 	# Setup interrupt blocks
 	"$DIR"/volume.sh
 	"$DIR"/brightness.sh
 
 	# Setup block timers
-	while :; do title;             sleep 1; done > "$PIPE" &
-	while :; do "$DIR"/wifi.sh;    sleep 10; done > "$PIPE" &
-	while :; do "$DIR"/iface.sh;   sleep 10; done > "$PIPE" &
-	while :; do "$DIR"/battery.sh; sleep 30; done > "$PIPE" &
-	while :; do clock;             sleep 5; done > "$PIPE" &
+	while :; do title;             sleep 1; done > "$PANEL_PIPE" &
+	while :; do "$DIR"/wifi.sh;    sleep 10; done > "$PANEL_PIPE" &
+	while :; do "$DIR"/iface.sh;   sleep 10; done > "$PANEL_PIPE" &
+	while :; do "$DIR"/battery.sh; sleep 30; done > "$PANEL_PIPE" &
+	while :; do clock;             sleep 5; done > "$PANEL_PIPE" &
 
 	while read -r line ; do
 		case $line in
@@ -108,21 +104,13 @@ start() {
 				;;
 		esac
 		printf "%s\n" "%{l}$workspaces%{c}$title%{r}$volume   $brightness   $wifi   $iface   $battery   $clock "
-	done < "$PIPE" | bar | sh &
+	done < "$PANEL_PIPE" | bar | sh &
 
 	wait
 }
 
-get_height() {
-	printf "%s" "$PANEL_HEIGHT"
-}
-
-get_pipe() {
-	printf "%s" "$PIPE"
-}
-
 case "$1" in
-	start | get_height | get_pipe)
+	start)
 		"$1"
 		;;
 	"")

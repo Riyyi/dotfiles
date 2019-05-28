@@ -30,6 +30,5 @@ fi
 
 INPUT="%{$L}%{$S}%{$R}%{$U}%{$D}"
 END="%{A}%{A}%{A}%{A}%{A}"
-PIPE="$("$(dirname "$0")"/lemonbar.sh get_pipe)"
 
-printf "%s\n" "volume%{F$COLOR}$INPUT$SYMBOL $VOLUME%$END%{F-}" > "$PIPE" &
+printf "%s\n" "volume%{F$COLOR}$INPUT$SYMBOL $VOLUME%$END%{F-}" > "$PANEL_PIPE" &

@@ -7,6 +7,9 @@ xrandr --newmode "3000x2000_48.00" 405.25 3000 3232 3552 4104 2000 2003 2013 205
 xrandr --addmode eDP-1 3000x2000_48.00
 xrandr --output eDP-1 --mode 3000x2000_48.00 --primary
 
+# Set default X cursor to arrow
+xsetroot -cursor_name left_ptr
+
 # Disable screensaver
 xset s off
 xset -dpms

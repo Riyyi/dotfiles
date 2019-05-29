@@ -1,19 +1,5 @@
 # -*-conf-*-
 
-#--- General ---#
-
-# Kill focused window
-super + shift + q
-	i3-msg kill
-
-# Split container horizontal / vertical
-super + {h,v}
-	i3-msg split {h,v}
-
-# Container layout
-super + {s,w,e}
-	i3-msg layout {stacking,tabbed,toggle split}
-
 #--- Control ---#
 
 # Reload i3 config
@@ -25,6 +11,10 @@ super + shift + e
 	prompt.sh "Logout and exit i3?" "i3-msg exit"
 
 #--- Window ---#
+
+# Kill focused window
+super + shift + q
+	i3-msg kill
 
 # Fullscreen window
 super + f
@@ -52,13 +42,21 @@ super + shift + f
 
 #--- Workspace ---#
 
+# Toggle container horizontal/vertical split
+super + {h,v}
+	i3-msg split {h,v}
+
+# Container layout
+super + {s,w,e}
+	i3-msg layout {stacking,tabbed,toggle split}
+
 # Switch to workspace
-super + {0-9}
-	i3-msg workspace $WS{0-9}
+super + {1-9,0}
+	i3-msg workspace $WS{1-9,0}
 
 # Move focused container to workspace
-super + shift + {0-9}
-	i3-msg move container to workspace $WS{0-9}
+super + shift + {1-9,0}
+	i3-msg move container to workspace $WS{1-9,0}
 
 # Move workspace to monitor
 super + ctrl + {Left,Right}

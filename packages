@@ -6,6 +6,7 @@ arc-gtk-theme
 arc-icon-theme
 breeze-icons-git
 brightnessctl
+bspwm
 capitaine-cursors
 checkbashisms
 chromium
@@ -102,6 +103,7 @@ scrot
 signal-desktop-bin
 sloccount
 smartmontools
+stalonetray
 sxhkd
 texlive-bibtexextra
 texlive-core
@@ -141,6 +143,7 @@ xorg-xinit
 xorg-xinput
 xorg-xprop
 xorg-xrandr
+xorg-xsetroot
 xss-lock-git
 youtube-dl
 zathura

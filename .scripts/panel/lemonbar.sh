@@ -31,7 +31,7 @@ clock() {
 
 bar() {
 	lemonbar \
-		-a 20 -g x$PANEL_HEIGHT -n "$PANEL_NAME" \
+		-a 20 -g x"$PANEL_HEIGHT" -n "$PANEL_NAME" \
 		-f "DejaVu Sans-8" -o 0 \
 		-f "FontAwesome5Free Solid-8" -o -3 \
 		-f "FontAwesome5Free Regular-8" -o -3 \
@@ -44,6 +44,8 @@ start() {
 	while [ "$(pgrep -cx lemonbar.sh)" -gt 1 ]; do
 		pkill -ox -9 lemonbar.sh;
 	done
+	pkill xprop
+	pkill sleep
 
 	# Trap all subshells
 	trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
@@ -105,6 +107,14 @@ start() {
 		esac
 		printf "%s\n" "%{l}$workspaces%{c}$title%{r}$volume   $brightness   $wifi   $iface   $battery   $clock "
 	done < "$PANEL_PIPE" | bar | sh &
+
+	# Tray and panel on top of the root window, fixes fullscreen programs
+	if [ "$WM" = "bspwm" ];then
+		ROOT="$(xdo id -N Bspwm -n root | sort | head -n 1)"
+		PANEL_ID=$(xdo id -m -a "$PANEL_NAME")
+		TRAY_ID=$(xdo id -a "stalonetray")
+		xdo above -t "$ROOT" "$TRAY_ID" "$PANEL_ID"
+	fi
 
 	wait
 }

@@ -13,7 +13,7 @@ set $mod2 Mod1
 floating_modifier $mod
 
 # Application startup
-exec_always --no-startup-id $HOME/.scripts/wm/pidctl.sh -p
+exec_always --no-startup-id $HOME/.scripts/wm/pidctl.sh -p &
 
 # Colors
 set_from_resource $bgcolor          WmColor.bgcolor           #000000

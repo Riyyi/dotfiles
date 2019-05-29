@@ -1,0 +1,24 @@
+# -*-conf-*-
+
+#--- General ---#
+
+background "#2b2e39"
+
+#--- Dimensions ---#
+
+geometry 8x1-730+4
+grow_gravity NW
+
+icon_size 30
+icon_gravity NE
+
+max_geometry 0x38
+
+#--- Properties (atoms) ---#
+
+skip_taskbar true
+sticky true
+
+window_layer top
+window_strut none
+window_type dock

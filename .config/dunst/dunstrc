@@ -2,7 +2,7 @@
 
 ### Display ###
 
-geometry = "0x0-20-58"
+geometry = "0x0-20-20"
 horizontal_padding = 15
 idle_threshold = 120
 indicate_hidden = false

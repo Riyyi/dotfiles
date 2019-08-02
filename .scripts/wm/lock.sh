@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ICON="$XDG_CACHE_HOME/tmp.lock.png"
+ICON="$XDG_CACHE_HOME/lock.png"
 
 if [ ! -f "$ICON" ]; then
 	touch "$ICON"

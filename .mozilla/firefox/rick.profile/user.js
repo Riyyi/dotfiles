@@ -1,18 +1,21 @@
-// Enable userChrome.css and userContent.css
-user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-
 // Display a blank new tab
 user_pref("browser.newtabpage.enabled", false);
 user_pref("browser.newtab.url", "about:blank");
 
-// Do not save logins
-lockPref("signon.rememberSignons", false);
-
-// Fix dark GTK themes
-user_pref("widget.content.gtk-theme-override", "Arc");
+// Disable extension recommendations
+user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
 
 // No full screen warning
 user_pref("full-screen-api.warning.timeout", 0);
+
+// Do not save logins
+lockPref("signon.rememberSignons", false);
+
+// Enable userChrome.css and userContent.css
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+
+// Fix dark GTK themes
+user_pref("widget.content.gtk-theme-override", "Arc");
 
 // Disable tracking
 user_pref("privacy.resistFingerprinting", true);

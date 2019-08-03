@@ -85,15 +85,16 @@ alias svim="sudoedit"
 alias fuck='sudo $(fc -ln -1)'
 
 # Config
-alias i3b="$EDITOR $XDG_CONFIG_HOME/i3/blocks"
+alias c="$HOME/.scripts/config.sh"
 alias i3c="$EDITOR $XDG_CONFIG_HOME/i3/config"
 alias vrc="$EDITOR $XDG_CONFIG_HOME/vim/vimrc"
 alias xrc="$EDITOR $XDG_CONFIG_HOME/xorg/xinitrc"
-alias Xr="$EDITOR $XDG_CONFIG_HOME/xorg/Xresources"
+alias xr="$EDITOR $XDG_CONFIG_HOME/xorg/Xresources"
+alias zp="$EDITOR $ZDOTDIR/.zprofile"
 alias zrc="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
 
 alias li3="i3-msg restart"
-alias lXr="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
+alias lxr="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
 alias lzrc="source $ZDOTDIR/.zshrc"
 
 # Pacman

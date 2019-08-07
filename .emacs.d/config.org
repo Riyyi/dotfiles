@@ -1,0 +1,759 @@
+#+STARTUP: overview
+#+TITLE: Ricemacs, an Emacs Configuration
+#+AUTHOR: Riyyi
+#+LANGUAGE: en
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage[top=100pt,bottom=100pt,left=75pt,right=75pt]{geometry}
+#+LATEX_HEADER: \definecolor{blue}{rgb}{0,0.5,1}
+#+LATEX_HEADER: \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+* Initial setup
+
+These commands need to be run after the first startup.
+
+** Irony mode
+
+M-x =irony-install-server=
+
+** All the icons
+
+M-x =all-the-icons-install-fonts=
+
+* Customizations
+
+Store custom-file separately, don't freak out when it's not found.
+
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file 'noerror)
+#+END_SRC
+
+Set custom faces, without using customize.
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil :height 90 :family "DejaVu Sans Mono")
+#+END_SRC
+
+* Package Management
+** Ensure
+
+Ensures packages are installed by default.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+#+END_SRC
+
+** Auto update
+
+Update pending updates of installed packages at startup.
+https://github.com/rranelli/auto-package-update.el
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-package-update
+	:config
+	(setq auto-package-update-delete-old-versions t)
+	(setq auto-package-update-hide-results t)
+	(auto-package-update-maybe))
+#+END_SRC
+
+** Compile
+
+Automatically compile all packages.
+https://github.com/emacscollective/auto-compile
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-compile
+	:init (setq load-prefer-newer t)
+	:config
+	(auto-compile-on-load-mode)
+	(auto-compile-on-save-mode))
+#+END_SRC
+
+** Packages
+
+Install and configure packages.
+
+*** General
+
+#+BEGIN_SRC emacs-lisp
+  (use-package color-theme-sanityinc-tomorrow
+	:config
+	(load-theme 'sanityinc-tomorrow-night t)
+	(color-theme-sanityinc-tomorrow--with-colors 'night
+	  (custom-theme-set-faces
+		'sanityinc-tomorrow-night
+		`(highlight                ((t (:foreground ,yellow :background ,background))))
+		`(lazy-highlight           ((t (:foreground ,highlight :background ,comment))))
+		`(line-number-current-line ((t (:foreground ,yellow :background "#222427"))))
+		`(show-paren-match         ((t (:background ,yellow))))
+		`(cursor                   ((t (:background ,foreground))))
+		`(font-lock-keyword-face   ((t (:foreground ,green))))
+		`(font-lock-string-face    ((t (:foreground ,aqua))))
+		`(ivy-current-match        ((t (:foreground ,orange))))
+		`(ivy-cursor               ((t (:background ,foreground))))
+		)))
+
+  (use-package which-key
+	:config (which-key-mode))
+
+  (use-package ido-vertical-mode
+	:config (ido-vertical-mode))
+
+  (use-package smex
+	:defer t
+	:custom (smex-prompt-string "Command: ")
+	:config (smex-initialize))
+
+  (use-package avy
+	:defer t)
+
+  (use-package hungry-delete
+	:config (global-hungry-delete-mode))
+
+  (use-package smart-tabs-mode
+	:config
+	(smart-tabs-add-language-support latex latex-mode-hook
+	  ((latex-indent-line . 4)
+	   (latex-indent-region . 4)))
+	(smart-tabs-insinuate 'c 'c++ 'java 'python 'latex))
+#+END_SRC
+
+*** Evil
+
+ Evil mode and related packages.
+
+ #+BEGIN_SRC emacs-lisp
+   (use-package undo-tree)
+   (use-package goto-chg)
+
+   (use-package evil
+	 :after (undo-tree goto-chg)
+	 :custom
+	 (evil-search-module 'evil-search)
+	 (evil-ex-complete-emacs-commands nil)
+	 (evil-vsplit-window-right t)
+	 (evil-split-window-below t)
+	 (evil-shift-round nil)
+	 (evil-want-C-u-scroll t)
+	 ;; Do not set half cursor in operator mode
+	 (evil-operator-state-cursor '(box))
+	 ;; Needed by evil-collection
+	 (evil-want-integration t)
+	 (evil-want-keybinding nil)
+	 :init
+	 ;; Enable before evil-mode to work in all buffers
+	 (global-evil-leader-mode)
+	 :config (evil-mode))
+
+   (use-package evil-collection
+	 :after evil
+	 :custom
+	 (evil-collection-key-blacklist '("M-h" "M-l"))
+	 (evil-collection-setup-minibuffer t)
+	 :config (evil-collection-init))
+
+   (use-package evil-leader
+	 :after evil
+	 :custom (evil-leader/in-all-states t))
+
+   (use-package evil-nerd-commenter
+	 :after evil)
+ #+END_SRC
+
+*** Telephone Line
+
+Emacs mode line replacement.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package telephone-line
+	:custom-face
+	(telephone-line-evil ((t (:weight normal))))
+	(telephone-line-evil-normal ((t (:background "#87afd7" :foreground "black"))))
+	(telephone-line-evil-insert ((t (:background "#b5bd68" :foreground "black"))))
+	(telephone-line-evil-visual ((t (:background "#b294bb" :foreground "black"))))
+	(telephone-line-evil-replace ((t (:background "#282a2e" :foreground "white"))))
+	(telephone-line-evil-motion ((t (:background "#8abeb7" :foreground "black"))))
+	(telephone-line-evil-operator ((t (:background "#de935f" :foreground "black"))))
+	(telephone-line-evil-emacs ((t (:background "#b294bb" :foreground "black"))))
+	:config (telephone-line-mode))
+#+END_SRC
+
+*** NeoTree
+
+Collect icon fonts and propertize them within Emacs\\
+(requires M-x =all-the-icons-install-fonts=).
+
+#+BEGIN_SRC emacs-lisp
+  (use-package memoize)
+  (use-package all-the-icons
+	:after memoize)
+#+END_SRC
+
+Provides Emacs with a file tree.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package neotree
+	:defer t
+	:custom (neo-theme (if (display-graphic-p) 'icons 'arrow))
+	:hook (neotree-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
+	:init
+	(evil-set-initial-state 'neotree-mode 'normal)
+	(evil-define-key 'normal neotree-mode-map
+	  (kbd "RET")       'neotree-enter
+	  (kbd "<backtab>") 'neotree-collapse-all ; <S-tab>
+	  (kbd "c")         'neotree-create-node
+	  (kbd "r")         'neotree-rename-node
+	  (kbd "d")         'neotree-delete-node
+	  (kbd "h")         'neotree-select-previous-sibling-node
+	  (kbd "j")         'neotree-next-line
+	  (kbd "k")         'neotree-previous-line
+	  (kbd "l")         'neotree-enter
+	  (kbd "R")         'neotree-refresh
+	  (kbd "C")         'neotree-change-root
+	  (kbd "I")         'neotree-hidden-file-toggle
+	  (kbd "H")         'neotree-hidden-file-toggle
+	  (kbd "q")         'neotree-hide))
+#+END_SRC
+
+https://github.com/CoreyKaylor/dotfiles/blob/master/_emacs.d/config/neotree.el
+
+*** Centaur Tabs
+
+Places buffers as tabs in a bar at the top.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package centaur-tabs
+	:custom
+	(centaur-tabs-background-color "#282a2e")
+	(centaur-tabs-height 40)
+	(centaur-tabs-style "slant")
+	(centaur-tabs-set-icons t)
+	;; (centaur-tabs-set-modified-marker t)
+	;; (centaur-tabs-modified-marker "*")
+	;; (centaur-tabs-height 29)
+	;; (centaur-tabs-set-icons nil)
+	:custom-face
+	(centaur-tabs-default ((t (:background "#282a2e" :foreground "#282a2e"))))
+	(centaur-tabs-selected ((t (:background "#373b41" :foreground "white"))))
+	(centaur-tabs-unselected ((t (:background "#282a2e" :foreground "#c5c8c6"))))
+	:config
+	(centaur-tabs-mode))
+#+END_SRC
+
+*** Completion
+
+Autocomplete packages (includes code completion and snippets).
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+	:defer t
+	:custom
+	(company-idle-delay 0.2)
+	(company-minimum-prefix-length 2)
+	:init
+	(add-hook 'c-mode-common-hook 'company-mode)
+	(add-hook 'emacs-lisp-mode-hook 'company-mode)
+	(add-hook 'latex-mode-hook 'company-mode)
+	(add-hook 'org-mode-hook 'company-mode)
+	(add-hook 'shell-mode-hook 'company-mode)
+	(add-hook 'shell-script-mode-hook 'company-mode))
+
+  (use-package company-irony
+	:after company
+	:config (add-to-list 'company-backends 'company-irony))
+
+  (use-package company-c-headers
+	:after company
+	:config (add-to-list 'company-backends 'company-c-headers))
+#+END_SRC
+
+Irony requires M-x =irony-install-server=.
+
+#+BEGIN_SRC emacs-lisp
+(use-package irony
+	:defer t
+	:init
+	(add-hook 'c++-mode-hook 'irony-mode)
+	(add-hook 'c-mode-hook 'irony-mode)
+	(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+	:config (push 'glsl-mode irony-supported-major-modes))
+
+  (use-package yasnippet
+	:defer t
+	:init
+	(add-hook 'org-mode-hook #'yas-minor-mode)
+	(add-hook 'prog-mode-hook #'yas-minor-mode)
+	:config (yas-reload-all))
+
+  (use-package yasnippet-snippets
+	:after yasnippet)
+#+END_SRC
+
+*** Prettify
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+	:defer t
+	:init (add-hook 'prog-mode-hook 'rainbow-mode))
+
+  (use-package rainbow-delimiters
+	:defer t
+	:init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+  (use-package org-bullets
+	:defer t
+	:init (add-hook 'org-mode-hook 'org-bullets-mode))
+
+  ;; Shader syntax highlighting
+  (use-package glsl-mode
+	:defer t)
+
+  ;; Mark code after the 80 column range
+  (use-package column-enforce-mode
+	:defer t
+	:custom (column-enforce-comments nil)
+	:custom-face (column-enforce-face ((t (:background "#373b41" :foreground "#de935f"))))
+	:init (add-hook 'prog-mode-hook 'column-enforce-mode))
+#+END_SRC
+
+Possible modern replacement for column-enforce-mode:
+https://github.com/laishulu/hl-fill-column
+
+* General
+
+#+BEGIN_SRC emacs-lisp
+  ;; Scrolling
+  (setq scroll-conservatively 1)
+  (setq mouse-wheel-scroll-amount '(5))
+  (setq mouse-wheel-progressive-speed nil)
+
+  ;; Columns start at 1
+  (setq column-number-indicator-zero-based nil)
+
+  ;; Automatically add newline on save at the end of the file
+  (setq require-final-newline t)
+
+  ;; Enable line numbers
+  (global-display-line-numbers-mode)
+
+  ;; C++ syntax highlighting for .h files
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+  ;; When in the GUI version of Emacs, enable pretty symbols
+  (when window-system (global-prettify-symbols-mode t))
+#+END_SRC
+
+** Buffers
+
+#+BEGIN_SRC emacs-lisp
+  ;; Buffers
+  (setq ido-create-new-buffer 'always)
+  (setq ido-enable-flex-maching t)
+  (setq ido-everywhere t)
+  (setq ibuffer-expert t)
+  ;; Enable ido
+  (ido-mode 1)
+#+END_SRC
+
+** Electric
+
+#+BEGIN_SRC emacs-lisp
+  ;; Make return key also do indent of previous line
+  (electric-indent-mode 1)
+  (setq electric-pair-pairs '(
+							  (?\( . ?\))
+							  (?\[ . ?\])
+							  ))
+  (electric-pair-mode 1)
+#+END_SRC
+
+** File Backups
+
+File auto-saves, backups, tramps.
+
+#+BEGIN_SRC emacs-lisp
+  (setq emacs-cache (concat (getenv "XDG_CACHE_HOME") "/emacs"))
+  (unless (file-directory-p emacs-cache)
+	(make-directory emacs-cache t))
+  ;https://emacs.stackexchange.com/questions/33/put-all-backups-into-one-backup-folder
+  (setq backup-directory-alist `((".*" . ,emacs-cache))
+		auto-save-file-name-transforms `((".*" ,(concat emacs-cache "") t))
+		auto-save-list-file-prefix (concat emacs-cache "/.saves-")
+		tramp-backup-directory-alist `((".*" . ,emacs-cache))
+		tramp-auto-save-directory emacs-cache)
+  (setq create-lockfiles nil   ; Disable lockfiles (.#)
+		backup-by-copying t    ; Don't cobber symlinks
+		delete-old-versions t  ; Cleanup backups
+		version-control t      ; Use version numbers on backups
+		kept-new-versions 5    ; Backups to keep
+		kept-old-versions 2)   ; ,,
+#+END_SRC
+
+** Hide Elements
+
+#+BEGIN_SRC emacs-lisp
+  (menu-bar-mode 0)
+  (scroll-bar-mode 0)
+  (tool-bar-mode 0)
+  (tooltip-mode 0)
+  (fringe-mode 0)
+  (blink-cursor-mode 0)
+
+  (setq inhibit-startup-message t)
+  (setq initial-scratch-message nil)
+  (setq ring-bell-function 'ignore)
+#+END_SRC
+
+** Org
+
+#+BEGIN_SRC emacs-lisp
+  ;; Org
+  (with-eval-after-load 'org
+	(add-to-list 'org-structure-template-alist
+				 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")))
+
+  (setq org-ellipsis " ↴")
+  (setq org-src-fontify-natively t)
+  (setq org-src-window-setup 'current-window)
+  (setq org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
+  ;; Enable syntax highlighting when exporting to .pdf
+  ;; Include latex-exporter
+  (with-eval-after-load 'ox-latex
+	;; Add minted to the list of packages to insert in every LaTeX header
+	(add-to-list 'org-latex-packages-alist '("" "minted"))
+	;; Define how minted is added to source code
+	(setq org-latex-listings 'minted)
+	(setq org-latex-minted-options
+		  '(("frame" "lines") ("linenos=true")))
+	;; Append -shell-escape to every element in org-latex-pdf-process
+	(setq org-latex-pdf-process
+		  (mapcar
+		   (lambda (s)
+			 (if (not (string-match-p "-shell-escape" s))
+				 (replace-regexp-in-string "%latex " "%latex -shell-escape " s)
+			   s))
+		   org-latex-pdf-process)))
+#+END_SRC
+
+** Server
+
+Start an Emacs server. To use emacsclient from the terminal.
+
+#+BEGIN_SRC emacs-lisp
+  ;; (unless (and (fboundp 'server-running-p)
+  ;; 			 (server-running-p))
+  ;;   (server-start))
+#+END_SRC
+
+** Tabs
+
+#+BEGIN_SRC emacs-lisp
+  ;; Tabs
+  (setq-default tab-width 4
+				indent-tabs-mode t)
+
+  ;; C/C++-like languages formatting style
+  ;https://www.emacswiki.org/emacs/IndentingC
+  (setq-default c-basic-offset 4
+				c-default-style "linux")
+#+END_SRC
+
+** UTF-8
+
+Set UTF-8 encoding as default.
+
+#+BEGIN_SRC emacs-lisp
+  (prefer-coding-system 'utf-8-unix)
+  (setq locale-coding-system 'utf-8-unix)
+  ;; Default also sets keyboard and terminal coding system
+  (set-default-coding-systems 'utf-8-unix)
+  (set-buffer-file-coding-system 'utf-8-unix)
+  (set-file-name-coding-system 'utf-8-unix)
+  (set-selection-coding-system 'utf-8-unix)
+#+END_SRC
+
+* Functions
+** General
+
+Functions that only use built-in Emacs functionality.
+
+#+BEGIN_SRC emacs-lisp
+  (defun config-visit ()
+	"Config edit."
+	(interactive)
+	(find-file "~/.emacs.d/config.org"))
+
+  (defun config-reload ()
+	"Config reload."
+	(interactive)
+	(org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+
+  (defun display-startup-echo-area-message ()
+	"Hide default startup message."
+	(message ""))
+
+  (defun split-follow-horizontally ()
+	"Split and follow window."
+	(interactive)
+	(split-window-below)
+	(other-window 1))
+  (defun split-follow-vertically ()
+	"Split and follow window."
+	(interactive)
+	(split-window-right)
+	(other-window 1))
+
+  (defun find-project-root ()
+	"Returns root of the project, determined by .git/, default-directory otherwise."
+	(let ((search-directory (locate-dominating-file "." ".git")))
+	  (if search-directory
+		  search-directory
+		default-directory))
+	)
+
+  (defun find-file-in-project-root ()
+	"Find file in project root."
+	(interactive)
+	(let ((default-directory (find-project-root)))
+	  (call-interactively 'find-file)))
+
+  (defun sudo-edit (&optional arg)
+	"Edit currently visited file as root.
+
+  With a prefix ARG prompt for a file to visit.
+  Will also prompt for a file to visit if current
+  buffer is not visiting a file."
+	(interactive "P")
+	(if (or arg (not buffer-file-name))
+		(find-file (concat "/sudo:root@localhost:"
+						   (read-file-name "Find file(as root): ")))
+	  (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+#+END_SRC
+
+** Package
+
+Functions that use package functionality.
+
+#+BEGIN_SRC emacs-lisp
+  (defun centaur-tabs-buffer-groups ()
+	"Organize tabs into groups."
+	(list
+	 (cond
+	  ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
+	  ((derived-mode-p 'dired-mode) "Dired")
+	  ((memq major-mode '(org-mode
+						  org-agenda-mode
+						  diary-mode
+						  emacs-lisp-mode)) "OrgMode")
+	  (t "User"))))
+
+  (defun neotree-toggle-in-project-root ()
+	"Toggle Neotree in project root."
+	(interactive)
+	(let ((default-directory (find-project-root)))
+	  (call-interactively 'neotree-toggle)))
+#+END_SRC
+
+* Advice and Aliases
+** Advice
+
+Define default terminal option.
+
+#+BEGIN_SRC emacs-lisp
+  (defvar terminal-shell "/bin/zsh")
+  (defadvice ansi-term (before force-bash)
+	(interactive (list terminal-shell)))
+  (ad-activate 'ansi-term)
+#+END_SRC
+
+** Aliases
+*** General
+
+Make confirm easier, by just pressing y/n.
+
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+*** Package
+
+Evil command aliases.
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'evil-ex
+    (evil-ex-define-cmd "W" "w")
+    (evil-ex-define-cmd "Q" "q")
+    (evil-ex-define-cmd "WQ" "wq")
+    (evil-ex-define-cmd "Wq" "wq"))
+#+END_SRC
+
+* Hooks
+
+#+BEGIN_SRC emacs-lisp
+  ;; Delete trailing whitespace
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+  ;; Highlight parentheses
+  (add-hook 'prog-mode-hook 'show-paren-mode)
+
+  ;; C++ // style comments in c-mode
+  (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
+#+END_SRC
+
+* Key Bindings
+
+Useful links:\\
+[[https://www.masteringemacs.org/article/mastering-key-bindings-emacs][Mastering Emacs key bindings]] \\
+[[https://github.com/jwiegley/use-package/blob/master/bind-key.el][use-package bind key]] \\
+[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Remapping-Commands.html][GNU remapping commands]] \\
+[[https://www.gnu.org/software/emacs/manual/html_node/efaq/Binding-combinations-of-modifiers-and-function-keys.html][GNU binding combinations of modifiers]]
+
+** Disable default
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'org
+	(define-key org-mode-map (kbd "M-h") nil)
+	(define-key org-mode-map (kbd "C-M-h") nil))
+
+  (with-eval-after-load 'cc-mode
+	(define-key c-mode-base-map (kbd "C-M-h") nil))
+#+END_SRC
+
+** Default
+
+#+BEGIN_SRC emacs-lisp
+  ;; Buffers
+  (global-set-key (kbd "C-x b") 'ido-switch-buffer)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "M-w") 'kill-this-buffer)
+
+  ;; Config edit/reload
+  (global-set-key (kbd "C-c e") 'config-visit)
+  (global-set-key (kbd "C-c r") 'config-reload)
+
+  ;; Split and follow window
+  (global-set-key (kbd "C-x 2") 'split-follow-horizontally)
+  (global-set-key (kbd "C-x 3") 'split-follow-vertically)
+
+  ;; Find file
+  (global-set-key (kbd "C-x C-f") 'find-file-in-project-root)
+
+  ;; Terminal
+  (global-set-key (kbd "<s-backspace>") 'ansi-term)
+#+END_SRC
+
+** Disable package
+
+Disable spacebar in evil motion.
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'evil-states
+	(define-key evil-motion-state-map (kbd "<SPC>") nil))
+#+END_SRC
+
+** Package
+
+#+BEGIN_SRC emacs-lisp
+  ;; Avy
+  (global-set-key (kbd "M-s") 'avy-goto-char-timer)
+
+  ;; Buffers
+  (global-set-key (kbd "M-h") 'centaur-tabs-backward-tab)
+  (global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
+  (global-set-key (kbd "C-M-h") 'centaur-tabs-move-current-tab-to-left)
+  (global-set-key (kbd "C-M-l") 'centaur-tabs-move-current-tab-to-right)
+
+  ;; Company completion selection
+  (with-eval-after-load 'company
+	(define-key company-active-map (kbd "M-n") nil)
+	(define-key company-active-map (kbd "M-p") nil)
+	(define-key company-active-map (kbd "M-h") #'company-abort)
+	(define-key company-active-map (kbd "M-j") #'company-select-next)
+	(define-key company-active-map (kbd "M-k") #'company-select-previous)
+	(define-key company-active-map (kbd "M-l") #'company-complete-selection)
+	(define-key company-active-map (kbd "<escape>") #'company-abort))
+  ;https://github.com/company-mode/company-mode/blob/master/company.el#L661
+
+  ;; Evil command history selection
+  (with-eval-after-load 'evil-ex
+	(define-key evil-ex-completion-map (kbd "M-h") 'abort-recursive-edit)
+	(define-key evil-ex-completion-map (kbd "M-j") #'next-complete-history-element)
+	(define-key evil-ex-completion-map (kbd "M-k") #'previous-complete-history-element)
+	(define-key evil-ex-completion-map (kbd "M-l") 'exit-minibuffer))
+
+  ; Overwrite evil keymaps
+  ;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)
+  ;(evil-define-key 'motion 'global (kbd "C-w") 'kill-this-buffer)
+  ;(define-key evil-motion-state-map (kbd "C-w") 'kill-this-buffer) ; @Todo test this with nil
+  ;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
+
+  ;; Neotree
+  (with-eval-after-load 'evil-states
+	(define-key evil-normal-state-map (kbd "C-t") 'neotree-toggle-in-project-root))
+
+  ;; Smex
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+#+END_SRC
+
+** Leader
+
+Evil leader key binds.
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'evil-leader
+	(evil-leader/set-leader "<SPC>")
+	(evil-leader/set-key
+	  "<SPC>" 'smex
+
+	  ;; Window
+	  "0" 'delete-window
+	  "1" 'delete-other-windows
+	  "2" 'split-follow-horizontally
+	  "3" 'split-follow-vertically
+	  "5 0" 'delete-frame
+	  "5 1" 'delete-other-frames
+
+	  ;; Buffer
+	  "b" 'ido-switch-buffer
+	  "C-b" 'ibuffer
+
+	  ;; Comments / config
+	  "c c" 'evilnc-comment-or-uncomment-lines
+	  "c p" 'evilnc-comment-or-uncomment-paragraphs
+	  "c r" 'config-reload
+	  "c v" 'config-visit
+	  "c y" 'evilnc-comment-and-kill-ring-save
+
+	  ;; Find file
+	  "f" 'find-file-in-project-root
+
+	  ;; Tabs
+	  "h" 'centaur-tabs-backward-group
+	  "j" 'centaur-tabs-select-end-tab
+	  "k" 'centaur-tabs-select-beg-tab
+	  "l" 'centaur-tabs-forward-group
+
+	  ;; Neotree
+	  "t" 'neotree-toggle-in-project-root
+
+	  ;; Avy
+	  "s" 'avy-goto-char-timer
+
+	  "w" 'kill-this-buffer
+
+	  "x" 'smex-major-mode-commands
+  ))
+#+END_SRC
+
+* Notes
+
+Org mode keybinds
+
+- <C-return>     = org-insert-heading-respect-content (create new node)
+- <C-x n s>      = org-narrow-to-subtree
+- <C-x n w>      = widen
+- <S-left/right> = org-shiftleft/org-shiftright (cycle to next todo keyword)
+- <S-up/down>    = org-shiftup/org-shiftdown (cycle todo priority)
+- <M-S-return>   = org-insert-todo-heading (add todo item)

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hyperref
+# key: hy
+# --
+\hyperref[sec:${1:name}]{${2:a}}$0

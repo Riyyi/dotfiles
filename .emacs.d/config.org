@@ -51,9 +51,10 @@ https://github.com/rranelli/auto-package-update.el
 
 #+BEGIN_SRC emacs-lisp
   (use-package auto-package-update
+	:custom
+	(auto-package-update-delete-old-versions t)
+	(auto-package-update-hide-results t)
 	:config
-	(setq auto-package-update-delete-old-versions t)
-	(setq auto-package-update-hide-results t)
 	(auto-package-update-maybe))
 #+END_SRC
 
@@ -64,7 +65,7 @@ https://github.com/emacscollective/auto-compile
 
 #+BEGIN_SRC emacs-lisp
   (use-package auto-compile
-	:init (setq load-prefer-newer t)
+	:custom (load-prefer-newer t)
 	:config
 	(auto-compile-on-load-mode)
 	(auto-compile-on-save-mode))
@@ -149,6 +150,7 @@ Install and configure packages.
    (use-package evil-collection
 	 :after evil
 	 :custom
+	 (evil-collection-company-use-tng nil)
 	 (evil-collection-key-blacklist '("M-h" "M-l"))
 	 (evil-collection-setup-minibuffer t)
 	 :config (evil-collection-init))
@@ -434,16 +436,6 @@ File auto-saves, backups, tramps.
 				 (replace-regexp-in-string "%latex " "%latex -shell-escape " s)
 			   s))
 		   org-latex-pdf-process)))
-#+END_SRC
-
-** Server
-
-Start an Emacs server. To use emacsclient from the terminal.
-
-#+BEGIN_SRC emacs-lisp
-  ;; (unless (and (fboundp 'server-running-p)
-  ;; 			 (server-running-p))
-  ;;   (server-start))
 #+END_SRC
 
 ** Tabs

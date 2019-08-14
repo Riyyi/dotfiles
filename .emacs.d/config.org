@@ -98,6 +98,9 @@ Install and configure packages.
   (use-package which-key
 	:config (which-key-mode))
 
+  (use-package general
+	:after which-key)
+
   (use-package ido-vertical-mode
 	:config (ido-vertical-mode))
 
@@ -142,9 +145,6 @@ Install and configure packages.
 	 ;; Needed by evil-collection
 	 (evil-want-integration t)
 	 (evil-want-keybinding nil)
-	 :init
-	 ;; Enable before evil-mode to work in all buffers
-	 (global-evil-leader-mode)
 	 :config (evil-mode))
 
    (use-package evil-collection
@@ -154,10 +154,6 @@ Install and configure packages.
 	 (evil-collection-key-blacklist '("M-h" "M-l"))
 	 (evil-collection-setup-minibuffer t)
 	 :config (evil-collection-init))
-
-   (use-package evil-leader
-	 :after evil
-	 :custom (evil-leader/in-all-states t))
 
    (use-package evil-nerd-commenter
 	 :after evil)
@@ -217,8 +213,6 @@ Provides Emacs with a file tree.
 	  (kbd "H")         'neotree-hidden-file-toggle
 	  (kbd "q")         'neotree-hide))
 #+END_SRC
-
-https://github.com/CoreyKaylor/dotfiles/blob/master/_emacs.d/config/neotree.el
 
 *** Centaur Tabs
 
@@ -510,6 +504,22 @@ Functions that only use built-in Emacs functionality.
 	(let ((default-directory (find-project-root)))
 	  (call-interactively 'find-file)))
 
+
+  ;; https://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+  (defun rename-file-and-buffer ()
+	"Rename the current buffer and file it is visiting."
+	(interactive)
+	(let ((filename (buffer-file-name)))
+	  (if (not (and filename (file-exists-p filename)))
+		  (message "Buffer is not visiting a file!")
+		(let ((new-name (read-file-name "New name: " filename)))
+		  (cond
+		   ((vc-backend filename) (vc-rename-file filename new-name))
+		   (t
+			(rename-file filename new-name t)
+			(set-visited-file-name new-name t t)))))))
+
+  ;; https://emacsredux.com/blog/2013/04/21/edit-files-as-root/
   (defun sudo-edit (&optional arg)
 	"Edit currently visited file as root.
 
@@ -682,7 +692,7 @@ Disable spacebar in evil motion.
 
   ;; Neotree
   (with-eval-after-load 'evil-states
-	(define-key evil-normal-state-map (kbd "C-t") 'neotree-toggle-in-project-root))
+	(define-key evil-normal-state-map (kbd "C-n") 'neotree-toggle-in-project-root))
 
   ;; Smex
   (global-set-key (kbd "M-x") 'smex)
@@ -691,27 +701,33 @@ Disable spacebar in evil motion.
 
 ** Leader
 
-Evil leader key binds.
+General.el leader key binds.
 
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'evil-leader
-	(evil-leader/set-leader "<SPC>")
-	(evil-leader/set-key
-	  "<SPC>" 'smex
+  (with-eval-after-load 'general
+	(general-create-definer space-leader
+	  :prefix "SPC"
+	  :non-normal-prefix "M-SPC"
+	  :states '(normal visual insert motion emacs))
 
-	  ;; Window
-	  "0" 'delete-window
-	  "1" 'delete-other-windows
-	  "2" 'split-follow-horizontally
-	  "3" 'split-follow-vertically
-	  "5 0" 'delete-frame
-	  "5 1" 'delete-other-frames
+	(general-create-definer comma-leader
+	  :prefix ","
+	  :states '(normal visual))
+
+	(space-leader
+	  "SPC" 'smex
 
 	  ;; Buffer
-	  "b" 'ido-switch-buffer
-	  "C-b" 'ibuffer
+	  "b"  '(:ignore t :which-key "buffer")
+	  "b B" 'ibuffer
+	  "b b" 'ido-switch-buffer
+	  "b d" 'kill-this-buffer
+	  "b h" 'previous-buffer
+	  "b l" 'next-buffer
+	  "b r" 'revert-buffer
 
 	  ;; Comments / config
+	  "c"   '(:ignore t :which-key "comments/config")
 	  "c c" 'evilnc-comment-or-uncomment-lines
 	  "c p" 'evilnc-comment-or-uncomment-paragraphs
 	  "c r" 'config-reload
@@ -719,7 +735,10 @@ Evil leader key binds.
 	  "c y" 'evilnc-comment-and-kill-ring-save
 
 	  ;; Find file
-	  "f" 'find-file-in-project-root
+	  "f"   '(:ignore t :which-key "file")
+	  "f f" 'find-file-in-project-root
+	  "f r" 'rename-file-and-buffer
+	  "f s" 'save-buffer
 
 	  ;; Tabs
 	  "h" 'centaur-tabs-backward-group
@@ -728,16 +747,37 @@ Evil leader key binds.
 	  "l" 'centaur-tabs-forward-group
 
 	  ;; Neotree
-	  "t" 'neotree-toggle-in-project-root
+	  "n" 'neotree-toggle-in-project-root
+
+	  ;; Quit
+	  "q"   '(:ignore t :which-key "quit")
+	  "q q" 'kill-emacs
+	  "q d" 'delete-frame
+	  "q o" 'delete-other-frame
 
 	  ;; Avy
 	  "s" 'avy-goto-char-timer
 
-	  "w" 'kill-this-buffer
+	  ;; Window
+	  "w"     '(:ignore t :which-key "window")
+	  "w d"   'delete-window
+	  "w h"   'evil-window-left
+	  "w j"   'evil-window-down
+	  "w k"   'evil-window-up
+	  "w l"   'evil-window-right
+	  "w o"   'delete-other-windows
+	  "w s"   '(:ignore t :which-key "split")
+	  "w s h" 'split-follow-horizontally
+	  "w s v" 'split-follow-vertically
+	  "w w"   'other-window
 
 	  "x" 'smex-major-mode-commands
-  ))
+	  ))
 #+END_SRC
+
+Source:
+https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-evil.el#L712
+https://github.com/suyashbire1/emacs.d/blob/master/init.el
 
 * Notes
 

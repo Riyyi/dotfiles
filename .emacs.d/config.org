@@ -718,7 +718,7 @@ General.el leader key binds.
 	  "SPC" 'smex
 
 	  ;; Buffer
-	  "b"  '(:ignore t :which-key "buffer")
+	  "b"   '(:ignore t :which-key "buffer")
 	  "b B" 'ibuffer
 	  "b b" 'ido-switch-buffer
 	  "b d" 'kill-this-buffer
@@ -781,11 +781,19 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 
 * Notes
 
-Org mode keybinds
+Org mode keybinds:
 
-- <C-return>     = org-insert-heading-respect-content (create new node)
-- <C-x n s>      = org-narrow-to-subtree
-- <C-x n w>      = widen
-- <S-left/right> = org-shiftleft/org-shiftright (cycle to next todo keyword)
-- <S-up/down>    = org-shiftup/org-shiftdown (cycle todo priority)
-- <M-S-return>   = org-insert-todo-heading (add todo item)
+| Keystroke      | Description                | Function                             |
+|----------------+----------------------------+--------------------------------------|
+| <C-c C-c>      | Update tags/headline       | (org-ctrl-c-ctrl-c)                  |
+| <C-return>     | Insert heading             | (org-insert-heading-respect-content) |
+| <C-x n s>      | ?                          | (org-narrow-to-subtree)              |
+| <C-x n w>      | ?                          | (widen)                              |
+| <M-return>     | Insert heading             | (org-meta-return)                    |
+| <M-S-return>   | Insert todo heading        | (org-insert-todo-heading)            |
+| <M-down>       | Move subtree down          | (org-metadown)                       |
+| <M-left>       | Promote heading            | (org-metaleft)                       |
+| <M-right>      | Demote heading             | (org-metaright)                      |
+| <M-up>         | Move subtree up            | (org-metaup)                         |
+| <S-left/right> | Cycle to next todo keyword | (org-shiftleft/org-shiftright)       |
+| <S-up/down>    | Cycle todo priority        | (org-shiftup/org-shiftdown)          |

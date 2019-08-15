@@ -192,26 +192,13 @@ Provides Emacs with a file tree.
 
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
-	:defer t
-	:custom (neo-theme (if (display-graphic-p) 'icons 'arrow))
-	:hook (neotree-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
-	:init
-	(evil-set-initial-state 'neotree-mode 'normal)
-	(evil-define-key 'normal neotree-mode-map
-	  (kbd "RET")       'neotree-enter
-	  (kbd "<backtab>") 'neotree-collapse-all ; <S-tab>
-	  (kbd "c")         'neotree-create-node
-	  (kbd "r")         'neotree-rename-node
-	  (kbd "d")         'neotree-delete-node
-	  (kbd "h")         'neotree-select-previous-sibling-node
-	  (kbd "j")         'neotree-next-line
-	  (kbd "k")         'neotree-previous-line
-	  (kbd "l")         'neotree-enter
-	  (kbd "R")         'neotree-refresh
-	  (kbd "C")         'neotree-change-root
-	  (kbd "I")         'neotree-hidden-file-toggle
-	  (kbd "H")         'neotree-hidden-file-toggle
-	  (kbd "q")         'neotree-hide))
+	:after all-the-icons
+	:custom
+	(neo-theme (if (display-graphic-p) 'icons 'arrow))
+	(neo-autorefresh nil)
+	(neo-dont-be-alone t)
+	(neo-mode-line-type 'none)
+	:hook (neotree-mode . (lambda (&rest _) (display-line-numbers-mode 0))))
 #+END_SRC
 
 *** Centaur Tabs
@@ -692,7 +679,27 @@ Disable spacebar in evil motion.
 
   ;; Neotree
   (with-eval-after-load 'evil-states
-	(define-key evil-normal-state-map (kbd "C-n") 'neotree-toggle-in-project-root))
+	(general-define-key
+	 :keymaps 'evil-normal-state-map
+	 "C-n" 'neotree-toggle-in-project-root)
+
+	(general-define-key
+	 :states 'normal
+	 :keymaps 'neotree-mode-map
+	 "RET"       'neotree-enter
+	 "<backtab>" 'neotree-collapse-all ; <S-tab>
+	 "c"         'neotree-create-node
+	 "r"         'neotree-rename-node
+	 "d"         'neotree-delete-node
+	 "h"         'neotree-select-previous-sibling-node
+	 "j"         'neotree-next-line
+	 "k"         'neotree-previous-line
+	 "l"         'neotree-enter
+	 "R"         'neotree-refresh
+	 "C"         'neotree-change-root
+	 "H"         'neotree-hidden-file-toggle
+	 "q"         'neotree-hide
+	 ))
 
   ;; Smex
   (global-set-key (kbd "M-x") 'smex)

@@ -1,3 +1,4 @@
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 #+STARTUP: overview
 #+TITLE: Ricemacs, an Emacs Configuration
 #+AUTHOR: Riyyi
@@ -271,6 +272,12 @@ Irony requires M-x =irony-install-server=.
 
   (use-package yasnippet-snippets
 	:after yasnippet)
+#+END_SRC
+
+*** Htmlize
+
+#+BEGIN_SRC emacs-lisp
+  (use-package htmlize)
 #+END_SRC
 
 *** Prettify

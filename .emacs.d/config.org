@@ -274,10 +274,12 @@ Irony requires M-x =irony-install-server=.
 	:after yasnippet)
 #+END_SRC
 
-*** Htmlize
+*** Org
 
 #+BEGIN_SRC emacs-lisp
   (use-package htmlize)
+
+  (use-package ox-gfm)
 #+END_SRC
 
 *** Prettify

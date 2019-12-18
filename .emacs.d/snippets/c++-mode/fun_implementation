@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: fun_implementation
+# key: fim
+# --
+${1:type} ${2:name}(${3:args})${4: const}
+{
+	$0
+}

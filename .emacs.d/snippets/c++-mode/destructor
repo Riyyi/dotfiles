@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: destructor
+# key: dt
+# --
+${1:Name}::~$1()
+{
+	$0
+}

@@ -152,7 +152,7 @@ Install and configure packages.
 	 :after evil
 	 :custom
 	 (evil-collection-company-use-tng nil)
-	 (evil-collection-key-blacklist '("M-h" "M-l"))
+	 (evil-collection-key-blacklist '("M-h" "M-l" "SPC"))
 	 (evil-collection-setup-minibuffer t)
 	 :config (evil-collection-init))
 
@@ -166,6 +166,13 @@ Emacs mode line replacement.
 
 #+BEGIN_SRC emacs-lisp
   (use-package telephone-line
+	:custom
+	(telephone-line-lhs
+	 '((evil   . (telephone-line-evil-tag-segment))
+	   (accent . (telephone-line-erc-modified-channels-segment
+				  telephone-line-process-segment))
+	   (nil    . (telephone-line-buffer-segment
+				  telephone-line-projectile-segment))))
 	:custom-face
 	(telephone-line-evil ((t (:weight normal))))
 	(telephone-line-evil-normal ((t (:background "#87afd7" :foreground "black"))))
@@ -175,6 +182,7 @@ Emacs mode line replacement.
 	(telephone-line-evil-motion ((t (:background "#8abeb7" :foreground "black"))))
 	(telephone-line-evil-operator ((t (:background "#de935f" :foreground "black"))))
 	(telephone-line-evil-emacs ((t (:background "#b294bb" :foreground "black"))))
+	(telephone-line-projectile ((t (:foreground "default"))))
 	:config (telephone-line-mode))
 #+END_SRC
 
@@ -199,6 +207,7 @@ Provides Emacs with a file tree.
 	(neo-autorefresh nil)
 	(neo-dont-be-alone t)
 	(neo-mode-line-type 'none)
+	(neo-show-hidden-files t)
 	:hook (neotree-mode . (lambda (&rest _) (display-line-numbers-mode 0))))
 #+END_SRC
 
@@ -223,6 +232,18 @@ Places buffers as tabs in a bar at the top.
 	(centaur-tabs-unselected ((t (:background "#282a2e" :foreground "#c5c8c6"))))
 	:config
 	(centaur-tabs-mode))
+#+END_SRC
+
+*** Projectile
+
+Project manager.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+	:custom
+	(projectile-enable-caching t)
+	(projectile-project-search-path '("~/Code" "~/dotfiles"))
+	:config (projectile-mode))
 #+END_SRC
 
 *** Completion
@@ -627,8 +648,8 @@ Useful links:\\
   (global-set-key (kbd "M-w") 'kill-this-buffer)
 
   ;; Config edit/reload
-  (global-set-key (kbd "C-c e") 'config-visit)
   (global-set-key (kbd "C-c r") 'config-reload)
+  (global-set-key (kbd "C-c v") 'config-visit)
 
   ;; Split and follow window
   (global-set-key (kbd "C-x 2") 'split-follow-horizontally)
@@ -724,6 +745,7 @@ General.el leader key binds.
 	(general-create-definer space-leader
 	  :prefix "SPC"
 	  :non-normal-prefix "M-SPC"
+	  :global-prefix "M-SPC"
 	  :states '(normal visual insert motion emacs))
 
 	(general-create-definer comma-leader
@@ -765,18 +787,25 @@ General.el leader key binds.
 	  ;; Neotree
 	  "n" 'neotree-toggle-in-project-root
 
+	  ;; Projectile
+	  "p" 'projectile-command-map
+
 	  ;; Quit
 	  "q"   '(:ignore t :which-key "quit")
 	  "q q" 'kill-emacs
 	  "q d" 'delete-frame
 	  "q o" 'delete-other-frame
 
+	  ;; Reformat region
+	  "r r" 'indent-region
+
 	  ;; Avy
 	  "s" 'avy-goto-char-timer
 
 	  ;; Window
 	  "w"     '(:ignore t :which-key "window")
-	  "w d"   'delete-window
+	  "w d f" 'delete-frame
+	  "w d w" 'delete-window
 	  "w h"   'evil-window-left
 	  "w j"   'evil-window-down
 	  "w k"   'evil-window-up
@@ -786,6 +815,11 @@ General.el leader key binds.
 	  "w s h" 'split-follow-horizontally
 	  "w s v" 'split-follow-vertically
 	  "w w"   'other-window
+
+	  "w <left>"  'evil-window-left
+	  "w <right>" 'evil-window-right
+	  "w <up>"    'evil-window-up
+	  "w <down>"  'evil-window-down
 
 	  "x" 'smex-major-mode-commands
 	  ))

@@ -55,6 +55,7 @@ https://github.com/rranelli/auto-package-update.el
 	:custom
 	(auto-package-update-delete-old-versions t)
 	(auto-package-update-hide-results t)
+	(auto-package-update-last-update-day-path (concat emacs-cache "/.last-package-update-day"))
 	:config
 	(auto-package-update-maybe))
 #+END_SRC
@@ -386,7 +387,6 @@ https://github.com/laishulu/hl-fill-column
 File auto-saves, backups, tramps.
 
 #+BEGIN_SRC emacs-lisp
-  (setq emacs-cache (concat (getenv "XDG_CACHE_HOME") "/emacs"))
   (unless (file-directory-p emacs-cache)
 	(make-directory emacs-cache t))
   ;https://emacs.stackexchange.com/questions/33/put-all-backups-into-one-backup-folder

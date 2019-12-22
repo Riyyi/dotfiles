@@ -6,6 +6,11 @@
 
 ; --------------------------------------
 
+(defvar emacs-cache (concat (getenv "XDG_CACHE_HOME") "/emacs")
+  "Directory where cache data is stored.")
+
+; --------------------------------------
+
 ;; Add the melpa repository to the package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))

@@ -4,6 +4,7 @@ alsa-utils
 arandr
 arc-gtk-theme
 arc-icon-theme
+base
 breeze-icons-git
 brightnessctl
 bspwm
@@ -12,6 +13,7 @@ checkbashisms
 chromium
 clang
 cmake
+dhcpcd
 dialog
 domoticz-git
 dos2unix
@@ -44,6 +46,7 @@ htop
 i3-gaps-next-git
 i3lock-color-git
 imagemagick
+inetutils
 inkscape
 intel-ucode
 iw
@@ -56,17 +59,23 @@ lib32-glibc
 libmtp
 libnotify-id
 libva-intel-driver
+linux
 linux-headers
 linux-lts
 linux-lts-headers
+lvm2
 lxappearance
+man-db
+man-pages
 mariadb
+mdadm
 mkvtoolnix-cli
 moka-icon-theme-git
 mpv
 mysql-workbench
 ncdu
 neofetch
+netctl
 ntfs-3g
 openssh
 otf-font-awesome
@@ -106,6 +115,7 @@ sloccount
 smartmontools
 stalonetray
 sxhkd
+sysfsutils
 texlive-bibtexextra
 texlive-core
 texlive-fontsextra
@@ -129,6 +139,7 @@ ttf-emojione
 tumbler
 unrar
 unzip
+usbutils
 vim-spell-nl
 wget
 wpa_supplicant
@@ -138,6 +149,7 @@ xarchiver
 xclip
 xdo
 xdotool
+xfsprogs
 xorg-server
 xorg-xev
 xorg-xinit

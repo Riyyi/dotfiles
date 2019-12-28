@@ -18,7 +18,7 @@ AUR_HELPER="trizen"
 
 if [ "$(dirname "$0")" != "." ]; then
 	echo "Please run this script from the directory it resides."
-	exit
+	exit 1
 fi
 
 help() {
@@ -140,7 +140,8 @@ push() {
 }
 
 packages() {
-	PACKAGE_LIST="$(pacman -Qqe | sort | grep -vx "$(pacman -Qqg base base-devel | sort)")"
+	FILTER_LIST="$((pacman -Qqg base base-devel && pactree -u base | tail -n +2) | sort)"
+	PACKAGE_LIST="$(pacman -Qqe | grep -vx "$FILTER_LIST" | sort)"
 
 	if [ "$1" = "list" ] || [ "$1" = "" ]; then
 		echo "$PACKAGE_LIST"

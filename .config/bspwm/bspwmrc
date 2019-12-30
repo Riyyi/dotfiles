@@ -9,13 +9,15 @@ bspc config split_ratio                0.502
 bspc config top_padding                "$PANEL_HEIGHT"
 
 # Program startup
-"$HOME"/.scripts/wm/pidctl.sh -p &
+"$HOME"/.scripts/wm/wallpaper.sh &
+"$HOME"/.scripts/wm/programs.sh &
+"$HOME"/.scripts/panel/lemonbar.sh &
 
 # Colors
 bspc config focused_border_color       "$FGCOLOR_INACTIVE"
-bspc config normal_border_color		   "$BGCOLOR_INACTIVE"
-bspc config active_border_color		   "$BGCOLOR_INACTIVE"
-bspc config presel_feedback_color	   "$FGCOLOR_INACTIVE"
+bspc config normal_border_color        "$BGCOLOR_INACTIVE"
+bspc config active_border_color        "$BGCOLOR_INACTIVE"
+bspc config presel_feedback_color      "$FGCOLOR_INACTIVE"
 
 # Node
 bspc config borderless_monocle         true
@@ -31,7 +33,7 @@ bspc config pointer_modifier           mod4
 #--- Desktops ---#
 
 # Set desktops
-$HOME/.scripts/wm/desktops.sh
+"$HOME"/.scripts/wm/desktops.sh
 
 # Open program on specific desktop
 bspc rule -a firefox                   desktop="$WS1"

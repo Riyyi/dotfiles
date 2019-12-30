@@ -3,9 +3,7 @@
 xrdb "$XDG_CONFIG_HOME/xorg/Xresources"
 
 # Setup display
-xrandr --newmode "3000x2000_48.00" 405.25 3000 3232 3552 4104 2000 2003 2013 2058 -hsync +vsync
-xrandr --addmode eDP-1 3000x2000_48.00
-xrandr --output eDP-1 --mode 3000x2000_48.00 --primary
+"$HOME"/.scripts/monctl.sh auto 3000 2000 48 eDP-1 &
 
 # Set default X cursor to arrow
 xsetroot -cursor_name left_ptr

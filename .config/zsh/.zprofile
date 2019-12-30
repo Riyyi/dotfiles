@@ -34,7 +34,7 @@ export LESS_TERMCAP_ue="$(printf '%b' '\e[0m')"         # reset underline
 
 # Panel
 export PANEL_HEIGHT=38
-export PANEL_NAME="lemonbar_panel"
+export PANEL_NAME="polybar_panel"
 export PANEL_PIPE="/tmp/lemonbar_pipe"
 
 # Qt5

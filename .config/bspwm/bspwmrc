@@ -8,11 +8,6 @@ bspc config window_gap                 20
 bspc config split_ratio                0.502
 bspc config top_padding                "$PANEL_HEIGHT"
 
-# Program startup
-"$HOME"/.scripts/wm/wallpaper.sh &
-"$HOME"/.scripts/wm/programs.sh &
-"$HOME"/.scripts/panel/lemonbar.sh &
-
 # Colors
 bspc config focused_border_color       "$FGCOLOR_INACTIVE"
 bspc config normal_border_color        "$BGCOLOR_INACTIVE"
@@ -30,10 +25,7 @@ bspc config focus_follows_pointer      true
 bspc config pointer_follows_monitor    true
 bspc config pointer_modifier           mod4
 
-#--- Desktops ---#
-
-# Set desktops
-"$HOME"/.scripts/wm/desktops.sh
+#--- Rules ---#
 
 # Open program on specific desktop
 bspc rule -a firefox                   desktop="$WS1"
@@ -51,3 +43,13 @@ bspc rule -a Pavucontrol               state=floating
 bspc rule -a Qemu-system-i386          state=floating
 bspc rule -a Qemu-system-x86_64        state=floating
 bspc rule -a Zathura                   state=tiled
+
+#--- Scripts ---#
+
+# Set desktops
+"$HOME"/.scripts/wm/desktops.sh
+
+# Program startup
+"$HOME"/.scripts/wm/wallpaper.sh &
+"$HOME"/.scripts/wm/programs.sh &
+"$HOME"/.scripts/panel/polybar.sh &

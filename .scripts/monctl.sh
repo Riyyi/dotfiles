@@ -42,10 +42,10 @@ update() {
 	sleep 1
 
 	# Restart panel
-	"$HOME"/.scripts/panel/lemonbar.sh &
+	"$HOME"/.scripts/panel/polybar.sh &
 
 	# Reload wallpaper
-	"$HOME"/.scripts/wm/wallpaper.sh
+	"$HOME"/.scripts/wm/wallpaper.sh &
 }
 
 auto() {
@@ -54,17 +54,17 @@ auto() {
 	# Skip first argument
 	shift 1
 
-	# Add mode to primary display
+	# Add mode to primary monitor
 	OUTPUT="$(xrandr -q)"
 	if ! echo "$OUTPUT" | grep -Fq "$1x$2_$3.00"; then
 		eval xrandr --newmode $(cvt "$1" "$2" "$3" | awk '/Modeline/{ $1=""; print $0 }')
 		xrandr --addmode "$4" "$1x$2_$3.00"
 	fi
 
-	# Get all connected displays
+	# Get all connected monitor
 	CONNECTED="$(xrandr -q | awk '/ connected/{print $1}')"
 
-	# Disable all other displays
+	# Disable all other monitors
 	eval xrandr --output "$4" --mode "$1x$2_$3.00" --primary \
 		"$(echo "$CONNECTED" | grep -vx "$4" | awk '{print "--output", $1, "--off"}' | tr '\n' ' ')"
 

@@ -31,8 +31,7 @@ bspc config pointer_modifier           mod4
 #--- Desktops ---#
 
 # Set desktops
-bspc monitor -d "$WS1" "$WS2" "$WS3" "$WS4" "$WS5" \
-	 "$WS6" "$WS7" "$WS8" "$WS9" "$WS0"
+$HOME/.scripts/wm/desktops.sh
 
 # Open program on specific desktop
 bspc rule -a Firefox                   desktop="^$WS1"

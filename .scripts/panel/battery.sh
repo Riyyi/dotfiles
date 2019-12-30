@@ -2,8 +2,8 @@
 
 BAT_INFO=${BLOCK_INSTANCE:-"$(acpi -b | grep ': [^Unknown]')"}
 
-CAPACITY=$(echo $BAT_INFO | awk '{ print int($4) }')
-TIME="$(echo $BAT_INFO | awk '{ print substr($5, 0, length($5) - 3) }')"
+CAPACITY=$(echo "$BAT_INFO" | awk '{ print int($4) }')
+TIME="$(echo "$BAT_INFO" | awk '{ print substr($5, 0, length($5) - 3) }')"
 CHARACTER=":"
 
 if [ "$TIME" != "" ] && [ "${TIME#*$CHARACTER}" != "$TIME" ]; then
@@ -13,7 +13,7 @@ else
 fi
 
 COLOR="-"
-if [ "$(echo $BAT_INFO | awk '{ print $6 }')" = "remaining" ]; then
+if [ "$(echo "$BAT_INFO" | awk '{ print $6 }')" = "remaining" ]; then
 	if [ "$CAPACITY" -ge "80" ]; then
 		ICON=""
 	elif [ "$CAPACITY" -ge "60" ]; then

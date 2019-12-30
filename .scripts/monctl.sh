@@ -38,14 +38,14 @@ update() {
 	sleep 4
 
 	# Reconfigure desktops
-	$HOME/.scripts/wm/desktops.sh
+	"$HOME"/.scripts/wm/desktops.sh
 	sleep 1
 
 	# Restart panel
-	$HOME/.scripts/panel/lemonbar.sh &
+	"$HOME"/.scripts/panel/lemonbar.sh &
 
 	# Reload wallpaper
-	$HOME/.scripts/wm/wallpaper.sh
+	"$HOME"/.scripts/wm/wallpaper.sh
 }
 
 auto() {

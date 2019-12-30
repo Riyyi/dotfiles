@@ -34,15 +34,15 @@ bspc config pointer_modifier           mod4
 $HOME/.scripts/wm/desktops.sh
 
 # Open program on specific desktop
-bspc rule -a Firefox                   desktop="^$WS1"
-bspc rule -a Thunar                    desktop="^$WS4"
-bspc rule -a krita                     desktop="^$WS5" follow=on
+bspc rule -a firefox                   desktop="$WS1"
+bspc rule -a Thunar                    desktop="$WS3"
+bspc rule -a krita                     desktop="$WS5" follow=on
 
 # Set program properties
 bspc rule -a Arandr                    state=floating
 bspc rule -a Bar                       layer=above
 bspc rule -a feh                       state=floating
-bspc rule -a Firefox:Places            state=floating
+bspc rule -a firefox:Places            state=floating
 bspc rule -a Lxappearance              state=floating
 bspc rule -a mpv                       state=floating center=on
 bspc rule -a Pavucontrol               state=floating

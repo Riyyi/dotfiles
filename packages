@@ -1,5 +1,5 @@
 acpi
-adobe-source-han-sans-otc-fonts
+adobe-source-han-sans-jp-fonts
 alsa-utils
 arandr
 arc-gtk-theme
@@ -86,6 +86,7 @@ pamixer
 pavucontrol
 pdfjs
 platformio
+polybar
 poppler-glib
 pulseaudio
 pulseaudio-alsa

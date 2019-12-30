@@ -1,0 +1,266 @@
+; https://github.com/polybar/polybar/wiki/Configuration#global-wm-settings
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+; https://github.com/polybar/polybar/wiki/Configuration#application-settings
+[settings]
+throttle-output = 5
+throttle-output-for = 10
+throttle-input-for = 30
+
+screenchange-reload = true
+
+; format-foreground = #00ff00
+; format-background = #ff00ff
+
+pseudo-transparency = false
+
+; Xresources colors
+[colors]
+foreground     = ${xrdb:foreground:#c5c8c6}
+background     = ${xrdb:background:#1c1c1c}
+cursorColor    = ${self.foreground}
+
+black          = ${xrdb:color0:#282a2e}
+black-bright   = ${xrdb:color8:#373b41}
+red            = ${xrdb:color1:#a54242}
+red-bright     = ${xrdb:color9:#cc6666}
+green          = ${xrdb:color2:#8c9440}
+green-bright   = ${xrdb:color10:#b5bd68}
+yellow         = ${xrdb:color3:#de935f}
+yellow-bright  = ${xrdb:color11:#f0c674}
+blue           = ${xrdb:color4:#5f819d}
+blue-bright    = ${xrdb:color12:#81a2be}
+magenta        = ${xrdb:color5:#85678f}
+magenta-bright = ${xrdb:color13:#b294bb}
+cyan           = ${xrdb:color6:#5e8d87}
+cyan-bright    = ${xrdb:color14:#8abeb7}
+white          = ${xrdb:color7:#707880}
+white-bright   = ${xrdb:color15:#c5c8c6}
+
+; Window manager colors
+[wmcolors]
+bgcolor          = ${xrdb:WmColor.bgcolor:#404552}
+bgcolor-inactive = ${xrdb:WmColor.bgcolor_Inactive:#2b2e39}
+bgcolor-urgent   = ${xrdb:WmColor.bgcolor_Urgent:#dc7a43}
+fgcolor          = ${xrdb:WmColor.fgcolor:#ffffff}
+fgcolor-inactive = ${xrdb:WmColor.fgcolor_Inactive:#676e7d}
+
+[bar/polybar]
+monitor = ${env:MONITOR:eDP-1}
+
+width = 100%
+height = 38
+; offset-x = 1%
+; offset-y = 1%
+radius = 0.0
+fixed-center = true
+
+background = ${wmcolors.bgcolor-inactive}
+foreground = ${wmcolors.fgcolor-inactive}
+
+line-size = 3
+line-color = #ff00ff
+
+border-size = 0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+;https://github.com/polybar/polybar/wiki/Fonts
+font-0 = "DejaVu Sans:pixelsize=18;3"
+font-1 = "Source Han Sans JP Medium:pixelsize=18;3"
+font-2 = "Font Awesome 5 Free:style=Regular:pixelsize=16;3"
+font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=16;3"
+font-4 = "Font Awesome 5 Brands:pixelsize=16;3"
+
+modules-left = bspwm
+modules-center = title
+modules-right = pulseaudio backlight-acpi wlan eth battery battery-low date powermenu
+
+tray-position = right
+tray-padding = 2
+tray-detached = true
+;tray-background = #0063ff
+
+; wm-restack = bspwm
+; wm-name = ${env:PANEL_NAME:polybar_panel}
+
+scroll-up = bspwm-desknext
+scroll-down = bspwm-deskprev
+
+cursor-click = pointer
+; cursor-scroll = ns-resize
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %name%
+label-focused-foreground = ${colors.white-bright}
+label-focused-background = ${wmcolors.bgcolor}
+label-focused-underline= ${colors.blue}
+label-focused-padding = 2
+
+label-occupied = %name%
+label-occupied-padding = 2
+
+label-urgent = %name%!
+label-urgent-background = ${wmcolors.bgcolor-urgent}
+label-urgent-padding = 2
+
+label-empty = %name%
+label-empty-foreground = ${wmcolors.bgcolor}
+label-empty-padding = 2
+
+; https://github.com/polybar/polybar/wiki/Module:-xwindow
+[module/title]
+type = internal/xwindow
+label = %title:0:50:...%
+label-foreground = ${colors.white-bright}
+
+; https://github.com/polybar/polybar/wiki/Module:-pulseaudio
+[module/pulseaudio]
+type = internal/pulseaudio
+interval = 5
+
+sink = alsa_output.pci-0000_00_1f.3.analog-stereo
+use-ui-max = false
+
+format-volume = %{A1:pavucontrol:}%{A2:$HOME/.scripts/mediacontrol.sh set 0:}%{A3:$HOME/.scripts/mediacontrol.sh toggle:}<ramp-volume> <label-volume>%{A}%{A}%{A}
+format-volume-foreground = ${colors.white-bright}
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+
+label-volume = %percentage%%
+
+format-muted = %{A1:pavucontrol:}%{A2:$HOME/.scripts/mediacontrol.sh set 0:}%{A3:$HOME/.scripts/mediacontrol.sh toggle:}<label-muted>%{A}%{A}%{A}
+format-muted-foreground = ${wmcolors.fgcolor-inactive}
+
+label-muted =  %percentage%%
+
+[module/backlight-acpi]
+type = internal/backlight
+card = intel_backlight
+
+format = %{A3:$HOME/.scripts/brightnesscontrol.sh s 30:}%{A4:$HOME/.scripts/brightnesscontrol.sh u 10:}%{A5:$HOME/.scripts/brightnesscontrol.sh d 10:}<ramp> <label>%{A}%{A}%{A}
+format-foreground = ${colors.white-bright}
+
+ramp-0 = %{T3}%{T-}
+ramp-1 = %{T3}%{T-}
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+ramp-5 = 
+ramp-6 = %{T4}%{T-}
+ramp-7 = %{T4}%{T-}
+
+label = %percentage%%
+
+[module/wlan]
+type = internal/network
+interval = 10
+interface = wlan0
+
+format-connected = %{A1:$HOME/.scripts/panel/wifi-lite.sh:}<label-connected>%{A}
+format-connected-foreground = ${colors.white-bright}
+
+label-connected =  %signal%%
+
+format-disconnected = 
+format-disconnected-foreground = ${wmcolors.fgcolor-inactive}
+
+[module/eth]
+type = internal/network
+interval = 10
+interface = eth0
+
+format-connected = 
+format-connected-foreground = ${colors.white-bright}
+
+format-disconnected = 
+format-disconnected-foreground = ${wmcolors.fgcolor-inactive}
+
+[module/battery]
+type = internal/battery
+poll-interval = 30
+battery = BAT0
+adapter = ADP1
+full-at = 98
+
+time-format = %H:%M
+
+format-charging = <label-charging>
+format-charging-foreground = ${colors.white-bright}
+
+label-charging =  %percentage%% (%time%)
+
+format-full =  100%
+format-full-foreground = ${colors.green-bright}
+
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-foreground = ${colors.white-bright}
+
+ramp-capacity-0 = %{F#a54242}
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+label-discharging = %percentage%% (%time%)
+
+[module/battery-low]
+type = custom/script
+interval = 30
+
+exec = $HOME/.scripts/panel/battery-lite.sh
+
+format =
+
+[module/date]
+type = internal/date
+interval = 5
+
+time = %I:%M %p
+time-alt =
+
+format = <label>
+format-foreground = ${colors.white-bright}
+
+label = %{T4}%{T-} %time%
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+format-spacing = 2
+
+label-open = 
+label-open-foreground = ${colors.red}
+label-close =  cancel
+label-close-foreground = ${colors.red}
+label-separator = |
+label-separator-foreground = ${colors.white-bright}
+
+menu-0-0 = shutdown
+menu-0-0-exec = menu-open-1
+menu-0-1 = reboot
+menu-0-1-exec = menu-open-2
+menu-0-2 = logout
+menu-0-2-exec = menu-open-3
+
+menu-1-0 = shutdown
+menu-1-0-exec = sudo poweroff
+
+menu-2-0 = reboot
+menu-2-0-exec = sudo reboot
+
+menu-3-0 = logout
+menu-3-0-exec = sudo bspc quit

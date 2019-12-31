@@ -1,0 +1,175 @@
+; https://github.com/polybar/polybar/wiki/Module:-bspwm
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %name%
+label-focused-foreground = ${colors.white-bright}
+label-focused-background = ${wmcolors.bgcolor}
+label-focused-underline= ${colors.blue}
+label-focused-padding = 2
+
+label-occupied = %name%
+label-occupied-padding = 2
+
+label-urgent = %name%!
+label-urgent-background = ${wmcolors.bgcolor-urgent}
+label-urgent-padding = 2
+
+label-empty = %name%
+label-empty-foreground = ${wmcolors.bgcolor}
+label-empty-padding = 2
+
+; https://github.com/polybar/polybar/wiki/Module:-xwindow
+[module/title]
+type = internal/xwindow
+label = %title:0:50:...%
+label-foreground = ${colors.white-bright}
+
+; https://github.com/polybar/polybar/wiki/Module:-pulseaudio
+[module/pulseaudio]
+type = internal/pulseaudio
+interval = 5
+
+sink = alsa_output.pci-0000_00_1f.3.analog-stereo
+use-ui-max = false
+
+format-volume = %{A1:pavucontrol:}%{A2:$HOME/.scripts/mediacontrol.sh set 0:}%{A3:$HOME/.scripts/mediacontrol.sh toggle:}<ramp-volume> <label-volume>%{A}%{A}%{A}
+format-volume-foreground = ${colors.white-bright}
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+
+label-volume = %percentage%%
+
+format-muted = %{A1:pavucontrol:}%{A2:$HOME/.scripts/mediacontrol.sh set 0:}%{A3:$HOME/.scripts/mediacontrol.sh toggle:}<label-muted>%{A}%{A}%{A}
+format-muted-foreground = ${wmcolors.fgcolor-inactive}
+
+label-muted =  %percentage%%
+
+; https://github.com/polybar/polybar/wiki/Module:-backlight
+[module/backlight-acpi]
+type = internal/backlight
+card = intel_backlight
+
+format = %{A3:$HOME/.scripts/brightnesscontrol.sh s 30:}%{A4:$HOME/.scripts/brightnesscontrol.sh u 10:}%{A5:$HOME/.scripts/brightnesscontrol.sh d 10:}<ramp> <label>%{A}%{A}%{A}
+format-foreground = ${colors.white-bright}
+
+ramp-0 = %{T3}%{T-}
+ramp-1 = %{T3}%{T-}
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+ramp-5 = 
+ramp-6 = %{T4}%{T-}
+ramp-7 = %{T4}%{T-}
+
+label = %percentage%%
+
+; https://github.com/polybar/polybar/wiki/Module:-network
+[module/wlan]
+type = internal/network
+interval = 10
+interface = wlan0
+
+format-connected = %{A1:$HOME/.scripts/panel/wifi-lite.sh:}<label-connected>%{A}
+format-connected-foreground = ${colors.white-bright}
+
+label-connected =  %signal%%
+
+format-disconnected = 
+format-disconnected-foreground = ${wmcolors.fgcolor-inactive}
+
+; https://github.com/polybar/polybar/wiki/Module:-network
+[module/eth]
+type = internal/network
+interval = 10
+interface = eth0
+
+format-connected = 
+format-connected-foreground = ${colors.white-bright}
+
+format-disconnected = 
+format-disconnected-foreground = ${wmcolors.fgcolor-inactive}
+
+; https://github.com/polybar/polybar/wiki/Module:-battery
+[module/battery]
+type = internal/battery
+poll-interval = 30
+battery = BAT0
+adapter = ADP1
+full-at = 98
+
+time-format = %H:%M
+
+format-charging = <label-charging>
+format-charging-foreground = ${colors.white-bright}
+
+label-charging =  %percentage%% (%time%)
+
+format-full =  100%
+format-full-foreground = ${colors.green-bright}
+
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-foreground = ${colors.white-bright}
+
+ramp-capacity-0 = %{F#a54242}
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+label-discharging = %percentage%% (%time%)
+
+; https://github.com/polybar/polybar/wiki/Module:-script
+[module/battery-low]
+type = custom/script
+interval = 30
+
+exec = $HOME/.scripts/panel/battery-lite.sh
+
+format =
+
+; https://github.com/polybar/polybar/wiki/Module:-date
+[module/date]
+type = internal/date
+interval = 5
+
+time = %I:%M %p
+time-alt =
+
+format = <label>
+format-foreground = ${colors.white-bright}
+
+label = %{T4}%{T-} %time%
+
+; https://github.com/polybar/polybar/wiki/Module:-menu
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+format-spacing = 2
+
+label-open = 
+label-open-foreground = ${colors.red}
+label-close =  cancel
+label-close-foreground = ${colors.red}
+label-separator = |
+label-separator-foreground = ${colors.white-bright}
+
+menu-0-0 = shutdown
+menu-0-0-exec = menu-open-1
+menu-0-1 = reboot
+menu-0-1-exec = menu-open-2
+menu-0-2 = logout
+menu-0-2-exec = menu-open-3
+
+menu-1-0 = shutdown
+menu-1-0-exec = sudo poweroff
+
+menu-2-0 = reboot
+menu-2-0-exec = sudo reboot
+
+menu-3-0 = logout
+menu-3-0-exec = sudo bspc quit

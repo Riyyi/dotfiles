@@ -221,8 +221,8 @@ Places buffers as tabs in a bar at the top.
 	:custom
 	(centaur-tabs-background-color "#282a2e")
 	(centaur-tabs-height 40)
-	(centaur-tabs-style "slant")
 	(centaur-tabs-set-icons t)
+	(centaur-tabs-style "slant")
 	;; (centaur-tabs-set-modified-marker t)
 	;; (centaur-tabs-modified-marker "*")
 	;; (centaur-tabs-height 29)
@@ -243,8 +243,20 @@ Project manager.
   (use-package projectile
 	:custom
 	(projectile-enable-caching t)
+	(projectile-indexing-method 'hybrid)
 	(projectile-project-search-path '("~/Code" "~/dotfiles"))
+	(projectile-sort-order 'recentf)
 	:config (projectile-mode))
+#+END_SRC
+
+*** Org
+
+#+BEGIN_SRC emacs-lisp
+  (use-package htmlize
+	:custom (org-export-html-postamble nil))
+  ;org-export-html-postamble-format @ToDo
+
+  (use-package ox-gfm)
 #+END_SRC
 
 *** Completion
@@ -257,6 +269,7 @@ Autocomplete packages (includes code completion and snippets).
 	:custom
 	(company-idle-delay 0.2)
 	(company-minimum-prefix-length 2)
+	(company-tooltip-align-annotations 't)
 	:init
 	(add-hook 'c-mode-common-hook 'company-mode)
 	(add-hook 'emacs-lisp-mode-hook 'company-mode)
@@ -318,6 +331,10 @@ Irony requires M-x =irony-install-server=.
   (use-package org-bullets
 	:defer t
 	:init (add-hook 'org-mode-hook 'org-bullets-mode))
+
+  ;; Cmake syntax highlighting
+  (use-package cmake-mode
+	:defer t)
 
   ;; Shader syntax highlighting
   (use-package glsl-mode
@@ -618,6 +635,9 @@ Evil command aliases.
 
   ;; C++ // style comments in c-mode
   (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
+
+  ;; PHP, set correct tab mode
+  (add-hook 'php-mode-hook (lambda () (setq indent-tabs-mode t)))
 #+END_SRC
 
 * Key Bindings
@@ -669,6 +689,9 @@ Disable spacebar in evil motion.
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'evil-states
 	(define-key evil-motion-state-map (kbd "<SPC>") nil))
+
+  (with-eval-after-load 'php-mode
+	(define-key php-mode-map (kbd "C-M-h") nil))
 #+END_SRC
 
 ** Package
@@ -738,7 +761,7 @@ Disable spacebar in evil motion.
 
 ** Leader
 
-General.el leader key binds.
+General.el ~leader key binds.
 
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'general
@@ -801,6 +824,14 @@ General.el leader key binds.
 
 	  ;; Avy
 	  "s" 'avy-goto-char-timer
+
+	  ;; Tabs
+	  "t"   '(:ignore t :which-key "tabs")
+	  "t u" 'centaur-tabs-group-buffer-groups
+	  "t p" 'centaur-tabs-group-by-projectile-project
+
+	  ;; Update packages
+	  "u" 'auto-package-update-now
 
 	  ;; Window
 	  "w"     '(:ignore t :which-key "window")

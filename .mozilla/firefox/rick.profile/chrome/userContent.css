@@ -1,3 +1,9 @@
+@-moz-document url(about:blank) {
+	html > body:empty {
+		background-color: #2a2a2e !important;
+	}
+}
+
 @-moz-document domain("boards.4chan.org") {
 	/* Hide unnecessary elements */
 	#bannerCnt { display: none; }

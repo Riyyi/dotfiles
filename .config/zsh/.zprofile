@@ -17,6 +17,9 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export PLATFORMIO_HOME_DIR="$XDG_DATA_HOME/platformio"
 export R_ENVIRON_USER="$XDG_CONFIG_HOME/R/Renviron"
 
+# GPG
+export GNUPGHOME="$XDG_CONFIG_HOME"/gnupg
+
 # GTK
 export GDK_SCALE=2
 export GDK_DPI_SCALE=0.5

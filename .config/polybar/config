@@ -55,9 +55,10 @@ modules-left = bspwm
 modules-center = title
 modules-right = pulseaudio backlight-acpi wlan eth battery battery-low date powermenu
 
+tray-maxsize = 30
 tray-position = right
 tray-padding = 2
-tray-detached = true
+tray-detached = false
 ;tray-background = #0063ff
 
 wm-restack = bspwm

@@ -1,0 +1,58 @@
+* Firefox
+
+** Add-ons
+
+- [[https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/][uBlock Origin]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/tree-style-tab/][Tree Style Tab]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/https-everywhere/][HTTPS Everywhere]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/vimium-ff/][Vimium]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/][Violentmonkey]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/spoof-timezone/][Spoof Timezone]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/send-to-mpv-player/][Send to MPV player]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/universal-bypass/][Universal Bypass]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/google-images-restored/][Google Images Restored]]
+
+** CSS
+
+Tree Style Tab style rules.
+
+#+BEGIN_SRC css
+  #tabbar {
+	  background: #2b2e39;
+  }
+
+  .tab {
+	  height: 23px;
+	  margin-bottom: 1px;
+	  background: #404552;
+	  border: 0px;
+	  color: #c5c8c6;
+  }
+
+  .tab .label {
+	  line-height: 1.15;
+	  margin-bottom: 1px;
+	  margin-left: 0.25em;
+  }
+
+  .tab .closebox {
+	  display: none;
+  }
+
+  .tab.active {
+	  background: #2b2e39 !important;
+  }
+
+  .tab:hover {
+	  background: #2b2e39;
+  }
+
+  .newtab-button-box {
+	  display: none;
+  }
+#+END_SRC
+
+** User scripts
+
+- https://www.4chan-x.net/builds/4chan-X.user.js
+- https://greasyfork.org/en/scripts/395257-better-google

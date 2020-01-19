@@ -66,7 +66,7 @@ mkdir "$DIR/$BACKUP_NAME"
 # Individual files
 for FILE in $FILES; do
 	mkdir -p "$DIR/$BACKUP_NAME/$(dirname "$FILE")"
-	cp "$FILE" "$DIR/$BACKUP_NAME/$FILE"
+	cp -a "$FILE" "$DIR/$BACKUP_NAME/$FILE"
 done
 
 # All files inside folder
@@ -89,7 +89,7 @@ done
 umask 177
 # MYSQL Dump
 for DATABASE in $DATABASES; do
-	# mysqldump --user=$USER --protocol=socket -S /var/run/mysqld/mysqld.sock "$DATABASE"
+	# mysqldump --user=$USER --protocol=socket -S /var/run/mysqld/mysqld.sock "$DATABASE" \
 	mysqldump --user=$USER --password=$PASSWORD --host=$HOST "$DATABASE" \
 			  > "$DIR/$BACKUP_NAME/$DATABASE-$BACKUP_NAME.sql"
 done

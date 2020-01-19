@@ -89,6 +89,7 @@ done
 umask 177
 # MYSQL Dump
 for DATABASE in $DATABASES; do
-	mysqldump --user=$USER --password=$PASSWORD --host=$HOST $DATABASE \
+	# mysqldump --user=$USER --protocol=socket -S /var/run/mysqld/mysqld.sock "$DATABASE"
+	mysqldump --user=$USER --password=$PASSWORD --host=$HOST "$DATABASE" \
 			  > "$DIR/$BACKUP_NAME/$DATABASE-$BACKUP_NAME.sql"
 done

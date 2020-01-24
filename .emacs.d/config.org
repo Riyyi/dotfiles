@@ -244,7 +244,7 @@ Project manager.
 	:custom
 	(projectile-enable-caching t)
 	(projectile-indexing-method 'hybrid)
-	(projectile-project-search-path '("~/Code" "~/dotfiles"))
+	(projectile-project-search-path '("~"))
 	(projectile-sort-order 'recentf)
 	:config (projectile-mode))
 #+END_SRC
@@ -820,6 +820,7 @@ General.el ~leader key binds.
 	  "q o" 'delete-other-frame
 
 	  ;; Reformat region
+	  "r"   '(:ignore t :which-key "region")
 	  "r r" 'indent-region
 
 	  ;; Avy
@@ -853,6 +854,9 @@ General.el ~leader key binds.
 	  "w <down>"  'evil-window-down
 
 	  "x" 'smex-major-mode-commands
+
+	  ;; Language specific
+	  "<tab>"     '(:ignore t :which-key "completion")
 	  ))
 #+END_SRC
 

@@ -98,6 +98,12 @@ Install and configure packages.
 		)))
 
   (use-package which-key
+	:custom
+	(which-key-add-column-padding 1)
+	(which-key-max-display-columns nil)
+	(which-key-min-display-lines 6)
+	(which-key-sort-order 'which-key-prefix-then-key-order)
+	(which-key-sort-uppercase-first nil)
 	:config (which-key-mode))
 
   (use-package general
@@ -811,7 +817,7 @@ General.el ~leader key binds.
 	  "n" 'neotree-toggle-in-project-root
 
 	  ;; Projectile
-	  "p" 'projectile-command-map
+	  "p" '(:keymap projectile-command-map :which-key "projectile")
 
 	  ;; Quit
 	  "q"   '(:ignore t :which-key "quit")
@@ -836,6 +842,7 @@ General.el ~leader key binds.
 
 	  ;; Window
 	  "w"     '(:ignore t :which-key "window")
+	  "w d"   '(:ignore t :which-key "close")
 	  "w d f" 'delete-frame
 	  "w d w" 'delete-window
 	  "w h"   'evil-window-left

@@ -77,6 +77,12 @@ super + g
 super + y
 	bspc node -n newest.!automatic.local
 
+# Move floating window
+ctrl + alt + {h,j,k,l}
+	bspc node -v {-30 0, 0 30, 0 -30, 30 0}
+ctrl + alt + {Left,Down,Up,Right}
+	bspc node -v {-30 0, 0 30, 0 -30, 30 0}
+
 #-- Resize --#
 
 # Expand node by moving its side outward

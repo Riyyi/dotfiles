@@ -34,6 +34,8 @@ pictures
 
 # List of files to include
 INCLUDES="
+Documents/vm/backup/backup.sh
+Documents/vm/commands.org
 dotfiles/dotfiles.sh
 "
 
@@ -48,18 +50,17 @@ for EXCLUDE in $EXCLUDES; do
 done
 EXCLUDE_STRING=${EXCLUDE_STRING%???}
 
-
 # Find the files
-FILES="$(find . \( $EXCLUDE_STRING \) -prune -o -printf '%P\n')"
+FILES="$( (find . \( $EXCLUDE_STRING \) -prune -o -printf '%P\n'; echo "$INCLUDES") \
+	| grep -vx "" | sort)"
 
 # If no name provided
 if [ -z "$1" ]; then
-	SELECTED="$(printf "%s\n%s" "$FILES" "$INCLUDES" \
-		| uniq | rofi -dmenu -p "Select file to edit")"
+	SELECTED="$(printf "%s" "$FILES" | rofi -dmenu -p "Select file to edit")"
 
 # Else try to search for that file
 else
-	SELECTED="$(printf "%s\n%s" "$FILES" "$INCLUDES" | grep "$1" | head -n 1)"
+	SELECTED="$(printf "%s" "$FILES" | grep "$1" | head -n 1)"
 fi
 
 # Exit if nothing selected

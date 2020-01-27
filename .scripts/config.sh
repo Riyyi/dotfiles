@@ -51,7 +51,7 @@ done
 EXCLUDE_STRING=${EXCLUDE_STRING%???}
 
 # Find the files
-FILES="$( (find . \( $EXCLUDE_STRING \) -prune -o -printf '%P\n'; echo "$INCLUDES") \
+FILES="$( (find . \( $EXCLUDE_STRING \) -prune -o -type f -printf '%P\n'; echo "$INCLUDES") \
 	| grep -vx "" | sort)"
 
 # If no name provided

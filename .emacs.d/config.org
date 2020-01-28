@@ -326,6 +326,22 @@ Irony requires M-x =irony-install-server=.
 *** Prettify
 
 #+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+	:custom
+	(initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+	(dashboard-banner-logo-title "GNU Emacs master race!")
+	(dashboard-center-content t)
+	(dashboard-set-file-icons t)
+	(dashboard-set-footer nil)
+	(dashboard-set-heading-icons t)
+	(dashboard-show-shortcuts t)
+	(dashboard-startup-banner 'logo)
+	(dashboard-items '((projects . 10)
+					   (bookmarks . 5)
+					   (recents . 5)))
+	:hook (dashboard-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
+	:config (dashboard-setup-startup-hook))
+
   (use-package rainbow-mode
 	:defer t
 	:init (add-hook 'prog-mode-hook 'rainbow-mode))
@@ -590,6 +606,21 @@ Functions that use package functionality.
 						  emacs-lisp-mode)) "OrgMode")
 	  (t "User"))))
 
+  (defun dashboard-goto-bookmarks ()
+	"Go to bookmarks."
+	(interactive)
+	(funcall (local-key-binding "m")))
+
+  (defun dashboard-goto-projects ()
+	"Go to projects."
+	(interactive)
+	(funcall (local-key-binding "p")))
+
+  (defun dashboard-goto-recent-files ()
+	"Go to recent files."
+	(interactive)
+	(funcall (local-key-binding "r")))
+
   (defun neotree-toggle-in-project-root ()
 	"Toggle Neotree in project root."
 	(interactive)
@@ -703,9 +734,6 @@ Disable spacebar in evil motion.
 ** Package
 
 #+BEGIN_SRC emacs-lisp
-  ;; Avy
-  (global-set-key (kbd "M-s") 'avy-goto-char-timer)
-
   ;; Buffers
   (global-set-key (kbd "M-h") 'centaur-tabs-backward-tab)
   (global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
@@ -736,10 +764,11 @@ Disable spacebar in evil motion.
   ;(define-key evil-motion-state-map (kbd "C-w") 'kill-this-buffer) ; @Todo test this with nil
   ;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
 
-  ;; Neotree
   (with-eval-after-load 'evil-states
 	(general-define-key
 	 :keymaps 'evil-normal-state-map
+
+	 ;; Neotree
 	 "C-n" 'neotree-toggle-in-project-root)
 
 	(general-define-key
@@ -758,11 +787,18 @@ Disable spacebar in evil motion.
 	 "C"         'neotree-change-root
 	 "H"         'neotree-hidden-file-toggle
 	 "q"         'neotree-hide
-	 ))
+	 )
 
-  ;; Smex
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+	;; Dashboard
+	(general-define-key
+	 :states 'normal
+	 :keymaps 'dashboard-mode-map
+	 [down-mouse-1] 'widget-button-click
+	 "g" 'dashboard-refresh-buffer
+	 "m" 'dashboard-goto-bookmarks
+	 "p" 'dashboard-goto-projects
+	 "r" 'dashboard-goto-recent-files
+	 ))
 #+END_SRC
 
 ** Leader

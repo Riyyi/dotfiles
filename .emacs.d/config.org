@@ -818,88 +818,92 @@ General.el ~leader key binds.
 	  :states '(normal visual))
 
 	(space-leader
-	  "SPC" 'smex
+	  "SPC"       '(smex                       :which-key "Smex")
 
 	  ;; Buffer
-	  "b"   '(:ignore t :which-key "buffer")
-	  "b B" 'ibuffer
-	  "b b" 'ido-switch-buffer
-	  "b d" 'kill-this-buffer
-	  "b h" 'previous-buffer
-	  "b l" 'next-buffer
-	  "b r" 'revert-buffer
+	  "b"         '(:ignore t                  :which-key "buffer")
+	  "b b"       '(ido-switch-buffer          :which-key "Switch buffer")
+	  "b B"       '(ibuffer                    :which-key "List buffers")
+	  "b d"       '(kill-current-buffer        :which-key "Kill buffer")
+	  "b h"       '(previous-buffer            :which-key "Previous buffer")
+	  "b k"       '(kill-current-buffer        :which-key "Kill buffer")
+	  "b l"       '(next-buffer                :which-key "Next buffer")
+	  "b m"       '(bookmark-set               :which-key "Set bookmark")
+	  "b M"       '(bookmark-delete            :which-key "Delete bookmark")
+	  "b n"       '(evil-buffer-new            :which-key "New empty buffer")
+	  "b r"       '(revert-buffer              :which-key "Revert buffer")
+	  "b s"       '(basic-save-buffer          :which-key "Save buffer")
+	  "b S"       '(evil-write-all             :which-key "Save all buffers")
+	  "b <left>"  '(previous-buffer            :which-key "Previous buffer")
+	  "b <right>" '(next-buffer                :which-key "Next buffer")
 
 	  ;; Comments / config
-	  "c"   '(:ignore t :which-key "comments/config")
-	  "c c" 'evilnc-comment-or-uncomment-lines
-	  "c p" 'evilnc-comment-or-uncomment-paragraphs
-	  "c r" 'config-reload
-	  "c v" 'config-visit
-	  "c y" 'evilnc-comment-and-kill-ring-save
+	  "c"   '(:ignore t                               :which-key "comment/config")
+	  "c c" '(evilnc-comment-or-uncomment-lines       :which-key "Toggle comment")
+	  "c p" '(evilnc-comment-or-uncomment-paragraphs  :which-key "Toggle comment paragraph")
+	  "c r" '(config-reload                           :which-key "Config reload")
+	  "c v" '(config-visit                            :which-key "Config visit")
+	  "c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and save")
 
 	  ;; Find file
-	  "f"   '(:ignore t :which-key "file")
-	  "f f" 'find-file-in-project-root
-	  "f r" 'rename-file-and-buffer
-	  "f s" 'save-buffer
+	  "f"   '(:ignore t                        :which-key "file")
+	  "f f" '(find-file-in-project-root        :which-key "Find file")
+	  "f r" '(rename-file-and-buffer           :which-key "Rename file")
+	  "f s" '(basic-save-buffer                :which-key "Save file")
 
 	  ;; Tabs
-	  "h" 'centaur-tabs-backward-group
-	  "j" 'centaur-tabs-select-end-tab
-	  "k" 'centaur-tabs-select-beg-tab
-	  "l" 'centaur-tabs-forward-group
+	  "h"   '(centaur-tabs-backward-group      :which-key "Tab backward group")
+	  "j"   '(centaur-tabs-select-end-tab      :which-key "Tab select first")
+	  "k"   '(centaur-tabs-select-beg-tab      :which-key "Tab select last")
+	  "l"   '(centaur-tabs-forward-group       :which-key "Tab forward group")
 
 	  ;; Neotree
-	  "n" 'neotree-toggle-in-project-root
+	  "n"   '(neotree-toggle-in-project-root   :which-key "Toggle Neotree")
 
 	  ;; Projectile
-	  "p" '(:keymap projectile-command-map :which-key "projectile")
+	  "p"   '(:keymap projectile-command-map   :which-key "projectile")
 
 	  ;; Quit
-	  "q"   '(:ignore t :which-key "quit")
-	  "q q" 'kill-emacs
-	  "q d" 'delete-frame
-	  "q o" 'delete-other-frame
+	  "q"   '(:ignore t                        :which-key "quit")
+	  "q q" '(save-buffers-kill-terminal       :which-key "Quit Emacs")
+	  "q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
+	  "q f" '(delete-frame                     :which-key "Close frame")
+	  "q o" '(delete-other-frame               :which-key "Close other frame")
 
 	  ;; Reformat region
-	  "r"   '(:ignore t :which-key "region")
-	  "r r" 'indent-region
+	  "r"   '(:ignore t                        :which-key "region")
+	  "r r" '(indent-region                    :which-key "Indent region")
 
 	  ;; Avy
-	  "s" 'avy-goto-char-timer
+	  "s"   '(avy-goto-char-timer              :which-key "Avy goto char")
 
 	  ;; Tabs
-	  "t"   '(:ignore t :which-key "tabs")
-	  "t u" 'centaur-tabs-group-buffer-groups
-	  "t p" 'centaur-tabs-group-by-projectile-project
+	  "t"   '(:ignore t                                 :which-key "tabs")
+	  "t b" '(centaur-tabs-group-buffer-groups          :which-key "Group tabs by buffer")
+	  "t p" '(centaur-tabs-group-by-projectile-project  :which-key "Group tabs by project")
 
 	  ;; Update packages
-	  "u" 'auto-package-update-now
+	  "u"   '(auto-package-update-now          :which-key "Update packages")
 
 	  ;; Window
-	  "w"     '(:ignore t :which-key "window")
-	  "w d"   '(:ignore t :which-key "close")
-	  "w d f" 'delete-frame
-	  "w d w" 'delete-window
-	  "w h"   'evil-window-left
-	  "w j"   'evil-window-down
-	  "w k"   'evil-window-up
-	  "w l"   'evil-window-right
-	  "w o"   'delete-other-windows
-	  "w s"   '(:ignore t :which-key "split")
-	  "w s h" 'split-follow-horizontally
-	  "w s v" 'split-follow-vertically
-	  "w w"   'other-window
+	  ;; "w"         '(:keymap evil-window-map    :which-key "window")
+	  "w"         '(:ignore t                  :which-key "window")
+	  "w h"       '(evil-window-left           :which-key "Focus window left")
+	  "w j"       '(evil-window-down           :which-key "Focus window down")
+	  "w k"       '(evil-window-up             :which-key "Focus window up")
+	  "w l"       '(evil-window-right          :which-key "Focus window right")
+	  "w o"       '(delete-other-windows       :which-key "Close other windows")
+	  "w s"       '(:ignore t                  :which-key "split")
+	  "w s h"     '(split-follow-horizontally  :which-key "Split horizontal")
+	  "w s v"     '(split-follow-vertically    :which-key "Split vertical")
+	  "w w"       '(other-window               :which-key "Focus other window")
+	  "w q"       '(delete-window              :which-key "Close window")
+	  "w <left>"  '(evil-window-left           :which-key "Focus window left")
+	  "w <right>" '(evil-window-right          :which-key "Focus window down")
+	  "w <up>"    '(evil-window-up             :which-key "Focus window up")
+	  "w <down>"  '(evil-window-down           :which-key "Focus window right")
 
-	  "w <left>"  'evil-window-left
-	  "w <right>" 'evil-window-right
-	  "w <up>"    'evil-window-up
-	  "w <down>"  'evil-window-down
-
-	  "x" 'smex-major-mode-commands
-
-	  ;; Language specific
-	  "<tab>"     '(:ignore t :which-key "completion")
+	  "x"         '(smex-major-mode-commands   :which-key "Smex major mode")
 	  ))
 #+END_SRC
 

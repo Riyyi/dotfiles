@@ -278,13 +278,16 @@ Autocomplete packages (includes code completion and snippets).
 	(company-idle-delay 0.2)
 	(company-minimum-prefix-length 2)
 	(company-tooltip-align-annotations 't)
-	:init
-	(add-hook 'c-mode-common-hook 'company-mode)
-	(add-hook 'emacs-lisp-mode-hook 'company-mode)
-	(add-hook 'latex-mode-hook 'company-mode)
-	(add-hook 'org-mode-hook 'company-mode)
-	(add-hook 'shell-mode-hook 'company-mode)
-	(add-hook 'shell-script-mode-hook 'company-mode))
+	:hook
+	((c-mode-common
+	  emacs-lisp-mode
+	  latex-mode
+	  org-mode
+	  php-mode
+	  shell-mode
+	  shell-script-mode)
+	 . company-mode)
+  )
 #+END_SRC
 
 **** Flycheck
@@ -295,11 +298,13 @@ On the fly syntax checking.
   (use-package flycheck
 	:defer t
 	:hook
-	((c-mode
-	  c++-mode
+	((c-mode-common
+	  emacs-lisp-mode
+	  latex-mode
 	  org-mode
 	  php-mode
-	  shell-mode)
+	  shell-mode
+	  shell-script-mode)
 	 . flycheck-mode))
 #+END_SRC
 
@@ -310,7 +315,7 @@ On the fly syntax checking.
 	:defer t
 	:hook
 	((c-mode         ; clangd
-	  c-or-c++-mode  ; clangd
+	  c++-mode       ; clangd
 	  php-mode)      ; nodejs-intelephense
 	 . lsp-deferred)
 	:custom
@@ -359,9 +364,10 @@ On the fly syntax checking.
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
 	:defer t
-	:init
-	(add-hook 'org-mode-hook #'yas-minor-mode)
-	(add-hook 'prog-mode-hook #'yas-minor-mode)
+	:hook
+	((org-mode
+	  prog-mode)
+	 . yas-minor-mode)
 	:config (yas-reload-all))
 
   (use-package yasnippet-snippets
@@ -373,12 +379,13 @@ On the fly syntax checking.
 Irony requires M-x =irony-install-server=.
 
 #+BEGIN_SRC emacs-lisp
-(use-package irony
+  (use-package irony
 	:defer t
-	:init
-	(add-hook 'c++-mode-hook 'irony-mode)
-	(add-hook 'c-mode-hook 'irony-mode)
-	(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+	:hook
+	((c-mode
+	  c++-mode)
+	 . irony-mode)
+	(irony-mode . irony-cdb-autosetup-compile-options)
 	:config (push 'glsl-mode irony-supported-major-modes))
 
   (use-package company-irony

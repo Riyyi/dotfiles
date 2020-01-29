@@ -819,16 +819,17 @@ General.el ~leader key binds.
 
 	(space-leader
 	  "SPC"       '(smex                       :which-key "Smex")
+	  "RET"       '(bookmark-jump              :which-key "Jump to bookmark")
 
-	  ;; Buffer
-	  "b"         '(:ignore t                  :which-key "buffer")
+	  ;; Buffer / bookmark
+	  "b"         '(:ignore t                  :which-key "buffer/bookmark")
 	  "b b"       '(ido-switch-buffer          :which-key "Switch buffer")
 	  "b B"       '(ibuffer                    :which-key "List buffers")
 	  "b d"       '(kill-current-buffer        :which-key "Kill buffer")
 	  "b h"       '(previous-buffer            :which-key "Previous buffer")
 	  "b k"       '(kill-current-buffer        :which-key "Kill buffer")
 	  "b l"       '(next-buffer                :which-key "Next buffer")
-	  "b m"       '(bookmark-set               :which-key "Set bookmark")
+	  "b m"       '(bookmark-set               :which-key "Make bookmark")
 	  "b M"       '(bookmark-delete            :which-key "Delete bookmark")
 	  "b n"       '(evil-buffer-new            :which-key "New empty buffer")
 	  "b r"       '(revert-buffer              :which-key "Revert buffer")
@@ -874,8 +875,10 @@ General.el ~leader key binds.
 	  "r"   '(:ignore t                        :which-key "region")
 	  "r r" '(indent-region                    :which-key "Indent region")
 
-	  ;; Avy
-	  "s"   '(avy-goto-char-timer              :which-key "Avy goto char")
+	  ;; Search
+	  "s"   '(:ignore t                        :which-key "search")
+	  "s a" '(avy-goto-char-timer              :which-key "Avy goto char")
+	  "s b" '(bookmark-jump                    :which-key "Jump to bookmark")
 
 	  ;; Tabs
 	  "t"   '(:ignore t                                 :which-key "tabs")

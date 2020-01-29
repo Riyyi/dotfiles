@@ -269,6 +269,8 @@ Project manager.
 
 Autocomplete packages (includes code completion and snippets).
 
+**** Company
+
 #+BEGIN_SRC emacs-lisp
   (use-package company
 	:defer t
@@ -283,15 +285,90 @@ Autocomplete packages (includes code completion and snippets).
 	(add-hook 'org-mode-hook 'company-mode)
 	(add-hook 'shell-mode-hook 'company-mode)
 	(add-hook 'shell-script-mode-hook 'company-mode))
-
-  (use-package company-irony
-	:after company
-	:config (add-to-list 'company-backends 'company-irony))
-
-  (use-package company-c-headers
-	:after company
-	:config (add-to-list 'company-backends 'company-c-headers))
 #+END_SRC
+
+**** Flycheck
+
+On the fly syntax checking.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+	:defer t
+	:hook
+	((c-mode
+	  c++-mode
+	  org-mode
+	  php-mode
+	  shell-mode)
+	 . flycheck-mode))
+#+END_SRC
+
+**** LSP
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+	:defer t
+	:hook
+	((c-mode         ; clangd
+	  c-or-c++-mode  ; clangd
+	  php-mode)      ; nodejs-intelephense
+	 . lsp-deferred)
+	:custom
+	(lsp-auto-guess-root t)
+	(lsp-clients-clangd-args '("-compile-commands-dir=build" "-j=2" "-background-index" "-log=error"))
+	(lsp-enable-xref t)
+	(lsp-keep-workspace-alive nil)
+	(lsp-prefer-flymake nil)
+	:commands lsp)
+
+  (use-package company-lsp
+	:after company lsp-mode
+	:custom
+	(company-transformers nil)
+	(company-lsp-async t)
+	(company-lsp-cache-candidates nil)
+	(company-lsp-enable-snippet t)
+	:commands company-lsp
+	:config
+	(push 'company-lsp company-backends))
+
+  (use-package lsp-ui
+	:after flycheck lsp-mode
+	:hook (lsp-mode . lsp-ui-mode)
+	:custom
+	(lsp-ui-doc-border (face-foreground 'default))
+	(lsp-ui-doc-enable nil)
+	(lsp-ui-doc-header t)
+	(lsp-ui-doc-include-signature t)
+	(lsp-ui-doc-position 'top)
+	(lsp-ui-doc-use-childframe t)
+	(lsp-ui-sideline-enable nil)
+	(lsp-ui-sideline-ignore-duplicate t)
+	(lsp-ui-sideline-show-code-actions nil)
+	(lsp-ui-flycheck-enable t)
+	(lsp-ui-flycheck-list-position 'right)
+	(lsp-ui-flycheck-live-reporting t)
+	(lsp-ui-peek-enable nil)
+	(lsp-ui-peek-list-width 60)
+	(lsp-ui-peek-peek-height 25)
+	:commands lsp-ui-mode)
+#+END_SRC
+
+**** YASnippet
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+	:defer t
+	:init
+	(add-hook 'org-mode-hook #'yas-minor-mode)
+	(add-hook 'prog-mode-hook #'yas-minor-mode)
+	:config (yas-reload-all))
+
+  (use-package yasnippet-snippets
+	:after yasnippet)
+#+END_SRC
+
+**** C/C++
 
 Irony requires M-x =irony-install-server=.
 
@@ -304,23 +381,14 @@ Irony requires M-x =irony-install-server=.
 	(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 	:config (push 'glsl-mode irony-supported-major-modes))
 
-  (use-package yasnippet
-	:defer t
-	:init
-	(add-hook 'org-mode-hook #'yas-minor-mode)
-	(add-hook 'prog-mode-hook #'yas-minor-mode)
-	:config (yas-reload-all))
+  (use-package company-irony
+	:after company irony
+	:config (add-to-list 'company-backends 'company-irony))
 
-  (use-package yasnippet-snippets
-	:after yasnippet)
-#+END_SRC
-
-*** Org
-
-#+BEGIN_SRC emacs-lisp
-  (use-package htmlize)
-
-  (use-package ox-gfm)
+  (use-package company-c-headers
+	:after company
+	:config (add-to-list 'company-backends 'company-c-headers))
+  ;; company-irony-c-headers
 #+END_SRC
 
 *** Prettify
@@ -621,6 +689,16 @@ Functions that use package functionality.
 	(interactive)
 	(funcall (local-key-binding "r")))
 
+  (defun lsp-format-region-or-buffer ()
+	"Format the selection (or buffer) with LSP."
+	(interactive)
+	(unless (bound-and-true-p lsp-mode)
+	  (user-error "Not in an LSP buffer"))
+	(call-interactively
+	 (if (use-region-p)
+		 #'lsp-format-region
+	   #'lsp-format-buffer)))
+
   (defun neotree-toggle-in-project-root ()
 	"Toggle Neotree in project root."
 	(interactive)
@@ -845,6 +923,16 @@ General.el ~leader key binds.
 	  "c r" '(config-reload                           :which-key "Config reload")
 	  "c v" '(config-visit                            :which-key "Config visit")
 	  "c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and save")
+
+	  ;; LSP
+	  "d"   '(:ignore t                        :which-key "lsp")
+	  "d c" '(lsp-describe-thing-at-point      :which-key "LSP Describe under cursor")
+	  "d d" '(lsp-find-definition              :which-key "LSP Find definition")
+	  "d e" '(lsp-execute-code-action          :which-key "LSP Execute code action")
+	  "d f" '(lsp-format-region-or-buffer      :which-key "LSP Format region/buffer")
+	  "d r" '(lsp-find-references              :which-key "LSP Find references")
+	  "d R" '(lsp-rename                       :which-key "LSP Rename")
+	  "d s" '(lsp                              :which-key "Start LSP")
 
 	  ;; Find file
 	  "f"   '(:ignore t                        :which-key "file")

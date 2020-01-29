@@ -419,15 +419,15 @@ Irony requires M-x =irony-install-server=.
 
   (use-package rainbow-mode
 	:defer t
-	:init (add-hook 'prog-mode-hook 'rainbow-mode))
+	:hook (prog-mode . rainbow-mode))
 
   (use-package rainbow-delimiters
 	:defer t
-	:init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+	:hook (prog-mode . rainbow-delimiters-mode))
 
   (use-package org-bullets
 	:defer t
-	:init (add-hook 'org-mode-hook 'org-bullets-mode))
+	:hook (org-mode . org-bullets-mode))
 
   ;; Cmake syntax highlighting
   (use-package cmake-mode
@@ -442,7 +442,7 @@ Irony requires M-x =irony-install-server=.
 	:defer t
 	:custom (column-enforce-comments nil)
 	:custom-face (column-enforce-face ((t (:background "#373b41" :foreground "#de935f"))))
-	:init (add-hook 'prog-mode-hook 'column-enforce-mode))
+	:hook (prog-mode . column-enforce-mode))
 #+END_SRC
 
 Possible modern replacement for column-enforce-mode:

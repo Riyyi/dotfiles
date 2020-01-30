@@ -101,7 +101,7 @@ Install and configure packages.
 	:custom
 	(which-key-add-column-padding 1)
 	(which-key-max-display-columns nil)
-	(which-key-min-display-lines 6)
+	(which-key-min-display-lines 5)
 	(which-key-sort-order 'which-key-prefix-then-key-order)
 	(which-key-sort-uppercase-first nil)
 	:config (which-key-mode))
@@ -595,6 +595,13 @@ Set UTF-8 encoding as default.
 Functions that only use built-in Emacs functionality.
 
 #+BEGIN_SRC emacs-lisp
+  (defun bookmark-jump-ido ()
+	"Uses ido to search for the bookmark"
+	(interactive)
+	(bookmark-jump
+	 (bookmark-get-bookmark
+	  (ido-completing-read "Jump to bookmark: " (bookmark-all-names)))))
+
   (defun config-visit ()
 	"Config edit."
 	(interactive)
@@ -903,7 +910,7 @@ General.el ~leader key binds.
 
 	(space-leader
 	  "SPC"       '(smex                       :which-key "Smex")
-	  "RET"       '(bookmark-jump              :which-key "Jump to bookmark")
+	  "RET"       '(bookmark-jump-ido          :which-key "Jump to bookmark")
 
 	  ;; Buffer / bookmark
 	  "b"         '(:ignore t                  :which-key "buffer/bookmark")
@@ -972,7 +979,7 @@ General.el ~leader key binds.
 	  ;; Search
 	  "s"   '(:ignore t                        :which-key "search")
 	  "s a" '(avy-goto-char-timer              :which-key "Avy goto char")
-	  "s b" '(bookmark-jump                    :which-key "Jump to bookmark")
+	  "s b" '(bookmark-jump-ido                :which-key "Jump to bookmark")
 
 	  ;; Tabs
 	  "t"   '(:ignore t                                 :which-key "tabs")

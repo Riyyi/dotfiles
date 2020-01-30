@@ -334,8 +334,7 @@ On the fly syntax checking.
 	(company-lsp-cache-candidates nil)
 	(company-lsp-enable-snippet t)
 	:commands company-lsp
-	:config
-	(push 'company-lsp company-backends))
+	:config (push 'company-lsp company-backends))
 
   (use-package lsp-ui
 	:after flycheck lsp-mode
@@ -390,11 +389,11 @@ Irony requires M-x =irony-install-server=.
 
   (use-package company-irony
 	:after company irony
-	:config (add-to-list 'company-backends 'company-irony))
+	:config (push 'company-irony company-backends))
 
   (use-package company-c-headers
 	:after company
-	:config (add-to-list 'company-backends 'company-c-headers))
+	:config (push 'company-c-headers company-backends))
   ;; company-irony-c-headers
 #+END_SRC
 

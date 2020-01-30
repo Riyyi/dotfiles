@@ -602,6 +602,13 @@ Functions that only use built-in Emacs functionality.
 	 (bookmark-get-bookmark
 	  (ido-completing-read "Jump to bookmark: " (bookmark-all-names)))))
 
+  (defun bookmark-delete-ido ()
+	"Uses ido to search for the bookmark to delete"
+	(interactive)
+	(bookmark-delete
+	 (bookmark-get-bookmark
+	  (ido-completing-read "Delete bookmark: " (bookmark-all-names)))))
+
   (defun config-visit ()
 	"Config edit."
 	(interactive)
@@ -921,7 +928,7 @@ General.el ~leader key binds.
 	  "b k"       '(kill-current-buffer        :which-key "Kill buffer")
 	  "b l"       '(next-buffer                :which-key "Next buffer")
 	  "b m"       '(bookmark-set               :which-key "Make bookmark")
-	  "b M"       '(bookmark-delete            :which-key "Delete bookmark")
+	  "b M"       '(bookmark-delete-ido        :which-key "Delete bookmark")
 	  "b n"       '(evil-buffer-new            :which-key "New empty buffer")
 	  "b r"       '(revert-buffer              :which-key "Revert buffer")
 	  "b s"       '(basic-save-buffer          :which-key "Save buffer")

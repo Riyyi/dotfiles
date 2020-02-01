@@ -461,6 +461,10 @@ https://github.com/laishulu/hl-fill-column
   ;; Automatically add newline on save at the end of the file
   (setq require-final-newline t)
 
+  ;; Change parenthesis behavior
+  (setq show-paren-delay 0)
+  (setq show-paren-style 'mixed)
+
   ;; Enable line numbers
   (global-display-line-numbers-mode)
 
@@ -765,7 +769,7 @@ Evil command aliases.
   ;; Delete trailing whitespace
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-  ;; Highlight parentheses
+  ;; Highlight parenthesis
   (add-hook 'prog-mode-hook 'show-paren-mode)
 
   ;; C++ // style comments in c-mode

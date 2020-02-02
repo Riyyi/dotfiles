@@ -1,26 +1,30 @@
 #!/bin/sh
 
-ICON="$XDG_CACHE_HOME/lock.png"
+LOCK="$XDG_CACHE_HOME/lock.png"
 
-if [ ! -f "$ICON" ]; then
-	touch "$ICON"
+# Cache the lock image
+if [ ! -f "$LOCK" ]; then
+	touch "$LOCK"
 
-	# Get the resolution of the first active monitor
-	RES="$(i3-msg -t get_outputs | \
-		jq '.[] | select(.active==true) | .rect | .width, .height' | \
-		head -n 2 | head -c -1 | tr '\n' 'x')"
+	# Get the resolution of the primary monitor
+	RES="$(xrandr -q | grep ' connected primary' \
+		| grep -Eo '[0-9]{3,4}x[0-9]{3,4}' | head -c -1)"
 
-	convert "$(dirname "$0")/lock.png" -background none -gravity center -extent "$RES" "$ICON"
+	# Generate lock image
+	convert "$(dirname "$0")/lock.png" -background none -gravity center -extent "$RES" "$LOCK"
 fi
 
+# Disable screensaver
 revert() {
-	xset dpms 0 0 0
+	xset s off
+	xset -dpms
 }
 
+# Set screensaver to 30 seconds
 trap revert HUP INT TERM
 xset +dpms dpms 30 30 30
 
-i3lock -n -i "$ICON" -B 6 -S 1 -e \
+i3lock -n -i "$LOCK" -B 6 -S 1 -e \
 	--radius=47 \
 	--ring-width=5.0 \
 	--verifcolor=00000000 \

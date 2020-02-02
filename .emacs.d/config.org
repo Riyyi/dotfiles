@@ -215,6 +215,7 @@ Provides Emacs with a file tree.
 	(neo-dont-be-alone t)
 	(neo-mode-line-type 'none)
 	(neo-show-hidden-files t)
+	(neo-vc-integration '(face))
 	:hook (neotree-mode . (lambda (&rest _) (display-line-numbers-mode 0))))
 #+END_SRC
 
@@ -237,6 +238,7 @@ Places buffers as tabs in a bar at the top.
 	(centaur-tabs-default ((t (:background "#282a2e" :foreground "#282a2e"))))
 	(centaur-tabs-selected ((t (:background "#373b41" :foreground "white"))))
 	(centaur-tabs-unselected ((t (:background "#282a2e" :foreground "#c5c8c6"))))
+	:hook (neotree-mode . centaur-tabs-local-mode)
 	:config
 	(centaur-tabs-mode))
 #+END_SRC

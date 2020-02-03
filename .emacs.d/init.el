@@ -2,7 +2,7 @@
 
 ;;; Commentary:
 
-;; Setup package manager and build configuration org file.
+;; Setup package manager and build configuration file.
 
 ;;; Code:
 
@@ -15,7 +15,9 @@
 ; --------------------------------------
 
 (defvar emacs-cache (concat (getenv "XDG_CACHE_HOME") "/emacs")
-  "Directory where cache data is stored.")
+  "Directory where Emacs cache data is stored.")
+(defvar emacs-d (concat (getenv "HOME") "/.emacs.d")
+  "Additional per-user Emacs-specific files.")
 
 ; --------------------------------------
 
@@ -35,7 +37,7 @@
 
 ;; Tangle configuration file
 (require 'org)
-(when (file-readable-p (expand-file-name "config.org" user-emacs-directory))
-  (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
+(when (file-readable-p (concat emacs-d "/config.org"))
+  (org-babel-load-file (concat emacs-d "/config.org")))
 
 ;;; init.el ends here

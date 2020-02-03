@@ -25,7 +25,7 @@ M-x =all-the-icons-install-fonts=
 Store custom-file separately, don't freak out when it's not found.
 
 #+BEGIN_SRC emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
+  (setq custom-file (concat emacs-d "/custom.el"))
   (load custom-file 'noerror)
 #+END_SRC
 
@@ -616,12 +616,12 @@ Functions that only use built-in Emacs functionality.
   (defun config-visit ()
 	"Config edit."
 	(interactive)
-	(find-file "~/.emacs.d/config.org"))
+	(find-file (concat emacs-d "/config.org")))
 
   (defun config-reload ()
 	"Config reload."
 	(interactive)
-	(org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+	(org-babel-load-file (concat emacs-d "/config.org")))
 
   (defun display-startup-echo-area-message ()
 	"Hide default startup message."

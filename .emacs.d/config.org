@@ -32,7 +32,7 @@ Store custom-file separately, don't freak out when it's not found.
 Set custom faces, without using customize.
 
 #+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'default nil :height 90 :family "DejaVu Sans Mono")
+  (set-default-font "DejaVu Sans Mono 9")
 #+END_SRC
 
 * Package Management
@@ -98,6 +98,7 @@ Install and configure packages.
 		)))
 
   (use-package which-key
+	:defer 1
 	:custom
 	(which-key-add-column-padding 1)
 	(which-key-max-display-columns nil)
@@ -106,8 +107,7 @@ Install and configure packages.
 	(which-key-sort-uppercase-first nil)
 	:config (which-key-mode))
 
-  (use-package general
-	:after which-key)
+  (use-package general)
 
   (use-package ido-vertical-mode
 	:config (ido-vertical-mode))
@@ -199,9 +199,7 @@ Collect icon fonts and propertize them within Emacs\\
 (requires M-x =all-the-icons-install-fonts=).
 
 #+BEGIN_SRC emacs-lisp
-  (use-package memoize)
-  (use-package all-the-icons
-	:after memoize)
+  (use-package all-the-icons)
 #+END_SRC
 
 Provides Emacs with a file tree.
@@ -602,14 +600,14 @@ Functions that only use built-in Emacs functionality.
 
 #+BEGIN_SRC emacs-lisp
   (defun bookmark-jump-ido ()
-	"Uses ido to search for the bookmark"
+	"Use ido to search for the bookmark."
 	(interactive)
 	(bookmark-jump
 	 (bookmark-get-bookmark
 	  (ido-completing-read "Jump to bookmark: " (bookmark-all-names)))))
 
   (defun bookmark-delete-ido ()
-	"Uses ido to search for the bookmark to delete"
+	"Use ido to search for the bookmark to delete."
 	(interactive)
 	(bookmark-delete
 	 (bookmark-get-bookmark
@@ -948,7 +946,7 @@ General.el ~leader key binds.
 	  "c p" '(evilnc-comment-or-uncomment-paragraphs  :which-key "Toggle comment paragraph")
 	  "c r" '(config-reload                           :which-key "Config reload")
 	  "c v" '(config-visit                            :which-key "Config visit")
-	  "c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and save")
+	  "c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and copy")
 
 	  ;; LSP
 	  "d"   '(:ignore t                        :which-key "lsp")
@@ -983,7 +981,7 @@ General.el ~leader key binds.
 	  "q q" '(save-buffers-kill-terminal       :which-key "Quit Emacs")
 	  "q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
 	  "q f" '(delete-frame                     :which-key "Close frame")
-	  "q o" '(delete-other-frame               :which-key "Close other frame")
+	  "q o" '(delete-other-frames              :which-key "Close other frames")
 
 	  ;; Reformat region
 	  "r"   '(:ignore t                        :which-key "region")

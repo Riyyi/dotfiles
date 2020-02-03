@@ -1,7 +1,15 @@
+;;; package --- Emacs init file
+
+;;; Commentary:
+
+;; Setup package manager and build configuration org file.
+
+;;; Code:
+
 ;; Increases garbage collection during startup
-(setq startup/gc-cons-threshold gc-cons-threshold)
+(defvar startup/gc-cons-threshold gc-cons-threshold)
 (setq gc-cons-threshold most-positive-fixnum)
-(defun startup/reset-gc () (setq gc-cons-threshold startup/gc-cons-threshold))
+(defun startup/reset-gc () "." (setq gc-cons-threshold startup/gc-cons-threshold))
 (add-hook 'emacs-startup-hook 'startup/reset-gc)
 
 ; --------------------------------------
@@ -25,7 +33,9 @@
 
 ; --------------------------------------
 
-;; Load actual config file
+;; Tangle configuration file
 (require 'org)
 (when (file-readable-p (expand-file-name "config.org" user-emacs-directory))
   (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
+
+;;; init.el ends here

@@ -80,22 +80,9 @@ Install and configure packages.
 *** General
 
 #+BEGIN_SRC emacs-lisp
-  (use-package color-theme-sanityinc-tomorrow
-	:config
-	(load-theme 'sanityinc-tomorrow-night t)
-	(color-theme-sanityinc-tomorrow--with-colors 'night
-	  (custom-theme-set-faces
-		'sanityinc-tomorrow-night
-		`(highlight                ((t (:foreground ,yellow :background ,background))))
-		`(lazy-highlight           ((t (:foreground ,highlight :background ,comment))))
-		`(line-number-current-line ((t (:foreground ,yellow :background "#222427"))))
-		`(show-paren-match         ((t (:background ,yellow))))
-		`(cursor                   ((t (:background ,foreground))))
-		`(font-lock-keyword-face   ((t (:foreground ,green))))
-		`(font-lock-string-face    ((t (:foreground ,aqua))))
-		`(ivy-current-match        ((t (:foreground ,orange))))
-		`(ivy-cursor               ((t (:background ,foreground))))
-		)))
+  (use-package hybrid-reverse-theme
+	:load-path "~/Code/elisp/emacs-hybrid-reverse"
+	:custom (load-theme 'hybrid-reverse t))
 
   (use-package which-key
 	:defer 1
@@ -177,19 +164,9 @@ Emacs mode line replacement.
 	(telephone-line-lhs
 	 '((evil   . (telephone-line-evil-tag-segment))
 	   (accent . (telephone-line-erc-modified-channels-segment
-				  telephone-line-process-segment))
-	   (nil    . (telephone-line-buffer-segment
-				  telephone-line-projectile-segment))))
-	:custom-face
-	(telephone-line-evil ((t (:weight normal))))
-	(telephone-line-evil-normal ((t (:background "#87afd7" :foreground "black"))))
-	(telephone-line-evil-insert ((t (:background "#b5bd68" :foreground "black"))))
-	(telephone-line-evil-visual ((t (:background "#b294bb" :foreground "black"))))
-	(telephone-line-evil-replace ((t (:background "#282a2e" :foreground "white"))))
-	(telephone-line-evil-motion ((t (:background "#8abeb7" :foreground "black"))))
-	(telephone-line-evil-operator ((t (:background "#de935f" :foreground "black"))))
-	(telephone-line-evil-emacs ((t (:background "#b294bb" :foreground "black"))))
-	(telephone-line-projectile ((t (:foreground "default"))))
+				  telephone-line-process-segment
+				  telephone-line-buffer-segment))
+	   (nil    . (telephone-line-projectile-segment))))
 	:config (telephone-line-mode))
 #+END_SRC
 
@@ -224,7 +201,6 @@ Places buffers as tabs in a bar at the top.
 #+BEGIN_SRC emacs-lisp
   (use-package centaur-tabs
 	:custom
-	(centaur-tabs-background-color "#282a2e")
 	(centaur-tabs-height 40)
 	(centaur-tabs-set-icons t)
 	(centaur-tabs-style "slant")
@@ -232,10 +208,6 @@ Places buffers as tabs in a bar at the top.
 	;; (centaur-tabs-modified-marker "*")
 	;; (centaur-tabs-height 29)
 	;; (centaur-tabs-set-icons nil)
-	:custom-face
-	(centaur-tabs-default ((t (:background "#282a2e" :foreground "#282a2e"))))
-	(centaur-tabs-selected ((t (:background "#373b41" :foreground "white"))))
-	(centaur-tabs-unselected ((t (:background "#282a2e" :foreground "#c5c8c6"))))
 	:hook (neotree-mode . centaur-tabs-local-mode)
 	:config
 	(centaur-tabs-mode))

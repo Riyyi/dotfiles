@@ -16,7 +16,25 @@
 	.adg-rects.desktop { display: none; }
 	#op.desktop { display: none; }
 	#absbot { display: none; }
-	
+
 	/* Make posts the full width */
 	.postContainer.replyContainer .post.reply { width: 100% }
+}
+
+@-moz-document domain("youtube.com") {
+	/* Hide video player */
+	#player-theater-container {
+		display: none !important;
+	}
+
+	/* Hide recommended sidebar */
+	#columns #secondary {
+		display: none !important;
+	}
+
+	/* Center content */
+	#columns {
+		max-width: 65% !important;
+		min-width: 65% !important;
+	}
 }

@@ -40,6 +40,10 @@ EOF
 # If no option is provided
 [ "$#" -eq 0 ] && help && exit
 
+# Set required X variables
+export DISPLAY=:0
+export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
+
 SCRIPT="$(basename "$0")"
 # Option handling
 while getopts ':h?d:k:s:' opt; do

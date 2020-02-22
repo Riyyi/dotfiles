@@ -49,6 +49,7 @@ WmWorkSpace.ws9: 九
 WmWorkSpace.ws0: 十
 
 Xcursor.theme: capitaine-cursors
+Xcursor.size: 48
 
 ! Font config
 *dpi: 192

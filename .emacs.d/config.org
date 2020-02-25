@@ -339,6 +339,8 @@ On the fly syntax checking.
 	((org-mode
 	  prog-mode)
 	 . yas-minor-mode)
+	:custom (yas-prompt-functions '(yas-ido-prompt
+									yas-completing-prompt))
 	:config (yas-reload-all))
 
   (use-package yasnippet-snippets
@@ -715,6 +717,7 @@ Define default terminal option.
 #+END_SRC
 
 ** Aliases
+
 *** General
 
 Make confirm easier, by just pressing y/n.
@@ -813,6 +816,8 @@ Disable spacebar in evil motion.
   (global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
   (global-set-key (kbd "C-M-h") 'centaur-tabs-move-current-tab-to-left)
   (global-set-key (kbd "C-M-l") 'centaur-tabs-move-current-tab-to-right)
+
+  (global-set-key (kbd "M-x") 'smex)
 
   ;; Company completion selection
   (with-eval-after-load 'company
@@ -941,6 +946,10 @@ General.el ~leader key binds.
 	  "j"   '(centaur-tabs-select-end-tab      :which-key "Tab select first")
 	  "k"   '(centaur-tabs-select-beg-tab      :which-key "Tab select last")
 	  "l"   '(centaur-tabs-forward-group       :which-key "Tab forward group")
+
+	  ;; Insert
+	  "i"   '(:ignore t                        :which-key "insert")
+	  "i s" '(yas-insert-snippet               :which-key "Snippet")
 
 	  ;; Neotree
 	  "n"   '(neotree-toggle-in-project-root   :which-key "Toggle Neotree")

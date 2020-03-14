@@ -813,8 +813,8 @@ Disable spacebar in evil motion.
 
 #+BEGIN_SRC emacs-lisp
   ;; Buffers
-  (global-set-key (kbd "M-h") 'centaur-tabs-backward)
-  (global-set-key (kbd "M-l") 'centaur-tabs-forward)
+  (global-set-key (kbd "M-h") 'centaur-tabs-backward-tab)
+  (global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
   (global-set-key (kbd "C-M-h") 'centaur-tabs-move-current-tab-to-left)
   (global-set-key (kbd "C-M-l") 'centaur-tabs-move-current-tab-to-right)
 

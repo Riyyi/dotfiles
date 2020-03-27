@@ -24,6 +24,9 @@ export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export GDK_SCALE=2
 export GDK_DPI_SCALE=0.5
 
+# Gradle
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+
 # Less
 export LESS="-R"
 export LESSHISTFILE="-"
@@ -37,6 +40,9 @@ export LESS_TERMCAP_ue="$(printf '%b' '\e[0m')"         # reset underline
 
 # npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+
+# OpenSSL
+export RANDFILE="$XDG_CACHE_HOME/rnd"
 
 # Panel
 export PANEL_HEIGHT=38

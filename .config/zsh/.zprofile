@@ -51,12 +51,19 @@ export TERMINAL="urxvt"
 # Vim
 export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
 
+# Web browser
+export BROWSER="firefox"
+
+# Wget
+export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
+
 # WM
 export WM="i3"
 
 # Xorg
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
+touch "$XDG_DATA_HOME/xorg/Xauthority"
 
 # Colors, window manager colors, workspace names
 # Example: *.color0:        #282a2e  ->  COLOR0=#282a2e

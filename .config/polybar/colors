@@ -1,3 +1,5 @@
+; -*- conf -*-
+
 ; Xresources colors
 [colors]
 foreground     = ${xrdb:foreground:#c5c8c6}

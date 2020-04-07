@@ -81,7 +81,7 @@ Install and configure packages.
 
 #+BEGIN_SRC emacs-lisp
   (use-package hybrid-reverse-theme
-	:load-path "~/Code/elisp/emacs-hybrid-reverse"
+	:load-path "~/code/elisp/emacs-hybrid-reverse"
 	:custom (load-theme 'hybrid-reverse t))
 
   (use-package which-key
@@ -551,6 +551,7 @@ File auto-saves, backups, tramps.
   ;; C/C++-like languages formatting style
   ;https://www.emacswiki.org/emacs/IndentingC
   (setq-default c-basic-offset 4
+				sgml-basic-offset 4
 				c-default-style "linux")
 #+END_SRC
 
@@ -761,7 +762,8 @@ Useful links:\\
 [[https://www.masteringemacs.org/article/mastering-key-bindings-emacs][Mastering Emacs key bindings]] \\
 [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][use-package bind key]] \\
 [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Remapping-Commands.html][GNU remapping commands]] \\
-[[https://www.gnu.org/software/emacs/manual/html_node/efaq/Binding-combinations-of-modifiers-and-function-keys.html][GNU binding combinations of modifiers]]
+[[https://www.gnu.org/software/emacs/manual/html_node/efaq/Binding-combinations-of-modifiers-and-function-keys.html][GNU binding combinations of modifiers]] \\
+[[https://github.com/hlissner/doom-emacs/blob/develop/modules/config/default/+evil-bindings.el][Doom Emacs bindings]]
 
 ** Disable default
 

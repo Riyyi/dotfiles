@@ -67,7 +67,7 @@ export BROWSER="firefox"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 
 # WM
-export WM="i3"
+export WM="bspwm"
 
 # Xorg
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"

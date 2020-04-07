@@ -1,4 +1,4 @@
-# -*- mode: conf -*-
+# -*- conf -*-
 
 # When usb keyboard is plugged in, run inputctl script
 # Requires: run as local user with X variables set (DISPLAY and XAUTHORITY)

@@ -35,8 +35,8 @@ EOF
 # Exit if no option is provided
 [ "$#" -eq 0 ] && help && exit 1
 
-SCRIPT="$(basename "$0")"
 # Option handling
+SCRIPT="$(basename "$0")"
 while getopts ':h?e:w:' opt; do
 	case $opt in
 		h)
@@ -79,6 +79,7 @@ wireless() {
 	fi
 }
 
+# Command handling
 [ $OPTIND -ge 2 ] && shift $((OPTIND - 2))
 case "$1" in
 	1 | on)

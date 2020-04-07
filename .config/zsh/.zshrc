@@ -42,7 +42,7 @@ zstyle ':vcs_info:*' formats '%F{cyan}(%F{red}%b%F{cyan})%f %c%u'
 compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' menu select
 
@@ -74,15 +74,22 @@ SAVEHIST=10000
 ## Aliases
 
 # General
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
 alias q="exit"
-alias la="ls -laGh --color --group-directories-first"
+alias la="ls -lAGh --color --group-directories-first"
 alias ls="ls --color --group-directories-first"
 alias grep="grep --color"
+alias df="df -h"
 alias md="mkdir -p"
 alias rm="rm -i"
+alias se="sudoedit"
+alias v="vim --servername VIM"
 alias vim="vim --servername VIM"
-alias svim="sudoedit"
 alias fuck='sudo $(fc -ln -1)'
+alias pkill="pkill -9"
+alias ss="sudo systemctl"
 
 # Config
 alias c="$HOME/.scripts/config.sh"
@@ -109,13 +116,14 @@ alias depend="$HOME/.scripts/alias.sh depend"
 alias jdoc="$HOME/.scripts/alias.sh java-doc"
 alias jr="$HOME/.scripts/alias.sh java-run"
 alias raspbian="$HOME/.scripts/alias.sh raspbian"
-alias ser="pio serialports monitor -b 9600"
+alias ser="pio device monitor -b 9600"
 alias upl="pio run -t upload"
 alias qmake="qmake -makefile ../ && make"
 
 # Git
 alias g="git"
 alias ga="git add"
+alias gap="git add -p"
 alias gs="git status"
 alias gc="git commit"
 alias gp="git pull"
@@ -131,7 +139,8 @@ alias vp="$HOME/.scripts/vimplugin.sh"
 alias mpvshuffle="$HOME/.scripts/mpv.sh shuffle"
 
 # Other
-alias mysql-workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench 1>/dev/null 2>&1 &; disown"
-alias weather="curl -s 'http://wttr.in/dordrecht?q&n&p' | head -n -3"
+alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
+alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench > /dev/null 2>&1 & disown"
+alias ytaudio="youtube-dl -f bestaudio -x --audio-format mp3"
 
 [ -f "$ZDOTDIR/.zshrc_extended" ] && source "$ZDOTDIR/.zshrc_extended"

@@ -1,3 +1,6 @@
+// Download directory
+user_pref("browser.download.dir", "/home/rick/downloads");
+
 // Display a blank new tab
 user_pref("browser.newtabpage.enabled", false);
 user_pref("browser.newtab.url", "about:blank");

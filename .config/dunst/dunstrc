@@ -10,7 +10,6 @@ padding = 10
 shrink = false
 
 frame_width = 3
-frame_color = "#676E7D"
 separator_height = 3
 separator_color = frame
 
@@ -41,13 +40,15 @@ history = ctrl+grave
 context = ctrl+shift+period
 
 [urgency_low]
-background = "#404552"
+background = "#8C9440"
 foreground = "#FFFFFF"
+frame_color = "#B5BD68"
 timeout = 10
 
 [urgency_normal]
 background = "#404552"
 foreground = "#FFFFFF"
+frame_color = "#676E7D"
 timeout = 10
 
 [urgency_critical]

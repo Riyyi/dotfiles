@@ -37,20 +37,20 @@ ${B}ARGS${N}
 EOF
 }
 
-# If no option is provided
-[ "$#" -eq 0 ] && help && exit
+# Exit if no option is provided
+[ "$#" -eq 0 ] && help && exit 1
 
 # Set required X variables
 export DISPLAY=:0
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
-SCRIPT="$(basename "$0")"
 # Option handling
+SCRIPT="$(basename "$0")"
 while getopts ':h?d:k:s:' opt; do
 	case $opt in
 		h)
 			help
-			exit
+			exit 1
 			;;
 		d)
 			dev="SYNA3602:00 0911:5288 Touchpad"
@@ -105,8 +105,8 @@ keyboard() {
 	fi
 }
 
-shift $((OPTIND - 2))
 # Command handling
+[ $OPTIND -ge 2 ] && shift $((OPTIND - 2))
 if [ "$dev" = "Keyboard" ]; then
 	keyboard "$1"
 else

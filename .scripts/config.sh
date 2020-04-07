@@ -10,10 +10,10 @@ BACKGROUND="&"
 
 # List of directories to exclude
 EXCLUDES="
-Code
-Documents
+code
+documents
 dotfiles
-Downloads
+downloads
 pictures
 .cache
 .clangd
@@ -34,8 +34,8 @@ pictures
 
 # List of files to include
 INCLUDES="
-Documents/vm/backup/backup.sh
-Documents/vm/commands.org
+documents/vm/backup/backup.sh
+documents/vm/commands.org
 dotfiles/dotfiles.sh
 "
 

@@ -1,3 +1,5 @@
+; -*- conf -*-
+
 ; https://github.com/polybar/polybar/wiki/Module:-bspwm
 [module/bspwm]
 type = internal/bspwm
@@ -11,7 +13,8 @@ label-focused-padding = 2
 label-occupied = %name%
 label-occupied-padding = 2
 
-label-urgent = %name%!
+label-urgent = %name%
+label-urgent-foreground = ${colors.white-bright}
 label-urgent-background = ${wmcolors.bgcolor-urgent}
 label-urgent-padding = 2
 
@@ -114,7 +117,7 @@ format-full-foreground = ${colors.green-bright}
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-foreground = ${colors.white-bright}
 
-ramp-capacity-0 = %{F#a54242}
+ramp-capacity-0 = %{F#dc7a43}
 ramp-capacity-1 = 
 ramp-capacity-2 = 
 ramp-capacity-3 = 

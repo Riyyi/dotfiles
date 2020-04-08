@@ -5,6 +5,12 @@ user_pref("browser.download.dir", "/home/rick/downloads");
 user_pref("browser.newtabpage.enabled", false);
 user_pref("browser.newtab.url", "about:blank");
 
+// Warn on quit (CTRL+q workaround)
+user_pref("browser.sessionstore.warnOnQuit", true);
+
+// Old style URL bar
+user_pref("browser.urlbar.update1", false);
+
 // Disable extension recommendations
 user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
 

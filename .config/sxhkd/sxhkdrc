@@ -34,7 +34,7 @@ super + shift + w
 
 # Screen brightness
 super + {F2,F3}
-	brightnesscontrol.sh {down,up} 10
+	brictl.sh {dec,inc} 10
 
 # Screenshot (fullscreen, selection, focused window)
 {_,shift,super} + @Print

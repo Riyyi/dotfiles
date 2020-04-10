@@ -1,0 +1,109 @@
+#!/bin/sh
+
+# Control the volume
+# Depends: pamixer
+
+help() {
+	B=$(tput bold)
+	U=$(tput smul)
+	N=$(tput sgr0)
+
+	cat << EOF
+${B}NAME${N}
+	volctl.sh - control the volume
+
+${B}SYNOPSIS${N}
+	${B}volctl.sh${N} [${U}OPTION${N}] [${U}COMMAND${N}] [<${U}ARG${N}>]
+
+${B}DESCRIPTION${N}
+	${B}volctl.sh${N} uses pamixer to change the volume of the system.
+
+	Commands can be truncated, i.e. "${B}volctl.sh t${N}" for "${B}volctl.sh toggle${N}"
+	Arguments need to be of numeric value.
+
+${B}OPTIONS${N}
+	${B}-h${N}	Display usage message and exit.
+
+${B}COMMANDS${N}
+	${B}i${N} <${U}AMOUNT${N}>, ${B}inc${N} <${U}AMOUNT${N}>
+		Increase volume by ${U}AMOUNT${N}, default of 2.
+
+	${B}d${N} <${U}AMOUNT${N}>, ${B}dec${N} <${U}AMOUNT${N}>
+		Decrease volume by ${U}AMOUNT${N}, default of 2.
+
+	${B}s${N} <${U}LEVEL${N}>, ${B}set${N} <${U}LEVEL${N}>
+		Set volume to ${U}LEVEL${N}, default of 0.
+
+	${B}t${N}, ${B}toggle${N}
+		Toggle mute.
+
+	${B}m${N}, ${B}mute${N}
+		Mute volume.
+
+	${B}u${N}, ${B}unmute${N}
+		Unmute volume.
+
+	${B}getv${N}, ${B}getvolume${N}
+		Get volume level.
+
+	${B}getm${N}, ${B}getmute${N}
+		Get mute status.
+EOF
+}
+
+# Exit if no option is provided
+[ "$#" -eq 0 ] && help && exit 1
+
+SCRIPT="$(basename "$0")"
+
+# Option handling
+while getopts ':h?' opt; do
+	case $opt in
+		h)
+			help
+			exit 0
+			;;
+		\?)
+			echo "$SCRIPT: invalid option '$OPTARG'"
+			echo "Try '$SCRIPT -h' for more information."
+			exit 1
+			;;
+	esac
+done
+
+# Command handling
+shift $((OPTIND - 1))
+case "$1" in
+	i*)
+		NUM=${2:-2}
+		pamixer --increase "$NUM"
+		;;
+	d*)
+		NUM=${2:-2}
+		pamixer --decrease "$NUM"
+		;;
+	s*)
+		NUM=${2:-0}
+		pamixer --set-volume "$NUM"
+		;;
+	t*)
+		pamixer --toggle-mute
+		;;
+	m*)
+		pamixer --mute
+		;;
+	n*)
+		pamixer --unmute
+		;;
+	getv*)
+		pamixer --get-volume
+		;;
+	getm*)
+		pamixer --get-mute
+		;;
+	*)
+		echo "$SCRIPT: invalid command '$1'"
+		echo "Try '$SCRIPT -h' for more information."
+		exit 1
+		;;
+esac

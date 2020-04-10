@@ -42,7 +42,7 @@ super + {F2,F3}
 
 # Volume
 XF86Audio{LowerVolume,RaiseVolume,Mute}
-	mediacontrol.sh {down 5,up 5,toggle}
+	volctl.sh {dec 5,inc 5,toggle}
 
 # Touchpad toggle
 XF86HomePage

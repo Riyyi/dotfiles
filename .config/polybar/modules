@@ -36,7 +36,7 @@ interval = 5
 sink = alsa_output.pci-0000_00_1f.3.analog-stereo
 use-ui-max = false
 
-format-volume = %{A1:pavucontrol:}%{A2:$HOME/.scripts/mediacontrol.sh set 0:}%{A3:$HOME/.scripts/mediacontrol.sh toggle:}<ramp-volume> <label-volume>%{A}%{A}%{A}
+format-volume = %{A1:pavucontrol:}%{A2:$HOME/.scripts/volctl.sh s 0:}%{A3:$HOME/.scripts/volctl.sh t:}<ramp-volume> <label-volume>%{A}%{A}%{A}
 format-volume-foreground = ${colors.white-bright}
 
 ramp-volume-0 = 
@@ -46,7 +46,7 @@ ramp-volume-3 = 
 
 label-volume = %percentage%%
 
-format-muted = %{A1:pavucontrol:}%{A2:$HOME/.scripts/mediacontrol.sh set 0:}%{A3:$HOME/.scripts/mediacontrol.sh toggle:}<label-muted>%{A}%{A}%{A}
+format-muted = %{A1:pavucontrol:}%{A2:$HOME/.scripts/volctl.sh s 0:}%{A3:$HOME/.scripts/volctl.sh t:}<label-muted>%{A}%{A}%{A}
 format-muted-foreground = ${wmcolors.fgcolor-inactive}
 
 label-muted =  %percentage%%

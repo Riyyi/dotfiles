@@ -176,7 +176,7 @@ update() {
 shift $((OPTIND - 1))
 case "$1" in
 	init | install | list | remove | update)
-		"$1" "$2" "$3"
+		"$@"
 		;;
 	*)
 		echo "$SCRIPT: invalid command '$1'"

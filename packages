@@ -48,6 +48,8 @@ i3lock-color-git
 imagemagick
 inetutils
 inkscape
+intel-media-driver
+intel-media-sdk
 intel-ucode
 iw
 jdk10-openjdk
@@ -58,7 +60,6 @@ lemonbar-xft-git
 lib32-glibc
 libmtp
 libnotify-id
-libva-intel-driver
 linux
 linux-headers
 linux-lts

@@ -434,7 +434,7 @@ https://github.com/laishulu/hl-fill-column
 		(elfeed-search-clipboard-type 'CLIPBOARD)
 		(elfeed-search-title-max-width 100)
 		(elfeed-search-title-min-width 30)
-		(elfeed-search-trailing-width 50)
+		(elfeed-search-trailing-width 55)
 		(elfeed-show-unique-buffers t)
 		(elfeed-feeds
 		 '(("https://www.youtube.com/feeds/videos.xml?user=linustechtips" comedy reviews youtube)

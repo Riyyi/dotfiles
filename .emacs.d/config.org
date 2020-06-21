@@ -944,120 +944,120 @@ General.el ~leader key binds.
 *** Global
 
 #+BEGIN_SRC emacs-lisp
-	  (with-eval-after-load 'general
-		(general-create-definer space-leader
-		  :prefix "SPC"
-		  :non-normal-prefix "M-SPC"
-		  :global-prefix "M-SPC"
-		  :states '(normal visual insert motion emacs))
+  (with-eval-after-load 'general
+	(general-create-definer space-leader
+	  :prefix "SPC"
+	  :non-normal-prefix "M-SPC"
+	  :global-prefix "M-SPC"
+	  :states '(normal visual insert motion emacs))
 
-		(space-leader
-		  "SPC"       '(smex                       :which-key "Smex")
-		  "RET"       '(bookmark-jump-ido          :which-key "Jump to bookmark")
+	(space-leader
+	  "SPC"       '(smex                       :which-key "Smex")
+	  "RET"       '(bookmark-jump-ido          :which-key "Jump to bookmark")
 
-		  ;; Buffer / bookmark
-		  "b"         '(:ignore t                  :which-key "buffer/bookmark")
-		  "b b"       '(ido-switch-buffer          :which-key "Switch buffer")
-		  "b B"       '(ibuffer                    :which-key "List buffers")
-		  "b d"       '(kill-current-buffer        :which-key "Kill buffer")
-		  "b h"       '(previous-buffer            :which-key "Previous buffer")
-		  "b k"       '(kill-current-buffer        :which-key "Kill buffer")
-		  "b l"       '(next-buffer                :which-key "Next buffer")
-		  "b m"       '(bookmark-set               :which-key "Make bookmark")
-		  "b M"       '(bookmark-delete-ido        :which-key "Delete bookmark")
-		  "b n"       '(evil-buffer-new            :which-key "New empty buffer")
-		  "b r"       '(revert-buffer              :which-key "Revert buffer")
-		  "b s"       '(basic-save-buffer          :which-key "Save buffer")
-		  "b S"       '(evil-write-all             :which-key "Save all buffers")
-		  "b <left>"  '(previous-buffer            :which-key "Previous buffer")
-		  "b <right>" '(next-buffer                :which-key "Next buffer")
+	  ;; Buffer / bookmark
+	  "b"         '(:ignore t                  :which-key "buffer/bookmark")
+	  "b b"       '(ido-switch-buffer          :which-key "Switch buffer")
+	  "b B"       '(ibuffer                    :which-key "List buffers")
+	  "b d"       '(kill-current-buffer        :which-key "Kill buffer")
+	  "b h"       '(previous-buffer            :which-key "Previous buffer")
+	  "b k"       '(kill-current-buffer        :which-key "Kill buffer")
+	  "b l"       '(next-buffer                :which-key "Next buffer")
+	  "b m"       '(bookmark-set               :which-key "Make bookmark")
+	  "b M"       '(bookmark-delete-ido        :which-key "Delete bookmark")
+	  "b n"       '(evil-buffer-new            :which-key "New empty buffer")
+	  "b r"       '(revert-buffer              :which-key "Revert buffer")
+	  "b s"       '(basic-save-buffer          :which-key "Save buffer")
+	  "b S"       '(evil-write-all             :which-key "Save all buffers")
+	  "b <left>"  '(previous-buffer            :which-key "Previous buffer")
+	  "b <right>" '(next-buffer                :which-key "Next buffer")
 
-		  ;; Comments / config
-		  "c"   '(:ignore t                               :which-key "comment/config")
-		  "c c" '(evilnc-comment-or-uncomment-lines       :which-key "Toggle comment")
-		  "c p" '(evilnc-comment-or-uncomment-paragraphs  :which-key "Toggle comment paragraph")
-		  "c r" '(config-reload                           :which-key "Config reload")
-		  "c v" '(config-visit                            :which-key "Config visit")
-		  "c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and copy")
+	  ;; Comments / config
+	  "c"   '(:ignore t                               :which-key "comment/config")
+	  "c c" '(evilnc-comment-or-uncomment-lines       :which-key "Toggle comment")
+	  "c p" '(evilnc-comment-or-uncomment-paragraphs  :which-key "Toggle comment paragraph")
+	  "c r" '(config-reload                           :which-key "Config reload")
+	  "c v" '(config-visit                            :which-key "Config visit")
+	  "c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and copy")
 
-		  ;; LSP
-		  "d"   '(:ignore t                        :which-key "lsp")
-		  "d c" '(lsp-describe-thing-at-point      :which-key "LSP Describe under cursor")
-		  "d d" '(lsp-find-definition              :which-key "LSP Find definition")
-		  "d e" '(lsp-execute-code-action          :which-key "LSP Execute code action")
-		  "d f" '(lsp-format-region-or-buffer      :which-key "LSP Format region/buffer")
-		  "d r" '(lsp-find-references              :which-key "LSP Find references")
-		  "d R" '(lsp-rename                       :which-key "LSP Rename")
-		  "d s" '(lsp                              :which-key "Start LSP")
+	  ;; LSP
+	  "d"   '(:ignore t                        :which-key "lsp")
+	  "d c" '(lsp-describe-thing-at-point      :which-key "LSP Describe under cursor")
+	  "d d" '(lsp-find-definition              :which-key "LSP Find definition")
+	  "d e" '(lsp-execute-code-action          :which-key "LSP Execute code action")
+	  "d f" '(lsp-format-region-or-buffer      :which-key "LSP Format region/buffer")
+	  "d r" '(lsp-find-references              :which-key "LSP Find references")
+	  "d R" '(lsp-rename                       :which-key "LSP Rename")
+	  "d s" '(lsp                              :which-key "Start LSP")
 
-		  ;; Find file
-		  "f"   '(:ignore t                        :which-key "file")
-		  "f f" '(find-file-in-project-root        :which-key "Find file")
-		  "f r" '(rename-file-and-buffer           :which-key "Rename file")
-		  "f s" '(basic-save-buffer                :which-key "Save file")
+	  ;; Find file
+	  "f"   '(:ignore t                        :which-key "file")
+	  "f f" '(find-file-in-project-root        :which-key "Find file")
+	  "f r" '(rename-file-and-buffer           :which-key "Rename file")
+	  "f s" '(basic-save-buffer                :which-key "Save file")
 
-		  ;; Tabs
-		  "h"   '(centaur-tabs-backward-group      :which-key "Tab backward group")
-		  "j"   '(centaur-tabs-select-end-tab      :which-key "Tab select first")
-		  "k"   '(centaur-tabs-select-beg-tab      :which-key "Tab select last")
-		  "l"   '(centaur-tabs-forward-group       :which-key "Tab forward group")
+	  ;; Tabs
+	  "h"   '(centaur-tabs-backward-group      :which-key "Tab backward group")
+	  "j"   '(centaur-tabs-select-end-tab      :which-key "Tab select first")
+	  "k"   '(centaur-tabs-select-beg-tab      :which-key "Tab select last")
+	  "l"   '(centaur-tabs-forward-group       :which-key "Tab forward group")
 
-		  ;; Insert
-		  "i"   '(:ignore t                        :which-key "insert")
-		  "i s" '(yas-insert-snippet               :which-key "Snippet")
+	  ;; Insert
+	  "i"   '(:ignore t                        :which-key "insert")
+	  "i s" '(yas-insert-snippet               :which-key "Snippet")
 
-		  ;; Neotree
-		  "n"   '(neotree-toggle-in-project-root   :which-key "Toggle Neotree")
+	  ;; Neotree
+	  "n"   '(neotree-toggle-in-project-root   :which-key "Toggle Neotree")
 
-		  ;; Projectile
-		  "p"   '(:keymap projectile-command-map   :which-key "projectile")
+	  ;; Projectile
+	  "p"   '(:keymap projectile-command-map   :which-key "projectile")
 
-		  ;; Quit
-		  "q"   '(:ignore t                        :which-key "quit")
-		  "q q" '(save-buffers-kill-terminal       :which-key "Quit Emacs")
-		  "q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
-		  "q f" '(delete-frame                     :which-key "Close frame")
-		  "q o" '(delete-other-frames              :which-key "Close other frames")
+	  ;; Quit
+	  "q"   '(:ignore t                        :which-key "quit")
+	  "q q" '(save-buffers-kill-terminal       :which-key "Quit Emacs")
+	  "q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
+	  "q f" '(delete-frame                     :which-key "Close frame")
+	  "q o" '(delete-other-frames              :which-key "Close other frames")
 
-		  ;; Reformat region
-		  "r"   '(:ignore t                        :which-key "region")
-		  "r r" '(indent-region                    :which-key "Indent region")
+	  ;; Reformat region
+	  "r"   '(:ignore t                        :which-key "region")
+	  "r r" '(indent-region                    :which-key "Indent region")
 
-		  ;; Search
-		  "s"   '(:ignore t                        :which-key "search")
-		  "s a" '(avy-goto-char-timer              :which-key "Avy goto char")
-		  "s b" '(bookmark-jump-ido                :which-key "Jump to bookmark")
+	  ;; Search
+	  "s"   '(:ignore t                        :which-key "search")
+	  "s a" '(avy-goto-char-timer              :which-key "Avy goto char")
+	  "s b" '(bookmark-jump-ido                :which-key "Jump to bookmark")
 
-		  ;; Tabs
-		  "t"   '(:ignore t                                 :which-key "tabs")
-		  "t b" '(centaur-tabs-group-buffer-groups          :which-key "Group tabs by buffer")
-		  "t p" '(centaur-tabs-group-by-projectile-project  :which-key "Group tabs by project")
+	  ;; Tabs
+	  "t"   '(:ignore t                                 :which-key "tabs")
+	  "t b" '(centaur-tabs-group-buffer-groups          :which-key "Group tabs by buffer")
+	  "t p" '(centaur-tabs-group-by-projectile-project  :which-key "Group tabs by project")
 
-		  ;; Update packages
-		  "u"   '(auto-package-update-now          :which-key "Update packages")
+	  ;; Update packages
+	  "u"   '(auto-package-update-now          :which-key "Update packages")
 
-		  ;; Window
-		  ;; "w"         '(:keymap evil-window-map    :which-key "window")
-		  "w"         '(:ignore t                  :which-key "window")
-		  "w h"       '(windmove-left              :which-key "Focus window left")
-		  "w j"       '(windmove-down              :which-key "Focus window down")
-		  "w k"       '(windmove-up                :which-key "Focus window up")
-		  "w l"       '(windmove-right             :which-key "Focus window right")
-		  "w o"       '(delete-other-windows       :which-key "Close other windows")
-		  "w s"       '(:ignore t                  :which-key "split")
-		  "w s h"     '(split-follow-horizontally  :which-key "Split horizontal")
-		  "w s v"     '(split-follow-vertically    :which-key "Split vertical")
-		  "w w"       '(other-window               :which-key "Focus other window")
-		  "w q"       '(delete-window              :which-key "Close window")
-		  "w <left>"  '(windmove-left              :which-key "Focus window left")
-		  "w <right>" '(windmove-right             :which-key "Focus window right")
-		  "w <up>"    '(windmove-up                :which-key "Focus window up")
-		  "w <down>"  '(windmove-down              :which-key "Focus window down")
-		  ;; winner-redo (built-in window history)
-		  ;; winner-undo
+	  ;; Window
+	  ;; "w"         '(:keymap evil-window-map    :which-key "window")
+	  "w"         '(:ignore t                  :which-key "window")
+	  "w h"       '(windmove-left              :which-key "Focus window left")
+	  "w j"       '(windmove-down              :which-key "Focus window down")
+	  "w k"       '(windmove-up                :which-key "Focus window up")
+	  "w l"       '(windmove-right             :which-key "Focus window right")
+	  "w o"       '(delete-other-windows       :which-key "Close other windows")
+	  "w s"       '(:ignore t                  :which-key "split")
+	  "w s h"     '(split-follow-horizontally  :which-key "Split horizontal")
+	  "w s v"     '(split-follow-vertically    :which-key "Split vertical")
+	  "w w"       '(other-window               :which-key "Focus other window")
+	  "w q"       '(delete-window              :which-key "Close window")
+	  "w <left>"  '(windmove-left              :which-key "Focus window left")
+	  "w <right>" '(windmove-right             :which-key "Focus window right")
+	  "w <up>"    '(windmove-up                :which-key "Focus window up")
+	  "w <down>"  '(windmove-down              :which-key "Focus window down")
+	  ;; winner-redo (built-in window history)
+	  ;; winner-undo
 
-		  "x"         '(smex-major-mode-commands   :which-key "Smex major mode")
-		  ))
+	  "x"         '(smex-major-mode-commands   :which-key "Smex major mode")
+	  ))
 #+END_SRC
 
 Source:
@@ -1067,20 +1067,20 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 *** Major mode
 
 #+BEGIN_SRC emacs-lisp
-	  (general-create-definer comma-leader
-		:prefix "SPC ,"
-		:states '(normal visual))
+  (general-create-definer comma-leader
+	:prefix "SPC ,"
+	:states '(normal visual))
 
-	  (comma-leader elfeed-search-mode-map
-		""    '(:ignore t                        :which-key "elfeed")
-		"g"   'elfeed-search-update--force
-		"G"   'elfeed-search-fetch
-		)
+  (comma-leader elfeed-search-mode-map
+	""    '(:ignore t                        :which-key "elfeed")
+	"g"   'elfeed-search-update--force
+	"G"   'elfeed-search-fetch
+	)
 
-	  (comma-leader elfeed-show-mode-map
-		""    '(:ignore t                        :which-key "elfeed")
-		"g"   'elfeed-show-refresh
-		)
+  (comma-leader elfeed-show-mode-map
+	""    '(:ignore t                        :which-key "elfeed")
+	"g"   'elfeed-show-refresh
+	)
 #+END_SRC
 
 * Notes

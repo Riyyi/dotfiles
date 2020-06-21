@@ -844,89 +844,97 @@ Disable spacebar in evil motion.
 ** Package
 
 #+BEGIN_SRC emacs-lisp
-	;; Buffers
-	(global-set-key (kbd "M-h") 'centaur-tabs-backward-tab)
-	(global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
-	(global-set-key (kbd "C-M-h") 'centaur-tabs-move-current-tab-to-left)
-	(global-set-key (kbd "C-M-l") 'centaur-tabs-move-current-tab-to-right)
+  ;; Buffers
+  (global-set-key (kbd "M-h") 'centaur-tabs-backward-tab)
+  (global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
+  (global-set-key (kbd "C-M-h") 'centaur-tabs-move-current-tab-to-left)
+  (global-set-key (kbd "C-M-l") 'centaur-tabs-move-current-tab-to-right)
 
-	(global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-x") 'smex)
 
-	;; Company completion selection
-	(with-eval-after-load 'company
-	  (define-key company-active-map (kbd "M-n") nil)
-	  (define-key company-active-map (kbd "M-p") nil)
-	  (define-key company-active-map (kbd "M-h") #'company-abort)
-	  (define-key company-active-map (kbd "M-j") #'company-select-next)
-	  (define-key company-active-map (kbd "M-k") #'company-select-previous)
-	  (define-key company-active-map (kbd "M-l") #'company-complete-selection)
-	  (define-key company-active-map (kbd "<escape>") #'company-abort))
-	; https://github.com/company-mode/company-mode/blob/master/company.el#L661
+  ;; Company completion selection
+  (with-eval-after-load 'company
+	(define-key company-active-map (kbd "M-n") nil)
+	(define-key company-active-map (kbd "M-p") nil)
+	(define-key company-active-map (kbd "M-h") #'company-abort)
+	(define-key company-active-map (kbd "M-j") #'company-select-next)
+	(define-key company-active-map (kbd "M-k") #'company-select-previous)
+	(define-key company-active-map (kbd "M-l") #'company-complete-selection)
+	(define-key company-active-map (kbd "<escape>") #'company-abort))
+  ; https://github.com/company-mode/company-mode/blob/master/company.el#L661
 
-	;; Evil command history selection
-	(with-eval-after-load 'evil-ex
-	  (define-key evil-ex-completion-map (kbd "M-h") 'abort-recursive-edit)
-	  (define-key evil-ex-completion-map (kbd "M-j") #'next-complete-history-element)
-	  (define-key evil-ex-completion-map (kbd "M-k") #'previous-complete-history-element)
-	  (define-key evil-ex-completion-map (kbd "M-l") 'exit-minibuffer))
+  ;; Evil command history selection
+  (with-eval-after-load 'evil-ex
+	(define-key evil-ex-completion-map (kbd "M-h") 'abort-recursive-edit)
+	(define-key evil-ex-completion-map (kbd "M-j") #'next-complete-history-element)
+	(define-key evil-ex-completion-map (kbd "M-k") #'previous-complete-history-element)
+	(define-key evil-ex-completion-map (kbd "M-l") 'exit-minibuffer))
 
-	; Overwrite evil keymaps
-	;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)
-	;(evil-define-key 'motion 'global (kbd "C-w") 'kill-this-buffer)
-	;(define-key evil-motion-state-map (kbd "C-w") 'kill-this-buffer) ; @Todo test this with nil
-	;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
+  ; Overwrite evil keymaps
+  ;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)
+  ;(evil-define-key 'motion 'global (kbd "C-w") 'kill-this-buffer)
+  ;(define-key evil-motion-state-map (kbd "C-w") 'kill-this-buffer) ; @Todo test this with nil
+  ;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
 
-	(with-eval-after-load 'evil-states
-	  (general-define-key
-	   :keymaps 'evil-normal-state-map
+  (with-eval-after-load 'evil-states
+	(general-define-key
+	 :keymaps 'evil-normal-state-map
 
-	   ;; Neotree
-	   "C-n" 'neotree-toggle-in-project-root)
+	 ;; Neotree
+	 "C-n" 'neotree-toggle-in-project-root)
 
-	  (general-define-key
-	   :states 'normal
-	   :keymaps 'neotree-mode-map
-	   "RET"       'neotree-enter
-	   "<backtab>" 'neotree-collapse-all ; <S-tab>
-	   "c"         'neotree-create-node
-	   "r"         'neotree-rename-node
-	   "d"         'neotree-delete-node
-	   "h"         'neotree-select-previous-sibling-node
-	   "j"         'neotree-next-line
-	   "k"         'neotree-previous-line
-	   "l"         'neotree-enter
-	   "R"         'neotree-refresh
-	   "C"         'neotree-change-root
-	   "H"         'neotree-hidden-file-toggle
-	   "q"         'neotree-hide
-	   )
+	(general-define-key
+	 :states 'normal
+	 :keymaps 'neotree-mode-map
+	 "RET"       'neotree-enter
+	 "<backtab>" 'neotree-collapse-all ; <S-tab>
+	 "c"         'neotree-create-node
+	 "r"         'neotree-rename-node
+	 "d"         'neotree-delete-node
+	 "h"         'neotree-select-previous-sibling-node
+	 "j"         'neotree-next-line
+	 "k"         'neotree-previous-line
+	 "l"         'neotree-enter
+	 "R"         'neotree-refresh
+	 "C"         'neotree-change-root
+	 "H"         'neotree-hidden-file-toggle
+	 "q"         'neotree-hide
+	 )
 
-	  ;; Dashboard
-	  (general-define-key
-	   :states 'normal
-	   :keymaps 'dashboard-mode-map
-	   [down-mouse-1] 'widget-button-click
-	   "g" 'dashboard-refresh-buffer
-	   "m" 'dashboard-goto-bookmarks
-	   "p" 'dashboard-goto-projects
-	   "r" 'dashboard-goto-recent-files
-	   )
+	;; Dashboard
+	(general-define-key
+	 :states 'normal
+	 :keymaps 'dashboard-mode-map
+	 [down-mouse-1] 'widget-button-click
+	 "g" 'dashboard-refresh-buffer
+	 "m" 'dashboard-goto-bookmarks
+	 "p" 'dashboard-goto-projects
+	 "r" 'dashboard-goto-recent-files
+	 )
 
-	  ;; Elfeed
-	  (general-define-key
-	   :states 'normal
-	   :keymaps 'elfeed-search-mode-map
-	   "gr" 'elfeed-search-update--force
-	   "gR" 'elfeed-search-fetch
-	   "q"  'kill-this-buffer
-	   )
+	;; Elfeed
+	(general-define-key
+	 :states 'normal
+	 :keymaps 'elfeed-search-mode-map
+	 "b"  'elfeed-search-browse-url
+	 "c"  'elfeed-search-clear-filter
+	 "gr" 'elfeed-search-update--force
+	 "gR" 'elfeed-search-fetch
+	 "q"  'kill-this-buffer
+	 "u"  'elfeed-search-tag-all-unread
+	 "U"  nil
+	 "r"  'elfeed-search-untag-all-unread
+	 )
 
-	  (general-define-key
-	   :states 'normal
-	   :keymaps 'elfeed-show-mode-map
-	   "g" 'elfeed-show-refresh
-	   "q" 'kill-this-buffer
-	   ))
+	(general-define-key
+	 :states 'normal
+	 :keymaps 'elfeed-show-mode-map
+	 "b" #'elfeed-show-visit
+	 "g" 'elfeed-show-refresh
+	 "q" 'kill-this-buffer
+	 "u" #'elfeed-show-tag--unread
+	 "y" #'elfeed-show-yank
+	 ))
 #+END_SRC
 
 ** Leader

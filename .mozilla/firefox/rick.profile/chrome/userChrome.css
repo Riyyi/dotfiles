@@ -21,16 +21,6 @@
 		background: #2b2e39 !important;
 	}
 
-	/* Url bar color */
-	#urlbar {
-		background: #404552 !important;
-	}
-
-	/* Url bar autocomplete menu color*/
-	#PopupAutoCompleteRichResult {
-		background: #2b2e39 !important;
-	}
-
 	/* Hide TreeStyleTab header */
 	#sidebar-header {
 		display: none;
@@ -41,8 +31,50 @@
 		display: none;
 	}
 
-	/* Https lock icon */
-	#connection-icon {
-		fill: #bac1c9 !important;
+	/* Url bar color */
+	#urlbar {
+		background: #404552 !important;
+	}
+
+	/* Hide ... button in URL bar */
+	#urlbar #pageActionButton {
+		display: none;
+	}
+
+	#urlbar #pageActionSeparator {
+		display: none;
+	}
+
+	/* Unzoom URL bar */
+	#urlbar[breakout-extend] {
+		top: calc((var(--urlbar-toolbar-height) - var(--urlbar-height)) / 2) !important;
+		left: calc((var(--urlbar-toolbar-width) - var(--urlbar-width)) / 2) !important;
+		width: 100% !important;
+	}
+
+	#urlbar[breakout-extend] #urlbar-input-container {
+		height: calc(var(--tab-min-height) - 3px) !important;
+		padding: 0px !important;
+	}
+
+	/* Clean up extra spacing at the top and bottom */
+	#urlbar-results {
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+	}
+
+	/* Compact results */
+	#urlbar-results .urlbarView {
+		margin: 0px !important;
+		width: 100% !important;
+	}
+
+	#urlbar-results .urlbarView-row {
+		padding: 0px !important;
+	}
+
+	/* Subtle border between results */
+	#urlbar-results .urlbarView-row:not(:last-of-type) {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
 	}
 }

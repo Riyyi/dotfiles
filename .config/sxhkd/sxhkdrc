@@ -40,6 +40,10 @@ super + {F2,F3}
 {_,shift,super} + @Print
 	scrot {_,-s,-u} -e "mv \$f $CAPTURE"
 
+# Screen record
+ctrl + @Print
+	$HOME/.scripts/alias.sh screencast "$CAPTURE/$(date '+%Y-%m-%d-%H%M%S_1500x1000_screencast.mkv')"
+
 # Volume
 XF86Audio{LowerVolume,RaiseVolume,Mute}
 	volctl.sh {dec 5,inc 5,toggle}

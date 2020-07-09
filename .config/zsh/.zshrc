@@ -83,6 +83,7 @@ alias ls="ls --color --group-directories-first"
 alias grep="grep --color"
 alias df="df -h"
 alias md="mkdir -p"
+alias mkcd="$HOME/.scripts/alias.sh mkcd"
 alias rm="rm -i"
 alias se="sudoedit"
 alias semacs="sudoedit"
@@ -96,16 +97,10 @@ alias ss="sudo systemctl"
 
 # Config
 alias c="$HOME/.scripts/config.sh"
-alias i3c="$EDITOR $XDG_CONFIG_HOME/i3/config"
-alias vrc="$EDITOR $XDG_CONFIG_HOME/vim/vimrc"
-alias xrc="$EDITOR $XDG_CONFIG_HOME/xorg/xinitrc"
-alias xr="$EDITOR $XDG_CONFIG_HOME/xorg/Xresources"
-alias zp="$EDITOR $ZDOTDIR/.zprofile"
 alias zrc="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
 
-alias li3="i3-msg restart"
-alias lxr="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
-alias lzrc="source $ZDOTDIR/.zshrc"
+alias lxrdb="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
+alias lzshrc="source $ZDOTDIR/.zshrc"
 
 # Pacman
 alias install="sudo pacman -S --needed"
@@ -141,12 +136,16 @@ alias vc="$HOME/.scripts/volctl.sh"
 alias vp="$HOME/.scripts/vimplugin.sh"
 alias mpvshuffle="$HOME/.scripts/mpv.sh shuffle"
 
+
+
 # Other
 alias len="xclip -o | wc -m"
 alias length="rofi -dmenu -i -p 'String length' -lines 0 | tr -d '\n' | wc -m"
 alias p="$HOME/.scripts/alias.sh pastebin"
+alias screencast="$HOME/.scripts/alias.sh screencast"
 alias stream="$HOME/.scripts/alias.sh stream"
 alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
+alias webmconvert="$HOME/.scripts/alias.sh webmconvert"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench > /dev/null 2>&1 & disown"
 alias ytdl="youtube-dl -f bestvideo+bestaudio"
 alias ytaudio="youtube-dl -f bestaudio/best -x --audio-format mp3"

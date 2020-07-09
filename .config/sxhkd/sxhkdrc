@@ -42,7 +42,7 @@ super + {F2,F3}
 
 # Screen record
 ctrl + @Print
-	$HOME/.scripts/alias.sh screencast "$CAPTURE/$(date '+%Y-%m-%d-%H%M%S_1500x1000_screencast.mkv')"
+	$HOME/.scripts/alias.sh screencast "$CAPTURE/$(date '+%Y-%m-%d-%H%M%S_1500x1000_screencast')"
 
 # Volume
 XF86Audio{LowerVolume,RaiseVolume,Mute}

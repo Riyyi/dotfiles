@@ -31,7 +31,7 @@ user_pref("widget.content.gtk-theme-override", "Arc");
 
 // Disable tracking
 user_pref("privacy.resistFingerprinting", true);
-user_pref("privacy.resistFingerprinting.autoDeclineNoUserInputCanvasPrompts", false);
+user_pref("privacy.resistFingerprinting.autoDeclineNoUserInputCanvasPrompts", true);
 user_pref("geo.enabled", false);
 // https://spyware.neocities.org/guides/firefox.html
 user_pref("network.connectivity-service.enabled", false);

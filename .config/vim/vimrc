@@ -64,10 +64,6 @@ set nowrap
 
 "" Plugin configuration
 
-" color_coded, libclang-based syntax highlighting
-let g:color_coded_enabled = 1
-let g:color_coded_filetypes = ['c', 'cpp']
-
 " lightline.vim
 let g:lightline = {}
 let g:lightline.colorscheme  = 'Tomorrow_Night_Bright'

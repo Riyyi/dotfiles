@@ -29,4 +29,4 @@ thunar --daemon &
 sxhkd "$XDG_CONFIG_HOME/sxhkd/$WM" &
 xss-lock -- "$HOME"/.scripts/wm/lock.sh &
 
-exec $WM
+exec "$WM"

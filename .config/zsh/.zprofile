@@ -49,7 +49,6 @@ export RANDFILE="$XDG_CACHE_HOME/rnd"
 # Panel
 export PANEL_HEIGHT=38
 export PANEL_NAME="polybar_panel"
-export PANEL_PIPE="/tmp/lemonbar_pipe"
 
 # Qt5
 export QT_AUTO_SCREEN_SCALE_FACTOR=0

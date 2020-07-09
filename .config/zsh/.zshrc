@@ -85,6 +85,9 @@ alias df="df -h"
 alias md="mkdir -p"
 alias rm="rm -i"
 alias se="sudoedit"
+alias semacs="sudoedit"
+alias e="$HOME/.scripts/alias.sh emacs"
+alias emacs="$HOME/.scripts/alias.sh emacs"
 alias v="vim --servername VIM"
 alias vim="vim --servername VIM"
 alias fuck='sudo $(fc -ln -1)'
@@ -108,13 +111,13 @@ alias lzrc="source $ZDOTDIR/.zshrc"
 alias install="sudo pacman -S --needed"
 alias remove="sudo pacman -Rns"
 alias update="sudo pacman -Syyu"
-alias clean="sudo pacman -Rns $(pacman -Qtdq)"
+alias clean='sudo pacman -Rns $(pacman -Qtdq)'
 alias cache="sudo paccache -r -k 2"
 alias depend="$HOME/.scripts/alias.sh depend"
 
 # Programming
-alias jdoc="$HOME/.scripts/alias.sh java-doc"
-alias jr="$HOME/.scripts/alias.sh java-run"
+alias jdoc="$HOME/.scripts/alias.sh java_doc"
+alias jr="$HOME/.scripts/alias.sh java_run"
 alias raspbian="$HOME/.scripts/alias.sh raspbian"
 alias ser="pio device monitor -b 9600"
 alias upl="pio run -t upload"
@@ -139,8 +142,16 @@ alias vp="$HOME/.scripts/vimplugin.sh"
 alias mpvshuffle="$HOME/.scripts/mpv.sh shuffle"
 
 # Other
+alias len="xclip -o | wc -m"
+alias length="rofi -dmenu -i -p 'String length' -lines 0 | tr -d '\n' | wc -m"
+alias p="$HOME/.scripts/alias.sh pastebin"
+alias stream="$HOME/.scripts/alias.sh stream"
 alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench > /dev/null 2>&1 & disown"
-alias ytaudio="youtube-dl -f bestaudio -x --audio-format mp3"
+alias ytdl="youtube-dl -f bestvideo+bestaudio"
+alias ytaudio="youtube-dl -f bestaudio/best -x --audio-format mp3"
+
+zsh="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[ -f "$zsh" ] && source "$zsh"; unset zsh
 
 [ -f "$ZDOTDIR/.zshrc_extended" ] && source "$ZDOTDIR/.zshrc_extended"

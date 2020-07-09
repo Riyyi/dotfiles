@@ -10,7 +10,9 @@ export XDG_DATA_HOME="$HOME/.local/share"
 mkdir -p "$XDG_CACHE_HOME/zsh"
 
 # Editor
-export EDITOR="vim"
+export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient"
+export VISUAL="emacsclient"
 
 # Files
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"

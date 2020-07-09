@@ -140,7 +140,7 @@ push() {
 }
 
 packages() {
-	FILTER_LIST="$((pacman -Qqg base base-devel && pactree -u base | tail -n +2) | sort)"
+	FILTER_LIST="$((pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
 	PACKAGE_LIST="$(pacman -Qqe | grep -vx "$FILTER_LIST" | sort)"
 
 	if [ "$1" = "list" ] || [ "$1" = "" ]; then

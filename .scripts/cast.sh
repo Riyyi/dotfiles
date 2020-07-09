@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Dependencies:
+# castnow-git
+# mkvtoolnix-cli
+# jq
+
 FILE_NAME="$1"
 
 TRACKS="$(mkvmerge -J "$FILE_NAME" | jq -c '

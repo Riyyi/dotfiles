@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Control the input devices
+# Depends: xinput, setxkbmap
+
 help() {
 	B=$(tput bold)
 	U=$(tput smul)
@@ -7,35 +10,26 @@ help() {
 
 	cat << EOF
 ${B}NAME${N}
-	inputctl.sh - input manager
+	inputctl.sh - control the input devices
 
 ${B}SYNOPSIS${N}
-	${B}inputctl.sh${N} [${U}OPTION${N}] [${U}ARG${N}]
+	${B}inputctl.sh${N} ${U}OPTION${N} [${U}ARG${N}]
 
 ${B}OPTIONS${N}
-	${B}-h${N}
-		Display usage message and exit.
+	${B}-h${N}	Display usage message and exit.
 
-	${B}-d${N} [${U}ARG${N}]
-		Perform action on touchpad.
+	${B}-d${N} ${U}STATE${N}
+		Set touchpad state, possible values: toggle, on/off, 1/0.
 
-	${B}-k${N} [${U}ARG${N}]
-		Perform action on keyboard.
+	${B}-k${N} ${U}STATE${N}
+		Set keyboard state, possible values: toggle, on/off, 1/0.
 
-	${B}-s${N} [${U}ARG${N}]
-		Perform action on touchscreen.
-
-${B}ARGS${N}
-	toggle
-		Toggle input device / keyboard customizations.
-
-	on
-		Enable input device / keyboard customizations.
-
-	off
-		Disable input device / keyboard customizations.
+	${B}-s${N} ${U}STATE${N}
+		Set touchscreen state, possible values: toggle, on/off, 1/0.
 EOF
 }
+
+setxkbmap -option caps:swapescape
 
 # Exit if no option is provided
 [ "$#" -eq 0 ] && help && exit 1
@@ -50,16 +44,21 @@ while getopts ':h?d:k:s:' opt; do
 	case $opt in
 		h)
 			help
-			exit 1
+			exit 0
 			;;
 		d)
-			dev="SYNA3602:00 0911:5288 Touchpad"
+			OPTION="d"
+			ARG="$OPTARG"
+			DEV="SYNA3602:00 0911:5288 Touchpad"
 			;;
 		k)
-			dev="Keyboard"
+			OPTION="k"
+			ARG="$OPTARG"
 			;;
 		s)
-			dev="pointer:04F3200A:00 04F3:2373"
+			OPTION="s"
+			ARG="$OPTARG"
+			DEV="pointer:04F3200A:00 04F3:2373"
 			;;
 		:)
 			echo "$SCRIPT: option requires an argument '$OPTARG'"
@@ -75,8 +74,27 @@ while getopts ':h?d:k:s:' opt; do
 done
 
 toggle_device() {
-	STATUS=$(xinput --list-props "$dev" | awk '/Device Enabled/ { print $4 }')
-	[ "$STATUS" -eq 1 ] && xinput --disable "$dev" || xinput --enable "$dev"
+	STATUS=$(xinput --list-props "$2" | awk '/Device Enabled/ { print $4 }')
+	[ "$STATUS" -eq 1 ] && xinput --disable "$2" || xinput --enable "$2"
+}
+
+device() {
+	case "$1" in
+		1 | on)
+			xinput --enable "$2"
+			;;
+		0 | off)
+			xinput --disable "$2"
+			;;
+		t*)
+			toggle_device "$2"
+			;;
+		*)
+			echo "$SCRIPT: invalid argument '$1'"
+			echo "Try '$SCRIPT -h' for more information."
+			exit 1
+			;;
+	esac
 }
 
 keyboard() {
@@ -105,23 +123,18 @@ keyboard() {
 	fi
 }
 
-# Command handling
-[ $OPTIND -ge 2 ] && shift $((OPTIND - 2))
-if [ "$dev" = "Keyboard" ]; then
-	keyboard "$1"
-else
-	case "$1" in
-		toggle)
-			toggle_device
-			;;
-		on)
-			xinput --enable "$dev"
-			;;
-		off)
-			xinput --disable "$dev"
-			;;
-	esac
-fi
+# Option execution
+# if [ "$DEV" = "Keyboard" ]; then
+# 	keyboard "$ARG"
+# else
+case "$OPTION" in
+	d | s)
+		device "$ARG" "$DEV"
+		;;
+	k)
+		keyboard "$ARG"
+		;;
+esac
 
 # Useful input diagnostics packages:
 # - xinput
@@ -130,5 +143,3 @@ fi
 #
 # - setxkbmap -query
 # - xmodmap -pke
-#
-# Kernel 5.1.4 works properly on my hardware with the i2c_hid module

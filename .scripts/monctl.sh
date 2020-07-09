@@ -31,8 +31,12 @@ ${B}ARGS${N}
 EOF
 }
 
-# If no option is provided
+# Exit if no option is provided
 [ "$#" -eq 0 ] && help && exit 1
+
+# Set required X variables
+export DISPLAY=:0
+export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
 update() {
 	sleep 4
@@ -61,7 +65,7 @@ auto() {
 		xrandr --addmode "$4" "$1x$2_$3.00"
 	fi
 
-	# Get all connected monitor
+	# Get all connected monitors
 	CONNECTED="$(xrandr -q | awk '/ connected/{print $1}')"
 
 	# Disable all other monitors
@@ -72,11 +76,13 @@ auto() {
 	update
 }
 
+[ $OPTIND -ge 2 ] && shift $((OPTIND - 2))
 case "$1" in
 	a*)
 		auto "$@"
 		;;
 	*)
 		help
+		exit 1
 		;;
 esac

@@ -17,23 +17,16 @@ ${B}NAME${N}
 	netctl.sh - control the network interfaces
 
 ${B}SYNOPSIS${N}
-	${B}netctl.sh${N} [${U}OPTION${N}] [${U}COMMAND${N}]
+	${B}netctl.sh${N} ${U}OPTION${N} [${U}ARG${N}]
 
 ${B}OPTIONS${N}
 	${B}-h${N}	Display usage message and exit.
 
-	${B}-e${N} [${U}STATE${N}]
-		Perform action on ethernet.
+	${B}-e${N} ${U}STATE${N}
+		Set ethernet ${U}STATE${N}, possible values: on/off, 1/0.
 
-	${B}-w${N} [${U}STATE${N}]
-		Perform action on wireless.
-
-${B}COMMANDS${N}
-	1, on
-		Enable selected option.
-
-	0, off
-		Disable selected option.
+	${B}-w${N} ${U}STATE${N}
+		Set wireless ${U}STATE${N}, possible values: on/off, 1/0.
 EOF
 }
 
@@ -50,10 +43,12 @@ while getopts ':h?e:w:' opt; do
 			exit 0
 			;;
 		e)
-			dev="ethernet"
+			DEV="ethernet"
+			ARG="$OPTARG"
 			;;
 		w)
-			dev="wireless"
+			DEV="wireless"
+			ARG="$OPTARG"
 			;;
 		:)
 			echo "$SCRIPT: option requires an argument '$OPTARG'"
@@ -85,17 +80,16 @@ wireless() {
 	fi
 }
 
-# Command handling
-[ $OPTIND -ge 2 ] && shift $((OPTIND - 2))
-case "$1" in
+# Arg handling
+case "$ARG" in
 	1 | on)
-		[ "$dev" = "ethernet" ] && ethernet 1 || wireless 1
+		[ "$DEV" = "ethernet" ] && ethernet 1 || wireless 1
 		;;
 	0 | off)
-		[ "$dev" = "ethernet" ] && ethernet 0 || wireless 0
+		[ "$DEV" = "ethernet" ] && ethernet 0 || wireless 0
 		;;
 	*)
-		echo "$SCRIPT: invalid command '$1'"
+		echo "$SCRIPT: invalid argument '$ARG'"
 		echo "Try '$SCRIPT -h' for more information."
 		exit 1
 		;;

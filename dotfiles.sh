@@ -113,6 +113,7 @@ pull_push() {
 			# cp /home/<user>/<file> /[<some dir>/]dotfiles/<file>
 			cp -a "$HOME/$f" "$(pwd)/$f"
 		elif [ "$1" = "push" ]; then
+			mkdir -p "$(dirname $HOME/$f)"
 			cp -a "$(pwd)/$f" "$HOME/$f"
 		fi
 	done

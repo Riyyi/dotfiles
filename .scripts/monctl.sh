@@ -14,7 +14,10 @@ ${B}SYNOPSIS${N}
 
 ${B}OPTIONS${N}
 	${B}a*${N} ${U}width${N} ${U}height${N} ${U}hertz${N} ${U}name${N}
-		Setup single monitor.
+		Setup single monitor with new mode.
+
+	${B}p*${N} ${U}name${N} ${U}mode${N}
+		Setup single primary monitor.
 
 ${B}ARGS${N}
 	width
@@ -53,10 +56,7 @@ update() {
 }
 
 auto() {
-	[ "$#" != "5" ] && return 1
-
-	# Skip first argument
-	shift 1
+	[ "$#" != "4" ] && return 1
 
 	# Add mode to primary monitor
 	OUTPUT="$(xrandr -q)"
@@ -65,12 +65,19 @@ auto() {
 		xrandr --addmode "$4" "$1x$2_$3.00"
 	fi
 
+	primary "$4" "--mode $1x$2_$3.00"
+}
+
+primary() {
+	[ "$#" != "1" ] && [ "$#" != "2" ] && return 1
+	MODE=${2:-"--auto"}
+
 	# Get all connected monitors
-	CONNECTED="$(xrandr -q | awk '/ connected/{print $1}')"
+	CONNECTED="$(xrandr -q | awk '/ connected/{ print $1 }')"
 
 	# Disable all other monitors
-	eval xrandr --output "$4" --mode "$1x$2_$3.00" --primary \
-		"$(echo "$CONNECTED" | grep -vx "$4" | awk '{print "--output", $1, "--off"}' | tr '\n' ' ')"
+	eval xrandr --output "$1" "$MODE" --primary \
+		"$(echo "$CONNECTED" | grep -vx "$1" | awk '{ print "--output", $1, "--off" }' | tr '\n' ' ')"
 
 	# Post monitor change
 	update
@@ -79,7 +86,12 @@ auto() {
 [ $OPTIND -ge 2 ] && shift $((OPTIND - 2))
 case "$1" in
 	a*)
+		shift 1
 		auto "$@"
+		;;
+	p*)
+		shift 1
+		primary "$@"
 		;;
 	*)
 		help

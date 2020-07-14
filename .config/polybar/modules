@@ -76,7 +76,7 @@ type = internal/network
 interval = 10
 interface = wlan0
 
-format-connected = %{A1:$HOME/.scripts/panel/wifi-lite.sh:}<label-connected>%{A}
+format-connected = %{A1:$HOME/.scripts/panel/wifi.sh:}<label-connected>%{A}
 format-connected-foreground = ${colors.white-bright}
 
 label-connected =  %signal%%
@@ -90,8 +90,10 @@ type = internal/network
 interval = 10
 interface = eth0
 
-format-connected = 
+format-connected = %{A1:$HOME/.scripts/panel/iface.sh:}<label-connected>%{A}
 format-connected-foreground = ${colors.white-bright}
+
+label-connected = 
 
 format-disconnected = 
 format-disconnected-foreground = ${wmcolors.fgcolor-inactive}
@@ -130,7 +132,7 @@ label-discharging = %percentage%% (%time%)
 type = custom/script
 interval = 30
 
-exec = $HOME/.scripts/panel/battery-lite.sh
+exec = $HOME/.scripts/panel/battery.sh
 
 format =
 

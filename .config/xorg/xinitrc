@@ -21,7 +21,7 @@ inputctl.sh -s off
 
 # Daemon starting
 dunst &
-redshift &
+redshift -P &
 
 emacs --daemon &
 thunar --daemon &

@@ -5,7 +5,7 @@ arandr
 arc-gtk-theme
 arc-icon-theme
 base
-breeze-icons-git
+breeze-icons
 brightnessctl
 bspwm
 capitaine-cursors
@@ -60,7 +60,6 @@ jq
 kdenlive
 kolourpaint
 krita
-lemonbar-xft-git
 lib32-alsa-lib
 lib32-alsa-plugins
 lib32-glibc
@@ -73,6 +72,7 @@ linux
 linux-headers
 linux-lts
 linux-lts-headers
+llvm
 lvm2
 lxappearance
 man-db

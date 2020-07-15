@@ -673,7 +673,7 @@ Functions that only use built-in Emacs functionality.
 	(other-window 1))
 
   (defun find-project-root ()
-	"Returns root of the project, determined by .git/, default-directory otherwise."
+	"Return root of the project, determined by .git/, 'default-directory' otherwise."
 	(let ((search-directory (locate-dominating-file "." ".git")))
 	  (if search-directory
 		  search-directory
@@ -866,7 +866,7 @@ Disable spacebar in evil motion.
 
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'evil-states
-	(define-key evil-motion-state-map (kbd "<SPC>") nil))
+	(define-key evil-motion-state-map (kbd "SPC") nil))
 
   (with-eval-after-load 'php-mode
 	(define-key php-mode-map (kbd "C-M-h") nil))
@@ -882,6 +882,7 @@ Disable spacebar in evil motion.
   (global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
   (global-set-key (kbd "C-M-h") 'centaur-tabs-move-current-tab-to-left)
   (global-set-key (kbd "C-M-l") 'centaur-tabs-move-current-tab-to-right)
+  (global-set-key (kbd "M-\`") 'evil-switch-to-windows-last-buffer)
 
   (global-set-key (kbd "M-x") 'smex)
 

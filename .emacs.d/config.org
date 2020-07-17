@@ -678,6 +678,12 @@ Functions that only use built-in Emacs functionality.
 	  (when symbol
 		(describe-symbol symbol))))
 
+  (defun dot/indent-buffer ()
+	"Indent each nonblank line in the buffer."
+	(interactive)
+	(save-excursion
+	  (indent-region (point-min) (point-max) nil)))
+
   (defun split-follow-horizontally ()
 	"Split and follow window."
 	(interactive)
@@ -1066,6 +1072,7 @@ General.el ~leader key binds.
 
 	  ;; Reformat region
 	  "r"   '(:ignore t                        :which-key "region")
+	  "r b" '(dot/indent-buffer                :which-key "Indent buffer")
 	  "r r" '(indent-region                    :which-key "Indent region")
 
 	  ;; Search

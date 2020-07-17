@@ -297,6 +297,13 @@ On the fly syntax checking.
 	(lsp-enable-xref t)
 	(lsp-keep-workspace-alive nil)
 	(lsp-prefer-flymake nil)
+	:config
+
+	;; Enable which-key descriptions
+	(dolist (leader-key (list "SPC" "M-SPC"))
+	  (let ((lsp-keymap-prefix (concat leader-key " l")))
+		(lsp-enable-which-key-integration)))
+
 	:commands lsp)
 
   (use-package company-lsp
@@ -1024,16 +1031,6 @@ General.el ~leader key binds.
 	  "c v" '(config-visit                            :which-key "Config visit")
 	  "c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and copy")
 
-	  ;; LSP
-	  "d"   '(:ignore t                        :which-key "lsp")
-	  "d c" '(lsp-describe-thing-at-point      :which-key "LSP Describe under cursor")
-	  "d d" '(lsp-find-definition              :which-key "LSP Find definition")
-	  "d e" '(lsp-execute-code-action          :which-key "LSP Execute code action")
-	  "d f" '(lsp-format-region-or-buffer      :which-key "LSP Format region/buffer")
-	  "d r" '(lsp-find-references              :which-key "LSP Find references")
-	  "d R" '(lsp-rename                       :which-key "LSP Rename")
-	  "d s" '(lsp                              :which-key "Start LSP")
-
 	  ;; Elisp
 	  "e"   '(:ignore t                        :which-key "elisp")
 	  "e b" '(eval-buffer                      :which-key "Evaluate buffer")
@@ -1091,7 +1088,7 @@ General.el ~leader key binds.
 	  ;; Window
 	  ;; "w"         '(:keymap evil-window-map    :which-key "window")
 	  "w"         '(:ignore t                  :which-key "window")
-	  "w +"       '(balance-windows-area       :which-key "Balance windows area")
+	  "w ="       '(balance-windows-area       :which-key "Balance windows area")
 	  "w h"       '(windmove-left              :which-key "Focus window left")
 	  "w j"       '(windmove-down              :which-key "Focus window down")
 	  "w k"       '(windmove-up                :which-key "Focus window up")
@@ -1111,6 +1108,16 @@ General.el ~leader key binds.
 
 	  "x"         '(smex-major-mode-commands   :which-key "Smex major mode")
 	  ))
+#+END_SRC
+
+Evaluated keybinds.
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'lsp-mode
+	(space-leader lsp-mode-map
+	  "l" lsp-command-map
+	  )
+	)
 #+END_SRC
 
 Source:

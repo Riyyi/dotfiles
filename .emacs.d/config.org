@@ -566,6 +566,8 @@ File auto-saves, backups, tramps.
 				 (replace-regexp-in-string "%latex " "%latex -shell-escape " s)
 			   s))
 		   org-latex-pdf-process)))
+
+  (setq org-directory (concat (getenv "HOME") "/documents/org"))
 #+END_SRC
 
 ** Tabs
@@ -660,6 +662,14 @@ Functions that only use built-in Emacs functionality.
   (defun display-startup-echo-area-message ()
 	"Hide default startup message."
 	(message ""))
+
+  (defun dot/describe-symbol-at-point (&optional SYMBOL)
+	"Display the full documentation of SYMBOL at point.
+  Will show the info of SYMBOL as a function, variable, and/or face."
+	(interactive "P")
+	(let ((symbol (symbol-at-point)))
+	  (when symbol
+		(describe-symbol symbol))))
 
   (defun split-follow-horizontally ()
 	"Split and follow window."
@@ -1024,6 +1034,12 @@ General.el ~leader key binds.
 	  "d R" '(lsp-rename                       :which-key "LSP Rename")
 	  "d s" '(lsp                              :which-key "Start LSP")
 
+	  ;; Elisp
+	  "e"   '(:ignore t                        :which-key "elisp")
+	  "e b" '(eval-buffer                      :which-key "Evaluate buffer")
+	  "e e" '(eval-last-sexp                   :which-key "Evaluate last sexp")
+	  "e r" '(eval-region                      :which-key "Evaluate region")
+
 	  ;; Find file
 	  "f"   '(:ignore t                        :which-key "file")
 	  "f f" '(find-file-in-project-root        :which-key "Find file")
@@ -1032,6 +1048,7 @@ General.el ~leader key binds.
 
 	  ;; Help
 	  "h"   '(help-command                     :which-key "help")
+	  "h o" '(dot/describe-symbol-at-point     :which-key "describe-symbol-at-point")
 
 	  ;; Insert
 	  "i"   '(:ignore t                        :which-key "insert")
@@ -1074,6 +1091,7 @@ General.el ~leader key binds.
 	  ;; Window
 	  ;; "w"         '(:keymap evil-window-map    :which-key "window")
 	  "w"         '(:ignore t                  :which-key "window")
+	  "w +"       '(balance-windows-area       :which-key "Balance windows area")
 	  "w h"       '(windmove-left              :which-key "Focus window left")
 	  "w j"       '(windmove-down              :which-key "Focus window down")
 	  "w k"       '(windmove-up                :which-key "Focus window up")
@@ -1099,7 +1117,7 @@ Source:
 https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-evil.el#L712
 https://github.com/suyashbire1/emacs.d/blob/master/init.el
 
-*** Major mode
+*** Local
 
 #+BEGIN_SRC emacs-lisp
   (general-create-definer local-leader

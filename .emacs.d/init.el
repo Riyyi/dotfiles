@@ -1,4 +1,4 @@
-;;; package --- Emacs init file
+;;; init.el --- Emacs init file
 
 ;;; Commentary:
 
@@ -7,17 +7,24 @@
 ;;; Code:
 
 ;; Increases garbage collection during startup
-(defvar startup/gc-cons-threshold gc-cons-threshold)
 (setq gc-cons-threshold most-positive-fixnum)
-(defun startup/reset-gc () "." (setq gc-cons-threshold startup/gc-cons-threshold))
-(add-hook 'emacs-startup-hook 'startup/reset-gc)
+(add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold 8000000)))
 
 ; --------------------------------------
 
 (defvar emacs-cache (concat (getenv "XDG_CACHE_HOME") "/emacs")
   "Directory where Emacs cache data is stored.")
 (defvar emacs-d (concat (getenv "HOME") "/.emacs.d")
-  "Additional per-user Emacs-specific files.")
+  "Directory where Emacs config files are stored.")
+
+(defvar dot/leader-key "SPC"
+  "Leader prefix key.")
+(defvar dot/leader-alt-key "M-SPC"
+  "Alternative leader prefix key, used for Insert and Emacs states.")
+(defvar dot/localleader-key "SPC m"
+  "Local leader prefix key, for 'major-mode' specific commands.")
+(defvar dot/localleader-alt-key "M-SPC m"
+  "Alternative local leader prefix key, used for Insert and Emacs states.")
 
 ; --------------------------------------
 

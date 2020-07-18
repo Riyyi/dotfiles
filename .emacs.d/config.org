@@ -237,6 +237,10 @@ Project manager.
 	:custom (org-export-html-postamble nil))
   ;org-export-html-postamble-format @ToDo
 
+  ;; Table of contents
+  (use-package toc-org)
+
+  ;; Github flavored Markdown exporter
   (use-package ox-gfm)
 #+END_SRC
 
@@ -552,7 +556,9 @@ File auto-saves, backups, tramps.
   ;; Org
   (with-eval-after-load 'org
 	(add-to-list 'org-structure-template-alist
-				 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")))
+				 '("s" "#+BEGIN_SRC ?\n\n#+END_SRC")
+				 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
+				 ))
 
   (setq org-ellipsis " ↴")
   (setq org-src-fontify-natively t)
@@ -1147,10 +1153,12 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 
   (local-leader org-mode-map
 	"'"   '(org-edit-special                 :which-key "Org edit")
+	"c"   '(org-edit-special                 :which-key "Org edit")
 	)
 
   (local-leader org-src-mode-map
 	"'"   '(org-edit-src-exit                :which-key "Org exit edit")
+	"c"   '(org-edit-src-exit                :which-key "Org exit edit")
 	"k"   '(org-edit-src-abort               :which-key "Org abort edit")
 	)
 

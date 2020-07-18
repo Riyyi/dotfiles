@@ -838,6 +838,9 @@ Evil command aliases.
   ;; Highlight parenthesis
   (add-hook 'prog-mode-hook 'show-paren-mode)
 
+  ;; Enable 'table of contents' in org
+  (add-hook 'org-mode-hook 'toc-org-mode)
+
   ;; C++ // style comments in c-mode
   (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
 

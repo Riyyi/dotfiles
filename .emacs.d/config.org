@@ -922,6 +922,7 @@ Useful links:\\
 	(define-key org-mode-map (kbd "C-M-h") nil))
 
   (with-eval-after-load 'cc-mode
+	(define-key c-mode-base-map (kbd "M-j") nil)
 	(define-key c-mode-base-map (kbd "C-M-h") nil))
 #+END_SRC
 
@@ -957,6 +958,7 @@ Disable spacebar in evil motion.
 	(define-key evil-motion-state-map (kbd dot/leader-key) nil))
 
   (with-eval-after-load 'php-mode
+	(define-key php-mode-map (kbd "M-j") nil)
 	(define-key php-mode-map (kbd "C-M-h") nil))
 #+END_SRC
 

@@ -1017,14 +1017,12 @@ Set custom keybinds to functionality of custom packages.
   ;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
 
   (with-eval-after-load 'evil-states
-	(general-define-key
-	 :keymaps 'evil-normal-state-map
+	;; Global evil keymap
+	(general-def evil-normal-state-map
 	 "C-n" 'neotree-toggle-in-project-root)
 
 	 ;; Neotree
-	(general-define-key
-	 :states 'normal
-	 :keymaps 'neotree-mode-map
+	(general-def 'normal neotree-mode-map
 	 "RET"       'neotree-enter
 	 "<backtab>" 'neotree-collapse-all ; <S-tab>
 	 "c"         'neotree-create-node
@@ -1041,9 +1039,7 @@ Set custom keybinds to functionality of custom packages.
 	 )
 
 	;; Dashboard
-	(general-define-key
-	 :states 'normal
-	 :keymaps 'dashboard-mode-map
+	(general-def 'normal dashboard-mode-map
 	 [down-mouse-1] 'widget-button-click
 	 "g" 'dashboard-refresh-buffer
 	 "m" 'dashboard-goto-bookmarks
@@ -1052,15 +1048,11 @@ Set custom keybinds to functionality of custom packages.
 	 )
 
 	;; Org
-	(general-define-key
-	 :states 'normal
-	 :keymaps 'org-mode-map
+	(general-def 'normal org-mode-map
 	 "RET" 'dot/org-ret-at-point)
 
 	;; Elfeed
-	(general-define-key
-	 :states 'normal
-	 :keymaps 'elfeed-search-mode-map
+	(general-def 'normal elfeed-search-mode-map
 	 "b"  'elfeed-search-browse-url
 	 "c"  'elfeed-search-clear-filter
 	 "gr" 'elfeed-search-update--force
@@ -1071,9 +1063,7 @@ Set custom keybinds to functionality of custom packages.
 	 "r"  'elfeed-search-untag-all-unread
 	 )
 
-	(general-define-key
-	 :states 'normal
-	 :keymaps 'elfeed-show-mode-map
+	(general-def 'normal elfeed-show-mode-map
 	 "b" #'elfeed-show-visit
 	 "g" 'elfeed-show-refresh
 	 "q" 'kill-this-buffer
@@ -1247,12 +1237,12 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
   (define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit)
 
   (local-leader elfeed-search-mode-map
-	"g"   'elfeed-search-update--force
-	"G"   'elfeed-search-fetch
+	"g"   '(elfeed-search-update--force      :which-key "Elfeed refresh buffer")
+	"G"   '(elfeed-search-fetch              :which-key "Elfeed update feeds")
 	)
 
   (local-leader elfeed-show-mode-map
-	"g"   'elfeed-show-refresh
+	"g"   '(elfeed-show-refresh               :which-key "Elfeed refresh buffer")
 	)
 
   ;; c-fill-paragraph Reflow comment

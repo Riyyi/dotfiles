@@ -1,12 +1,66 @@
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 #+STARTUP: overview
 #+TITLE: Ricemacs, an Emacs Configuration
 #+AUTHOR: Riyyi
 #+LANGUAGE: en
+#+OPTIONS: toc:nil
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 #+LATEX_HEADER: \usepackage{color}
 #+LATEX_HEADER: \usepackage[top=100pt,bottom=100pt,left=75pt,right=75pt]{geometry}
 #+LATEX_HEADER: \definecolor{blue}{rgb}{0,0.5,1}
 #+LATEX_HEADER: \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+*** Table of Contents :toc_4:
+- [[#initial-setup][Initial setup]]
+  - [[#irony-mode][Irony mode]]
+  - [[#all-the-icons][All the icons]]
+- [[#customizations][Customizations]]
+- [[#package-management][Package Management]]
+  - [[#ensure][Ensure]]
+  - [[#auto-update][Auto update]]
+  - [[#compile][Compile]]
+  - [[#packages][Packages]]
+    - [[#general][General]]
+    - [[#evil][Evil]]
+    - [[#telephone-line][Telephone Line]]
+    - [[#neotree][NeoTree]]
+    - [[#centaur-tabs][Centaur Tabs]]
+    - [[#projectile][Projectile]]
+    - [[#org][Org]]
+    - [[#completion][Completion]]
+      - [[#company][Company]]
+      - [[#flycheck][Flycheck]]
+      - [[#lsp][LSP]]
+      - [[#yasnippet][YASnippet]]
+      - [[#cc][C/C++]]
+    - [[#prettify][Prettify]]
+    - [[#rss][RSS]]
+- [[#general-1][General]]
+  - [[#buffers][Buffers]]
+  - [[#electric][Electric]]
+  - [[#file-backups][File Backups]]
+  - [[#hide-elements][Hide Elements]]
+  - [[#org-1][Org]]
+  - [[#tabs][Tabs]]
+  - [[#utf-8][UTF-8]]
+  - [[#window][Window]]
+- [[#functions][Functions]]
+  - [[#general-2][General]]
+  - [[#package][Package]]
+- [[#advice-and-aliases][Advice and Aliases]]
+  - [[#advice][Advice]]
+  - [[#aliases][Aliases]]
+    - [[#general-3][General]]
+    - [[#package-1][Package]]
+- [[#hooks][Hooks]]
+- [[#key-bindings][Key Bindings]]
+  - [[#disable-default][Disable default]]
+  - [[#default][Default]]
+  - [[#disable-package][Disable package]]
+  - [[#package-2][Package]]
+  - [[#leader][Leader]]
+    - [[#global][Global]]
+    - [[#local][Local]]
+- [[#notes][Notes]]
 
 * Initial setup
 

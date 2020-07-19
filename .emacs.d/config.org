@@ -633,6 +633,7 @@ File auto-saves, backups, tramps.
 		   org-latex-pdf-process)))
 
   (setq org-directory (concat (getenv "HOME") "/documents/org"))
+  (setq org-return-follows-link t)
 #+END_SRC
 
 ** Tabs
@@ -751,7 +752,7 @@ Functions that only use built-in Emacs functionality.
 	(interactive)
 	(let ((type (org-element-type (org-element-context))))
 	  (pcase type
-		('link (org-open-at-point))
+		('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
 		(_ (evil-ret))
 		)))
 

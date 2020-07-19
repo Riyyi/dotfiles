@@ -53,10 +53,10 @@
     - [[#package-1][Package]]
 - [[#hooks][Hooks]]
 - [[#key-bindings][Key Bindings]]
-  - [[#disable-default][Disable default]]
-  - [[#default][Default]]
-  - [[#disable-package][Disable package]]
-  - [[#package-2][Package]]
+  - [[#disable-default][Disable Default]]
+  - [[#disable-package][Disable Package]]
+  - [[#set-default][Set Default]]
+  - [[#set-package][Set Package]]
   - [[#leader][Leader]]
     - [[#global][Global]]
     - [[#local][Local]]
@@ -386,15 +386,11 @@ On the fly syntax checking.
 	(lsp-ui-doc-include-signature t)
 	(lsp-ui-doc-position 'top)
 	(lsp-ui-doc-use-childframe t)
-	(lsp-ui-sideline-enable nil)
-	(lsp-ui-sideline-ignore-duplicate t)
-	(lsp-ui-sideline-show-code-actions nil)
 	(lsp-ui-flycheck-enable t)
 	(lsp-ui-flycheck-list-position 'right)
 	(lsp-ui-flycheck-live-reporting t)
 	(lsp-ui-peek-enable nil)
-	(lsp-ui-peek-list-width 60)
-	(lsp-ui-peek-peek-height 25)
+	(lsp-ui-sideline-enable nil)
 	:commands lsp-ui-mode)
 #+END_SRC
 
@@ -914,7 +910,9 @@ Useful links:\\
 [[https://www.gnu.org/software/emacs/manual/html_node/efaq/Binding-combinations-of-modifiers-and-function-keys.html][GNU binding combinations of modifiers]] \\
 [[https://github.com/hlissner/doom-emacs/blob/develop/modules/config/default/+evil-bindings.el][Doom Emacs bindings]]
 
-** Disable default
+** Disable Default
+
+Disable keybinds of default modes that clash with the custom keybinds below.
 
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'org
@@ -926,7 +924,22 @@ Useful links:\\
 	(define-key c-mode-base-map (kbd "C-M-h") nil))
 #+END_SRC
 
-** Default
+** Disable Package
+
+Disable keybinds of installed packages that clash with the custom keybinds below.
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'evil-states
+	(define-key evil-motion-state-map (kbd dot/leader-key) nil))
+
+  (with-eval-after-load 'php-mode
+	(define-key php-mode-map (kbd "M-j") nil)
+	(define-key php-mode-map (kbd "C-M-h") nil))
+#+END_SRC
+
+** Set Default
+
+Set custom keybinds to functionality of default modes.
 
 #+BEGIN_SRC emacs-lisp
   ;; Buffers
@@ -949,20 +962,9 @@ Useful links:\\
   (global-set-key (kbd "<s-backspace>") 'ansi-term)
 #+END_SRC
 
-** Disable package
+** Set Package
 
-Disable spacebar in evil motion.
-
-#+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'evil-states
-	(define-key evil-motion-state-map (kbd dot/leader-key) nil))
-
-  (with-eval-after-load 'php-mode
-	(define-key php-mode-map (kbd "M-j") nil)
-	(define-key php-mode-map (kbd "C-M-h") nil))
-#+END_SRC
-
-** Package
+Set custom keybinds to functionality of custom packages.
 
 #+BEGIN_SRC emacs-lisp
   ;; Buffers

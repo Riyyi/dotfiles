@@ -728,7 +728,7 @@ Functions that only use built-in Emacs functionality.
 	"Hide default startup message."
 	(message ""))
 
-  (defun dot/describe-symbol-at-point (&optional SYMBOL)
+  (defun dot/describe-symbol-at-point (&optional symbol)
 	"Display the full documentation of SYMBOL at point.
   Will show the info of SYMBOL as a function, variable, and/or face."
 	(interactive "P")
@@ -741,6 +741,19 @@ Functions that only use built-in Emacs functionality.
 	(interactive)
 	(save-excursion
 	  (indent-region (point-min) (point-max) nil)))
+
+  (defun dot/org-ret-at-point ()
+	"Org return key at point.
+
+  If point is on:
+	link      -- follow it
+	otherwise -- run the default (evil-ret) expression"
+	(interactive)
+	(let ((type (org-element-type (org-element-context))))
+	  (pcase type
+		('link (org-open-at-point))
+		(_ (evil-ret))
+		)))
 
   (defun split-follow-horizontally ()
 	"Split and follow window."
@@ -1005,10 +1018,9 @@ Set custom keybinds to functionality of custom packages.
   (with-eval-after-load 'evil-states
 	(general-define-key
 	 :keymaps 'evil-normal-state-map
-
-	 ;; Neotree
 	 "C-n" 'neotree-toggle-in-project-root)
 
+	 ;; Neotree
 	(general-define-key
 	 :states 'normal
 	 :keymaps 'neotree-mode-map
@@ -1037,6 +1049,12 @@ Set custom keybinds to functionality of custom packages.
 	 "p" 'dashboard-goto-projects
 	 "r" 'dashboard-goto-recent-files
 	 )
+
+	;; Org
+	(general-define-key
+	 :states 'normal
+	 :keymaps 'org-mode-map
+	 "RET" 'dot/org-ret-at-point)
 
 	;; Elfeed
 	(general-define-key
@@ -1215,6 +1233,8 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
   (local-leader org-mode-map
 	"'"   '(org-edit-special                 :which-key "Org edit")
 	"c"   '(org-edit-special                 :which-key "Org edit")
+	"l"   '(org-insert-link                  :which-key "Org make link")
+	"o"   '(org-open-at-point                :which-key "Org open at point")
 	)
 
   (local-leader org-src-mode-map

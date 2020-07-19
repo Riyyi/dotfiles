@@ -9,7 +9,7 @@
 #+LATEX_HEADER: \definecolor{blue}{rgb}{0,0.5,1}
 #+LATEX_HEADER: \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
 
-*** Table of Contents :toc_4:
+* Table of Contents :toc_4:
 - [[#initial-setup][Initial setup]]
   - [[#irony-mode][Irony mode]]
   - [[#all-the-icons][All the icons]]

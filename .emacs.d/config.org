@@ -530,6 +530,9 @@ https://github.com/laishulu/hl-fill-column
   (setq show-paren-delay 0)
   (setq show-paren-style 'mixed)
 
+  ;; End sentences with a single space
+  (setq sentence-end-double-space nil)
+
   ;; Enable line numbers
   (global-display-line-numbers-mode)
 

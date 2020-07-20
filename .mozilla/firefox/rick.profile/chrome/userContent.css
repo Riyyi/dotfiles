@@ -21,6 +21,17 @@
 	.postContainer.replyContainer .post.reply { width: 100% }
 }
 
+@-moz-document domain("github.com") {
+	:root{
+		--tab-size: 4;
+	}
+
+	.blob-code-inner, pre, code, tt {
+		-moz-tab-size: var(--tab-size);
+		tab-size:      var(--tab-size);
+	}
+}
+
 @-moz-document domain("youtube.com") {
 	/* Hide video player */
 	#player-theater-container {

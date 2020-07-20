@@ -26,7 +26,18 @@
 		--tab-size: 4;
 	}
 
-	.blob-code-inner, pre, code, tt {
+	.blob, pre, code, tt {
+		-moz-tab-size: var(--tab-size);
+		tab-size:      var(--tab-size);
+	}
+}
+
+@-moz-document domain("gitlab.com") {
+	:root{
+		--tab-size: 4;
+	}
+
+	.blob-viewer, pre, code, tt {
 		-moz-tab-size: var(--tab-size);
 		tab-size:      var(--tab-size);
 	}

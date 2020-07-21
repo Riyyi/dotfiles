@@ -138,6 +138,9 @@ Install and configure packages.
 	:load-path "~/code/elisp/emacs-hybrid-reverse"
 	:custom (load-theme 'hybrid-reverse t))
 
+  (use-package all-the-icons
+	:defer t)
+
   (use-package which-key
 	:defer 1
 	:custom
@@ -228,13 +231,6 @@ Emacs mode line replacement.
 
 *** NeoTree
 
-Collect icon fonts and propertize them within Emacs\\
-(requires M-x =all-the-icons-install-fonts=).
-
-#+BEGIN_SRC emacs-lisp
-  (use-package all-the-icons)
-#+END_SRC
-
 Provides Emacs with a file tree.
 
 #+BEGIN_SRC emacs-lisp
@@ -256,6 +252,7 @@ Places buffers as tabs in a bar at the top.
 
 #+BEGIN_SRC emacs-lisp
   (use-package centaur-tabs
+	:after all-the-icons
 	:demand
 	:custom
 	(centaur-tabs-height 40)
@@ -993,6 +990,7 @@ Set custom keybinds to functionality of custom packages.
   (global-set-key (kbd "C-M-l") 'centaur-tabs-move-current-tab-to-right)
   (global-set-key (kbd "M-\`") 'evil-switch-to-windows-last-buffer)
 
+  (global-set-key (kbd "M-s") 'avy-goto-char-timer)
   (global-set-key (kbd "M-x") 'smex)
 
   ;; Company completion selection
@@ -1135,7 +1133,7 @@ General.el ~leader key binds.
 
 	;; Insert
 	"i"   '(:ignore t                        :which-key "insert")
-	"i s" '(yas-insert-snippet               :which-key "Snippet")
+	"i s" '(yas-insert-snippet               :which-key "Insert snippet")
 
 	;; Neotree
 	"n"   '(neotree-toggle-in-project-root   :which-key "Toggle Neotree")
@@ -1229,6 +1227,16 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 	"c"   '(org-edit-special                 :which-key "Org edit")
 	"l"   '(org-insert-link                  :which-key "Org make link")
 	"o"   '(org-open-at-point                :which-key "Org open at point")
+
+	"s"         '(:ignore t                  :which-key "tree/subtree")
+	"s h"       '(org-promote-subtree        :which-key "Org promote subtree")
+	"s j"       '(org-move-subree-down       :which-key "Org move subtree down")
+	"s k"       '(org-move-subtree-up        :which-key "Org move subtree up")
+	"s l"       '(org-demote-subtree         :which-key "Org demote subtree")
+	"s <left>"  '(org-promote-subtree        :which-key "Org promote subtree")
+	"s <right>" '(org-demote-subtree         :which-key "Org demote subtree")
+	"s <up>"    '(org-move-subree-up         :which-key "Org move subtree up")
+	"s <down>"  '(org-move-subtree-down      :which-key "Org move subtree down")
 	)
 
   (local-leader org-src-mode-map

@@ -34,11 +34,11 @@ bspc rule -r *
 bspc rule -a firefox                   desktop="$WS1" locked=on
 bspc rule -a URxvt -o                  desktop="$WS2"
 bspc rule -a Thunar                    desktop="$WS3"
+bspc rule -a kdenlive                  desktop="$WS5" follow=on
 bspc rule -a krita                     desktop="$WS5" follow=on
 
 # Set program properties
 bspc rule -a Arandr                    state=floating
-bspc rule -a Bar                       layer=above
 bspc rule -a feh                       state=floating
 bspc rule -a firefox:Places            state=floating
 bspc rule -a Inferno                   state=floating

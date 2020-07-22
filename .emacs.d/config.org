@@ -336,6 +336,13 @@ On the fly syntax checking.
 	  shell-mode
 	  shell-script-mode)
 	 . flycheck-mode))
+
+  ;; For .el files which are intended to be packages
+  (use-package flycheck-package
+	:after flycheck
+	:config
+	(add-to-list 'flycheck-checkers 'flycheck-emacs-lisp-package)
+	(flycheck-package-setup))
 #+END_SRC
 
 **** LSP

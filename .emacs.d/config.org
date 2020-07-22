@@ -210,6 +210,7 @@ Install and configure packages.
 	 :config (evil-collection-init))
 
    (use-package evil-nerd-commenter
+	 :defer t
 	 :after evil)
  #+END_SRC
 
@@ -285,14 +286,17 @@ Project manager.
 
 #+BEGIN_SRC emacs-lisp
   (use-package htmlize
+	:defer t
 	:custom (org-export-html-postamble nil))
   ;org-export-html-postamble-format @ToDo
 
   ;; Table of contents
-  (use-package toc-org)
+  (use-package toc-org
+	:defer t)
 
   ;; Github flavored Markdown exporter
-  (use-package ox-gfm)
+  (use-package ox-gfm
+	:defer t)
 #+END_SRC
 
 *** Completion
@@ -493,24 +497,26 @@ https://github.com/laishulu/hl-fill-column
 *** RSS
 
 #+BEGIN_SRC emacs-lisp
-	  (use-package elfeed
-		:custom
-		(elfeed-db-directory (concat emacs-d "/elfeed"))
-		(elfeed-enclosure-default-dir "~/downloads/")
-		(elfeed-search-filter "@6-months-ago +unread")
-		(elfeed-search-clipboard-type 'CLIPBOARD)
-		(elfeed-search-title-max-width 100)
-		(elfeed-search-title-min-width 30)
-		(elfeed-search-trailing-width 55)
-		(elfeed-show-unique-buffers t)
-		(elfeed-feeds
-		 '(("https://www.youtube.com/feeds/videos.xml?user=linustechtips" comedy reviews youtube)
-		   ("https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA" boomer linux shell youtube)
-		   ("https://phoronix.com/rss.php" linux news reviews)
-		   ))
-		:hook
-		(elfeed-search-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
-		(elfeed-show-mode   . (lambda (&rest _) (display-line-numbers-mode 0))))
+  (use-package elfeed
+	:defer t
+	:custom
+	(elfeed-db-directory (concat emacs-d "/elfeed"))
+	(elfeed-enclosure-default-dir "~/downloads/")
+	(elfeed-search-filter "@6-months-ago +unread")
+	(elfeed-search-clipboard-type 'CLIPBOARD)
+	(elfeed-search-title-max-width 100)
+	(elfeed-search-title-min-width 30)
+	(elfeed-search-trailing-width 55)
+	(elfeed-show-unique-buffers t)
+	(elfeed-feeds
+	 '(("https://www.youtube.com/feeds/videos.xml?user=linustechtips" comedy reviews youtube)
+	   ("https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA" boomer linux shell youtube)
+	   ("https://phoronix.com/rss.php" linux news reviews)
+	   ("https://lukesmith.xyz/rss.xml" boomer linux shell)
+	   ))
+	:hook
+	(elfeed-search-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
+	(elfeed-show-mode   . (lambda (&rest _) (display-line-numbers-mode 0))))
 #+END_SRC
 
 * General

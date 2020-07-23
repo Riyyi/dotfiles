@@ -68,6 +68,7 @@ libmtp
 libnotify-id
 libvirt
 linux
+linux-firmware
 linux-headers
 linux-lts
 linux-lts-headers

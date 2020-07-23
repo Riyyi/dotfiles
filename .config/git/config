@@ -1,0 +1,7 @@
+[core]
+	pager = less -x 1,5
+[pull]
+	rebase = false
+[user]
+	name = Riyyi
+	email = riyyi3@gmail.com

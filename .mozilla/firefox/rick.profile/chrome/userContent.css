@@ -26,7 +26,7 @@
 		--tab-size: 4;
 	}
 
-	.blob, pre, code, tt {
+	.blob, .blob-code-inner, pre, code, tt {
 		-moz-tab-size: var(--tab-size);
 		tab-size:      var(--tab-size);
 	}

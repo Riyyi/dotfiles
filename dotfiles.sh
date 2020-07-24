@@ -159,14 +159,14 @@ packages() {
 
 		if [ "$1" = "install" ]; then
 			# Install core packages, answer no to pacman questions (honor Ignore)
-			yes n | sudo pacman -S --needed $CORE_LIST
+			yes n | sudo pacman -Sy --needed $CORE_LIST
 		fi
 		if [ "$1" = "install-aur" ]; then
 			# Determine which packages in the list are from the AUR
 			AUR_LIST="$(grep -vx "$CORE_LIST" < $PACKAGE_FILE)"
 
 			# Install AUR packages
-			"$AUR_HELPER" -S --needed --noconfirm $AUR_LIST
+			"$AUR_HELPER" -Sy --needed --noconfirm $AUR_LIST
 		fi
 	fi
 }

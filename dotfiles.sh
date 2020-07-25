@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Manages dotfiles and packages
+# Depends: pacman-contrib
+
 # User-config---------------------------
 
 # File which holds all installed packages
@@ -28,7 +31,7 @@ help() {
 
 	cat << EOF
 ${B}NAME${N}
-	dotfiles - file copy script for the dotfiles repository
+	dotfiles - manages dotfiles and packages
 
 ${B}SYNOPSIS${N}
 	${B}./dotfiles.sh${N} ${U}OPTION${N} [${U}ARG${N}]
@@ -113,7 +116,7 @@ pull_push() {
 			# cp /home/<user>/<file> /[<some dir>/]dotfiles/<file>
 			cp -a "$HOME/$f" "$(pwd)/$f"
 		elif [ "$1" = "push" ]; then
-			mkdir -p "$(dirname $HOME/$f)"
+			mkdir -p "$(dirname "$HOME/$f")"
 			cp -a "$(pwd)/$f" "$HOME/$f"
 		fi
 	done
@@ -141,7 +144,12 @@ push() {
 }
 
 packages() {
-	FILTER_LIST="$((pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
+	if ! pacman -Qqs pacman-contrib > /dev/null; then \
+		echo 'Please install the "pacman-contrib" dependency before running this option.'
+		exit 1
+	fi
+
+	FILTER_LIST="$( (pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
 	PACKAGE_LIST="$(pacman -Qqe | grep -vx "$FILTER_LIST" | sort)"
 
 	if [ "$1" = "list" ] || [ "$1" = "" ]; then

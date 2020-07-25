@@ -25,7 +25,7 @@ pictures
 .gradle
 .jd
 .local/share
-.mozilla/firefox/rick.profile/storage
+.mozilla/firefox/dotfiles.profile/storage
 .node-gyp
 .npm
 .nvm

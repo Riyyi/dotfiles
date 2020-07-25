@@ -543,6 +543,11 @@ https://github.com/laishulu/hl-fill-column
   ;; End sentences with a single space
   (setq sentence-end-double-space nil)
 
+  ;; Set undo limit, measured in bytes
+  (setq-default undo-limit 400000)
+  (setq-default undo-strong-limit 3000000)
+  (setq-default undo-outer-limit 12000000)
+
   ;; Enable line numbers
   (global-display-line-numbers-mode)
 

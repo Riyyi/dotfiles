@@ -556,6 +556,22 @@ https://github.com/laishulu/hl-fill-column
 
   ;; When in the GUI version of Emacs, enable pretty symbols
   (when window-system (global-prettify-symbols-mode t))
+
+  ;; Set the frame title
+  (setq frame-title-format
+		`("%b"
+		  (:eval
+		   (if (buffer-file-name)
+			   (concat
+				(if (buffer-modified-p) " *" nil)
+				" ("
+				(abbreviate-file-name
+				 (directory-file-name
+				  (file-name-directory (buffer-file-name))))
+				")")
+			 nil))
+		  ,(format " - GNU Emacs %s" emacs-version)
+		  ))
 #+END_SRC
 
 ** Buffers

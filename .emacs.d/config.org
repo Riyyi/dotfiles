@@ -572,6 +572,7 @@ https://github.com/laishulu/hl-fill-column
 			 nil))
 		  ,(format " - GNU Emacs %s" emacs-version)
 		  ))
+  (setq icon-title-format frame-title-format)
 #+END_SRC
 
 ** Buffers

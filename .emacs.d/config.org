@@ -58,8 +58,8 @@
   - [[#set-default][Set Default]]
   - [[#set-package][Set Package]]
   - [[#leader][Leader]]
-    - [[#global][Global]]
-    - [[#local][Local]]
+    - [[#global-leader][Global Leader]]
+    - [[#local-leader][Local Leader]]
 - [[#notes][Notes]]
 
 * Initial setup

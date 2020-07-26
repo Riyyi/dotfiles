@@ -192,8 +192,8 @@ Install and configure packages.
 	 (evil-split-window-below t)
 	 (evil-shift-round nil)
 	 (evil-want-C-u-scroll t)
-	 ;; Do not set half cursor in operator mode
-	 (evil-operator-state-cursor '(box))
+	 ;; Do not set half cursor in operator state
+	 (evil-operator-state-cursor 'box)
 	 ;; Needed by evil-collection
 	 (evil-want-integration t)
 	 (evil-want-keybinding nil)
@@ -1074,8 +1074,8 @@ Set custom keybinds to functionality of custom packages.
 	(general-def 'normal elfeed-search-mode-map
 	 "b"  'elfeed-search-browse-url
 	 "c"  'elfeed-search-clear-filter
-	 "gr" 'elfeed-search-update--force
-	 "gR" 'elfeed-search-fetch
+	 "gr" '(elfeed-search-update--force  :which-key "Refresh buffer")
+	 "gR" '(elfeed-search-fetch          :which-key "Update feeds")
 	 "q"  'kill-this-buffer
 	 "u"  'elfeed-search-tag-all-unread
 	 "U"  nil
@@ -1095,7 +1095,7 @@ Set custom keybinds to functionality of custom packages.
 
 General.el ~leader key binds.
 
-*** Global
+*** Global Leader
 
 #+BEGIN_SRC emacs-lisp
   (general-create-definer space-leader
@@ -1110,6 +1110,7 @@ General.el ~leader key binds.
 
 	;; Buffer / bookmark
 	"b"         '(:ignore t                  :which-key "buffer/bookmark")
+	"b a"       '(auto-revert-mode           :which-key "Auto revert buffer")
 	"b b"       '(ido-switch-buffer          :which-key "Switch buffer")
 	"b B"       '(ibuffer                    :which-key "List buffers")
 	"b d"       '(kill-current-buffer        :which-key "Kill buffer")
@@ -1227,7 +1228,7 @@ Source:
 https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-evil.el#L712
 https://github.com/suyashbire1/emacs.d/blob/master/init.el
 
-*** Local
+*** Local Leader
 
 #+BEGIN_SRC emacs-lisp
   (general-create-definer local-leader
@@ -1245,6 +1246,9 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 	"c"   '(org-edit-special                 :which-key "Org edit")
 	"l"   '(org-insert-link                  :which-key "Org make link")
 	"o"   '(org-open-at-point                :which-key "Org open at point")
+
+	"i"         '(:ignore t                  :which-key "insert")
+	"i h"       '(org-insert-heading         :which-key "Org insert heading")
 
 	"s"         '(:ignore t                  :which-key "tree/subtree")
 	"s h"       '(org-promote-subtree        :which-key "Org promote subtree")

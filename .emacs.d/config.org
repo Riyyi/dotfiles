@@ -32,6 +32,7 @@
       - [[#lsp][LSP]]
       - [[#yasnippet][YASnippet]]
       - [[#cc][C/C++]]
+    - [[#php][PHP]]
     - [[#prettify][Prettify]]
     - [[#rss][RSS]]
 - [[#general-1][General]]
@@ -442,6 +443,16 @@ Irony requires M-x =irony-install-server=.
 	:after company
 	:config (push 'company-c-headers company-backends))
   ;; company-irony-c-headers
+#+END_SRC
+
+*** PHP
+
+#+BEGIN_SRC emacs-lisp
+  (use-package php-mode
+	:defer t
+	:hook (php-mode . (lambda () (progn
+							  (setq indent-tabs-mode t)
+							  (setq lsp-ui-doc-enable t)))))
 #+END_SRC
 
 *** Prettify
@@ -942,9 +953,6 @@ Evil command aliases.
 
   ;; C++ // style comments in c-mode
   (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
-
-  ;; PHP, set correct tab mode
-  (add-hook 'php-mode-hook (lambda () (setq indent-tabs-mode t)))
 
   ;; LaTeX, set correct tab mode
   (add-hook 'latex-mode-hook (lambda () (setq indent-tabs-mode t)))

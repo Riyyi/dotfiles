@@ -1162,6 +1162,7 @@ General.el ~leader key binds.
 	"f f" '(find-file-in-project-root        :which-key "Find file")
 	"f r" '(rename-file-and-buffer           :which-key "Rename file")
 	"f s" '(basic-save-buffer                :which-key "Save file")
+	"f S" '(write-file                       :which-key "Save file as...")
 
 	;; Help
 	"h"   '(help-command                     :which-key "help")
@@ -1169,6 +1170,8 @@ General.el ~leader key binds.
 
 	;; Insert
 	"i"   '(:ignore t                        :which-key "insert")
+	"i b" '(dot/indent-buffer                :which-key "Indent buffer")
+	"i r" '(indent-region                    :which-key "Indent region")
 	"i s" '(yas-insert-snippet               :which-key "Insert snippet")
 
 	;; Neotree
@@ -1183,11 +1186,6 @@ General.el ~leader key binds.
 	"q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
 	"q f" '(delete-frame                     :which-key "Close frame")
 	"q o" '(delete-other-frames              :which-key "Close other frames")
-
-	;; Reformat region
-	"r"   '(:ignore t                        :which-key "region")
-	"r b" '(dot/indent-buffer                :which-key "Indent buffer")
-	"r r" '(indent-region                    :which-key "Indent region")
 
 	;; Search
 	"s"   '(:ignore t                        :which-key "search")

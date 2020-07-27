@@ -804,6 +804,18 @@ Functions that only use built-in Emacs functionality.
 		(_ (evil-ret))
 		)))
 
+  (defun dot/sudo-find-file (filename)
+	"Edit file FILENAME as root."
+	(interactive "FOpen file (as root): ")
+	(find-file (concat "/sudo:root@localhost:" filename)))
+
+  (defun dot/sudo-this-file ()
+	"Edit the current file as root."
+	(interactive)
+	(if buffer-file-name
+		(find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))
+	  (princ "Current buffer isn't a file")))
+
   (defun split-follow-horizontally ()
 	"Split and follow window."
 	(interactive)
@@ -843,19 +855,6 @@ Functions that only use built-in Emacs functionality.
 		   (t
 			(rename-file filename new-name t)
 			(set-visited-file-name new-name t t)))))))
-
-  ;; https://emacsredux.com/blog/2013/04/21/edit-files-as-root/
-  (defun sudo-edit (&optional arg)
-	"Edit currently visited file as root.
-
-  With a prefix ARG prompt for a file to visit.
-  Will also prompt for a file to visit if current
-  buffer is not visiting a file."
-	(interactive "P")
-	(if (or arg (not buffer-file-name))
-		(find-file (concat "/sudo:root@localhost:"
-						   (read-file-name "Find file(as root): ")))
-	  (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+END_SRC
 
 ** Package
@@ -1173,6 +1172,8 @@ General.el ~leader key binds.
 	"f r" '(rename-file-and-buffer           :which-key "Rename file")
 	"f s" '(basic-save-buffer                :which-key "Save file")
 	"f S" '(write-file                       :which-key "Save file as...")
+	"f u" '(dot/sudo-find-file               :which-key "Sudo find file")
+	"f U" '(dot/sudo-this-file               :which-key "Sudo this file")
 
 	;; Help
 	"h"   '(help-command                     :which-key "help")

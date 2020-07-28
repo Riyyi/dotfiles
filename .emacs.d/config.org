@@ -41,6 +41,7 @@
   - [[#file-backups][File Backups]]
   - [[#hide-elements][Hide Elements]]
   - [[#org-1][Org]]
+  - [[#recentf][Recentf]]
   - [[#tabs][Tabs]]
   - [[#utf-8][UTF-8]]
   - [[#window][Window]]
@@ -555,6 +556,9 @@ https://github.com/laishulu/hl-fill-column
   ;; End sentences with a single space
   (setq sentence-end-double-space nil)
 
+  ;; Tramp default protocol
+  (setq tramp-default-method "ssh")
+
   ;; Set undo limit, measured in bytes
   (setq-default undo-limit 400000)
   (setq-default undo-strong-limit 3000000)
@@ -664,6 +668,7 @@ File auto-saves, backups, tramps.
   ;; Load latex exporter
   (use-package ox-latex
 	:ensure nil ; ox-latex.el is part of org
+	:defer t
 	:after org
 	:custom
 	;; Define how minted is added to source code blocks
@@ -680,6 +685,21 @@ File auto-saves, backups, tramps.
 					   (replace-regexp-in-string "%latex " "%latex -shell-escape " s)
 					 s))
 		   org-latex-pdf-process))
+	)
+#+END_SRC
+
+** Recentf
+
+#+BEGIN_SRC emacs-lisp
+  (use-package recentf
+	:config
+	(setq recentf-auto-cleanup 'never)
+	(setq recentf-exclude '("~$" "/ssh:" "/sudo:"))
+	(setq recentf-filename-handlers '(abbreviate-file-name))
+	(setq recentf-max-menu-items 0)
+	(setq recentf-max-saved-items 200)
+	(setq recentf-save-file (concat emacs-cache "/recentf"))
+	(recentf-mode)
 	)
 #+END_SRC
 
@@ -1168,7 +1188,8 @@ General.el ~leader key binds.
 	;; Find file
 	"f"   '(:ignore t                        :which-key "file")
 	"f f" '(find-file-in-project-root        :which-key "Find file")
-	"f r" '(rename-file-and-buffer           :which-key "Rename file")
+	"f r" '(recentf-open-files               :which-key "Recent files")
+	"f R" '(rename-file-and-buffer           :which-key "Rename file")
 	"f s" '(basic-save-buffer                :which-key "Save file")
 	"f S" '(write-file                       :which-key "Save file as...")
 	"f u" '(dot/sudo-find-file               :which-key "Sudo find file")
@@ -1269,6 +1290,7 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
   (local-leader org-mode-map
 	"'"   '(org-edit-special                 :which-key "Org edit")
 	"c"   '(org-edit-special                 :which-key "Org edit")
+	"e"   '(org-export-dispatch              :which-key "Org export")
 	"l"   '(org-insert-link                  :which-key "Org make link")
 	"o"   '(org-open-at-point                :which-key "Org open at point")
 

@@ -354,7 +354,8 @@ On the fly syntax checking.
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
-	:defer t
+	:commands lsp
+	:after which-key
 	:hook
 	((c-mode         ; clangd
 	  c++-mode       ; clangd
@@ -372,22 +373,21 @@ On the fly syntax checking.
 	(dolist (leader-key (list dot/leader-key dot/leader-alt-key))
 	  (let ((lsp-keymap-prefix (concat leader-key " l")))
 		(lsp-enable-which-key-integration)))
-
-	:commands lsp)
+	)
 
   (use-package company-lsp
-	:after company lsp-mode
+	:commands company-lsp
+	:after (company lsp-mode)
 	:custom
 	(company-transformers nil)
 	(company-lsp-async t)
 	(company-lsp-cache-candidates nil)
 	(company-lsp-enable-snippet t)
-	:commands company-lsp
 	:config (push 'company-lsp company-backends))
 
   (use-package lsp-ui
-	:after flycheck lsp-mode
-	:hook (lsp-mode . lsp-ui-mode)
+	:commands lsp-ui-mode
+	:after (flycheck lsp-mode)
 	:custom
 	(lsp-ui-doc-border (face-foreground 'default))
 	(lsp-ui-doc-enable nil)
@@ -399,8 +399,7 @@ On the fly syntax checking.
 	(lsp-ui-flycheck-list-position 'right)
 	(lsp-ui-flycheck-live-reporting t)
 	(lsp-ui-peek-enable nil)
-	(lsp-ui-sideline-enable nil)
-	:commands lsp-ui-mode)
+	(lsp-ui-sideline-enable nil))
 #+END_SRC
 
 **** YASnippet

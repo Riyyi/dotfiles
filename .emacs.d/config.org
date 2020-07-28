@@ -651,37 +651,37 @@ File auto-saves, backups, tramps.
 ** Org
 
 #+BEGIN_SRC emacs-lisp
-  ;; Org
-  (with-eval-after-load 'org
-	(add-to-list 'org-structure-template-alist
-				 '("s" "#+BEGIN_SRC ?\n\n#+END_SRC")
-				 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
-				 ))
+  (use-package org
+	:custom
+	(org-directory (concat (getenv "HOME") "/documents/org"))
+	(org-ellipsis " ↴")
+	(org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
+	(org-return-follows-link t)
+	(org-src-fontify-natively t)
+	(org-src-window-setup 'current-window)
+	)
 
-  (setq org-ellipsis " ↴")
-  (setq org-src-fontify-natively t)
-  (setq org-src-window-setup 'current-window)
-  (setq org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
   ;; Enable syntax highlighting when exporting to .pdf
-  ;; Include latex-exporter
-  (with-eval-after-load 'ox-latex
-	;; Add minted to the list of packages to insert in every LaTeX header
+  ;; Load latex exporter
+  (use-package ox-latex
+	:ensure nil ; ox-latex.el is part of org
+	:after org
+	:custom
+	;; Define how minted is added to source code blocks
+	(org-latex-listings 'minted)
+	(org-latex-minted-options '(("frame" "lines") ("linenos=true")))
+	:config
+	;; Add minted package to every LaTeX header
 	(add-to-list 'org-latex-packages-alist '("" "minted"))
-	;; Define how minted is added to source code
-	(setq org-latex-listings 'minted)
-	(setq org-latex-minted-options
-		  '(("frame" "lines") ("linenos=true")))
 	;; Append -shell-escape to every element in org-latex-pdf-process
 	(setq org-latex-pdf-process
 		  (mapcar
 		   (lambda (s)
-			 (if (not (string-match-p "-shell-escape" s))
-				 (replace-regexp-in-string "%latex " "%latex -shell-escape " s)
-			   s))
-		   org-latex-pdf-process)))
-
-  (setq org-directory (concat (getenv "HOME") "/documents/org"))
-  (setq org-return-follows-link t)
+				   (if (not (string-match-p "-shell-escape" s))
+					   (replace-regexp-in-string "%latex " "%latex -shell-escape " s)
+					 s))
+		   org-latex-pdf-process))
+	)
 #+END_SRC
 
 ** Tabs

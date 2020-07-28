@@ -13,6 +13,7 @@
 - [[#initial-setup][Initial setup]]
   - [[#irony-mode][Irony mode]]
   - [[#all-the-icons][All the icons]]
+- [[#global-variables][Global Variables]]
 - [[#customizations][Customizations]]
 - [[#package-management][Package Management]]
   - [[#ensure][Ensure]]
@@ -38,7 +39,8 @@
 - [[#general-1][General]]
   - [[#buffers][Buffers]]
   - [[#electric][Electric]]
-  - [[#file-backups][File Backups]]
+  - [[#file-paths][File Paths]]
+  - [[#file-backups-versioning][File Backups Versioning]]
   - [[#hide-elements][Hide Elements]]
   - [[#org-1][Org]]
   - [[#recentf][Recentf]]
@@ -76,16 +78,43 @@ M-x =irony-install-server=
 
 M-x =all-the-icons-install-fonts=
 
-* Customizations
+* Global Variables
 
-Store custom-file separately, don't freak out when it's not found.
+Variables for directories and leader keys.
 
 #+BEGIN_SRC emacs-lisp
-  (setq custom-file (concat emacs-d "/custom.el"))
+  (defvar emacs-d (directory-file-name (file-truename user-emacs-directory))
+	"Directory base.")
+
+  (defvar dot-etc-dir (concat emacs-d "/etc")
+	"Directory for non-volatile storage.")
+
+  (defvar emacs-cache (concat (getenv "XDG_CACHE_HOME") "/emacs")
+	"Directory for cache data.")
+
+  (defvar dot/leader-key "SPC"
+	"Leader prefix key.")
+
+  (defvar dot/leader-alt-key "M-SPC"
+	"Alternative leader prefix key, used for Insert and Emacs states.")
+
+  (defvar dot/localleader-key "SPC m"
+	"Local leader prefix key, for 'major-mode' specific commands.")
+
+  (defvar dot/localleader-alt-key "M-SPC m"
+	"Alternative local leader prefix key, used for Insert and Emacs states.")
+#+END_SRC
+
+* Customizations
+
+Store customize file separately, don't freak out when it's not found.
+
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file (concat dot-etc-dir "/custom.el"))
   (load custom-file 'noerror)
 #+END_SRC
 
-Set custom faces, without using customize.
+Set font.
 
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil :height 90 :family "DejaVu Sans Mono")
@@ -111,7 +140,7 @@ https://github.com/rranelli/auto-package-update.el
 	:custom
 	(auto-package-update-delete-old-versions t)
 	(auto-package-update-hide-results t)
-	(auto-package-update-last-update-day-path (concat emacs-cache "/.last-package-update-day"))
+	(auto-package-update-last-update-day-path (concat emacs-cache "/last-package-update-day"))
 	:config
 	(auto-package-update-maybe))
 #+END_SRC
@@ -160,7 +189,9 @@ Install and configure packages.
 
   (use-package smex
 	:defer t
-	:custom (smex-prompt-string "Command: ")
+	:custom
+	(smex-prompt-string "Command: ")
+	(smex-save-file (concat emacs-cache "/smex-items"))
 	:config (smex-initialize))
 
   (use-package avy
@@ -277,8 +308,10 @@ Project manager.
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
 	:custom
+	(projectile-cache-file (concat emacs-cache "/projectile.cache"))
 	(projectile-enable-caching t)
 	(projectile-indexing-method 'hybrid)
+	(projectile-known-projects-file (concat emacs-cache "/projectile-bookmarks.eld"))
 	(projectile-project-search-path '("~"))
 	(projectile-sort-order 'recentf)
 	:config (projectile-mode))
@@ -366,8 +399,10 @@ On the fly syntax checking.
 	(lsp-auto-guess-root t)
 	(lsp-clients-clangd-args '("-compile-commands-dir=build" "-j=2" "-background-index" "-log=error"))
 	(lsp-enable-xref t)
+	(lsp-intelephense-storage-path (concat emacs-cache "/lsp-cache"))
 	(lsp-keep-workspace-alive nil)
 	(lsp-prefer-flymake nil)
+	(lsp-session-file (concat emacs-cache "/lsp-session-v1"))
 	:config
 
 	;; Enable which-key descriptions
@@ -413,8 +448,10 @@ On the fly syntax checking.
 	  prog-mode
 	  tex-mode)
 	 . yas-minor-mode)
-	:custom (yas-prompt-functions '(yas-ido-prompt
-									yas-completing-prompt))
+	:custom
+	(yas-prompt-functions '(yas-ido-prompt
+							yas-completing-prompt))
+	(yas-snippet-dirs (list (concat emacs-d "/snippets")))
 	:config (yas-reload-all))
 
   (use-package yasnippet-snippets
@@ -433,6 +470,7 @@ Irony requires M-x =irony-install-server=.
 	  c++-mode)
 	 . irony-mode)
 	(irony-mode . irony-cdb-autosetup-compile-options)
+	:init (setq irony-user-dir (concat emacs-cache "/irony/"))
 	:config (push 'glsl-mode irony-supported-major-modes))
 
   (use-package company-irony
@@ -513,7 +551,7 @@ https://github.com/laishulu/hl-fill-column
   (use-package elfeed
 	:defer t
 	:custom
-	(elfeed-db-directory (concat emacs-d "/elfeed"))
+	(elfeed-db-directory (concat emacs-cache "/elfeed"))
 	(elfeed-enclosure-default-dir "~/downloads/")
 	(elfeed-search-filter "@6-months-ago +unread")
 	(elfeed-search-clipboard-type 'CLIPBOARD)
@@ -615,25 +653,41 @@ https://github.com/laishulu/hl-fill-column
   (electric-pair-mode 1)
 #+END_SRC
 
-** File Backups
+** File Paths
 
-File auto-saves, backups, tramps.
+Set file paths for built-in features like: auto-saves, backups,
+packages and tramp.
 
 #+BEGIN_SRC emacs-lisp
   (unless (file-directory-p emacs-cache)
 	(make-directory emacs-cache t))
-  ;https://emacs.stackexchange.com/questions/33/put-all-backups-into-one-backup-folder
-  (setq backup-directory-alist `((".*" . ,emacs-cache))
-		auto-save-file-name-transforms `((".*" ,(concat emacs-cache "") t))
-		auto-save-list-file-prefix (concat emacs-cache "/.saves-")
-		tramp-backup-directory-alist `((".*" . ,emacs-cache))
-		tramp-auto-save-directory emacs-cache)
-  (setq create-lockfiles nil   ; Disable lockfiles (.#)
-		backup-by-copying t    ; Don't cobber symlinks
-		delete-old-versions t  ; Cleanup backups
-		version-control t      ; Use version numbers on backups
-		kept-new-versions 5    ; Backups to keep
-		kept-old-versions 2)   ; ,,
+
+  ;; Set Directory locations
+  (setq auto-save-list-file-prefix      (concat emacs-cache "/auto-save/"))
+  (setq auto-save-file-name-transforms `((".*" ,auto-save-list-file-prefix t)))
+  (setq backup-directory-alist         `((".*" . ,(concat emacs-cache "/backup/"))))
+  (setq package-user-dir                (concat emacs-d "/elpa"))
+  (setq tramp-auto-save-directory       (concat emacs-cache "/tramp-auto-save/"))
+  (setq tramp-backup-directory-alist    backup-directory-alist)
+
+  ;; Set file locations
+  (setq bookmark-default-file           (concat dot-etc-dir "/bookmarks"))
+  (setq ido-save-directory-list-file    (concat emacs-cache "/ido.last"))
+  (setq nsm-settings-file               (concat emacs-cache "/network-security.data"))
+  (setq tramp-persistency-file-name     (concat emacs-cache "/tramp"))
+#+END_SRC
+
+** File Backups Versioning
+
+Setup file backups versioning.
+
+#+BEGIN_SRC emacs-lisp
+  (setq backup-by-copying t)    ; Don't cobbler symlinks
+  (setq create-lockfiles nil)   ; Disable lockfiles (.#)
+  (setq delete-old-versions t)  ; Cleanup backups
+  (setq kept-new-versions 5)    ; Newest backups to keep
+  (setq kept-old-versions 2)    ; Oldest backups to keep
+  (setq version-control t)      ; Use version numbers on backups
 #+END_SRC
 
 ** Hide Elements

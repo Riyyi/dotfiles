@@ -559,12 +559,8 @@ https://github.com/laishulu/hl-fill-column
 	(elfeed-search-title-min-width 30)
 	(elfeed-search-trailing-width 55)
 	(elfeed-show-unique-buffers t)
-	(elfeed-feeds
-	 '(("https://www.youtube.com/feeds/videos.xml?user=linustechtips" comedy reviews youtube)
-	   ("https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA" boomer linux shell youtube)
-	   ("https://phoronix.com/rss.php" linux news reviews)
-	   ("https://lukesmith.xyz/rss.xml" boomer linux shell)
-	   ))
+	:config
+	(load-file (concat dot-etc-dir "/elfeed-feeds.el"))
 	:hook
 	(elfeed-search-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
 	(elfeed-show-mode   . (lambda (&rest _) (display-line-numbers-mode 0))))

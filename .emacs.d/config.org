@@ -1164,6 +1164,8 @@ Set custom keybinds to functionality of custom packages.
 	;; Org
 	(general-def 'normal org-mode-map
 	 "RET" 'dot/org-ret-at-point)
+	(general-def 'insert org-mode-map
+	 "RET" 'evil-ret)
 
 	;; Elfeed
 	(general-def 'normal elfeed-search-mode-map

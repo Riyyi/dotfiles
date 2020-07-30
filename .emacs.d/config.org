@@ -655,8 +655,7 @@ https://github.com/laishulu/hl-fill-column
 
 ** File Paths
 
-Set file paths for built-in features like: auto-saves, backups,
-packages and tramp.
+Set file paths for built-in features like: auto-saves, backups, etc.
 
 #+BEGIN_SRC emacs-lisp
   (unless (file-directory-p dot-cache-dir)
@@ -669,6 +668,7 @@ packages and tramp.
   (setq package-user-dir                (concat dot-emacs-dir "/elpa"))
   (setq tramp-auto-save-directory       (concat dot-cache-dir "/tramp-auto-save/"))
   (setq tramp-backup-directory-alist    backup-directory-alist)
+  (setq url-configuration-directory     (concat dot-cache-dir "/url/"))
 
   ;; Set file locations
   (setq bookmark-default-file           (concat dot-etc-dir "/bookmarks"))

@@ -514,6 +514,10 @@ Irony requires M-x =irony-install-server=.
 	:hook (dashboard-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
 	:config (dashboard-setup-startup-hook))
 
+  ;; A better *help* buffer
+  (use-package helpful
+	:defer t)
+
   (use-package rainbow-mode
 	:defer t
 	:hook (prog-mode . rainbow-mode))
@@ -846,14 +850,6 @@ Functions that only use built-in Emacs functionality.
 	"Hide default startup message."
 	(message ""))
 
-  (defun dot/describe-symbol-at-point (&optional symbol)
-	"Display the full documentation of SYMBOL at point.
-  Will show the info of SYMBOL as a function, variable, and/or face."
-	(interactive "P")
-	(let ((symbol (symbol-at-point)))
-	  (when symbol
-		(describe-symbol symbol))))
-
   (defun dot/indent-buffer ()
 	"Indent each nonblank line in the buffer."
 	(interactive)
@@ -1106,6 +1102,14 @@ Set custom keybinds to functionality of custom packages.
   (global-set-key (kbd "M-s") 'avy-goto-char-timer)
   (global-set-key (kbd "M-x") 'smex)
 
+  ;; Helpful overwrite default help functions
+  (global-set-key [remap describe-command]  #'helpful-command)
+  (global-set-key [remap describe-function] #'helpful-callable)
+  (global-set-key [remap describe-key]      #'helpful-key)
+  (global-set-key [remap describe-symbol]   #'helpful-at-point)
+  (global-set-key [remap describe-variable] #'helpful-variable)
+  (which-key-add-key-based-replacements "C-h o" "describe-symbol-at-point")
+
   ;; Company completion selection
   (with-eval-after-load 'company
 	(define-key company-active-map (kbd "M-n") nil)
@@ -1248,8 +1252,8 @@ General.el ~leader key binds.
 	"f U" '(dot/sudo-this-file               :which-key "Sudo this file")
 
 	;; Help
-	"h"   '(help-command                     :which-key "help")
-	"h o" '(dot/describe-symbol-at-point     :which-key "describe-symbol-at-point")
+	"h"   '(:keymap help-map                 :which-key "help")
+	"h o" '(:ignore t                        :which-key "describe-symbol-at-point")
 
 	;; Insert
 	"i"   '(:ignore t                        :which-key "insert")
@@ -1334,10 +1338,9 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 	:non-normal-prefix dot/localleader-alt-key
 	:global-prefix dot/localleader-alt-key
 	:states '(normal visual insert motion emacs)
-	)
 
-  (which-key-add-key-based-replacements dot/localleader-key "<localleader>")
-  (which-key-add-key-based-replacements dot/localleader-alt-key "<localleader>")
+	""    '(:ignore t                        :which-key "<localleader>")
+	)
 
   (local-leader org-mode-map
 	"'"   '(org-edit-special                 :which-key "Org edit")

@@ -41,6 +41,7 @@
   - [[#electric][Electric]]
   - [[#file-paths][File Paths]]
   - [[#file-backups-versioning][File Backups Versioning]]
+  - [[#formatting][Formatting]]
   - [[#hide-elements][Hide Elements]]
   - [[#org-1][Org]]
   - [[#recentf][Recentf]]
@@ -584,15 +585,9 @@ https://github.com/laishulu/hl-fill-column
   (setq mouse-wheel-scroll-amount '(5))
   (setq mouse-wheel-progressive-speed nil)
 
-  ;; Automatically add newline on save at the end of the file
-  (setq require-final-newline t)
-
   ;; Parenthesis, set behavior
   (setq show-paren-delay 0)
   (setq show-paren-style 'mixed)
-
-  ;; End sentences with a single space
-  (setq sentence-end-double-space nil)
 
   ;; Tramp default protocol
   (setq tramp-default-method "ssh")
@@ -690,6 +685,28 @@ Setup file backups versioning.
   (setq version-control t)      ; Use version numbers on backups
 #+END_SRC
 
+** Formatting
+
+#+BEGIN_SRC emacs-lisp
+  ;; Columnn after line-wrapping happens
+  (setq-default fill-column 80)
+
+  ;; Automatically add newline on save at the end of the file
+  (setq require-final-newline t)
+
+  ;; End sentences with a single space
+  (setq sentence-end-double-space nil)
+
+  ;; `tabify' and `untabify' should only affect indentation
+  (setq tabify-regexp "^\t* [ \t]+")
+
+  ;; Do not wrap lines
+  (setq-default truncate-lines t)
+
+  ;; Wrap lines in the middle of words, gives a \ indicator
+  (setq-default word-wrap nil)
+#+END_SRC
+
 ** Hide Elements
 
 #+BEGIN_SRC emacs-lisp
@@ -778,10 +795,9 @@ Set UTF-8 encoding as default.
 #+BEGIN_SRC emacs-lisp
   (prefer-coding-system 'utf-8-unix)
   (setq locale-coding-system 'utf-8-unix)
-  ;; Default also sets keyboard and terminal coding system
+  ;; Default also sets file-name, keyboard and terminal coding system
   (set-default-coding-systems 'utf-8-unix)
   (set-buffer-file-coding-system 'utf-8-unix)
-  (set-file-name-coding-system 'utf-8-unix)
   (set-selection-coding-system 'utf-8-unix)
 #+END_SRC
 
@@ -1022,6 +1038,9 @@ Evil command aliases.
 
   ;; LaTeX, set correct tab mode
   (add-hook 'latex-mode-hook (lambda () (setq indent-tabs-mode t)))
+
+  ;; Wrap lines in the middle of words, gives a \ indicator
+  (add-hook 'visual-line-mode-hook (lambda () (setq word-wrap nil)))
 #+END_SRC
 
 * Key Bindings
@@ -1279,14 +1298,15 @@ General.el ~leader key binds.
 	"s a" '(avy-goto-char-timer              :which-key "Avy goto char")
 	"s b" '(bookmark-jump-ido                :which-key "Jump to bookmark")
 
-	;; Tabs
-	"t"   '(:ignore t                                 :which-key "tabs")
+	;; Tabs / toggle
+	"t"   '(:ignore t                                 :which-key "tabs/toggle")
 	"t b" '(centaur-tabs-group-buffer-groups          :which-key "Group tabs by buffer")
 	"t p" '(centaur-tabs-group-by-projectile-project  :which-key "Group tabs by project")
 	"t h" '(centaur-tabs-backward-group               :which-key "Tab backward group")
 	"t j" '(centaur-tabs-select-end-tab               :which-key "Tab select first")
 	"t k" '(centaur-tabs-select-beg-tab               :which-key "Tab select last")
 	"t l" '(centaur-tabs-forward-group                :which-key "Tab forward group")
+	"t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
 
 	;; Update packages
 	"u"   '(auto-package-update-now          :which-key "Update packages")

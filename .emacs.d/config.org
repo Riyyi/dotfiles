@@ -301,8 +301,7 @@ Places buffers as tabs in a bar at the top.
 	  helpful-mode
 	  neotree-mode
 	  occur-mode
-	  shell-mode
-	  term-mode)
+	  shell-mode)
 	 . centaur-tabs-local-mode)
 	:config
 	(centaur-tabs-mode))
@@ -964,19 +963,25 @@ Functions that use package functionality.
 	(defun centaur-tabs-hide-tab (buffer)
 	  "Hide from the tab bar by BUFFER name."
 	  (let ((name (format "%s" buffer)))
-		(string-match-p
-		 (concat "^\\*\\("
-				 "e?shell\\|"
-				 "Completions\\|"
-				 "clangd\\|" ; lsp c/c++
-				 "Faces\\|"
-				 "Flycheck\\|"
-				 "Help\\|"
-				 "helpful\\|"
-				 "iph\\|" ; lsp php
-				 "Occur"
-				 "\\).*")
-		 name)))
+		(or
+		 ;; Current window is dedicated window
+		 (window-dedicated-p (selected-window))
+
+		 ;; Buffer name does match below blacklist
+		 (string-match-p
+		  (concat "^\\*\\("
+				  "e?shell\\|"
+				  "Completions\\|"
+				  "clangd\\|" ; lsp c/c++
+				  "Faces\\|"
+				  "Flycheck\\|"
+				  "Help\\|"
+				  "helpful\\|"
+				  "iph\\|" ; lsp php
+				  "Occur"
+				  "\\).*")
+		  name)
+		 )))
 	)
 
   (defun dashboard-goto-bookmarks ()

@@ -290,14 +290,20 @@ Places buffers as tabs in a bar at the top.
 	:after all-the-icons
 	:demand
 	:custom
-	(centaur-tabs-height 40)
+	(centaur-tabs-height 38)
+	(centaur-tabs-modified-marker "•")
 	(centaur-tabs-set-icons t)
+	(centaur-tabs-set-modified-marker t)
 	(centaur-tabs-style "slant")
-	;; (centaur-tabs-set-modified-marker t)
-	;; (centaur-tabs-modified-marker "*")
-	;; (centaur-tabs-height 29)
-	;; (centaur-tabs-set-icons nil)
-	:hook (neotree-mode . centaur-tabs-local-mode)
+	:hook
+	((eshell-mode
+	  help-mode
+	  helpful-mode
+	  neotree-mode
+	  occur-mode
+	  shell-mode
+	  term-mode)
+	 . centaur-tabs-local-mode)
 	:config
 	(centaur-tabs-mode))
 #+END_SRC
@@ -612,7 +618,7 @@ https://github.com/laishulu/hl-fill-column
 		  (:eval
 		   (if (buffer-file-name)
 			   (concat
-				(if (buffer-modified-p) " *" nil)
+				(if (buffer-modified-p) " •" nil)
 				" ("
 				(abbreviate-file-name
 				 (directory-file-name
@@ -811,25 +817,23 @@ Set UTF-8 encoding as default.
 		   (display-buffer-in-side-window)
 		   (window-height . 0.25)
 		   (side . bottom)
-		   (slot . -1)
-		   (centaur-tabs-local-mode 1))
-		  ("\\*Help.*"
-		   (display-buffer-in-side-window)
-		   (window-height . 0.25)
-		   (side . bottom)
-		   (slot . 0)
-		   (centaur-tabs-local-mode 1))
+		   (slot . -1))
 		  ("\\*Faces\\*"
 		   (display-buffer-in-side-window)
 		   (window-height . 0.25)
 		   (side . bottom)
-		   (slot . 1)
-		   (centaur-tabs-local-mode 1))
+		   (slot . 1))
+		  ("\\*Help.*"
+		   (display-buffer-in-side-window)
+		   (window-height . 0.25)
+		   (side . bottom)
+		   (slot . 0))
+		  ("\\*Occur\\*"
+		   (display-buffer-in-side-window)
+		   (window-height . 0.25)
+		   (side . bottom)
+		   (slot . 1))
 		  ))
-
-  (add-hook 'shell-mode-hook 'centaur-tabs-local-mode)
-  (add-hook 'eshell-mode-hook 'centaur-tabs-local-mode)
-  (add-hook 'help-mode-hook 'centaur-tabs-local-mode)
 #+END_SRC
 
 * Functions
@@ -944,16 +948,32 @@ Functions that use package functionality.
 
 #+BEGIN_SRC emacs-lisp
   (defun centaur-tabs-buffer-groups ()
-	"Organize tabs into groups."
+	"Organize tabs into groups by buffer."
 	(list
 	 (cond
 	  ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
-	  ((derived-mode-p 'dired-mode) "Dired")
 	  ((memq major-mode '(org-mode
-						  org-agenda-mode
-						  diary-mode
-						  emacs-lisp-mode)) "OrgMode")
+						  emacs-lisp-mode)) "Org Mode")
+	  ((derived-mode-p 'dired-mode) "Dired")
+	  ((derived-mode-p 'prog-mode
+					   'text-mode) "Editing")
 	  (t "User"))))
+
+  (defun centaur-tabs-hide-tab (buffer)
+	"Hide from the tab bar by BUFFER name."
+	(let ((name (format "%s" buffer)))
+	  (string-match-p
+	   (concat "^\\*\\("
+			   "e?shell\\|"
+			   "Completions\\|"
+			   "clangd\\|" ; lsp c/c++
+			   "Faces\\|"
+			   "Help\\|"
+			   "helpful\\|"
+			   "iph\\|" ; lsp php
+			   "Occur"
+			   "\\).*")
+	   name)))
 
   (defun dashboard-goto-bookmarks ()
 	"Go to bookmarks."

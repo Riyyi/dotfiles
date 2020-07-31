@@ -948,33 +948,36 @@ Functions that only use built-in Emacs functionality.
 Functions that use package functionality.
 
 #+BEGIN_SRC emacs-lisp
-  (defun centaur-tabs-buffer-groups ()
-	"Organize tabs into groups by buffer."
-	(list
-	 (cond
-	  ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
-	  ((memq major-mode '(org-mode
-						  emacs-lisp-mode)) "Org Mode")
-	  ((derived-mode-p 'dired-mode) "Dired")
-	  ((derived-mode-p 'prog-mode
-					   'text-mode) "Editing")
-	  (t "User"))))
+  (with-eval-after-load 'centaur-tabs
+	(defun centaur-tabs-buffer-groups ()
+	  "Organize tabs into groups by buffer."
+	  (list
+	   (cond
+		((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
+		((memq major-mode '(org-mode
+							emacs-lisp-mode)) "Org Mode")
+		((derived-mode-p 'dired-mode) "Dired")
+		((derived-mode-p 'prog-mode
+						 'text-mode) "Editing")
+		(t "User"))))
 
-  (defun centaur-tabs-hide-tab (buffer)
-	"Hide from the tab bar by BUFFER name."
-	(let ((name (format "%s" buffer)))
-	  (string-match-p
-	   (concat "^\\*\\("
-			   "e?shell\\|"
-			   "Completions\\|"
-			   "clangd\\|" ; lsp c/c++
-			   "Faces\\|"
-			   "Help\\|"
-			   "helpful\\|"
-			   "iph\\|" ; lsp php
-			   "Occur"
-			   "\\).*")
-	   name)))
+	(defun centaur-tabs-hide-tab (buffer)
+	  "Hide from the tab bar by BUFFER name."
+	  (let ((name (format "%s" buffer)))
+		(string-match-p
+		 (concat "^\\*\\("
+				 "e?shell\\|"
+				 "Completions\\|"
+				 "clangd\\|" ; lsp c/c++
+				 "Faces\\|"
+				 "Flycheck\\|"
+				 "Help\\|"
+				 "helpful\\|"
+				 "iph\\|" ; lsp php
+				 "Occur"
+				 "\\).*")
+		 name)))
+	)
 
   (defun dashboard-goto-bookmarks ()
 	"Go to bookmarks."

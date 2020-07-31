@@ -450,9 +450,9 @@ On the fly syntax checking.
   (use-package yasnippet
 	:defer t
 	:hook
-	((org-mode
+	((fundamental-mode
 	  prog-mode
-	  tex-mode)
+	  text-mode)
 	 . yas-minor-mode)
 	:custom
 	(yas-prompt-functions '(yas-ido-prompt

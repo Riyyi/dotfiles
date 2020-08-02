@@ -548,7 +548,6 @@ Irony requires M-x =irony-install-server=.
   (use-package column-enforce-mode
 	:defer t
 	:custom (column-enforce-comments nil)
-	:custom-face (column-enforce-face ((t (:background "#373b41" :foreground "#de935f"))))
 	:hook (prog-mode . column-enforce-mode))
 #+END_SRC
 

@@ -185,15 +185,12 @@ Install and configure packages.
 
   (use-package general)
 
-  (use-package ido-vertical-mode
-	:config (ido-vertical-mode))
+  (use-package selectrum
+	:config (selectrum-mode))
 
-  (use-package smex
-	:defer t
-	:custom
-	(smex-prompt-string "Command: ")
-	(smex-save-file (concat dot-cache-dir "/smex-items"))
-	:config (smex-initialize))
+  (use-package selectrum-prescient
+	:after selectrum
+	:config (selectrum-prescient-mode))
 
   (use-package avy
 	:defer t)
@@ -455,8 +452,7 @@ On the fly syntax checking.
 	  text-mode)
 	 . yas-minor-mode)
 	:custom
-	(yas-prompt-functions '(yas-ido-prompt
-							yas-completing-prompt))
+	(yas-prompt-functions '(yas-completing-prompt))
 	(yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
 	:config (yas-reload-all))
 
@@ -631,13 +627,8 @@ https://github.com/laishulu/hl-fill-column
 ** Buffers
 
 #+BEGIN_SRC emacs-lisp
-  ;; Buffers
-  (setq ido-create-new-buffer 'always)
-  (setq ido-enable-flex-maching t)
-  (setq ido-everywhere t)
+  (setq confirm-nonexistent-file-or-buffer nil)
   (setq ibuffer-expert t)
-  ;; Enable ido
-  (ido-mode 1)
 #+END_SRC
 
 ** Electric
@@ -672,7 +663,6 @@ Set file paths for built-in features like: auto-saves, backups, etc.
 
   ;; Set file locations
   (setq bookmark-default-file           (concat dot-etc-dir "/bookmarks"))
-  (setq ido-save-directory-list-file    (concat dot-cache-dir "/ido.last"))
   (setq nsm-settings-file               (concat dot-cache-dir "/network-security.data"))
   (setq tramp-persistency-file-name     (concat dot-cache-dir "/tramp"))
 #+END_SRC
@@ -841,20 +831,6 @@ Set UTF-8 encoding as default.
 Functions that only use built-in Emacs functionality.
 
 #+BEGIN_SRC emacs-lisp
-  (defun bookmark-jump-ido ()
-	"Use ido to search for the bookmark."
-	(interactive)
-	(bookmark-jump
-	 (bookmark-get-bookmark
-	  (ido-completing-read "Jump to bookmark: " (bookmark-all-names)))))
-
-  (defun bookmark-delete-ido ()
-	"Use ido to search for the bookmark to delete."
-	(interactive)
-	(bookmark-delete
-	 (bookmark-get-bookmark
-	  (ido-completing-read "Delete bookmark: " (bookmark-all-names)))))
-
   (defun config-visit ()
 	"Config edit."
 	(interactive)
@@ -867,7 +843,7 @@ Functions that only use built-in Emacs functionality.
 
   (defun display-startup-echo-area-message ()
 	"Hide default startup message."
-	(message ""))
+	(message nil))
 
   (defun dot/indent-buffer ()
 	"Indent each nonblank line in the buffer."
@@ -899,6 +875,17 @@ Functions that only use built-in Emacs functionality.
 	(if buffer-file-name
 		(find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))
 	  (princ "Current buffer isn't a file")))
+
+  (defun dot/recentf-open-files ()
+	"Use `completing-read' to open a recent file."
+	(interactive)
+	(let ((files (mapcar 'abbreviate-file-name recentf-list)))
+	  (find-file (completing-read "Find recent file: " files nil t))))
+
+  (defun dot/M-x (command)
+	"Prompt and execute COMMAND."
+	(interactive "CCommand: ")
+	(command-execute command))
 
   (defun split-follow-horizontally ()
 	"Split and follow window."
@@ -1113,7 +1100,6 @@ Set custom keybinds to functionality of default modes.
 
 #+BEGIN_SRC emacs-lisp
   ;; Buffers
-  (global-set-key (kbd "C-x b") 'ido-switch-buffer)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (global-set-key (kbd "M-w") 'kill-this-buffer)
 
@@ -1147,7 +1133,7 @@ Set custom keybinds to functionality of custom packages.
   (global-set-key (kbd "M-\`") 'evil-switch-to-windows-last-buffer)
 
   (global-set-key (kbd "M-s") 'avy-goto-char-timer)
-  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-x") 'dot/M-x)
 
   ;; Helpful overwrite default help functions
   (global-set-key [remap describe-command]  #'helpful-command)
@@ -1253,20 +1239,20 @@ General.el ~leader key binds.
 	:states '(normal visual insert motion emacs))
 
   (space-leader
-	"SPC"       '(smex                       :which-key "Smex")
-	"RET"       '(bookmark-jump-ido          :which-key "Jump to bookmark")
+	"SPC"       '(dot/M-x                    :which-key "Execute command")
+	"RET"       '(bookmark-jump              :which-key "Jump to bookmark")
 
 	;; Buffer / bookmark
 	"b"         '(:ignore t                  :which-key "buffer/bookmark")
 	"b a"       '(auto-revert-mode           :which-key "Auto revert buffer")
-	"b b"       '(ido-switch-buffer          :which-key "Switch buffer")
+	"b b"       '(switch-to-buffer           :which-key "Switch buffer")
 	"b B"       '(ibuffer                    :which-key "List buffers")
 	"b d"       '(kill-current-buffer        :which-key "Kill buffer")
 	"b h"       '(previous-buffer            :which-key "Previous buffer")
 	"b k"       '(kill-current-buffer        :which-key "Kill buffer")
 	"b l"       '(next-buffer                :which-key "Next buffer")
 	"b m"       '(bookmark-set               :which-key "Make bookmark")
-	"b M"       '(bookmark-delete-ido        :which-key "Delete bookmark")
+	"b M"       '(bookmark-delete            :which-key "Delete bookmark")
 	"b n"       '(evil-buffer-new            :which-key "New empty buffer")
 	"b r"       '(revert-buffer              :which-key "Revert buffer")
 	"b s"       '(basic-save-buffer          :which-key "Save buffer")
@@ -1291,7 +1277,7 @@ General.el ~leader key binds.
 	;; Find file
 	"f"   '(:ignore t                        :which-key "file")
 	"f f" '(find-file-in-project-root        :which-key "Find file")
-	"f r" '(recentf-open-files               :which-key "Recent files")
+	"f r" '(dot/recentf-open-files           :which-key "Recent files")
 	"f R" '(rename-file-and-buffer           :which-key "Rename file")
 	"f s" '(basic-save-buffer                :which-key "Save file")
 	"f S" '(write-file                       :which-key "Save file as...")
@@ -1324,7 +1310,7 @@ General.el ~leader key binds.
 	;; Search
 	"s"   '(:ignore t                        :which-key "search")
 	"s a" '(avy-goto-char-timer              :which-key "Avy goto char")
-	"s b" '(bookmark-jump-ido                :which-key "Jump to bookmark")
+	"s b" '(bookmark-jump                    :which-key "Jump to bookmark")
 
 	;; Tabs / toggle
 	"t"   '(:ignore t                                 :which-key "tabs/toggle")
@@ -1359,8 +1345,6 @@ General.el ~leader key binds.
 	"w <down>"  '(windmove-down              :which-key "Focus window down")
 	;; winner-redo (built-in window history)
 	;; winner-undo
-
-	"x"         '(smex-major-mode-commands   :which-key "Smex major mode")
 	)
 #+END_SRC
 

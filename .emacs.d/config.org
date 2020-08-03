@@ -188,9 +188,17 @@ Install and configure packages.
   (use-package selectrum
 	:config (selectrum-mode))
 
-  (use-package selectrum-prescient
+  (use-package prescient
 	:after selectrum
-	:config (selectrum-prescient-mode))
+	:config
+	(setq prescient-filter-method '(literal regexp fuzzy))
+	(setq prescient-save-file (concat dot-cache-dir "/prescient-save.el"))
+	(prescient-persist-mode))
+
+  (use-package selectrum-prescient
+	:after (selectrum prescient)
+	:config
+	(selectrum-prescient-mode))
 
   (use-package avy
 	:defer t)

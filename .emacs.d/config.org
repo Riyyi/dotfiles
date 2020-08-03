@@ -81,7 +81,7 @@ M-x =all-the-icons-install-fonts=
 
 * Global Variables
 
-Variables for directories and leader keys.
+Variables for directories, leader keys, etc.
 
 #+BEGIN_SRC emacs-lisp
   (defvar dot-emacs-dir (directory-file-name (file-truename user-emacs-directory))
@@ -104,6 +104,9 @@ Variables for directories and leader keys.
 
   (defvar dot/localleader-alt-key "M-SPC m"
 	"Alternative local leader prefix key, used for Insert and Emacs states.")
+
+  (defvar dot/shell "/bin/zsh"
+	"Command interpreter binary path.")
 #+END_SRC
 
 * Customizations
@@ -1033,10 +1036,9 @@ Functions that use package functionality.
 Define default terminal option.
 
 #+BEGIN_SRC emacs-lisp
-  (defvar terminal-shell "/bin/zsh")
-  (defadvice ansi-term (before force-bash)
-	(interactive (list terminal-shell)))
-  (ad-activate 'ansi-term)
+  (defun dot/ansi-term (program &optional new-buffer-name)
+	(interactive (list dot/shell)))
+  (advice-add 'ansi-term :before #'dot/ansi-term)
 #+END_SRC
 
 ** Aliases

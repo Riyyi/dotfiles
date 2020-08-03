@@ -312,6 +312,7 @@ Project manager.
   (use-package projectile
 	:custom
 	(projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
+	(projectile-completion-system 'default)
 	(projectile-enable-caching t)
 	(projectile-indexing-method 'hybrid)
 	(projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: html
+# key: <html
+# --
+@@html:<${1:tag}>@@$0

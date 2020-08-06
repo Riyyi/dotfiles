@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: elisp
+# name: elisp-copy
 # key: <el
 # --
 #+BEGIN_SRC emacs-lisp

@@ -1206,23 +1206,6 @@ Set custom keybinds to functionality of custom packages.
 	(general-def evil-normal-state-map
 	 "C-n" 'neotree-toggle-in-project-root)
 
-	 ;; Neotree
-	(general-def 'normal neotree-mode-map
-	 "RET"       'neotree-enter
-	 "<backtab>" 'neotree-collapse-all ; <S-tab>
-	 "c"         'neotree-create-node
-	 "r"         'neotree-rename-node
-	 "d"         'neotree-delete-node
-	 "h"         'neotree-select-previous-sibling-node
-	 "j"         'neotree-next-line
-	 "k"         'neotree-previous-line
-	 "l"         'neotree-enter
-	 "R"         'neotree-refresh
-	 "C"         'neotree-change-root
-	 "H"         'neotree-hidden-file-toggle
-	 "q"         'neotree-hide
-	 )
-
 	;; Dashboard
 	(general-def 'normal dashboard-mode-map
 	 [down-mouse-1] 'widget-button-click
@@ -1231,12 +1214,6 @@ Set custom keybinds to functionality of custom packages.
 	 "p" 'dashboard-goto-projects
 	 "r" 'dashboard-goto-recent-files
 	 )
-
-	;; Org
-	(general-def 'normal org-mode-map
-	 "RET" 'dot/org-ret-at-point)
-	(general-def 'insert org-mode-map
-	 "RET" 'evil-ret)
 
 	;; Elfeed
 	(general-def 'normal elfeed-search-mode-map
@@ -1256,7 +1233,39 @@ Set custom keybinds to functionality of custom packages.
 	 "q" 'kill-this-buffer
 	 "u" #'elfeed-show-tag--unread
 	 "y" #'elfeed-show-yank
-	 ))
+	 )
+
+	;; Minibuffer
+	(general-def 'normal minibuffer-local-map
+	  "j"      #'selectrum-next-candidate
+	  "k"      #'selectrum-previous-candidate
+	  "<up>"   #'selectrum-previous-candidate
+	  "<down>" #'selectrum-next-candidate
+	  )
+
+	 ;; Neotree
+	(general-def 'normal neotree-mode-map
+	 "RET"       'neotree-enter
+	 "<backtab>" 'neotree-collapse-all ; <S-tab>
+	 "c"         'neotree-create-node
+	 "r"         'neotree-rename-node
+	 "d"         'neotree-delete-node
+	 "h"         'neotree-select-previous-sibling-node
+	 "j"         'neotree-next-line
+	 "k"         'neotree-previous-line
+	 "l"         'neotree-enter
+	 "R"         'neotree-refresh
+	 "C"         'neotree-change-root
+	 "H"         'neotree-hidden-file-toggle
+	 "q"         'neotree-hide
+	 )
+
+	;; Org
+	(general-def 'normal org-mode-map
+	 "RET" 'dot/org-ret-at-point)
+	(general-def 'insert org-mode-map
+	  "RET" 'evil-ret)
+	)
 #+END_SRC
 
 ** Leader
@@ -1308,6 +1317,7 @@ General.el ~leader key binds.
 	"e b" '(eval-buffer                      :which-key "Evaluate buffer")
 	"e e" '(eval-last-sexp                   :which-key "Evaluate last sexp")
 	"e r" '(eval-region                      :which-key "Evaluate region")
+	"e t" '(dot/reload-theme                 :which-key "Reload theme")
 
 	;; File
 	"f"   '(:ignore t                        :which-key "file")
@@ -1341,9 +1351,6 @@ General.el ~leader key binds.
 	"q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
 	"q f" '(delete-frame                     :which-key "Close frame")
 	"q o" '(delete-other-frames              :which-key "Close other frames")
-
-	"r"   '(:ignore t                        :which-key "reload")
-	"r t" '(dot/reload-theme                 :which-key "Reload theme")
 
 	;; Search
 	"s"   '(:ignore t                        :which-key "search")

@@ -876,6 +876,19 @@ Functions that only use built-in Emacs functionality.
 		(_ (evil-ret))
 		)))
 
+  (defun dot/recentf-open-files ()
+	"Use `completing-read' to open a recent file."
+	(interactive)
+	(let ((files (mapcar 'abbreviate-file-name recentf-list)))
+	  (find-file (completing-read "Find recent file: " files nil t))))
+
+  (defun dot/reload-theme ()
+	"Reload custom theme."
+	(interactive)
+	(mapc 'load (file-expand-wildcards
+				 (concat (car custom-theme-load-path) "*.el")))
+	(load-theme load-theme t))
+
   (defun dot/sudo-find-file (filename)
 	"Edit file FILENAME as root."
 	(interactive "FOpen file (as root): ")
@@ -887,12 +900,6 @@ Functions that only use built-in Emacs functionality.
 	(if buffer-file-name
 		(find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))
 	  (princ "Current buffer isn't a file")))
-
-  (defun dot/recentf-open-files ()
-	"Use `completing-read' to open a recent file."
-	(interactive)
-	(let ((files (mapcar 'abbreviate-file-name recentf-list)))
-	  (find-file (completing-read "Find recent file: " files nil t))))
 
   (defun dot/M-x (command)
 	"Prompt and execute COMMAND."
@@ -1134,12 +1141,12 @@ Set custom keybinds to functionality of default modes.
   (global-set-key (kbd "C-c r") 'config-reload)
   (global-set-key (kbd "C-c v") 'config-visit)
 
+  ;; Find file
+  (global-set-key (kbd "C-x C-f") 'find-file-in-project-root)
+
   ;; Split and follow window
   (global-set-key (kbd "C-x 2") 'split-follow-horizontally)
   (global-set-key (kbd "C-x 3") 'split-follow-vertically)
-
-  ;; Find file
-  (global-set-key (kbd "C-x C-f") 'find-file-in-project-root)
 
   ;; Terminal
   (global-set-key (kbd "<s-backspace>") 'ansi-term)
@@ -1302,7 +1309,7 @@ General.el ~leader key binds.
 	"e e" '(eval-last-sexp                   :which-key "Evaluate last sexp")
 	"e r" '(eval-region                      :which-key "Evaluate region")
 
-	;; Find file
+	;; File
 	"f"   '(:ignore t                        :which-key "file")
 	"f f" '(find-file-in-project-root        :which-key "Find file")
 	"f r" '(dot/recentf-open-files           :which-key "Recent files")
@@ -1334,6 +1341,9 @@ General.el ~leader key binds.
 	"q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
 	"q f" '(delete-frame                     :which-key "Close frame")
 	"q o" '(delete-other-frames              :which-key "Close other frames")
+
+	"r"   '(:ignore t                        :which-key "reload")
+	"r t" '(dot/reload-theme                 :which-key "Reload theme")
 
 	;; Search
 	"s"   '(:ignore t                        :which-key "search")

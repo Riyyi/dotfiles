@@ -478,17 +478,19 @@ Irony requires M-x =irony-install-server=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package irony
-	:defer t
 	:hook
 	((c-mode
 	  c++-mode)
 	 . irony-mode)
 	(irony-mode . irony-cdb-autosetup-compile-options)
 	:init (setq irony-user-dir (concat dot-cache-dir "/irony/"))
-	:config (push 'glsl-mode irony-supported-major-modes))
+	:config
+	(unless (file-exists-p (concat irony-user-dir "bin/irony-server"))
+	  (call-interactively 'irony-install-server))
+	(push 'glsl-mode irony-supported-major-modes))
 
   (use-package company-irony
-	:after company irony
+	:after (company irony)
 	:config (push 'company-irony company-backends))
 
   (use-package company-c-headers

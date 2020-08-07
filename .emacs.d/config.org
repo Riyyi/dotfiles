@@ -485,9 +485,11 @@ Irony requires M-x =irony-install-server=.
 	(irony-mode . irony-cdb-autosetup-compile-options)
 	:init (setq irony-user-dir (concat dot-cache-dir "/irony/"))
 	:config
+	(push 'glsl-mode irony-supported-major-modes)
+
+	;; Compile the irony-server binary if it doesnt exist
 	(unless (file-exists-p (concat irony-user-dir "bin/irony-server"))
-	  (call-interactively 'irony-install-server))
-	(push 'glsl-mode irony-supported-major-modes))
+	  (call-interactively 'irony-install-server)))
 
   (use-package company-irony
 	:after (company irony)

@@ -1195,6 +1195,13 @@ Set custom keybinds to functionality of custom packages.
 	(define-key evil-ex-completion-map (kbd "M-k") #'previous-complete-history-element)
 	(define-key evil-ex-completion-map (kbd "M-l") 'exit-minibuffer))
 
+  ;; Minibuffer completion selection
+  (general-def minibuffer-local-map
+	"M-h" #'abort-recursive-edit
+	"M-j" #'selectrum-next-candidate
+	"M-k" #'selectrum-previous-candidate
+	"M-l" #'selectrum-select-current-candidate)
+
   ; Overwrite evil keymaps
   ;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)
   ;(evil-define-key 'motion 'global (kbd "C-w") 'kill-this-buffer)
@@ -1237,10 +1244,10 @@ Set custom keybinds to functionality of custom packages.
 
 	;; Minibuffer
 	(general-def 'normal minibuffer-local-map
-	  "j"      #'selectrum-next-candidate
-	  "k"      #'selectrum-previous-candidate
 	  "<up>"   #'selectrum-previous-candidate
 	  "<down>" #'selectrum-next-candidate
+	  "j"      #'selectrum-next-candidate
+	  "k"      #'selectrum-previous-candidate
 	  )
 
 	 ;; Neotree

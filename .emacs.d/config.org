@@ -177,19 +177,18 @@ Install and configure packages.
 	:defer t)
 
   (use-package which-key
-	:defer 1
+	:hook (emacs-startup . which-key-mode)
 	:custom
 	(which-key-add-column-padding 1)
 	(which-key-max-display-columns nil)
 	(which-key-min-display-lines 5)
 	(which-key-sort-order 'which-key-prefix-then-key-order)
-	(which-key-sort-uppercase-first nil)
-	:config (which-key-mode))
+	(which-key-sort-uppercase-first nil))
 
   (use-package general)
 
   (use-package selectrum
-	:config (selectrum-mode))
+	:hook (emacs-startup . selectrum-mode))
 
   (use-package prescient
 	:after selectrum
@@ -312,6 +311,7 @@ Places buffers as tabs in a bar at the top.
 	  shell-mode)
 	 . centaur-tabs-local-mode)
 	:config
+	(centaur-tabs-headline-match)
 	(centaur-tabs-mode))
 #+END_SRC
 
@@ -321,6 +321,7 @@ Project manager.
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
+	:hook (emacs-startup . projectile-mode)
 	:custom
 	(projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
 	(projectile-completion-system 'default)
@@ -328,8 +329,7 @@ Project manager.
 	(projectile-indexing-method 'hybrid)
 	(projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
 	(projectile-project-search-path '("~"))
-	(projectile-sort-order 'recentf)
-	:config (projectile-mode))
+	(projectile-sort-order 'recentf))
 #+END_SRC
 
 *** Org
@@ -1350,7 +1350,7 @@ General.el ~leader key binds.
 	"n"   '(neotree-toggle-in-project-root   :which-key "Toggle Neotree")
 
 	;; Projectile
-	"p"   '(:keymap projectile-command-map   :which-key "projectile")
+	"p"   '(:keymap projectile-command-map :package projectile :which-key "projectile")
 
 	;; Quit
 	"q"   '(:ignore t                        :which-key "quit")

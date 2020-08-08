@@ -292,7 +292,7 @@ Provides Emacs with a file tree.
 	(neo-mode-line-type 'none)
 	(neo-show-hidden-files t)
 	(neo-vc-integration '(face))
-	:hook (neotree-mode . (lambda (&rest _) (display-line-numbers-mode 0))))
+	:hook (neotree-mode . dot/hook-disable-line-numbers))
 #+END_SRC
 
 *** Centaur Tabs
@@ -489,7 +489,7 @@ Irony requires M-x =irony-install-server=.
 	((c-mode
 	  c++-mode)
 	 . irony-mode)
-	(irony-mode . irony-cdb-autosetup-compile-options)
+	:hook (irony-mode . irony-cdb-autosetup-compile-options)
 	:init (setq irony-user-dir (concat dot-cache-dir "/irony/"))
 	:config
 	(push 'glsl-mode irony-supported-major-modes)
@@ -524,6 +524,7 @@ Irony requires M-x =irony-install-server=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
+	:demand
 	:custom
 	(initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 	(dashboard-banner-logo-title "GNU Emacs master race!")
@@ -536,7 +537,7 @@ Irony requires M-x =irony-install-server=.
 	(dashboard-items '((projects . 10)
 					   (bookmarks . 5)
 					   (recents . 5)))
-	:hook (dashboard-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
+	:hook (dashboard-mode . dot/hook-disable-line-numbers)
 	:config (dashboard-setup-startup-hook))
 
   ;; A better *help* buffer
@@ -589,9 +590,8 @@ https://github.com/laishulu/hl-fill-column
 	(elfeed-show-unique-buffers t)
 	:config
 	(load-file (concat dot-etc-dir "/elfeed-feeds.el"))
-	:hook
-	(elfeed-search-mode . (lambda (&rest _) (display-line-numbers-mode 0)))
-	(elfeed-show-mode   . (lambda (&rest _) (display-line-numbers-mode 0))))
+	:hook (elfeed-search-mode . dot/hook-disable-line-numbers)
+	:hook (elfeed-show-mode   . dot/hook-disable-line-numbers))
 #+END_SRC
 
 * General
@@ -958,7 +958,19 @@ Functions that only use built-in Emacs functionality.
 			(set-visited-file-name new-name t t)))))))
 #+END_SRC
 
-** Package
+Functions that are only used for hook calls.
+
+#+BEGIN_SRC emacs-lisp
+  (defun dot/hook-disable-line-numbers ()
+	"Disable the line numbers."
+	(display-line-numbers-mode 0))
+
+  (defun dot/hook-disable-mode-line ()
+	"Disable the mode line."
+	(setq-local mode-line-format nil))
+#+END_SRC
+
+** Package Functions
 
 Functions that use package functionality.
 
@@ -1098,6 +1110,9 @@ Evil command aliases.
 
   ;; LaTeX, set correct tab mode
   (add-hook 'latex-mode-hook (lambda () (setq indent-tabs-mode t)))
+
+  ;; Disable line numbers in terminal mode (breaks output otherwise)
+  (add-hook 'term-mode-hook 'dot/hook-disable-line-numbers)
 
   ;; Wrap lines in the middle of words, gives a \ indicator
   (add-hook 'visual-line-mode-hook (lambda () (setq word-wrap nil)))

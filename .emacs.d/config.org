@@ -751,6 +751,9 @@ Setup file backups versioning.
 	(org-return-follows-link t)
 	(org-src-fontify-natively t)
 	(org-src-window-setup 'current-window)
+	:config
+	;; Do not open .org files in a split window
+	(add-to-list 'org-link-frame-setup '(file . find-file))
 	)
 
   ;; Enable syntax highlighting when exporting to .pdf
@@ -766,14 +769,11 @@ Setup file backups versioning.
 	:config
 	;; Add minted package to every LaTeX header
 	(add-to-list 'org-latex-packages-alist '("" "minted"))
-	;; Append -shell-escape to every element in org-latex-pdf-process
-	(setq org-latex-pdf-process
-		  (mapcar
-		   (lambda (s)
-				   (if (not (string-match-p "-shell-escape" s))
-					   (replace-regexp-in-string "%latex " "%latex -shell-escape " s)
-					 s))
-		   org-latex-pdf-process))
+	;; Append -shell-escape so pdflatex exports minted correctly
+	(add-to-list 'org-latex-pdf-process (replace-regexp-in-string
+										 "%latex "
+										 "%latex -shell-escape "
+										 (car org-latex-pdf-process)))
 	)
 #+END_SRC
 

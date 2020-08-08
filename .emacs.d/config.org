@@ -13,6 +13,7 @@
 - [[#initial-setup][Initial setup]]
   - [[#irony-mode][Irony mode]]
   - [[#all-the-icons][All the icons]]
+- [[#lexical-binding][Lexical Binding]]
 - [[#global-variables][Global Variables]]
 - [[#customizations][Customizations]]
 - [[#package-management][Package Management]]
@@ -78,6 +79,12 @@ M-x =irony-install-server=
 ** All the icons
 
 M-x =all-the-icons-install-fonts=
+
+* Lexical Binding
+
+#+BEGIN_SRC emacs-lisp
+  ;;; -*- lexical-binding: t; -*-
+#+END_SRC
 
 * Global Variables
 

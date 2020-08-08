@@ -328,7 +328,7 @@ Project manager.
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
-	:hook (emacs-startup . projectile-mode)
+	:defer t
 	:custom
 	(projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
 	(projectile-completion-system 'default)

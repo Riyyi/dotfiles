@@ -401,7 +401,7 @@ Setup =org-roam-server=.
 		   "button#toggle-list-type-button { margin: 0 4px; }"
 		   "label#colormode { transform: translate(-25%, 0); }"
 		   "label.toggle-off.btn-sm { padding-left: 0px; }"
-		   ))
+		   )))
 #+END_SRC
 
 **** Org Exporters

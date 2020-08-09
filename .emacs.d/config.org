@@ -27,13 +27,17 @@
     - [[#neotree][NeoTree]]
     - [[#centaur-tabs][Centaur Tabs]]
     - [[#projectile][Projectile]]
-    - [[#org][Org]]
+    - [[#org-packages][Org Packages]]
+      - [[#org-toc][Org ToC]]
+      - [[#org-roam][Org Roam]]
+      - [[#org-exporters][Org Exporters]]
     - [[#completion][Completion]]
       - [[#company][Company]]
       - [[#flycheck][Flycheck]]
       - [[#lsp][LSP]]
       - [[#yasnippet][YASnippet]]
       - [[#cc][C/C++]]
+      - [[#org-roam-completion][Org Roam Completion]]
     - [[#php][PHP]]
     - [[#prettify][Prettify]]
     - [[#rss][RSS]]
@@ -44,7 +48,7 @@
   - [[#file-backups-versioning][File Backups Versioning]]
   - [[#formatting][Formatting]]
   - [[#hide-elements][Hide Elements]]
-  - [[#org-1][Org]]
+  - [[#org][Org]]
   - [[#recentf][Recentf]]
   - [[#tabs][Tabs]]
   - [[#utf-8][UTF-8]]
@@ -315,6 +319,7 @@ Places buffers as tabs in a bar at the top.
 	  helpful-mode
 	  neotree-mode
 	  occur-mode
+	  org-roam-backlinks-mode
 	  shell-mode)
 	 . centaur-tabs-local-mode)
 	:config
@@ -339,17 +344,73 @@ Project manager.
 	(projectile-sort-order 'recentf))
 #+END_SRC
 
-*** Org
+*** Org Packages
+
+**** Org ToC
+
+Table of Contents
 
 #+BEGIN_SRC emacs-lisp
+  (use-package toc-org
+	:defer t)
+#+END_SRC
+
+**** Org Roam
+
+Setup =org-roam=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-roam
+	:hook (emacs-startup . org-roam-mode)
+	:hook (org-roam-backlinks-mode . dot/hook-disable-line-numbers)
+	:hook (org-roam-backlinks-mode . dot/hook-disable-mode-line)
+	:config
+	(setq org-roam-directory (concat (file-name-directory org-directory) "org/"))
+	(setq org-roam-verbose nil)
+	(setq org-roam-completion-system 'default)
+	(org-roam-mode)
+	)
+#+END_SRC
+
+Enable [[https://www.orgroam.com/manual/Roam-Protocol.html#Roam-Protocol][Roam-Protocol]], needed to process =org-protocol://= links
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-roam-protocol
+	:ensure nil ; org-roam-protocol.el is part of org-roam
+	:after org-roam)
+#+END_SRC
+
+Setup =org-roam-server=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package simple-httpd
+	:after org-roam
+	)
+
+  (use-package org-roam-server
+	:after (org-roam simple-httpd)
+	:config
+	(setq org-roam-server-host "127.0.0.1")
+	(setq org-roam-server-port 8080)
+	(setq org-roam-server-network-arrows "from")
+	(setq org-roam-server-style
+		  (concat
+		   "button#toggle-preview { margin: 4px; }"
+		   "div#view-menu { margin: 4px; }"
+		   "div#controls { right: 4px; left: 4px; bottom: 4px; }"
+		   "button#toggle-list-type-button { margin: 0 4px; }"
+		   "label#colormode { transform: translate(-25%, 0); }"
+		   "label.toggle-off.btn-sm { padding-left: 0px; }"
+		   ))
+#+END_SRC
+
+**** Org Exporters
+#+BEGIN_SRC emacs-lisp
+  ;; HTML exporter
   (use-package htmlize
 	:defer t
 	:custom (org-export-html-postamble nil))
   ;org-export-html-postamble-format @ToDo
-
-  ;; Table of contents
-  (use-package toc-org
-	:defer t)
 
   ;; Github flavored Markdown exporter
   (use-package ox-gfm
@@ -506,6 +567,16 @@ Irony requires M-x =irony-install-server=.
 	:after company
 	:config (push 'company-c-headers company-backends))
   ;; company-irony-c-headers
+#+END_SRC
+
+**** Org Roam Completion
+
+Completion for Org-roam files using its title.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-org-roam
+	:after (company org-roam)
+	:config (push 'company-org-roam company-backends))
 #+END_SRC
 
 *** PHP
@@ -1009,8 +1080,10 @@ Functions that use package functionality.
 				  "Flycheck\\|"
 				  "Help\\|"
 				  "helpful\\|"
+				  "httpd\\|"
 				  "iph\\|" ; lsp php
-				  "Occur"
+				  "Occur\\|"
+				  "org-roam"
 				  "\\).*")
 		  name)
 		 )))
@@ -1375,8 +1448,18 @@ General.el ~leader key binds.
 	"i r" '(indent-region                    :which-key "Indent region")
 	"i s" '(yas-insert-snippet               :which-key "Insert snippet")
 
-	;; Neotree
-	"n"   '(neotree-toggle-in-project-root   :which-key "Toggle Neotree")
+	;; Notes
+	"n"     '(:ignore t                      :which-key "notes")
+	"n r"   '(:ignore t                      :which-key "roam")
+	"n r b" '(org-roam-switch-to-buffer      :which-key "Switch to buffer")
+	"n r i" '(org-roam-insert                :which-key "Insert")
+	"n r c" '(org-roam-capture               :which-key "Org Roam Capture")
+	"n r f" '(org-roam-find-file             :which-key "Find file")
+	"n r g" '(org-roam-graph-show            :which-key "Show graph")
+	"n r r" '(org-roam                       :which-key "Org Roam")
+	"n r s" '(org-roam-server-mode           :which-key "Org Roam Server")
+	"n r C" '(org-roam-build-cache           :which-key "Build cache")
+	"n r I" '(org-roam-insert-immediate      :which-key "Insert (skip org-capture)")
 
 	;; Projectile
 	"p"   '(:keymap projectile-command-map :package projectile :which-key "projectile")
@@ -1401,6 +1484,7 @@ General.el ~leader key binds.
 	"t j" '(centaur-tabs-select-end-tab               :which-key "Tab select first")
 	"t k" '(centaur-tabs-select-beg-tab               :which-key "Tab select last")
 	"t l" '(centaur-tabs-forward-group                :which-key "Tab forward group")
+	"t n" '(neotree-toggle-in-project-root            :which-key "Toggle Neotree")
 	"t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
 
 	;; Update packages

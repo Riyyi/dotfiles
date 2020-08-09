@@ -50,13 +50,13 @@
   - [[#utf-8][UTF-8]]
   - [[#window][Window]]
 - [[#functions][Functions]]
-  - [[#general-2][General]]
-  - [[#package][Package]]
+  - [[#general-functions][General Functions]]
+  - [[#package-functions][Package Functions]]
 - [[#advice-and-aliases][Advice and Aliases]]
   - [[#advice][Advice]]
   - [[#aliases][Aliases]]
-    - [[#general-3][General]]
-    - [[#package-1][Package]]
+    - [[#general-2][General]]
+    - [[#package][Package]]
 - [[#hooks][Hooks]]
 - [[#key-bindings][Key Bindings]]
   - [[#disable-default][Disable Default]]
@@ -603,6 +603,9 @@ https://github.com/laishulu/hl-fill-column
   ;; Custom thems, do not ask if safe
   (setq custom-safe-themes t)
 
+  ;; Dired move to trash
+  (setq delete-by-moving-to-trash t)
+
   ;; Scrolling
   (setq scroll-conservatively 1)
   (setq mouse-wheel-scroll-amount '(5))
@@ -849,7 +852,7 @@ Set UTF-8 encoding as default.
 #+END_SRC
 
 * Functions
-** General
+** General Functions
 
 Functions that only use built-in Emacs functionality.
 

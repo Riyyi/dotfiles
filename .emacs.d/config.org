@@ -74,11 +74,11 @@ These commands need to be run after the first startup.
 
 ** Irony mode
 
-M-x =irony-install-server=
+@@html:<kbd>@@M-x@@html:</kbd>@@ =irony-install-server= @@html:<kbd>@@RET@@html:</kbd>@@
 
 ** All the icons
 
-M-x =all-the-icons-install-fonts=
+@@html:<kbd>@@M-x@@html:</kbd>@@ =all-the-icons-install-fonts= @@html:<kbd>@@RET@@html:</kbd>@@
 
 * Lexical Binding
 

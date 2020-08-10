@@ -110,6 +110,7 @@ alias update="sudo pacman -Syyu"
 alias clean='sudo pacman -Rns $(pacman -Qtdq)'
 alias cache="sudo paccache -r -k 2"
 alias depend="$HOME/.scripts/alias.sh depend"
+alias search="$HOME/.scripts/alias.sh pacman_search"
 
 # Programming
 alias jdoc="$HOME/.scripts/alias.sh java_doc"

@@ -34,8 +34,14 @@ java_run () {
 	java -cp './out' "$1"
 }
 
-mkcd(){
+mkcd() {
     mkdir -p "$1" && cd "$1" || exit
+}
+
+# Search for packages, by name only
+pacman_search() {
+	pacman -Ss "$1" --color=always | \
+		awk -v m="$1" '{ if ($0 !~ /^\s/) { if ($1 ~ m) { print; }} else { print; }}'
 }
 
 pastebin() {

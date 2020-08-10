@@ -151,7 +151,7 @@ alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias webmconvert="$HOME/.scripts/alias.sh webmconvert"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench > /dev/null 2>&1 & disown"
 alias ytdl="youtube-dl -f bestvideo+bestaudio"
-alias ytaudio="youtube-dl -f bestaudio/best -x --audio-format mp3"
+alias ytaudio="youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0"
 
 zsh="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f "$zsh" ] && source "$zsh"; unset zsh

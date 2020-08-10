@@ -348,7 +348,7 @@ Project manager.
 
 **** Org ToC
 
-Table of Contents
+Generate table of contents without exporting.
 
 #+BEGIN_SRC emacs-lisp
   (use-package toc-org
@@ -368,8 +368,7 @@ Setup =org-roam=.
 	(setq org-roam-directory (concat (file-name-directory org-directory) "org/"))
 	(setq org-roam-verbose nil)
 	(setq org-roam-completion-system 'default)
-	(org-roam-mode)
-	)
+	(org-roam-mode))
 #+END_SRC
 
 Enable [[https://www.orgroam.com/manual/Roam-Protocol.html#Roam-Protocol][Roam-Protocol]], needed to process =org-protocol://= links
@@ -384,8 +383,7 @@ Setup =org-roam-server=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package simple-httpd
-	:after org-roam
-	)
+	:after org-roam)
 
   (use-package org-roam-server
 	:after (org-roam simple-httpd)
@@ -613,18 +611,15 @@ Completion for Org-roam files using its title.
 
   ;; A better *help* buffer
   (use-package helpful
-	:defer t)
+	:hook (helpful-mode . dot/hook-disable-line-numbers))
 
   (use-package rainbow-mode
-	:defer t
 	:hook (prog-mode . rainbow-mode))
 
   (use-package rainbow-delimiters
-	:defer t
 	:hook (prog-mode . rainbow-delimiters-mode))
 
   (use-package org-bullets
-	:defer t
 	:hook (org-mode . org-bullets-mode))
 
   ;; Cmake syntax highlighting
@@ -637,9 +632,8 @@ Completion for Org-roam files using its title.
 
   ;; Mark code after the 80 column range
   (use-package column-enforce-mode
-	:defer t
-	:custom (column-enforce-comments nil)
-	:hook (prog-mode . column-enforce-mode))
+	:hook (prog-mode . column-enforce-mode)
+	:custom (column-enforce-comments nil))
 #+END_SRC
 
 Possible modern replacement for column-enforce-mode:

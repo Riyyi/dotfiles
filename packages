@@ -40,6 +40,7 @@ gnome-calculator
 gnome-keyring
 gnome-themes-extra
 graphviz
+gst-plugins-good
 gucharmap
 gvfs
 gvfs-gphoto2
@@ -157,8 +158,8 @@ ttf-dejavu
 ttf-dejavu-sans-mono-powerline-git
 ttf-joypixels
 ttf-ms-fonts
-tumbler
 tumbler-extra-thumbnailers
+tumbler-git
 unrar
 unzip
 usbutils

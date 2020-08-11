@@ -942,11 +942,17 @@ Functions that only use built-in Emacs functionality.
 	(org-babel-load-file (concat dot-emacs-dir "/config.org")))
 
   (defun dot/find-file-emacsd ()
-	"Find a file under `dot-emacs-dir', recursively."
+	"Find file under `dot-emacs-dir', recursively."
 	(interactive)
 	(let ((files (mapcar 'abbreviate-file-name
 						 (directory-files-recursively dot-emacs-dir ""))))
 	  (find-file (completing-read "Find file (emacs.d): " files nil t))))
+
+  (defun dot/find-file-recentf ()
+	"Use `completing-read' to open a recent file."
+	(interactive)
+	(let ((files (mapcar 'abbreviate-file-name recentf-list)))
+	  (find-file (completing-read "Find file (recent): " files nil t))))
 
   (defun dot/indent-buffer ()
 	"Indent each nonblank line in the buffer."
@@ -966,12 +972,6 @@ Functions that only use built-in Emacs functionality.
 		('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
 		(_ (evil-ret))
 		)))
-
-  (defun dot/recentf-open-files ()
-	"Use `completing-read' to open a recent file."
-	(interactive)
-	(let ((files (mapcar 'abbreviate-file-name recentf-list)))
-	  (find-file (completing-read "Find file (recent): " files nil t))))
 
   (defun dot/reload-theme ()
 	"Reload custom theme."
@@ -1480,11 +1480,11 @@ General.el ~leader key binds.
 	"f"     '(:ignore t                      :which-key "file")
 	"f e"   '(:ignore t                      :which-key "emacs")
 	"f e c" '(dot/config-visit               :which-key "Config visit")
-	"f e f" '(dot/find-file-emacsd           :which-key "Find file emacs.d")
+	"f e f" '(dot/find-file-emacsd           :which-key "Find emacs.d file")
 	"f e r" '(dot/config-reload              :which-key "Config reload")
 	"f d"   '(dired                          :which-key "Find directory")
 	"f f"   '(find-file-in-project-root      :which-key "Find file")
-	"f r"   '(dot/recentf-open-files         :which-key "Recent files")
+	"f r"   '(dot/find-file-recentf          :which-key "Find recent file ")
 	"f R"   '(rename-file-and-buffer         :which-key "Rename file")
 	"f s"   '(basic-save-buffer              :which-key "Save file")
 	"f S"   '(write-file                     :which-key "Save file as...")
@@ -1512,7 +1512,7 @@ General.el ~leader key binds.
 	"n r r" '(org-roam                       :which-key "Org Roam")
 	"n r s" '(org-roam-server-mode           :which-key "Org Roam Server")
 	"n r C" '(org-roam-build-cache           :which-key "Build cache")
-	"n r I" '(org-roam-insert-immediate      :which-key "Insert (skip org-capture)")
+	"n r I" '(org-roam-insert-immediate      :which-key "Insert without org-capture")
 
 	;; Projectile
 	"p"   '(:keymap projectile-command-map :package projectile :which-key "projectile")

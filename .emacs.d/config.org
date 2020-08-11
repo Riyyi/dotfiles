@@ -56,6 +56,11 @@
 - [[#functions][Functions]]
   - [[#general-functions][General Functions]]
   - [[#package-functions][Package Functions]]
+    - [[#centaur-tabs-functions][Centaur Tabs Functions]]
+    - [[#dashboard-functions][Dashboard Functions]]
+    - [[#lsp-functions][LSP Functions]]
+    - [[#neotree-functions][Neotree Functions]]
+    - [[#which-key-functions][Which-Key Functions]]
 - [[#advice-and-aliases][Advice and Aliases]]
   - [[#advice][Advice]]
   - [[#aliases][Aliases]]
@@ -1042,6 +1047,8 @@ Functions that are only used for hook calls.
 
 Functions that use package functionality.
 
+*** Centaur Tabs Functions
+
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'centaur-tabs
 	(defun centaur-tabs-buffer-groups ()
@@ -1069,13 +1076,13 @@ Functions that use package functionality.
 				  "e?shell\\|"
 				  "Compile-Log\\|"
 				  "Completions\\|"
-				  "clangd\\|" ; lsp c/c++
+				  "clangd\\|"       ; lsp c/c++
 				  "Faces\\|"
 				  "Flycheck\\|"
 				  "Help\\|"
 				  "helpful\\|"
 				  "httpd\\|"
-				  "iph\\|" ; lsp php
+				  "iph\\|"          ; lsp php
 				  "Occur\\|"
 				  "org-roam"
 				  "\\).*")
@@ -1099,41 +1106,45 @@ Functions that use package functionality.
 		(delete-window))
 	  )
 	)
+#+END_SRC
 
-  (defun dot/go-to-dashboard ()
-	"Go to the `dashboard'."
-	(interactive)
-	(let ((buffer "*dashboard*"))
-	  (unless (get-buffer buffer)
-		(generate-new-buffer buffer)
-		(dashboard-refresh-buffer))
-	  (switch-to-buffer buffer)))
+*** Dashboard Functions
 
-  (with-eval-after-load 'which-key
-	(defun dot/which-key-prefix-then-key-order-alpha (acons bcons)
-	  "Order y prefix, then lexicographical."
-	  (let ((apref? (which-key--group-p (cdr acons)))
-			(bpref? (which-key--group-p (cdr bcons))))
-		(if (not (eq apref? bpref?))
-			(and (not apref?) bpref?)
-		  (which-key-key-order-alpha acons bcons))))
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'dashboard
+	(defun dot/dashboard-goto ()
+	  "Go to the *dashboard* buffer, create if non-existing."
+	  (interactive)
+	  (let ((buffer "*dashboard*"))
+		(unless (get-buffer buffer)
+		  (generate-new-buffer buffer)
+		  (dashboard-refresh-buffer))
+		(switch-to-buffer buffer)))
 	)
+#+END_SRC
 
-  (defun dashboard-goto-bookmarks ()
-	"Go to bookmarks."
+Fix keybinds..
+
+#+BEGIN_SRC emacs-lisp
+  (defun dot/dashboard-goto-bookmarks ()
+	"Move point to bookmarks."
 	(interactive)
 	(funcall (local-key-binding "m")))
 
-  (defun dashboard-goto-projects ()
-	"Go to projects."
+  (defun dot/dashboard-goto-projects ()
+	"Move point to projects."
 	(interactive)
 	(funcall (local-key-binding "p")))
 
-  (defun dashboard-goto-recent-files ()
-	"Go to recent files."
+  (defun dot/dashboard-goto-recent-files ()
+	"Move point to recent files."
 	(interactive)
 	(funcall (local-key-binding "r")))
+#+END_SRC
 
+*** LSP Functions
+
+#+BEGIN_SRC emacs-lisp
   (defun lsp-format-region-or-buffer ()
 	"Format the selection (or buffer) with LSP."
 	(interactive)
@@ -1143,12 +1154,31 @@ Functions that use package functionality.
 	 (if (use-region-p)
 		 #'lsp-format-region
 	   #'lsp-format-buffer)))
+#+END_SRC
+
+*** Neotree Functions
+
+#+BEGIN_SRC emacs-lisp
 
   (defun neotree-toggle-in-project-root ()
 	"Toggle Neotree in project root."
 	(interactive)
 	(let ((default-directory (find-project-root)))
-	  (call-interactively 'neotree-toggle)))
+	  (call-interactively #'neotree-toggle)))
+#+END_SRC
+
+*** Which-Key Functions
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'which-key
+	(defun dot/which-key-prefix-then-key-order-alpha (acons bcons)
+	  "Order y prefix, then lexicographical."
+	  (let ((apref? (which-key--group-p (cdr acons)))
+			(bpref? (which-key--group-p (cdr bcons))))
+		(if (not (eq apref? bpref?))
+			(and (not apref?) bpref?)
+		  (which-key-key-order-alpha acons bcons))))
+	)
 #+END_SRC
 
 * Advice and Aliases
@@ -1333,10 +1363,10 @@ Set custom keybinds to functionality of custom packages.
 	;; Dashboard
 	(general-def 'normal dashboard-mode-map
 	 [down-mouse-1] 'widget-button-click
-	 "g" 'dashboard-refresh-buffer
-	 "m" 'dashboard-goto-bookmarks
-	 "p" 'dashboard-goto-projects
-	 "r" 'dashboard-goto-recent-files
+	 "g" #'dashboard-refresh-buffer
+	 "m" #'dot/dashboard-goto-bookmarks
+	 "p" #'dot/dashboard-goto-projects
+	 "r" #'dot/dashboard-goto-recent-files
 	 )
 
 	;; Elfeed
@@ -1345,7 +1375,7 @@ Set custom keybinds to functionality of custom packages.
 	 "c"  'elfeed-search-clear-filter
 	 "gr" '(elfeed-search-update--force  :which-key "Refresh buffer")
 	 "gR" '(elfeed-search-fetch          :which-key "Update feeds")
-	 "q"  'kill-this-buffer
+	 "q"  'elfeed-search-quit-window
 	 "u"  'elfeed-search-tag-all-unread
 	 "U"  nil
 	 "r"  'elfeed-search-untag-all-unread
@@ -1353,8 +1383,8 @@ Set custom keybinds to functionality of custom packages.
 
 	(general-def 'normal elfeed-show-mode-map
 	 "b" #'elfeed-show-visit
-	 "g" 'elfeed-show-refresh
-	 "q" 'kill-this-buffer
+	 "g" #'elfeed-show-refresh
+	 "q" #'elfeed-kill-buffer
 	 "u" #'elfeed-show-tag--unread
 	 "y" #'elfeed-show-yank
 	 )
@@ -1413,7 +1443,7 @@ General.el ~leader key binds.
 	"b"         '(:ignore t                         :which-key "buffer/bookmark")
 	"b a"       '(auto-revert-mode                  :which-key "Auto revert buffer")
 	"b b"       '(switch-to-buffer                  :which-key "Switch buffer")
-	"b d"       '(dot/go-to-dashboard               :which-key "Dashboard")
+	"b d"       '(dot/dashboard-goto                :which-key "Dashboard")
 	"b k"       '(kill-current-buffer               :which-key "Kill buffer")
 	"b m"       '(bookmark-set                      :which-key "Make bookmark")
 	"b n"       '(evil-buffer-new                   :which-key "New empty buffer")

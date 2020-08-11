@@ -927,19 +927,26 @@ Set UTF-8 encoding as default.
 Functions that only use built-in Emacs functionality.
 
 #+BEGIN_SRC emacs-lisp
-  (defun config-visit ()
-	"Config edit."
-	(interactive)
-	(find-file (concat dot-emacs-dir "/config.org")))
-
-  (defun config-reload ()
-	"Config reload."
-	(interactive)
-	(org-babel-load-file (concat dot-emacs-dir "/config.org")))
-
   (defun display-startup-echo-area-message ()
 	"Hide default startup message."
 	(message nil))
+
+  (defun dot/config-visit ()
+	"Edit config file."
+	(interactive)
+	(find-file (concat dot-emacs-dir "/config.org")))
+
+  (defun dot/config-reload ()
+	"Reload config file."
+	(interactive)
+	(org-babel-load-file (concat dot-emacs-dir "/config.org")))
+
+  (defun dot/find-file-emacsd ()
+	"Find a file under `dot-emacs-dir', recursively."
+	(interactive)
+	(let ((files (mapcar 'abbreviate-file-name
+						 (directory-files-recursively dot-emacs-dir ""))))
+	  (find-file (completing-read "Find file (emacs.d): " files nil t))))
 
   (defun dot/indent-buffer ()
 	"Indent each nonblank line in the buffer."
@@ -964,7 +971,7 @@ Functions that only use built-in Emacs functionality.
 	"Use `completing-read' to open a recent file."
 	(interactive)
 	(let ((files (mapcar 'abbreviate-file-name recentf-list)))
-	  (find-file (completing-read "Find recent file: " files nil t))))
+	  (find-file (completing-read "Find file (recent): " files nil t))))
 
   (defun dot/reload-theme ()
 	"Reload custom theme."
@@ -1456,12 +1463,10 @@ General.el ~leader key binds.
 	"b <left>"  '(previous-buffer                   :which-key "Previous buffer")
 	"b <right>" '(next-buffer                       :which-key "Next buffer")
 
-	;; Comments / config
+	;; Comments
 	"c"   '(:ignore t                               :which-key "comment/config")
 	"c c" '(evilnc-comment-or-uncomment-lines       :which-key "Toggle comment")
 	"c p" '(evilnc-comment-or-uncomment-paragraphs  :which-key "Toggle comment paragraph")
-	"c r" '(config-reload                           :which-key "Config reload")
-	"c v" '(config-visit                            :which-key "Config visit")
 	"c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and copy")
 
 	;; Elisp
@@ -1472,14 +1477,19 @@ General.el ~leader key binds.
 	"e t" '(dot/reload-theme                 :which-key "Reload theme")
 
 	;; File
-	"f"   '(:ignore t                        :which-key "file")
-	"f f" '(find-file-in-project-root        :which-key "Find file")
-	"f r" '(dot/recentf-open-files           :which-key "Recent files")
-	"f R" '(rename-file-and-buffer           :which-key "Rename file")
-	"f s" '(basic-save-buffer                :which-key "Save file")
-	"f S" '(write-file                       :which-key "Save file as...")
-	"f u" '(dot/sudo-find-file               :which-key "Sudo find file")
-	"f U" '(dot/sudo-this-file               :which-key "Sudo this file")
+	"f"     '(:ignore t                      :which-key "file")
+	"f e"   '(:ignore t                      :which-key "emacs")
+	"f e c" '(dot/config-visit               :which-key "Config visit")
+	"f e f" '(dot/find-file-emacsd           :which-key "Find file emacs.d")
+	"f e r" '(dot/config-reload              :which-key "Config reload")
+	"f d"   '(dired                          :which-key "Find directory")
+	"f f"   '(find-file-in-project-root      :which-key "Find file")
+	"f r"   '(dot/recentf-open-files         :which-key "Recent files")
+	"f R"   '(rename-file-and-buffer         :which-key "Rename file")
+	"f s"   '(basic-save-buffer              :which-key "Save file")
+	"f S"   '(write-file                     :which-key "Save file as...")
+	"f u"   '(dot/sudo-find-file             :which-key "Sudo find file")
+	"f U"   '(dot/sudo-this-file             :which-key "Sudo this file")
 
 	;; Help
 	"h"   '(:keymap help-map                 :which-key "help")

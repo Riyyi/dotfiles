@@ -997,7 +997,7 @@ Functions that only use built-in Emacs functionality.
 	(other-window 1))
 
   (defun find-project-root ()
-	"Return root of the project, determined by .git/, 'default-directory' otherwise."
+	"Return root of the project, determined by `.git/', `default-directory' otherwise."
 	(let ((search-directory (locate-dominating-file "." ".git")))
 	  (if search-directory
 		  search-directory
@@ -1082,21 +1082,32 @@ Functions that use package functionality.
 		  name)
 		 )))
 
-	(defun dot/kill-buffer-or-window ()
-	  (interactive)
-	  (if (centaur-tabs-hide-tab (buffer-name))
-		  (kill-buffer-and-window)
-		(delete-window))
-	  )
-
 	(defun dot/buffer-cleanup ()
+	  "Clean up all the hidden buffers."
 	  (interactive)
 	  (dolist (buffer (buffer-list))
 		(when (centaur-tabs-hide-tab buffer)
 		  (kill-buffer buffer))
 		)
 	  )
+
+	(defun dot/kill-buffer-or-window ()
+	  "Delete window of the current buffer, also kill if the buffer is hidden."
+	  (interactive)
+	  (if (centaur-tabs-hide-tab (buffer-name))
+		  (kill-buffer-and-window)
+		(delete-window))
+	  )
 	)
+
+  (defun dot/go-to-dashboard ()
+	"Go to the `dashboard'."
+	(interactive)
+	(let ((buffer "*dashboard*"))
+	  (unless (get-buffer buffer)
+		(generate-new-buffer buffer)
+		(dashboard-refresh-buffer))
+	  (switch-to-buffer buffer)))
 
   (defun dashboard-goto-bookmarks ()
 	"Go to bookmarks."
@@ -1392,10 +1403,8 @@ General.el ~leader key binds.
 	"b"         '(:ignore t                  :which-key "buffer/bookmark")
 	"b a"       '(auto-revert-mode           :which-key "Auto revert buffer")
 	"b b"       '(switch-to-buffer           :which-key "Switch buffer")
-	"b d"       '(kill-current-buffer        :which-key "Kill buffer")
-	"b h"       '(previous-buffer            :which-key "Previous buffer")
+	"b d"       '(dot/go-to-dashboard        :which-key "Dashboard")
 	"b k"       '(kill-current-buffer        :which-key "Kill buffer")
-	"b l"       '(next-buffer                :which-key "Next buffer")
 	"b m"       '(bookmark-set               :which-key "Make bookmark")
 	"b n"       '(evil-buffer-new            :which-key "New empty buffer")
 	"b r"       '(revert-buffer              :which-key "Revert buffer")

@@ -1233,13 +1233,18 @@ Evil command aliases.
   ;; Enable 'table of contents' in org
   (add-hook 'org-mode-hook 'toc-org-mode)
 
+  ;; Org-capture in new tab, rather than split window
+  (add-hook 'org-capture-mode-hook 'delete-other-windows)
+
   ;; C++ // style comments in c-mode
   (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
 
   ;; LaTeX, set correct tab mode
   (add-hook 'latex-mode-hook (lambda () (setq indent-tabs-mode t)))
 
-  ;; Disable line numbers in terminal mode (breaks output otherwise)
+  ;; Disable line numbers
+  (add-hook 'custom-mode-hook 'dot/hook-disable-line-numbers)
+  (add-hook 'dired-mode-hook 'dot/hook-disable-line-numbers)
   (add-hook 'term-mode-hook 'dot/hook-disable-line-numbers)
 
   ;; Wrap lines in the middle of words, gives a \ indicator

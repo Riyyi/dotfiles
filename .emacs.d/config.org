@@ -635,11 +635,6 @@ Completion for Org-roam files using its title.
   ;; Shader syntax highlighting
   (use-package glsl-mode
 	:defer t)
-
-  ;; Mark code after the 80 column range
-  (use-package column-enforce-mode
-	:hook (prog-mode . column-enforce-mode)
-	:custom (column-enforce-comments nil))
 #+END_SRC
 
 Possible modern replacement for column-enforce-mode:

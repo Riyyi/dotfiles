@@ -752,7 +752,6 @@ Set file paths for built-in features like: auto-saves, backups, etc.
   (setq auto-save-file-name-transforms `((".*" ,auto-save-list-file-prefix t)))
   (setq backup-directory-alist         `((".*" . ,(concat dot-cache-dir "/backup/"))))
   (setq eshell-directory-name           (concat dot-cache-dir "/eshell/"))
-  (setq package-user-dir                (concat dot-emacs-dir "/elpa"))
   (setq tramp-auto-save-directory       (concat dot-cache-dir "/tramp-auto-save/"))
   (setq tramp-backup-directory-alist    backup-directory-alist)
   (setq url-configuration-directory     (concat dot-cache-dir "/url/"))

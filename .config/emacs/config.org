@@ -1069,12 +1069,14 @@ Functions that use package functionality.
 
 	(defun centaur-tabs-hide-tab (buffer)
 	  "Hide from the tab bar by BUFFER name."
+
 	  (let ((name (format "%s" buffer)))
 		(or
 		 ;; Current window is dedicated window
 		 (window-dedicated-p (selected-window))
 
 		 ;; Buffer name does match below blacklist
+		 (string-match-p (concat "\\(CAPTURE-\\)?" (format-time-string "%Y%m%d%H%M%S") "-.*\\.org") name)
 		 (string-match-p
 		  (concat "^\\*\\("
 				  "e?shell\\|"

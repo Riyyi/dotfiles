@@ -186,6 +186,7 @@ Install and configure packages.
 
 #+BEGIN_SRC emacs-lisp
   (use-package hybrid-reverse-theme
+	:ensure nil
 	:load-path "~/code/elisp/emacs-hybrid-reverse"
 	:config (load-theme 'hybrid-reverse t))
 
@@ -675,6 +676,9 @@ https://github.com/laishulu/hl-fill-column
 
   ;; Dired move to trash
   (setq delete-by-moving-to-trash t)
+
+  ;; Column indicator character
+  (setq display-fill-column-indicator-character ?\N{U+2503})
 
   ;; Scrolling
   (setq scroll-conservatively 1)
@@ -1226,6 +1230,9 @@ Evil command aliases.
   ;; Delete trailing whitespace
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+  ;; Display fill column indicator
+  (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
+
   ;; Highlight parenthesis
   (add-hook 'prog-mode-hook 'show-paren-mode)
 
@@ -1365,6 +1372,11 @@ Set custom keybinds to functionality of custom packages.
 	;; Global evil keymap
 	(general-def evil-normal-state-map
 	 "C-n" 'neotree-toggle-in-project-root)
+
+	;; Custom (M-x customize)
+	(general-def 'normal custom-mode-map
+	  [down-mouse-1] #'widget-button-click
+	  )
 
 	;; Dashboard
 	(general-def 'normal dashboard-mode-map

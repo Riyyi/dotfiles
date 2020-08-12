@@ -18,6 +18,9 @@
 
 ;; -------------------------------------
 
+;; Prefer to `load' the newest elisp file
+(setq load-prefer-newer t)
+
 ;; Set package install location
 (setq package-user-dir (concat user-emacs-directory "elpa"))
 

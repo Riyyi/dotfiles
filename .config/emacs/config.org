@@ -172,7 +172,6 @@ https://github.com/emacscollective/auto-compile
 
 #+BEGIN_SRC emacs-lisp
   (use-package auto-compile
-	:custom (load-prefer-newer t)
 	:config
 	(auto-compile-on-load-mode)
 	(auto-compile-on-save-mode))

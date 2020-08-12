@@ -637,9 +637,6 @@ Completion for Org-roam files using its title.
 	:defer t)
 #+END_SRC
 
-Possible modern replacement for column-enforce-mode:
-https://github.com/laishulu/hl-fill-column
-
 *** RSS
 
 #+BEGIN_SRC emacs-lisp

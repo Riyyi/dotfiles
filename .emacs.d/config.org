@@ -187,7 +187,7 @@ Install and configure packages.
 #+BEGIN_SRC emacs-lisp
   (use-package hybrid-reverse-theme
 	:load-path "~/code/elisp/emacs-hybrid-reverse"
-	:custom (load-theme 'hybrid-reverse t))
+	:config (load-theme 'hybrid-reverse t))
 
   (use-package all-the-icons
 	:defer t)

@@ -138,6 +138,7 @@ Set font.
 
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil :height 90 :family "DejaVu Sans Mono")
+  (set-face-attribute 'fixed-pitch-serif nil :height 100)
 #+END_SRC
 
 * Package Management
@@ -974,7 +975,7 @@ Functions that only use built-in Emacs functionality.
 	(interactive)
 	(mapc 'load (file-expand-wildcards
 				 (concat (car custom-theme-load-path) "*.el")))
-	(load-theme load-theme t))
+	(load-theme (car custom-enabled-themes) t))
 
   (defun dot/sudo-find-file (filename)
 	"Edit file FILENAME as root."
@@ -1539,6 +1540,7 @@ General.el ~leader key binds.
 	"s"   '(:ignore t                        :which-key "search")
 	"s a" '(avy-goto-char-timer              :which-key "Avy goto char")
 	"s b" '(bookmark-jump                    :which-key "Jump to bookmark")
+	"s l" '(avy-goto-line                    :which-key "Avy goto line")
 
 	;; Tabs / toggle
 	"t"   '(:ignore t                                 :which-key "tabs/toggle")

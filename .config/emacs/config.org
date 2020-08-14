@@ -123,6 +123,12 @@ Variables for directories, leader keys, etc.
 
   (defvar dot/shell "/bin/zsh"
 	"Command interpreter binary path.")
+
+  (defvar dot/hidpi
+	(let (resolution)
+	  (setq resolution (nthcdr 3 (assoc 'geometry (car (display-monitor-attributes-list)))))
+	  (>= (* (car resolution) (car (cdr resolution))) (* 2560 1440)))
+	"Return t if the primary screen is HiDPI, nil otherwise.")
 #+END_SRC
 
 * Customizations
@@ -279,7 +285,7 @@ Emacs mode line replacement.
 #+BEGIN_SRC emacs-lisp
   (use-package telephone-line
 	:custom
-	(telephone-line-height 20)
+	(telephone-line-height (if dot/hidpi 20 18))
 	(telephone-line-lhs
 	 '((evil   . (telephone-line-evil-tag-segment))
 	   (accent . (telephone-line-erc-modified-channels-segment
@@ -315,7 +321,7 @@ Places buffers as tabs in a bar at the top.
 	:after all-the-icons
 	:demand
 	:custom
-	(centaur-tabs-height 26)
+	(centaur-tabs-height (if dot/hidpi 26 18))
 	(centaur-tabs-modified-marker "•")
 	(centaur-tabs-set-icons t)
 	(centaur-tabs-set-modified-marker t)

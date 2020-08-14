@@ -285,7 +285,7 @@ Emacs mode line replacement.
 #+BEGIN_SRC emacs-lisp
   (use-package telephone-line
 	:custom
-	(telephone-line-height (if dot/hidpi 20 18))
+	(telephone-line-height (if dot/hidpi 20 15))
 	(telephone-line-lhs
 	 '((evil   . (telephone-line-evil-tag-segment))
 	   (accent . (telephone-line-erc-modified-channels-segment

@@ -331,7 +331,6 @@ Places buffers as tabs in a bar at the top.
 	  help-mode
 	  helpful-mode
 	  neotree-mode
-	  occur-mode
 	  org-roam-backlinks-mode
 	  shell-mode)
 	 . centaur-tabs-local-mode)
@@ -936,11 +935,6 @@ Set UTF-8 encoding as default.
 		   (window-height . 0.25)
 		   (side . bottom)
 		   (slot . 0))
-		  ("\\*Occur\\*"
-		   (display-buffer-in-side-window)
-		   (window-height . 0.25)
-		   (side . bottom)
-		   (slot . 1))
 		  ))
 #+END_SRC
 
@@ -1128,7 +1122,6 @@ Functions that use package functionality.
 				  "helpful\\|"
 				  "httpd\\|"
 				  "iph\\|"          ; lsp php
-				  "Occur\\|"
 				  "org-roam"
 				  "\\).*")
 		  name)

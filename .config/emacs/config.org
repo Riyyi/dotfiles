@@ -415,6 +415,28 @@ Setup =org-roam-server=.
 		   )))
 #+END_SRC
 
+Easily searchable .org files via Deft.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package deft
+	:hook (deft-mode . dot/hook-disable-line-numbers)
+	:config
+	(setq deft-auto-save-interval 0)
+	(setq deft-default-extension "org")
+	(setq deft-directory "~/documents/org/")
+	(setq deft-file-naming-rules '((noslash . "-")
+								   (nospace . "-")
+								   (case-fn . downcase)))
+	(setq deft-new-file-format "%Y%m%d%H%M%S-deft")
+	(setq deft-recursive t)
+	(setq deft-use-filename-as-title nil)
+	(setq deft-use-filter-string-for-filename t)
+	(add-to-list 'deft-extensions "tex")
+
+	;; Start filtering immediately
+	(evil-set-initial-state 'deft-mode 'insert))
+#+END_SRC
+
 **** Org Exporters
 #+BEGIN_SRC emacs-lisp
   ;; HTML exporter
@@ -648,7 +670,6 @@ Completion for Org-roam files using its title.
 
 #+BEGIN_SRC emacs-lisp
   (use-package elfeed
-	:defer t
 	:custom
 	(elfeed-db-directory (concat dot-cache-dir "/elfeed"))
 	(elfeed-enclosure-default-dir "~/downloads/")
@@ -658,10 +679,9 @@ Completion for Org-roam files using its title.
 	(elfeed-search-title-min-width 30)
 	(elfeed-search-trailing-width 55)
 	(elfeed-show-unique-buffers t)
-	:config
-	(load-file (concat dot-etc-dir "/elfeed-feeds.el"))
 	:hook (elfeed-search-mode . dot/hook-disable-line-numbers)
-	:hook (elfeed-show-mode   . dot/hook-disable-line-numbers))
+	:hook (elfeed-show-mode   . dot/hook-disable-line-numbers)
+	:config (load (concat dot-etc-dir "/elfeed-feeds")))
 #+END_SRC
 
 * General
@@ -963,6 +983,19 @@ Functions that only use built-in Emacs functionality.
 	(save-excursion
 	  (indent-region (point-min) (point-max) nil)))
 
+  (defun dot/insert-spaces-until-column (until-column)
+	"Insert spaces from point to UNTIL-COLUMN."
+	(interactive "nInsert spaces until column: ")
+	(let ((current-column (current-column)))
+	  ;; Increment column if the index is 1 based
+	  (when (not column-number-indicator-zero-based)
+		(setq current-column (+ current-column 1)))
+	  ;; Insert spaces
+	  (let ((diff (- until-column current-column)))
+		(if (> diff 0)
+			(insert (make-string diff ?\ ))
+		  (user-error "Column should be higher than point")))))
+
   (defun dot/org-ret-at-point ()
 	"Org return key at point.
 
@@ -1253,6 +1286,7 @@ Evil command aliases.
   ;; Disable line numbers
   (add-hook 'custom-mode-hook 'dot/hook-disable-line-numbers)
   (add-hook 'dired-mode-hook 'dot/hook-disable-line-numbers)
+  (add-hook 'Info-mode-hook 'dot/hook-disable-line-numbers)
   (add-hook 'term-mode-hook 'dot/hook-disable-line-numbers)
 
   ;; Wrap lines in the middle of words, gives a \ indicator
@@ -1394,6 +1428,23 @@ Set custom keybinds to functionality of custom packages.
 	 "r" #'dot/dashboard-goto-recent-files
 	 )
 
+	;; Deft
+	(general-def 'normal deft-mode-map
+	  [down-mouse-1] #'widget-button-click
+	  "+"  #'deft-new-file-named
+	  "-"  #'deft-new-file
+	  "a"  #'deft-archive-file
+	  "c"  #'deft-filter-clear
+	  "d"  #'deft-delete-file
+	  "f"  #'deft-find-file
+	  "g"  #'deft-refresh
+	  "q"  #'kill-this-buffer
+	  "R"  #'deft-rename-file
+	  "s"  #'deft-filter
+	  "ts" #'deft-toggle-incremental-search :which-key "Toggle search"
+	  "tt" #'deft-toggle-sort-method        :which-key "Toggle sort"
+	  )
+
 	;; Elfeed
 	(general-def 'normal elfeed-search-mode-map
 	 "b"  'elfeed-search-browse-url
@@ -1430,10 +1481,10 @@ Set custom keybinds to functionality of custom packages.
 	 "r"         'neotree-rename-node
 	 "d"         'neotree-delete-node
 	 "h"         'neotree-select-previous-sibling-node
+	 "g"         'neotree-refresh
 	 "j"         'neotree-next-line
 	 "k"         'neotree-previous-line
 	 "l"         'neotree-enter
-	 "R"         'neotree-refresh
 	 "C"         'neotree-change-root
 	 "H"         'neotree-hidden-file-toggle
 	 "q"         'neotree-hide
@@ -1516,21 +1567,28 @@ General.el ~leader key binds.
 	;; Insert
 	"i"   '(:ignore t                        :which-key "insert")
 	"i b" '(dot/indent-buffer                :which-key "Indent buffer")
+	"i f" '(fill-region                      :which-key "Reflow region")
+	"i F" '(fill-paragraph                   :which-key "Reflow paragraph")
 	"i r" '(indent-region                    :which-key "Indent region")
-	"i s" '(yas-insert-snippet               :which-key "Insert snippet")
+	"i s" '(dot/insert-spaces-until-column   :which-key "Insert spaces")
+	"i y" '(yas-insert-snippet               :which-key "Insert yasnippet")
 
 	;; Notes
 	"n"     '(:ignore t                      :which-key "notes")
 	"n r"   '(:ignore t                      :which-key "roam")
 	"n r b" '(org-roam-switch-to-buffer      :which-key "Switch to buffer")
-	"n r i" '(org-roam-insert                :which-key "Insert")
 	"n r c" '(org-roam-capture               :which-key "Org Roam Capture")
+	"n r C" '(org-roam-db-build-cache        :which-key "Build cache")
 	"n r f" '(org-roam-find-file             :which-key "Find file")
 	"n r g" '(org-roam-graph-show            :which-key "Show graph")
+	"n r i" '(org-roam-insert                :which-key "Insert")
+	"n r I" '(org-roam-insert-immediate      :which-key "Insert without org-capture")
 	"n r r" '(org-roam                       :which-key "Org Roam")
 	"n r s" '(org-roam-server-mode           :which-key "Org Roam Server")
-	"n r C" '(org-roam-build-cache           :which-key "Build cache")
-	"n r I" '(org-roam-insert-immediate      :which-key "Insert without org-capture")
+
+	;; Open
+	"o"     '(:ignore t                      :which-key "open")
+	"o d"   '(deft                           :which-key "Open deft")
 
 	;; Projectile
 	"p"   '(:keymap projectile-command-map :package projectile :which-key "projectile")

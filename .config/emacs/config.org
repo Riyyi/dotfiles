@@ -917,10 +917,14 @@ Set UTF-8 encoding as default.
 ** Window
 
 #+BEGIN_SRC emacs-lisp
+  ;; Set `switch-to-buffer' to respect the window rules
+  (setq switch-to-buffer-obey-display-actions t)
+
   ;; Window rules
   (setq display-buffer-alist
 		'(
-		  ("^\\(\\*e?shell\\|vterm\\).*"
+		  ;; ^\*(e?shell|(ansi-|v)?term).*
+		  ("^\\*\\(e?shell\\|\\(ansi-\\|v\\)?term\\).*"
 		   (display-buffer-in-side-window)
 		   (window-height . 0.25)
 		   (side . bottom)

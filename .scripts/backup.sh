@@ -37,21 +37,25 @@ if [ "$(dirname "$0")" != "." ]; then
 	exit 1
 fi
 
+# Enable mathematics in POSIX shell
+calc() { awk "BEGIN{print $*}"; }
+
 # All directories
-BACKUP_FILES="$(find . -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort -r)"
+BACKUP_FOLDERS="$(find . -mindepth 1 -maxdepth 1 -type d)"
 
 # Current amount of backups
-BACKUP_COUNT=$(echo "$BACKUP_FILES" | wc -l)
+BACKUP_COUNT=$(echo "$BACKUP_FOLDERS" | wc -l)
+
+# Calculate the amount needed to remove
+AMOUNT_REMOVE=$(calc "$BACKUP_COUNT" - $BACKUP_COUNT_MAX + 1)
 
 # Remove the oldest backup folders
-if [ "$BACKUP_COUNT" -ge $BACKUP_COUNT_MAX ]; then
-	BACKUPS_OLDEST="$(echo "$BACKUP_FILES" | sed -nE "
-		1,${BACKUP_COUNT_MAX}d;
-		s/^([0-9]{2}|-|_|:){12}$/\0/p
-	")"
+if [ "$AMOUNT_REMOVE" -ge 1 ]; then
+	REMOVE="$(echo "$BACKUP_FOLDERS" | sort | head -n "$AMOUNT_REMOVE")"
 
-	printf "%s\n%s\n" "Removing directories:" "$BACKUPS_OLDEST"
-	rm -rf $BACKUPS_OLDEST
+	echo "Removing directories:"
+	echo "$REMOVE"
+	rm -rf $REMOVE
 fi
 
 # Execution location

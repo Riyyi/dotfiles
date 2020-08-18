@@ -26,6 +26,9 @@ lockPref("signon.rememberSignons", false);
 // Enable userChrome.css and userContent.css
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
+// Disable ALT key menu toggle
+user_pref("ui.key.menuAccessKeyFocuses", false);
+
 // Fix dark GTK themes
 user_pref("widget.content.gtk-theme-override", "Arc");
 

@@ -87,7 +87,3 @@ EXPORTS=$(sed -nE \
 echo "$EXPORTS" | while read -r line; do
 	export $line
 done
-
-## Login
-
-[ "$USER" = "rick" ] && [ "$(tty)" = "/dev/tty1" ] && exec xinit -- vt1 > /dev/null 2>&1

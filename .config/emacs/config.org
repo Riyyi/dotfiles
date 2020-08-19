@@ -310,6 +310,7 @@ Provides Emacs with a file tree.
 	(neo-show-hidden-files t)
 	(neo-vc-integration '(face))
 	:hook (neotree-mode . dot/hook-disable-line-numbers))
+	:hook (neotree-mode . hl-line-mode)
 #+END_SRC
 
 *** Centaur Tabs
@@ -377,9 +378,12 @@ Setup =org-roam=.
 	:hook (org-roam-backlinks-mode . dot/hook-disable-line-numbers)
 	:hook (org-roam-backlinks-mode . dot/hook-disable-mode-line)
 	:config
-	(setq org-roam-directory (concat (file-name-directory org-directory) "org/"))
-	(setq org-roam-verbose nil)
 	(setq org-roam-completion-system 'default)
+	(setq org-roam-db-location (expand-file-name "org-roam.db" dot-cache-dir))
+	(setq org-roam-directory (expand-file-name "./" org-directory))
+	;; Exclude Syncthing versions backup directory
+	(setq org-roam-file-exclude-regexp "\\.stversions")
+	(setq org-roam-verbose nil)
 	(org-roam-mode))
 #+END_SRC
 

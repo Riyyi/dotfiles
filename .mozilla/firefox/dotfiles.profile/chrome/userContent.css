@@ -4,18 +4,38 @@
 	}
 }
 
-@-moz-document domain("boards.4chan.org") {
+@-moz-document domain("boards.4chan.org"), domain("boards.4channel.org") {
 	/* Hide unnecessary elements */
+	#absbot { display: none; }
 	#bannerCnt { display: none; }
+	#globalMessage { display: none; }
+	#op.desktop { display: none; }
+	#toggleMsgBtn { display: none; }
+	.adg-rects.desktop { display: none; }
+	.middlead.center { display: none !important; }
 	form[name=post] { display: none; }
 	hr.aboveMidAd { display: none; }
 	hr.abovePostForm { display: none; }
-	#toggleMsgBtn { display: none; }
-	#globalMessage { display: none; }
-	.middlead.center { display: none !important; }
-	.adg-rects.desktop { display: none; }
-	#op.desktop { display: none; }
-	#absbot { display: none; }
+
+	/* --- center threads start --- */
+	.thread > .party-hat {
+		left: 12%
+	}
+	.thread > .opContainer {
+		display: block;
+	}
+	.thread > .postContainer {
+		margin: auto;
+		width: 75%;
+	}
+	.thread > .summary {
+		margin-left: 12.5%;
+		display: block;
+	}
+	.thread > .postContainer > .sideArrows {
+		display: none;
+	}
+	/* --- center threads end --- */
 
 	/* Make posts the full width */
 	.postContainer.replyContainer .post.reply { width: 100% }

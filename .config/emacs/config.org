@@ -381,10 +381,9 @@ Setup =org-roam=.
 	(setq org-roam-completion-system 'default)
 	(setq org-roam-db-location (expand-file-name "org-roam.db" dot-cache-dir))
 	(setq org-roam-directory (expand-file-name "./" org-directory))
-	;; Exclude Syncthing versions backup directory
+	;; Exclude Syncthing backup directory
 	(setq org-roam-file-exclude-regexp "\\.stversions")
-	(setq org-roam-verbose nil)
-	(org-roam-mode))
+	(setq org-roam-verbose nil))
 #+END_SRC
 
 Enable [[https://www.orgroam.com/manual/Roam-Protocol.html#Roam-Protocol][Roam-Protocol]], needed to process =org-protocol://= links

@@ -126,11 +126,8 @@ Variables for directories, leader keys, etc.
   (defvar dot/shell "/bin/zsh"
 	"Command interpreter binary path.")
 
-  (defvar dot/hidpi
-	(let (resolution)
-	  (setq resolution (nthcdr 3 (assoc 'geometry (car (display-monitor-attributes-list)))))
-	  (>= (* (car resolution) (car (cdr resolution))) (* 2560 1440)))
-	"Return t if the primary screen is HiDPI, nil otherwise.")
+  (defvar dot/hidpi (getenv "HIDPI")
+	"Whether the primary screen is HiDPI.")
 #+END_SRC
 
 * Customizations
@@ -311,8 +308,8 @@ Provides Emacs with a file tree.
 	(neo-mode-line-type 'none)
 	(neo-show-hidden-files t)
 	(neo-vc-integration '(face))
-	:hook (neotree-mode . dot/hook-disable-line-numbers))
-	:hook (neotree-mode . hl-line-mode)
+	:hook (neotree-mode . dot/hook-disable-line-numbers)
+	:hook (neotree-mode . hl-line-mode))
 #+END_SRC
 
 *** Centaur Tabs
@@ -324,7 +321,7 @@ Places buffers as tabs in a bar at the top.
 	:after all-the-icons
 	:demand
 	:custom
-	(centaur-tabs-height (if dot/hidpi 26 18))
+	(centaur-tabs-height (if dot/hidpi 28 18))
 	(centaur-tabs-modified-marker "•")
 	(centaur-tabs-set-icons t)
 	(centaur-tabs-set-modified-marker t)

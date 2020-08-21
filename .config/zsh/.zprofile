@@ -26,8 +26,10 @@ export HIDPI=true
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 
 # GTK
-export GDK_SCALE=2
-export GDK_DPI_SCALE=0.5
+if [ "$HIDPI" = true ]; then
+	export GDK_SCALE=2
+	export GDK_DPI_SCALE=0.5
+fi
 
 # Gradle
 export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
@@ -50,12 +52,14 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export RANDFILE="$XDG_CACHE_HOME/rnd"
 
 # Panel
-export PANEL_HEIGHT=38
+[ "$HIDPI" = true ] && export PANEL_HEIGHT=38 || export PANEL_HEIGHT=22
 export PANEL_NAME="polybar_panel"
 
 # Qt5
-export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export QT_SCREEN_SCALE_FACTORS=2
+if [ "$HIDPI" = true ]; then
+	export QT_AUTO_SCREEN_SCALE_FACTOR=0
+	export QT_SCREEN_SCALE_FACTORS=2
+fi
 export QT_QPA_PLATFORMTHEME="qt5ct"
 
 # Terminal

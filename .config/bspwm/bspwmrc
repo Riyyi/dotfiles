@@ -3,8 +3,13 @@
 #--- General ---#
 
 # Basic definitions
-bspc config border_width               4
-bspc config window_gap                 20
+if [ "$HIDPI" = true ]; then
+	bspc config border_width           4
+	bspc config window_gap             20
+else
+	bspc config border_width           2
+	bspc config window_gap             10
+fi
 bspc config split_ratio                0.502
 bspc config top_padding                "$PANEL_HEIGHT"
 

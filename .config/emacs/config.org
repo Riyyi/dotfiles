@@ -60,6 +60,8 @@
     - [[#dashboard-functions][Dashboard Functions]]
     - [[#lsp-functions][LSP Functions]]
     - [[#neotree-functions][Neotree Functions]]
+    - [[#org-functions][Org Functions]]
+    - [[#selectrum-functions][Selectrum Functions]]
     - [[#which-key-functions][Which-Key Functions]]
 - [[#advice-and-aliases][Advice and Aliases]]
   - [[#advice][Advice]]
@@ -997,19 +999,6 @@ Functions that only use built-in Emacs functionality.
 			(insert (make-string diff ?\ ))
 		  (user-error "Column should be higher than point")))))
 
-  (defun dot/org-ret-at-point ()
-	"Org return key at point.
-
-  If point is on:
-	link      -- follow it
-	otherwise -- run the default (evil-ret) expression"
-	(interactive)
-	(let ((type (org-element-type (org-element-context))))
-	  (pcase type
-		('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
-		(_ (evil-ret))
-		)))
-
   (defun dot/reload-theme ()
 	"Reload custom theme."
 	(interactive)
@@ -1204,12 +1193,41 @@ Fix keybinds..
 *** Neotree Functions
 
 #+BEGIN_SRC emacs-lisp
-
   (defun neotree-toggle-in-project-root ()
 	"Toggle Neotree in project root."
 	(interactive)
 	(let ((default-directory (find-project-root)))
 	  (call-interactively #'neotree-toggle)))
+#+END_SRC
+
+*** Org Functions
+
+#+BEGIN_SRC emacs-lisp
+  (defun dot/org-ret-at-point ()
+	"Org return key at point.
+
+  If point is on:
+	link      -- follow it
+	otherwise -- run the default (evil-ret) expression"
+	(interactive)
+	(let ((type (org-element-type (org-element-context))))
+	  (pcase type
+		('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
+		(_ (evil-ret))
+		)))
+#+END_SRC
+
+*** Selectrum Functions
+
+#+BEGIN_SRC emacs-lisp
+  (defun dot/selectrum-backspace ()
+	"In Selectrum file completion, backward kill sexp, delete char otherwise."
+	(interactive)
+	(if (and selectrum-active-p
+			 minibuffer-completing-file-name)
+		(evil-with-state 'insert
+		  (move-end-of-line 1) (backward-kill-sexp 1))
+	  (evil-delete-backward-char-and-join 1)))
 #+END_SRC
 
 *** Which-Key Functions
@@ -1401,7 +1419,9 @@ Set custom keybinds to functionality of custom packages.
 	"M-h" #'abort-recursive-edit
 	"M-j" #'selectrum-next-candidate
 	"M-k" #'selectrum-previous-candidate
-	"M-l" #'selectrum-select-current-candidate)
+	"M-l" #'selectrum-select-current-candidate
+	"<backspace>"   #'dot/selectrum-backspace
+	"<S-backspace>" #'evil-delete-backward-char-and-join)
 
   ; Overwrite evil keymaps
   ;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)
@@ -1467,10 +1487,11 @@ Set custom keybinds to functionality of custom packages.
 
 	;; Minibuffer
 	(general-def 'normal minibuffer-local-map
-	  "<up>"   #'selectrum-previous-candidate
-	  "<down>" #'selectrum-next-candidate
+	  "TAB"    #'selectrum-insert-current-candidate
 	  "j"      #'selectrum-next-candidate
 	  "k"      #'selectrum-previous-candidate
+	  "<up>"   #'selectrum-previous-candidate
+	  "<down>" #'selectrum-next-candidate
 	  )
 
 	 ;; Neotree

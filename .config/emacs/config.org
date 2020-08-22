@@ -70,9 +70,11 @@
     - [[#package][Package]]
 - [[#hooks][Hooks]]
 - [[#key-bindings][Key Bindings]]
-  - [[#disable-default][Disable Default]]
+  - [[#disable-native][Disable Native]]
   - [[#disable-package][Disable Package]]
-  - [[#set-default][Set Default]]
+  - [[#set-native][Set Native]]
+    - [[#set-native-global-keybinds][Set Native Global Keybinds]]
+    - [[#set-native-mode-keybinds][Set Native Mode Keybinds]]
   - [[#set-package][Set Package]]
   - [[#leader][Leader]]
     - [[#global-leader][Global Leader]]
@@ -1317,9 +1319,9 @@ Useful links:\\
 [[https://www.gnu.org/software/emacs/manual/html_node/efaq/Binding-combinations-of-modifiers-and-function-keys.html][GNU binding combinations of modifiers]] \\
 [[https://github.com/hlissner/doom-emacs/blob/develop/modules/config/default/+evil-bindings.el][Doom Emacs bindings]]
 
-** Disable Default
+** Disable Native
 
-Disable keybinds of default modes that clash with the custom keybinds below.
+Disable keybinds of native modes that clash with other custom keybinds.
 
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'org
@@ -1333,7 +1335,7 @@ Disable keybinds of default modes that clash with the custom keybinds below.
 
 ** Disable Package
 
-Disable keybinds of installed packages that clash with the custom keybinds below.
+Disable keybinds of installed packages that clash with other custom keybinds.
 
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'evil-states
@@ -1344,9 +1346,11 @@ Disable keybinds of installed packages that clash with the custom keybinds below
 	(define-key php-mode-map (kbd "C-M-h") nil))
 #+END_SRC
 
-** Set Default
+** Set Native
 
-Set custom keybinds to functionality of default modes.
+Set keybinds to native functionality.
+
+*** Set Native Global Keybinds
 
 #+BEGIN_SRC emacs-lisp
   ;; Buffers
@@ -1368,9 +1372,18 @@ Set custom keybinds to functionality of default modes.
   (global-set-key (kbd "<s-backspace>") 'ansi-term)
 #+END_SRC
 
+*** Set Native Mode Keybinds
+
+#+BEGIN_SRC emacs-lisp
+  ;; Org-mode
+  (define-key org-mode-map     (kbd "M-c") #'org-edit-special)
+  (define-key org-src-mode-map (kbd "M-c") #'org-edit-src-exit)
+  (define-key org-src-mode-map (kbd "M-z") #'org-edit-src-abort)
+#+END_SRC
+
 ** Set Package
 
-Set custom keybinds to functionality of custom packages.
+Set keybinds to functionality of installed packages.
 
 #+BEGIN_SRC emacs-lisp
   ;; Buffers
@@ -1698,7 +1711,12 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 	"o"   '(org-open-at-point                :which-key "Org open at point")
 
 	"i"         '(:ignore t                  :which-key "insert")
-	"i h"       '(org-insert-heading         :which-key "Org insert heading")
+	"i c"       '(org-table-insert-column    :which-key "Insert table column")
+	"i h"       '(org-table-insert-hline     :which-key "Insert table hline")
+	"i H"       '(org-table-hline-and-move   :which-key "Insert table hline and move")
+	"i r"       '(org-table-insert-row       :which-key "Insert table row")
+
+	"q"         '(org-set-tags-command       :which-key "Org tags")
 
 	"s"         '(:ignore t                  :which-key "tree/subtree")
 	"s h"       '(org-promote-subtree        :which-key "Org promote subtree")
@@ -1709,15 +1727,9 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 	"s <right>" '(org-demote-subtree         :which-key "Org demote subtree")
 	"s <up>"    '(org-move-subree-up         :which-key "Org move subtree up")
 	"s <down>"  '(org-move-subtree-down      :which-key "Org move subtree down")
-	)
 
-  (local-leader org-src-mode-map
-	"'"   '(org-edit-src-exit                :which-key "Org exit edit")
-	"c"   '(org-edit-src-exit                :which-key "Org exit edit")
-	"k"   '(org-edit-src-abort               :which-key "Org abort edit")
+	"t"         '(org-todo                   :which-key "Org todo")
 	)
-
-  (define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit)
 
   (local-leader elfeed-search-mode-map
 	"g"   '(elfeed-search-update--force      :which-key "Elfeed refresh buffer")

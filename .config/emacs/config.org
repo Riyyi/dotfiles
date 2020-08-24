@@ -30,7 +30,7 @@
     - [[#org-packages][Org Packages]]
       - [[#org-toc][Org ToC]]
       - [[#org-roam][Org Roam]]
-      - [[#org-exporters][Org Exporters]]
+      - [[#org-export-packages][Org Export Packages]]
     - [[#completion][Completion]]
       - [[#company][Company]]
       - [[#flycheck][Flycheck]]
@@ -49,6 +49,12 @@
   - [[#formatting][Formatting]]
   - [[#hide-elements][Hide Elements]]
   - [[#org][Org]]
+    - [[#org-config][Org Config]]
+    - [[#org-agenda][Org Agenda]]
+    - [[#org-keys][Org Keys]]
+    - [[#org-links][Org Links]]
+    - [[#org-source-code-blocks][Org Source Code Blocks]]
+    - [[#org-export][Org Export]]
   - [[#recentf][Recentf]]
   - [[#tabs][Tabs]]
   - [[#utf-8][UTF-8]]
@@ -440,7 +446,7 @@ Easily searchable .org files via Deft.
 	(evil-set-initial-state 'deft-mode 'insert))
 #+END_SRC
 
-**** Org Exporters
+**** Org Export Packages
 #+BEGIN_SRC emacs-lisp
   ;; HTML exporter
   (use-package htmlize
@@ -841,31 +847,92 @@ Setup file backups versioning.
 
 ** Org
 
+*** Org Config
+
 #+BEGIN_SRC emacs-lisp
   (use-package org
-	:custom
-	(org-directory (concat (getenv "HOME") "/documents/org"))
-	(org-ellipsis " ↴")
-	(org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
-	(org-return-follows-link t)
-	(org-src-fontify-natively t)
-	(org-src-window-setup 'current-window)
 	:config
-	;; Do not open .org files in a split window
+	(setq org-directory (concat (getenv "HOME") "/documents/org"))
+	(setq org-default-notes-file (expand-file-name "notes.org" org-directory))
+	(setq org-adapt-indentation nil)
+	(setq org-ellipsis "⤵")
+	;; Enable structured template completion
+	(add-to-list 'org-modules 'org-tempo t)
+	(add-to-list 'org-structure-template-alist
+				 '("el" . "src emacs-lisp"))
+	)
+#+END_SRC
+
+*** Org Agenda
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-agenda
+	:ensure nil
+	:defer t
+	:config
+	(setq org-agenda-files `(,org-directory ,user-emacs-directory))
+	(setq org-agenda-span 14)
+	(setq org-agenda-window-setup 'current-window)
+	(evil-set-initial-state 'org-agenda-mode 'motion)
+	)
+#+END_SRC
+
+*** Org Keys
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-keys
+	:ensure nil
+	:config
+	(setq org-return-follows-link t)
+	)
+#+END_SRC
+
+*** Org Links
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ol
+	:ensure nil
+	:config
+	;; Do not open links to .org files in a split window
 	(add-to-list 'org-link-frame-setup '(file . find-file))
 	)
+#+END_SRC
 
-  ;; Enable syntax highlighting when exporting to .pdf
-  ;; Load latex exporter
-  (use-package ox-latex
-	:ensure nil ; ox-latex.el is part of org
-	:defer t
-	:after org
-	:custom
-	;; Define how minted is added to source code blocks
-	(org-latex-listings 'minted)
-	(org-latex-minted-options '(("frame" "lines") ("linenos=true")))
+*** Org Source Code Blocks
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-src
+	:ensure nil
 	:config
+	(setq org-edit-src-content-indentation 0)
+	(setq org-src-fontify-natively t)
+	(setq org-src-preserve-indentation t)
+	(setq org-src-tab-acts-natively t)
+	(setq org-src-window-setup 'current-window)
+	)
+#+END_SRC
+
+*** Org Export
+
+#+BEGIN_SRC emacs-lisp
+  ;; Org exporter
+  (use-package ox
+	:ensure nil
+	:defer t
+	:config
+	(setq org-export-coding-system 'utf-8-unix)
+	)
+
+  ;; Org latex exporter
+  (use-package ox-latex
+	:ensure nil
+	:defer t
+	:config
+	;; Define how minted (highlighted src code) is added to src code blocks
+	(setq org-latex-listings 'minted)
+	(setq org-latex-minted-options '(("frame" "lines") ("linenos=true")))
+	;; Set 'Table of Contents' layout
+	(setq org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
 	;; Add minted package to every LaTeX header
 	(add-to-list 'org-latex-packages-alist '("" "minted"))
 	;; Append -shell-escape so pdflatex exports minted correctly
@@ -1106,7 +1173,8 @@ Functions that use package functionality.
 		 ;; Buffer name does match below blacklist
 		 (string-match-p (concat "\\(CAPTURE-\\)?" (format-time-string "%Y%m%d%H%M%S") "-.*\\.org") name)
 		 (string-match-p
-		  (concat "^\\*\\("
+		  (concat "^ ?\\*\\("
+				  "Agenda Commands\\|"
 				  "e?shell\\|"
 				  "Compile-Log\\|"
 				  "Completions\\|"
@@ -1117,7 +1185,9 @@ Functions that use package functionality.
 				  "helpful\\|"
 				  "httpd\\|"
 				  "iph\\|"          ; lsp php
-				  "org-roam"
+				  "org-roam\\|"
+				  "Org tags\\|"
+				  "Org todo"
 				  "\\).*")
 		  name)
 		 )))
@@ -1206,12 +1276,14 @@ Fix keybinds..
 	"Org return key at point.
 
   If point is on:
-	link      -- follow it
-	otherwise -- run the default (evil-ret) expression"
+	checkbox   -- toggle it
+	link       -- follow it
+	otherwise  -- run the default (evil-ret) expression"
 	(interactive)
 	(let ((type (org-element-type (org-element-context))))
 	  (pcase type
 		('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
+		((guard (org-at-item-checkbox-p)) (org-toggle-checkbox))
 		(_ (evil-ret))
 		)))
 #+END_SRC
@@ -1376,9 +1448,13 @@ Set keybinds to native functionality.
 
 #+BEGIN_SRC emacs-lisp
   ;; Org-mode
-  (define-key org-mode-map     (kbd "M-c") #'org-edit-special)
-  (define-key org-src-mode-map (kbd "M-c") #'org-edit-src-exit)
-  (define-key org-src-mode-map (kbd "M-z") #'org-edit-src-abort)
+  (with-eval-after-load 'org-capture
+	(define-key org-capture-mode-map (kbd "M-c") #'org-capture-finalize)
+	(define-key org-capture-mode-map (kbd "M-w") #'org-capture-refile)
+	(define-key org-capture-mode-map (kbd "M-k") #'org-capture-kill))
+  (define-key org-mode-map           (kbd "M-c") #'org-edit-special)
+  (define-key org-src-mode-map       (kbd "M-c") #'org-edit-src-exit)
+  (define-key org-src-mode-map       (kbd "M-k") #'org-edit-src-abort)
 #+END_SRC
 
 ** Set Package
@@ -1523,9 +1599,11 @@ Set keybinds to functionality of installed packages.
 
 	;; Org
 	(general-def 'normal org-mode-map
-	 "RET" 'dot/org-ret-at-point)
+	  "RET" #'dot/org-ret-at-point)
 	(general-def 'insert org-mode-map
-	  "RET" 'evil-ret)
+	  "RET" #'evil-ret)
+	(general-def 'motion org-agenda-mode-map
+	  "RET" #'org-agenda-switch-to)
 	)
 #+END_SRC
 
@@ -1606,16 +1684,17 @@ General.el ~leader key binds.
 
 	;; Notes
 	"n"     '(:ignore t                      :which-key "notes")
-	"n r"   '(:ignore t                      :which-key "roam")
-	"n r b" '(org-roam-switch-to-buffer      :which-key "Switch to buffer")
-	"n r c" '(org-roam-capture               :which-key "Org Roam Capture")
+	"n a"   '(org-agenda                     :which-key "Org agenda")
+	"n r"   '(:ignore t                      :which-key "org-roam")
+	"n r b" '(org-roam-switch-to-buffer      :which-key "Switch buffer")
+	"n r c" '(org-roam-capture               :which-key "Capture")
 	"n r C" '(org-roam-db-build-cache        :which-key "Build cache")
 	"n r f" '(org-roam-find-file             :which-key "Find file")
 	"n r g" '(org-roam-graph-show            :which-key "Show graph")
 	"n r i" '(org-roam-insert                :which-key "Insert")
-	"n r I" '(org-roam-insert-immediate      :which-key "Insert without org-capture")
-	"n r r" '(org-roam                       :which-key "Org Roam")
-	"n r s" '(org-roam-server-mode           :which-key "Org Roam Server")
+	"n r I" '(org-roam-insert-immediate      :which-key "Insert (without capture)")
+	"n r r" '(org-roam                       :which-key "Toggle side-buffer")
+	"n r s" '(org-roam-server-mode           :which-key "Toggle server")
 
 	;; Open
 	"o"     '(:ignore t                      :which-key "open")
@@ -1700,44 +1779,49 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 	:global-prefix dot/localleader-alt-key
 	:states '(normal visual insert motion emacs)
 
-	""    '(:ignore t                        :which-key "<localleader>")
+	""    '(:ignore t                            :which-key "<localleader>")
 	)
 
   (local-leader org-mode-map
-	"'"   '(org-edit-special                 :which-key "Org edit")
-	"c"   '(org-edit-special                 :which-key "Org edit")
-	"e"   '(org-export-dispatch              :which-key "Org export")
-	"l"   '(org-insert-link                  :which-key "Org make link")
-	"o"   '(org-open-at-point                :which-key "Org open at point")
+	"'"         '(org-edit-special               :which-key "Org edit")
+	"e"         '(org-export-dispatch            :which-key "Org export")
+	"o"         '(org-open-at-point              :which-key "Org open at point")
 
-	"i"         '(:ignore t                  :which-key "insert")
-	"i c"       '(org-table-insert-column    :which-key "Insert table column")
-	"i h"       '(org-table-insert-hline     :which-key "Insert table hline")
-	"i H"       '(org-table-hline-and-move   :which-key "Insert table hline and move")
-	"i r"       '(org-table-insert-row       :which-key "Insert table row")
+	"i"         '(:ignore t                      :which-key "insert")
+	"i c"       '(org-table-insert-column        :which-key "Insert table column")
+	"i h"       '(org-table-insert-hline         :which-key "Insert table hline")
+	"i H"       '(org-table-hline-and-move       :which-key "Insert table hline and move")
+	"i r"       '(org-table-insert-row           :which-key "Insert table row")
+	"i t"       '(org-insert-structure-template  :which-key "Insert template")
 
-	"q"         '(org-set-tags-command       :which-key "Org tags")
+	"l"         '(:ignore t                      :which-key "links")
+	"l l"       '(org-insert-link                :which-key "Org make link")
 
-	"s"         '(:ignore t                  :which-key "tree/subtree")
-	"s h"       '(org-promote-subtree        :which-key "Org promote subtree")
-	"s j"       '(org-move-subree-down       :which-key "Org move subtree down")
-	"s k"       '(org-move-subtree-up        :which-key "Org move subtree up")
-	"s l"       '(org-demote-subtree         :which-key "Org demote subtree")
-	"s <left>"  '(org-promote-subtree        :which-key "Org promote subtree")
-	"s <right>" '(org-demote-subtree         :which-key "Org demote subtree")
-	"s <up>"    '(org-move-subree-up         :which-key "Org move subtree up")
-	"s <down>"  '(org-move-subtree-down      :which-key "Org move subtree down")
+	"q"         '(org-set-tags-command           :which-key "Org tags")
 
-	"t"         '(org-todo                   :which-key "Org todo")
+	"s"         '(:ignore t                      :which-key "tree/subtree")
+	"s h"       '(org-promote-subtree            :which-key "Org promote subtree")
+	"s j"       '(org-move-subree-down           :which-key "Org move subtree down")
+	"s k"       '(org-move-subtree-up            :which-key "Org move subtree up")
+	"s l"       '(org-demote-subtree             :which-key "Org demote subtree")
+	"s <left>"  '(org-promote-subtree            :which-key "Org promote subtree")
+	"s <right>" '(org-demote-subtree             :which-key "Org demote subtree")
+	"s <up>"    '(org-move-subree-up             :which-key "Org move subtree up")
+	"s <down>"  '(org-move-subtree-down          :which-key "Org move subtree down")
+
+	"t"         '(org-todo                       :which-key "Org todo")
 	)
 
+  (local-leader org-src-mode-map
+	"k"         '(org-edit-src-abort             :which-key "Org Edit abort"))
+
   (local-leader elfeed-search-mode-map
-	"g"   '(elfeed-search-update--force      :which-key "Elfeed refresh buffer")
-	"G"   '(elfeed-search-fetch              :which-key "Elfeed update feeds")
+	"g"         '(elfeed-search-update--force    :which-key "Elfeed refresh buffer")
+	"G"         '(elfeed-search-fetch            :which-key "Elfeed update feeds")
 	)
 
   (local-leader elfeed-show-mode-map
-	"g"   '(elfeed-show-refresh               :which-key "Elfeed refresh buffer")
+	"g"         '(elfeed-show-refresh            :which-key "Elfeed refresh buffer")
 	)
 
   ;; c-fill-paragraph Reflow comment

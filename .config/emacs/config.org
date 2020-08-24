@@ -1062,7 +1062,7 @@ Functions that only use built-in Emacs functionality.
 	  ;; Insert spaces
 	  (let ((diff (- until-column current-column)))
 		(if (> diff 0)
-			(insert (make-string diff ?\ ))
+			(save-excursion (insert (make-string diff ?\ )))
 		  (user-error "Column should be higher than point")))))
 
   (defun dot/reload-theme ()

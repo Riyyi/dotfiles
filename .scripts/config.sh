@@ -5,7 +5,7 @@
 # User-config---------------------------
 
 # Define editor to open file in and if it should fork
-EDITOR="emacsclient"
+EDITOR="$HOME/.scripts/alias.sh emacs"
 BACKGROUND="&"
 
 # List of directories to exclude

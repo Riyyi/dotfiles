@@ -50,14 +50,16 @@ zstyle ':completion:*' menu select
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
-bindkey '\eOd' backward-word
-bindkey '\eOc' forward-word
-bindkey '\e[7~' beginning-of-line
-bindkey '\e[3~' delete-char
-bindkey '\e[8~' end-of-line
-bindkey '\e[A' history-beginning-search-backward-end
-bindkey '\e[B' history-beginning-search-forward-end
-bindkey '^R' history-incremental-pattern-search-backward
+bindkey '\eOc' forward-word                               # ctrl-right
+bindkey '\eOd' backward-word                              # ctrl-left
+bindkey '\e[3~' delete-char                               # del
+bindkey '\e[7~' beginning-of-line                         # home
+bindkey '\e[8~' end-of-line                               # end
+bindkey '\e[A' history-beginning-search-backward-end      # up
+bindkey '\e[B' history-beginning-search-forward-end       # down
+bindkey '\ej' history-beginning-search-forward-end        # meta-j
+bindkey '\ek' history-beginning-search-backward-end       # meta-k
+bindkey '^R' history-incremental-pattern-search-backward  # ctrl-r
 
 # History
 setopt APPEND_HISTORY
@@ -77,16 +79,19 @@ SAVEHIST=10000
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
+alias cp='cp -i'
 alias df="df -h"
 alias e="$HOME/.scripts/alias.sh emacs"
 alias emacs="$HOME/.scripts/alias.sh emacs"
 alias fuck='sudo $(fc -ln -1)'
 alias grep="grep --color=always"
-alias la="ls -lAGh --color --group-directories-first"
+alias l.="\ls -lAGh --color --group-directories-first | awk -v r='^(.*m)?\\\.' '{ if (\$8 ~ r) print; }'"
+alias la="\ls -lAGh --color --group-directories-first"
 alias less="less -x 4"
 alias ls="ls --color --group-directories-first"
 alias md="mkdir -p"
 alias mkcd="$HOME/.scripts/alias.sh mkcd"
+alias mv='mv -i'
 alias pkill="pkill -9"
 alias q="exit"
 alias rm="rm -i"

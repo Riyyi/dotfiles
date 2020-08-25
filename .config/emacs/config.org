@@ -21,7 +21,7 @@
   - [[#auto-update][Auto update]]
   - [[#compile][Compile]]
   - [[#packages][Packages]]
-    - [[#general][General]]
+    - [[#general-packages][General Packages]]
     - [[#evil][Evil]]
     - [[#telephone-line][Telephone Line]]
     - [[#neotree][NeoTree]]
@@ -41,7 +41,7 @@
     - [[#php][PHP]]
     - [[#prettify][Prettify]]
     - [[#rss][RSS]]
-- [[#general-1][General]]
+- [[#general][General]]
   - [[#buffers][Buffers]]
   - [[#electric][Electric]]
   - [[#file-paths][File Paths]]
@@ -72,7 +72,7 @@
 - [[#advice-and-aliases][Advice and Aliases]]
   - [[#advice][Advice]]
   - [[#aliases][Aliases]]
-    - [[#general-2][General]]
+    - [[#general-1][General]]
     - [[#package][Package]]
 - [[#hooks][Hooks]]
 - [[#key-bindings][Key Bindings]]
@@ -195,7 +195,7 @@ https://github.com/emacscollective/auto-compile
 
 Install and configure packages.
 
-*** General
+*** General Packages
 
 #+BEGIN_SRC emacs-lisp
   (use-package hybrid-reverse-theme
@@ -698,6 +698,9 @@ Completion for Org-roam files using its title.
 #+BEGIN_SRC emacs-lisp
   ;; Columns start at 1
   (setq column-number-indicator-zero-based nil)
+
+  ;; Dont confirm on quitting Emacs
+  (setq confirm-kill-processes nil)
 
   ;; Custom thems, do not ask if safe
   (setq custom-safe-themes t)

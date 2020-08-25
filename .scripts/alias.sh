@@ -6,7 +6,7 @@ depend() {
 
 emacs() {
 	# Create new frame if (there isnt one || no file specified)
-	if [ -z "$(pgrep emacsclient)" ] || [ "$1" = "" ]; then
+	if [ -z "$(pgrep -f emacsclient.*-c)" ] || [ "$1" = "" ]; then
 		emacsclient -a '' -c "$@" > /dev/null 2>&1 &
 	else
 		emacsclient -a '' "$@" > /dev/null 2>&1 &

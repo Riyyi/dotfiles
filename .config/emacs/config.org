@@ -1495,12 +1495,14 @@ Set keybinds to functionality of installed packages.
 
   ;; Minibuffer completion selection
   (general-def minibuffer-local-map
-	"M-h" #'abort-recursive-edit
-	"M-j" #'selectrum-next-candidate
-	"M-k" #'selectrum-previous-candidate
-	"M-l" #'selectrum-select-current-candidate
-	"<backspace>"   #'dot/selectrum-backspace
-	"<S-backspace>" #'evil-delete-backward-char-and-join)
+    "M-h" #'abort-recursive-edit
+    "M-j" #'selectrum-next-candidate
+    "M-k" #'selectrum-previous-candidate
+    "M-l" #'selectrum-select-current-candidate
+    "M-J" #'next-history-element
+    "M-K" #'previous-history-element
+    "<backspace>"   #'dot/selectrum-backspace
+    "<S-backspace>" #'evil-delete-backward-char-and-join)
 
   ; Overwrite evil keymaps
   ;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)

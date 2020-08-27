@@ -64,8 +64,14 @@
 }
 
 @-moz-document domain("youtube.com") {
-	/* Hide video player */
-	#player-theater-container {
+	/* Center content */
+	#columns {
+		max-width: 65% !important;
+		min-width: 65% !important;
+	}
+
+	/* Hide video player (small and theater size) */
+	#player, #player-theater-container {
 		display: none !important;
 	}
 
@@ -74,9 +80,41 @@
 		display: none !important;
 	}
 
-	/* Center content */
-	#columns {
-		max-width: 65% !important;
-		min-width: 65% !important;
+	/* Hide homepage recommendations */
+	ytd-rich-grid-renderer {
+		display: none !important;
+	}
+
+	/* Hide buttons in the top-right */
+	#masthead #end #buttons > :not(:nth-child(3)) {
+		display: none !important;
+	}
+
+	/* Hide sidebar guide and its icon */
+	#guide-content, #guide-icon {
+		display: none !important;
+	}
+
+	/* Hide collapsed sidebar guide */
+	ytd-mini-guide-renderer {
+		display: none !important;
+	}
+
+	/* Hide miniplayer */
+	ytd-miniplayer {
+		display: none !important;
+	}
+
+	/* Hide video buttons (like, share, etc) */
+	#menu-container.ytd-video-primary-info-renderer
+	{ display: none !important; }
+	#subscribe-button.ytd-video-secondary-info-renderer
+	{ display: none !important; }
+	ytd-comments-header-renderer > #simple-box
+	{ display: none !important; }
+
+	/* Move first comment up a bit */
+	#comments > #sections > #contents > :first-child {
+		margin-top: -30px;
 	}
 }

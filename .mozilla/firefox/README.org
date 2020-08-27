@@ -63,27 +63,10 @@ Tree Style Tab style rules.
 
 * Ublock Origin Filters
 
-Cleanup YouTube page by disabling the following elements.
+Block YouTube video player loading
 
 #+BEGIN_SRC css
-! Youtube video player
 ||googlevideo.com
-www.youtube.com###player-theater-container
-! Video suggestions
-www.youtube.com###secondary
-! Homepage recommendations
-www.youtube.com##.ytd-rich-grid-renderer.style-scope
-www.youtube.com###card.ytd-miniplayer.style-scope
-! YouTube Sidebar
-www.youtube.com###guide-content
-www.youtube.com###guide-icon.ytd-masthead
-www.youtube.com##ytd-mini-guide-renderer.ytd-app
-! Topright Buttons (except settings)
-www.youtube.com###buttons.ytd-masthead > .ytd-masthead:not(:nth-child(3))
-! Video buttons (like, share, etc)
-www.youtube.com###menu-container.ytd-video-primary-info-renderer
-www.youtube.com###subscribe-button.ytd-video-secondary-info-renderer
-www.youtube.com##ytd-comments-header-renderer > #simple-box
 #+END_SRC
 
 * User Scripts

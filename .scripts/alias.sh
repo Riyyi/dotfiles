@@ -105,4 +105,32 @@ webmconvert() {
 	ffmpeg -threads 4 -i "$1" -c:v libvpx -qmin 0 -qmax 40 -crf 16 -b:v 4M "$AUDIO" "${1%.*}_convert.webm"
 }
 
+ytaudio_thumbnail() {
+	# Get file name
+	echo "Retrieving video name.."
+	FILE_NAME="$(youtube-dl --get-filename "$1")"
+	FILE_NAME="${FILE_NAME%.*}"
+
+	# Get mp3 + thumbnail
+	echo "Downloading and converting \"$FILE_NAME\".."
+	youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0 \
+			   --write-thumbnail "$1" > /dev/null
+
+	echo "Embedding thumbnail into mp3.."
+
+	# Convert thumbnail to actually be a jpg
+	yes y | ffmpeg -i "${FILE_NAME}.jpg" "${FILE_NAME}_converted.jpg" > /dev/null 2>&1
+
+	# Embed thumbnail into mp3
+	yes y | ffmpeg -i "${FILE_NAME}.mp3" -i "${FILE_NAME}_converted.jpg" \
+				  -map 0:0 -map 1:0 -c copy -id3v2_version 3 \
+				  -metadata:s:v title="Album cover" \
+				  -metadata:s:v comment="Cover (front)" \
+				  "${FILE_NAME}_embed.mp3" > /dev/null 2>&1
+
+	# Remove left over files
+	rm -f "./${FILE_NAME}_converted.jpg" "./${FILE_NAME}.jpg" "./${FILE_NAME}.mp3"
+	mv "${FILE_NAME}_embed.mp3" "${FILE_NAME}.mp3"
+}
+
 "$@"

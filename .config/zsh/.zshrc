@@ -144,8 +144,6 @@ alias vc="$HOME/.scripts/volctl.sh"
 alias vp="$HOME/.scripts/vimplugin.sh"
 alias mpvshuffle="$HOME/.scripts/mpv.sh shuffle"
 
-
-
 # Other
 alias len="xclip -o | wc -m"
 alias length="rofi -dmenu -i -p 'String length' -lines 0 | tr -d '\n' | wc -m"
@@ -156,7 +154,8 @@ alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias webmconvert="$HOME/.scripts/alias.sh webmconvert"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench > /dev/null 2>&1 & disown"
 alias ytdl="youtube-dl -f bestvideo+bestaudio"
-alias ytaudio="youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0"
+alias yta="youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0" # --embed-thumbnail"
+alias ytat="$HOME/.scripts/alias.sh ytaudio_thumbnail"
 
 zsh="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f "$zsh" ] && source "$zsh"; unset zsh

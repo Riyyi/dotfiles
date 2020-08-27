@@ -11,7 +11,6 @@
 
 * Table of Contents :toc_4:
 - [[#initial-setup][Initial setup]]
-  - [[#irony-mode][Irony mode]]
   - [[#all-the-icons][All the icons]]
 - [[#lexical-binding][Lexical Binding]]
 - [[#global-variables][Global Variables]]
@@ -90,10 +89,6 @@
 * Initial setup
 
 These commands need to be run after the first startup.
-
-** Irony mode
-
-@@html:<kbd>@@M-x@@html:</kbd>@@ =irony-install-server= @@html:<kbd>@@RET@@html:</kbd>@@
 
 ** All the icons
 
@@ -574,31 +569,10 @@ On the fly syntax checking.
 
 **** C/C++
 
-Irony requires M-x =irony-install-server=.
-
 #+BEGIN_SRC emacs-lisp
-  (use-package irony
-	:hook
-	((c-mode
-	  c++-mode)
-	 . irony-mode)
-	:hook (irony-mode . irony-cdb-autosetup-compile-options)
-	:init (setq irony-user-dir (concat dot-cache-dir "/irony/"))
-	:config
-	(push 'glsl-mode irony-supported-major-modes)
-
-	;; Compile the irony-server binary if it doesnt exist
-	(unless (file-exists-p (concat irony-user-dir "bin/irony-server"))
-	  (call-interactively 'irony-install-server)))
-
-  (use-package company-irony
-	:after (company irony)
-	:config (push 'company-irony company-backends))
-
   (use-package company-c-headers
 	:after company
 	:config (push 'company-c-headers company-backends))
-  ;; company-irony-c-headers
 #+END_SRC
 
 **** Org Roam Completion

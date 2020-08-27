@@ -1,18 +1,27 @@
-* Firefox
+#+TITLE: Firefox
 
-** Add-ons
+Manual interventions needed to setup Firefox.
 
-- [[https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/][uBlock Origin]]
-- [[https://addons.mozilla.org/en-US/firefox/addon/tree-style-tab/][Tree Style Tab]]
+* Table of Contents :toc:
+- [[#add-ons][Add-ons]]
+- [[#css][CSS]]
+- [[#ublock-origin-filters][Ublock Origin Filters]]
+- [[#user-scripts][User Scripts]]
+
+* Add-ons
+
+- [[https://addons.mozilla.org/en-US/firefox/addon/clearurls/][ClearURLs]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/decentraleyes/][Decentraleyes]]
 - [[https://addons.mozilla.org/en-US/firefox/addon/https-everywhere/][HTTPS Everywhere]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/send-to-mpv-player/][Send to MPV player]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/spoof-timezone/][Spoof Timezone]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/tree-style-tab/][Tree Style Tab]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/][uBlock Origin]]
+- [[https://addons.mozilla.org/en-US/firefox/addon/universal-bypass/][Universal Bypass]]
 - [[https://addons.mozilla.org/en-US/firefox/addon/vimium-ff/][Vimium]]
 - [[https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/][Violentmonkey]]
-- [[https://addons.mozilla.org/en-US/firefox/addon/spoof-timezone/][Spoof Timezone]]
-- [[https://addons.mozilla.org/en-US/firefox/addon/send-to-mpv-player/][Send to MPV player]]
-- [[https://addons.mozilla.org/en-US/firefox/addon/universal-bypass/][Universal Bypass]]
-- [[https://addons.mozilla.org/en-US/firefox/addon/google-images-restored/][Google Images Restored]]
 
-** CSS
+* CSS
 
 Tree Style Tab style rules.
 
@@ -52,7 +61,32 @@ Tree Style Tab style rules.
   }
 #+END_SRC
 
-** User scripts
+* Ublock Origin Filters
+
+Cleanup YouTube page by disabling the following elements.
+
+#+BEGIN_SRC css
+! Youtube video player
+||googlevideo.com
+www.youtube.com###player-theater-container
+! Video suggestions
+www.youtube.com###secondary
+! Homepage recommendations
+www.youtube.com##.ytd-rich-grid-renderer.style-scope
+www.youtube.com###card.ytd-miniplayer.style-scope
+! YouTube Sidebar
+www.youtube.com###guide-content
+www.youtube.com###guide-icon.ytd-masthead
+www.youtube.com##ytd-mini-guide-renderer.ytd-app
+! Topright Buttons (except settings)
+www.youtube.com###buttons.ytd-masthead > .ytd-masthead:not(:nth-child(3))
+! Video buttons (like, share, etc)
+www.youtube.com###menu-container.ytd-video-primary-info-renderer
+www.youtube.com###subscribe-button.ytd-video-secondary-info-renderer
+www.youtube.com##ytd-comments-header-renderer > #simple-box
+#+END_SRC
+
+* User Scripts
 
 - https://www.4chan-x.net/builds/4chan-X.user.js
 - https://greasyfork.org/en/scripts/395257-better-google

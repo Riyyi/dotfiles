@@ -13,7 +13,11 @@ set $mod2 Mod1
 floating_modifier $mod
 
 # Application startup
-exec_always --no-startup-id $HOME/.scripts/wm/pidctl.sh -p &
+exec_always --no-startup-id $HOME/.scripts/wallpaper.sh &
+exec_always --no-startup-id $HOME/.scripts/polybar &
+exec --no-startup-id firefox &
+exec --no-startup-id urxvt &
+exec --no-startup-id thunar &
 
 # Colors
 set_from_resource $bgcolor          WmColor.bgcolor           #000000
@@ -76,13 +80,21 @@ workspace "$ws5" output eDP-1
 bindsym $mod+$mod2+0 workspace 0
 
 # Open program on specific workspace
-assign [class="Firefox"] $ws1
-assign [class="URxvt"] $ws3
-assign [class="Thunar"] $ws4
+assign [class="firefox"] $ws1
+assign [class="URxvt"] $ws2
+assign [class="Thunar"] $ws3
+assign [class="kdenlive"] $ws5
 assign [class="krita"] $ws5
 
 # Set program properties
-for_window [class="krita"] focus
+for_window [class="Arandr"] floating enable
 for_window [class="feh"] floating enable
-for_window [class="QtBank"] floating enable
+for_window [class="firefox" instance="Places"] floating enable
+for_window [class="Inferno"] floating enable
+for_window [class="kdenlive"] focus
+for_window [class="krita"] focus
+for_window [class="Lxappearance"] floating enable
+for_window [class="mpv"] floating enable
+for_window [class="Pavucontrol"] floating enable
 for_window [class="Qemu-system-i386"] floating enable
+for_window [class="Qemu-system-x86_64"] floating enable

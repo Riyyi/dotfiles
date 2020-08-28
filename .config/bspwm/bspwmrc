@@ -62,5 +62,10 @@ bspc rule -a Zathura                   state=tiled
 
 # Program startup
 "$HOME"/.scripts/wm/wallpaper.sh &
-"$HOME"/.scripts/wm/programs.sh &
 "$HOME"/.scripts/panel/polybar.sh &
+[ "$1" = 0 ] && {
+	# Only execute once
+	firefox &
+	urxvt &
+	thunar &
+}

@@ -356,7 +356,8 @@ Project manager.
 	(projectile-indexing-method 'hybrid)
 	(projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
 	(projectile-project-search-path '("~"))
-	(projectile-sort-order 'recentf))
+	(projectile-sort-order 'recentf)
+	:config (projectile-mode))
 #+END_SRC
 
 *** Org Packages

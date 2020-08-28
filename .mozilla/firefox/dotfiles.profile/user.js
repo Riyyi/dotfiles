@@ -20,6 +20,10 @@ user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
 // No full screen warning
 user_pref("full-screen-api.warning.timeout", 0);
 
+// Enable video acceleration
+user_pref("media.ffmpeg.vaapi-drm-display.enabled", true);
+user_pref("media.ffmpeg.vaapi.enabled", true);
+
 // Do not save logins
 lockPref("signon.rememberSignons", false);
 

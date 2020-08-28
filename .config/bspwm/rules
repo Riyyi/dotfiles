@@ -1,0 +1,17 @@
+#! /bin/sh
+
+WID=$1
+CLASS=$2
+INSTANCE=$3
+CONSEQUENCES=$4
+
+name() {
+	xprop -id "$WID" WM_NAME | sed 's/"//g;s/.*= //'
+}
+
+case "$CLASS" in
+	Emacs)
+		[ "$(name)" = "Question" ] && echo "state=floating"
+		exit
+		;;
+esac

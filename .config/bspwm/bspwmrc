@@ -32,6 +32,8 @@ bspc config pointer_modifier           mod4
 
 #--- Rules ---#
 
+bspc config external_rules_command "$HOME/.config/bspwm/rules"
+
 # Reset all rules
 bspc rule -r *
 

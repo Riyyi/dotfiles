@@ -83,6 +83,12 @@ ctrl + alt + {h,j,k,l}
 ctrl + alt + {Left,Down,Up,Right}
 	bspc node -v {-30 0, 0 30, 0 -30, 30 0}
 
+# Flip the tree from the current nodes parent
+super + alt + {comma,period}
+  bspc node @parent -F {vertical,vertical}
+super + alt + 6
+  bspc node @parent -F horizontal
+
 #-- Resize --#
 
 # Expand node by moving its side outward

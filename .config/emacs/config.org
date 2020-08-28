@@ -1435,8 +1435,8 @@ Set keybinds to functionality of installed packages.
   (global-set-key (kbd "M-j") 'centaur-tabs-forward-group)
   (global-set-key (kbd "M-k") 'centaur-tabs-backward-group)
   (global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
-  (global-set-key (kbd "C-M-h") 'centaur-tabs-move-current-tab-to-left)
-  (global-set-key (kbd "C-M-l") 'centaur-tabs-move-current-tab-to-right)
+  (global-set-key (kbd "M-H") 'centaur-tabs-move-current-tab-to-left)
+  (global-set-key (kbd "M-L") 'centaur-tabs-move-current-tab-to-right)
   (global-set-key (kbd "M-\`") 'evil-switch-to-windows-last-buffer)
 
   (global-set-key (kbd "M-s") 'avy-goto-char-timer)

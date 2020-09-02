@@ -110,6 +110,8 @@
 	{ display: none !important; }
 	#subscribe-button.ytd-video-secondary-info-renderer
 	{ display: none !important; }
+	#sponsor-button
+	{ display: none !important; }
 	ytd-comments-header-renderer > #simple-box
 	{ display: none !important; }
 

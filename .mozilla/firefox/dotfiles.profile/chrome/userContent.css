@@ -119,4 +119,10 @@
 	#comments > #sections > #contents > :first-child {
 		margin-top: -30px;
 	}
+
+	/* Hide popup */
+	#dialog
+	{ display: none !important; }
+	.opened
+	{ display: none !important; }
 }

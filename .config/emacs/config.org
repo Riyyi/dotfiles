@@ -1765,7 +1765,10 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 	"i t"       '(org-insert-structure-template  :which-key "Insert template")
 
 	"l"         '(:ignore t                      :which-key "links")
-	"l l"       '(org-insert-link                :which-key "Org make link")
+	"l i"       '(org-id-store-link              :which-key "Store ID link")
+	"l l"       '(org-insert-link                :which-key "Insert link")
+	"l s"       '(org-store-link                 :which-key "Store link")
+	"l S"       '(org-insert-last-stored-link    :which-key "Insert stored link")
 
 	"q"         '(org-set-tags-command           :which-key "Org tags")
 

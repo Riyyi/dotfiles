@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dfrac
+# key: df
+# --
+\dfrac{${1:numerator}}{${2:denominator}}$0

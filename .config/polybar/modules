@@ -171,10 +171,10 @@ menu-0-2 = logout
 menu-0-2-exec = menu-open-3
 
 menu-1-0 = shutdown
-menu-1-0-exec = sudo poweroff
+menu-1-0-exec = poweroff
 
 menu-2-0 = reboot
-menu-2-0-exec = sudo reboot
+menu-2-0-exec = reboot
 
 menu-3-0 = logout
-menu-3-0-exec = sudo bspc quit
+menu-3-0-exec = bspc quit

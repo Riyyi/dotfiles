@@ -109,13 +109,14 @@ alias lxrdb="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
 alias lzshrc="source $ZDOTDIR/.zshrc"
 
 # Pacman
+alias cache="sudo paccache -r -k 2"
+alias clean='sudo pacman -Rns $(pacman -Qtdq)'
+alias depend="$HOME/.scripts/alias.sh depend"
+alias download="sudo pacman -Syuw --noconfirm"
 alias install="sudo pacman -S --needed"
 alias remove="sudo pacman -Rns"
-alias update="sudo pacman -Syyu"
-alias clean='sudo pacman -Rns $(pacman -Qtdq)'
-alias cache="sudo paccache -r -k 2"
-alias depend="$HOME/.scripts/alias.sh depend"
 alias search="$HOME/.scripts/alias.sh pacman_search"
+alias update="sudo pacman -Syyu"
 
 # Programming
 alias jdoc="$HOME/.scripts/alias.sh java_doc"

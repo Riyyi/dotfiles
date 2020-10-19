@@ -246,7 +246,8 @@ Install and configure packages.
  Evil mode and related packages.
 
  #+BEGIN_SRC emacs-lisp
-   (use-package undo-tree)
+   (use-package undo-tree
+	 :config (global-undo-tree-mode))
    (use-package goto-chg)
 
    (use-package evil

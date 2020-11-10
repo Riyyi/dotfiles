@@ -125,4 +125,8 @@
 	{ display: none !important; }
 	.opened
 	{ display: none !important; }
+
+	/* Hide coutry code */
+	#country-code
+	{ display: none !important; }
 }

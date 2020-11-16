@@ -2,4 +2,4 @@
 # name: hyperref
 # key: hy
 # --
-\hyperref[sec:${1:name}]{${2:a}}$0
+\hyperref[${1:type}:${2:name}]{${3:a}}$0

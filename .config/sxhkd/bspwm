@@ -6,7 +6,7 @@
 
 # Restart bspwm
 super + shift + r
-	bspc wm -r
+	bspc wm -r && notify-send -t 1000 "bspwm reloaded."
 
 # Logout
 super + shift + e

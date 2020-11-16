@@ -18,7 +18,7 @@ super + {_,shift} + m
 
 # Reload sxhkd config
 super + ctrl + r
-	pkill -USR1 -x sxhkd
+	pkill -USR1 -x sxhkd && notify-send -t 1000 "sxhkd reloaded."
 
 # Lock
 super + alt + s

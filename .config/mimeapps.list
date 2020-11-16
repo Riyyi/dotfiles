@@ -4,7 +4,9 @@ application/sql=mysql-workbench.desktop;emacsclient.desktop;
 image/bmp=feh.desktop;krita_qimageio.desktop;
 image/jpeg=feh.desktop;krita_jpeg.desktop;
 image/png=feh.desktop;krita_png.desktop;
+image/webp=feh.desktop;
 text/plain=emacsclient.desktop;org.gnome.gedit.desktop;
+video/webm=mpv.desktop;
 video/x-matroska=mpv.desktop;org.kde.kdenlive.desktop;
 
 [Default Applications]
@@ -33,7 +35,6 @@ image/svg+xml=inkscape.desktop
 image/webp=feh.desktop
 message/rfc822=thunderbird.desktop
 text/css=emacsclient.desktop
-text/html=firefox.desktop
 text/html=firefox.desktop
 text/markdown=emacsclient.desktop
 text/plain=emacsclient.desktop

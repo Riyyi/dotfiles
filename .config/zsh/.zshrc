@@ -146,6 +146,7 @@ alias vp="$HOME/.scripts/vimplugin.sh"
 alias mpvshuffle="$HOME/.scripts/mpv.sh shuffle"
 
 # Other
+alias IP="curl https://ifconfig.me"
 alias len="xclip -o | wc -m"
 alias length="rofi -dmenu -i -p 'String length' -lines 0 | tr -d '\n' | wc -m"
 alias p="$HOME/.scripts/alias.sh pastebin"

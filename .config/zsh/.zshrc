@@ -138,6 +138,7 @@ alias gpsa="git remote | xargs -I remotes git push remotes master"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
+alias gle="git log --graph --stat --format=format:'%C(bold blue)commit %H%C(reset)%C(bold yellow)%d    %C(reset)%nAuthor: %C(dim white)%an <%ae>%C(reset)%nDate:   %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
 
 # Scripts
 alias nw="$HOME/.scripts/network.sh"

@@ -227,6 +227,12 @@ Install and configure packages.
 	:config
 	(selectrum-prescient-mode))
 
+  (use-package marginalia
+    :after selectrum
+    :config
+    (marginalia-mode)
+    (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light)))
+
   (use-package avy
 	:defer t)
 
@@ -527,6 +533,8 @@ On the fly syntax checking.
 	(lsp-prefer-flymake nil)
 	(lsp-session-file (concat dot-cache-dir "/lsp-session-v1"))
 	:config
+    ;; Mark clangd args variable as safe to modify via .dir-locals.el
+	(put 'lsp-clients-clangd-args 'safe-local-variable #'listp)
 
 	;; Enable which-key descriptions
 	(dolist (leader-key (list dot/leader-key dot/leader-alt-key))
@@ -1008,7 +1016,7 @@ Functions that only use built-in Emacs functionality.
 	(interactive)
 	(let ((files (mapcar 'abbreviate-file-name
 						 (directory-files-recursively dot-emacs-dir ""))))
-	  (find-file (completing-read "Find file (emacs.d): " files nil t))))
+	  (find-file (completing-read "Find file (emacs): " files nil t))))
 
   (defun dot/find-file-recentf ()
 	"Use `completing-read' to open a recent file."
@@ -1630,7 +1638,7 @@ General.el ~leader key binds.
 	"f"     '(:ignore t                      :which-key "file")
 	"f e"   '(:ignore t                      :which-key "emacs")
 	"f e c" '(dot/config-visit               :which-key "Config visit")
-	"f e f" '(dot/find-file-emacsd           :which-key "Find emacs.d file")
+	"f e f" '(dot/find-file-emacsd           :which-key "Find emacs file")
 	"f e r" '(dot/config-reload              :which-key "Config reload")
 	"f d"   '(dired                          :which-key "Find directory")
 	"f f"   '(find-file-in-project-root      :which-key "Find file")

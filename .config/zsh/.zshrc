@@ -3,6 +3,9 @@
 # Disable Ctrl+S and Ctrl+Q
 stty -ixon
 
+# Set tab width
+tabs -4
+
 # vi mode
 bindkey -v
 

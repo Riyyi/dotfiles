@@ -503,7 +503,10 @@ On the fly syntax checking.
 	  php-mode
 	  shell-mode
 	  shell-script-mode)
-	 . flycheck-mode))
+	 . flycheck-mode)
+	:config
+	(setq flycheck-clang-language-standard "c++17")
+	(setq flycheck-gcc-language-standard "c++17"))
 
   ;; For .el files which are intended to be packages
   (use-package flycheck-package

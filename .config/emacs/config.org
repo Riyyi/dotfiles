@@ -1611,6 +1611,11 @@ General.el ~leader key binds.
 	"SPC"       '(dot/M-x                    :which-key "Execute command")
 	"RET"       '(bookmark-jump              :which-key "Jump to bookmark")
 
+	;; Apps
+	"a"     '(:ignore t                      :which-key "apps")
+	"a d"   '(deft                           :which-key "Deft")
+	"a e"   '(elfeed                         :which-key "Elfeed")
+
 	;; Buffer / bookmark
 	"b"         '(:ignore t                         :which-key "buffer/bookmark")
 	"b a"       '(auto-revert-mode                  :which-key "Auto revert buffer")
@@ -1683,10 +1688,6 @@ General.el ~leader key binds.
 	"n r I" '(org-roam-insert-immediate      :which-key "Insert (without capture)")
 	"n r r" '(org-roam                       :which-key "Toggle side-buffer")
 	"n r s" '(org-roam-server-mode           :which-key "Toggle server")
-
-	;; Open
-	"o"     '(:ignore t                      :which-key "open")
-	"o d"   '(deft                           :which-key "Open deft")
 
 	;; Projectile
 	"p"   '(:keymap projectile-command-map :package projectile :which-key "projectile")

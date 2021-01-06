@@ -470,22 +470,25 @@ Autocomplete packages (includes code completion and snippets).
 **** Company
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-	:defer t
-	:custom
-	(company-idle-delay 0.2)
-	(company-minimum-prefix-length 2)
-	(company-tooltip-align-annotations 't)
-	:hook
-	((c-mode-common
-	  emacs-lisp-mode
-	  latex-mode
-	  org-mode
-	  php-mode
-	  shell-mode
-	  shell-script-mode)
-	 . company-mode)
-  )
+(use-package company
+  :defer t
+  :custom
+  (company-idle-delay 0.2)
+  (company-minimum-prefix-length 2)
+  (company-tooltip-align-annotations 't)
+  :hook
+  ((c-mode-common
+	emacs-lisp-mode
+	latex-mode
+	org-mode
+	php-mode
+	shell-mode
+	shell-script-mode)
+   . company-mode))
+
+(use-package company-prescient
+  :after company
+  :config (company-prescient-mode 1))
 #+END_SRC
 
 **** Flycheck

@@ -169,8 +169,8 @@ https://github.com/rranelli/auto-package-update.el
 	:custom
 	(auto-package-update-delete-old-versions t)
 	(auto-package-update-hide-results t)
-	(auto-package-update-last-update-day-path (concat dot-cache-dir "/last-package-update-day"))
 	:config
+	(setq auto-package-update-last-update-day-path (concat dot-cache-dir "/last-package-update-day"))
 	(auto-package-update-maybe))
 #+END_SRC
 

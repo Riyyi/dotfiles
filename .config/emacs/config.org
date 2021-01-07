@@ -1069,6 +1069,13 @@ Functions that only use built-in Emacs functionality.
 		(find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))
 	  (princ "Current buffer isn't a file")))
 
+  (defun dot/toggle-fringe ()
+	"Toggle left-only fringe."
+	(interactive)
+	(if (eq fringe-mode 0)
+		(set-fringe-mode '(nil . 0))
+	  (set-fringe-mode 0)))
+
   (defun dot/M-x (command)
 	"Prompt and execute COMMAND."
 	(interactive "CCommand: ")
@@ -1708,6 +1715,7 @@ General.el ~leader key binds.
 	;; Tabs / toggle
 	"t"   '(:ignore t                                 :which-key "tabs/toggle")
 	"t b" '(centaur-tabs-group-buffer-groups          :which-key "Group tabs by buffer")
+	"t f" '(dot/toggle-fringe                         :which-key "Toggle fringe")
 	"t p" '(centaur-tabs-group-by-projectile-project  :which-key "Group tabs by project")
 	"t h" '(centaur-tabs-backward-group               :which-key "Tab backward group")
 	"t j" '(centaur-tabs-select-end-tab               :which-key "Tab select first")

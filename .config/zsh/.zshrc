@@ -81,13 +81,17 @@ SAVEHIST=10000
 # General
 alias ..="cd .."
 alias ...="cd ../.."
-alias ....="cd ../../.."
+alias ..2="cd ../.."
+alias ..3="cd ../../.."
+alias ..4="cd ../../../.."
 alias cp='cp -i'
 alias df="df -h"
 alias e="$HOME/.scripts/alias.sh emacs"
 alias emacs="$HOME/.scripts/alias.sh emacs"
 alias fuck='sudo $(fc -ln -1)'
 alias grep="grep --color=always"
+alias ip="ip --color"
+alias ipb="ip --color --brief a"
 alias l.="\ls -lAGh --color --group-directories-first | awk -v r='^(.*m)?\\\.' '{ if (\$8 ~ r) print; }'"
 alias la="\ls -lAGh --color --group-directories-first"
 alias less="less -x 4"
@@ -159,7 +163,8 @@ alias stream="$HOME/.scripts/alias.sh stream"
 alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias webmconvert="$HOME/.scripts/alias.sh webmconvert"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench > /dev/null 2>&1 & disown"
-alias ytdl="youtube-dl -f bestvideo+bestaudio"
+alias ytv="youtube-dl -f bestvideo\[height\<=\?1080\]+bestaudio/best"
+alias ytvb="youtube-dl -f bestvideo+bestaudio/best"
 alias yta="youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0" # --embed-thumbnail"
 alias ytat="$HOME/.scripts/alias.sh ytaudio_thumbnail"
 

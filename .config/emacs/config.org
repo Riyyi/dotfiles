@@ -472,10 +472,6 @@ Autocomplete packages (includes code completion and snippets).
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :defer t
-  :custom
-  (company-idle-delay 0.2)
-  (company-minimum-prefix-length 2)
-  (company-tooltip-align-annotations 't)
   :hook
   ((c-mode-common
 	emacs-lisp-mode
@@ -484,7 +480,12 @@ Autocomplete packages (includes code completion and snippets).
 	php-mode
 	shell-mode
 	shell-script-mode)
-   . company-mode))
+   . company-mode)
+  :config
+  (setq company-idle-delay 0.2)
+  (setq company-minimum-prefix-length 2)
+  (setq company-show-numbers t)
+  (setq company-tooltip-align-annotations 't))
 
 (use-package company-prescient
   :after company
@@ -520,6 +521,8 @@ On the fly syntax checking.
 #+END_SRC
 
 **** LSP
+
+Language Server Protocol.
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode

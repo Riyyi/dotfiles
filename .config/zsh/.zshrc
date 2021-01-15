@@ -110,7 +110,7 @@ alias vim="vim --servername VIM"
 
 # Config
 alias c="$HOME/.scripts/config.sh"
-alias zrc="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
+alias zshrc="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
 
 alias lxrdb="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
 alias lzshrc="source $ZDOTDIR/.zshrc"
@@ -124,6 +124,7 @@ alias install="sudo pacman -S --needed"
 alias remove="sudo pacman -Rns"
 alias search="$HOME/.scripts/alias.sh pacman_search"
 alias update="sudo pacman -Syyu"
+alias update-mirrorlist="$HOME/.scripts/alias.sh update_mirrorlist"
 
 # Programming
 alias jdoc="$HOME/.scripts/alias.sh java_doc"

@@ -93,6 +93,11 @@ stream() {
 	streamlink --player mpv "https://twitch.tv/$1" "$QUALITY" > /dev/null 2>&1 &
 }
 
+update_mirrorlist() {
+	sudo rm /etc/pacman.d/mirrorlist.pacnew
+	sudo reflector --latest 100 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+}
+
 webmconvert() {
 	[ "$2" = "1" ] && AUDIO="-c:a libvorbis" || AUDIO="-an"
 

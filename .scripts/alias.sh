@@ -48,6 +48,10 @@ pastebin() {
 	echo "$1" | curl -F 'f:1=<-' ix.io
 }
 
+print_project() {
+	tree -f --noreport | egrep -ve "vendor(\/.*){2}" -ve "build(\/.*)" | sed -E 's%\./.*/%%g; s%\./%%g;'
+}
+
 raspbian() {
 	sudo systemctl start avahi-daemon.service
 	if ! ip a show usb0 | grep -q 'inet6'; then

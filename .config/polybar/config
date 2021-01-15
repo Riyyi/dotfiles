@@ -64,8 +64,8 @@ tray-detached = false
 wm-restack = bspwm
 ; wm-name = ${env:PANEL_NAME:polybar_panel}
 
-scroll-up = bspwm-desknext
-scroll-down = bspwm-deskprev
+scroll-up = bspwm-deskprev
+scroll-down = bspwm-desknext
 
 cursor-click = pointer
 ; cursor-scroll = ns-resize

@@ -128,6 +128,7 @@ ytaudio_thumbnail() {
 	echo "Embedding thumbnail into mp3.."
 
 	# Convert thumbnail to actually be a jpg
+	yes y | ffmpeg -i "${FILE_NAME}.webp" "${FILE_NAME}_converted.jpg" > /dev/null 2>&1
 	yes y | ffmpeg -i "${FILE_NAME}.jpg" "${FILE_NAME}_converted.jpg" > /dev/null 2>&1
 
 	# Embed thumbnail into mp3

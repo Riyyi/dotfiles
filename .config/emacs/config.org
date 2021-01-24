@@ -36,7 +36,6 @@
       - [[#lsp][LSP]]
       - [[#yasnippet][YASnippet]]
       - [[#cc][C/C++]]
-      - [[#org-roam-completion][Org Roam Completion]]
     - [[#php][PHP]]
     - [[#prettify][Prettify]]
     - [[#rss][RSS]]
@@ -594,16 +593,6 @@ Language Server Protocol.
   (use-package company-c-headers
 	:after company
 	:config (push 'company-c-headers company-backends))
-#+END_SRC
-
-**** Org Roam Completion
-
-Completion for Org-roam files using its title.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package company-org-roam
-	:after (company org-roam)
-	:config (push 'company-org-roam company-backends))
 #+END_SRC
 
 *** PHP

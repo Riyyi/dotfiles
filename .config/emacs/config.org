@@ -1714,6 +1714,7 @@ General.el ~leader key binds.
 	"s a" '(avy-goto-char-timer              :which-key "Avy goto char")
 	"s b" '(bookmark-jump                    :which-key "Jump to bookmark")
 	"s l" '(avy-goto-line                    :which-key "Avy goto line")
+	"s s" '(evil-ex-nohighlight              :which-key "Stop search")
 
 	;; Tabs / toggle
 	"t"   '(:ignore t                                 :which-key "tabs/toggle")

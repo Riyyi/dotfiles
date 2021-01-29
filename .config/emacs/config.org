@@ -62,6 +62,7 @@
   - [[#package-functions][Package Functions]]
     - [[#centaur-tabs-functions][Centaur Tabs Functions]]
     - [[#dashboard-functions][Dashboard Functions]]
+    - [[#evil-functions][Evil functions]]
     - [[#lsp-functions][LSP Functions]]
     - [[#neotree-functions][Neotree Functions]]
     - [[#org-functions][Org Functions]]
@@ -1229,6 +1230,49 @@ Fix keybinds..
 	(funcall (local-key-binding "r")))
 #+END_SRC
 
+*** Evil functions
+
+#+BEGIN_SRC emacs-lisp
+(defun dot/evil-copy-until-end-of-line ()
+  "Copy text until the end of the line.
+
+Vim equivalence: y$"
+  (interactive)
+  (evil-yank (point) (line-end-position)))
+
+(defun dot/evil-insert-shift-left ()
+  "Shift line left, retains cursor position.
+
+Vim equivalence: <C-D>"
+  (interactive)
+  (evil-shift-left (line-beginning-position) (line-end-position)))
+
+(defun dot/evil-visual-paste ()
+  "Paste over visual selection, retains clipboards contents.
+
+Vim equivalence: pgvy"
+  (interactive)
+  (call-interactively 'evil-paste-after)
+  (evil-visual-restore)
+  (call-interactively 'evil-yank))
+
+(defun dot/evil-visual-shift-left ()
+  "Shift visual selection left, retains the selection.
+
+Vim equivalence: <gv"
+  (interactive)
+  (evil-shift-left (region-beginning) (region-end))
+  (funcall (evil-visual-restore)))
+
+(defun dot/evil-visual-shift-right ()
+  "Shift visual selection left, retains the selection.
+
+Vim equivalence: >gv"
+  (interactive)
+  (evil-shift-right (region-beginning) (region-end))
+  (funcall (evil-visual-restore)))
+#+END_SRC
+
 *** LSP Functions
 
 #+BEGIN_SRC emacs-lisp
@@ -1502,9 +1546,21 @@ Set keybinds to functionality of installed packages.
   ;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
 
   (with-eval-after-load 'evil-states
+
 	;; Global evil keymap
+
 	(general-def evil-normal-state-map
-	 "C-n" 'neotree-toggle-in-project-root)
+	  "Y" #'dot/evil-copy-until-end-of-line ;; y$
+	  "C-S-p" #'evil-paste-pop-next
+	  "C-n" #'neotree-toggle-in-project-root)
+
+	(general-def evil-insert-state-map
+	  "<backtab>" #'dot/evil-insert-shift-left) ;; <<
+
+	(general-def evil-visual-state-map
+	  "p" #'dot/evil-visual-paste        ;; pgvy
+	  "<" #'dot/evil-visual-shift-left   ;; <gv
+	  ">" #'dot/evil-visual-shift-right) ;; >gv
 
 	;; Custom (M-x customize)
 	(general-def 'normal custom-mode-map

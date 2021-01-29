@@ -1551,8 +1551,8 @@ Set keybinds to functionality of installed packages.
 
 	(general-def evil-normal-state-map
 	  "Y" #'dot/evil-copy-until-end-of-line ;; y$
-	  "C-S-p" #'evil-paste-pop-next
-	  "C-n" #'neotree-toggle-in-project-root)
+	  "C-n" #'neotree-toggle-in-project-root
+	  "C-S-p" #'evil-paste-pop-next)
 
 	(general-def evil-insert-state-map
 	  "<backtab>" #'dot/evil-insert-shift-left) ;; <<

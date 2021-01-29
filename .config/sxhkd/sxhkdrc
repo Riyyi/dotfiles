@@ -55,3 +55,13 @@ XF86HomePage
 # Touchscreen toggle
 XF86Search
 	inputctl.sh -s toggle
+
+#--- Mouse ---#
+
+# Front side button
+button9
+	xdotool key "Home"
+
+# Back side button
+button8
+	xdotool keydown "Control_L" key "r" keyup "Control_L"

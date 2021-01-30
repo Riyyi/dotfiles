@@ -1240,6 +1240,17 @@ Vim equivalence: y$"
   (interactive)
   (evil-yank (point) (line-end-position)))
 
+(defun dot/evil-normal-sort-paragraph ()
+  "Sort paragraph cursor is under.
+
+Vim equivalence: vip:sort<CR>"
+  (interactive)
+  (let ((p (point)))
+	(evil-visual-char)
+	(call-interactively 'evil-inner-paragraph)
+	(evil-ex-sort (region-beginning) (region-end))
+	(goto-char p)))
+
 (defun dot/evil-insert-shift-left ()
   "Shift line left, retains cursor position.
 
@@ -1727,7 +1738,8 @@ General.el ~leader key binds.
 	"i f" '(fill-region                      :which-key "Reflow region")
 	"i F" '(fill-paragraph                   :which-key "Reflow paragraph")
 	"i r" '(indent-region                    :which-key "Indent region")
-	"i s" '(dot/insert-spaces-until-column   :which-key "Insert spaces")
+	"i s" '(dot/evil-normal-sort-paragraph   :which-key "Sort paragraph")
+	"i S" '(dot/insert-spaces-until-column   :which-key "Insert spaces")
 	"i y" '(yas-insert-snippet               :which-key "Insert yasnippet")
 
 	;; Notes

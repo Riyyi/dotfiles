@@ -48,7 +48,7 @@ WmWorkSpace.ws8: 八
 WmWorkSpace.ws9: 九
 WmWorkSpace.ws0: 十
 
-Xcursor.theme: capitaine-cursors
+Xcursor.theme: capitaine-cursors-light
 Xcursor.size: 48
 
 ! Font config

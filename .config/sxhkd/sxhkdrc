@@ -8,7 +8,7 @@ super + Return
 
 # Start rofi (program launcher)
 super + d
-	rofi -show run
+	rofi -show drun
 
 # mpv
 super + {_,shift} + m

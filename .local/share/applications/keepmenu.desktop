@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Keepmenu
+GenericName=Rofi frontend for KeePass databases
+Exec=keepmenu
+Icon=lock
+Type=Application
+Terminal=false

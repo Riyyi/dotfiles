@@ -1,17 +1,28 @@
-// -*- css -*-
+/* -*- css -*- */
 
 configuration {
-	/*             bg       border   separator */
-	color-window: "#404552, #2e3137, #2e3137";
-	/*             bg	    fg       bgalt    hlbg     hlfg */
-	color-normal: "#404552, #d3dae3, #3f4350, #5294e2, #d3dae3";
-	color-urgent: "#524040, #ffffff, #524040, #ffffff, #707880";
-	/* color-active: "#"; */
+	/* Modi */
+	modi: "window,run,ssh,drun";
+	combi-modi: "window,run,drun";
 
+	/* Title */
+	display-drun: "run";
+
+	/* Layout */
 	font: "DejaVu Sans Mono 12";
 	lines: 8;
 	width: 50;
-	bw: 4;
-	separator-style: "solid";
-	hide-scrollbar: true;
+
+	/* Icons */
+	icon-theme: "Arc";
+	show-icons: true;
+
+	/* Keybinds */
+	kb-cancel: "Escape,Control+g,Control+bracketleft,Alt+h";
+	kb-row-down: "Down,Control+n,Alt+j";
+	kb-row-up: "Up,Control+p,ISO_Left_Tab,Alt+k";
+	kb-accept-entry: "Control+j,Control+m,Return,KP_Enter,Alt+l";
 }
+
+@theme "Arc-Dark"
+@import "theme-overrides"

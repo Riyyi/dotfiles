@@ -1,0 +1,9 @@
+/* -*- css -*- */
+
+window {
+	border: 4;
+}
+
+listview {
+	scrollbar: false;
+}

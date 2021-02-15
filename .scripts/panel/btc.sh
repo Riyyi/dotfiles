@@ -3,18 +3,20 @@
 # Enable mathematics in POSIX shell
 calc() { awk "BEGIN { printf(\"%.2f\", $*) }"; }
 
-output() {
-	[ -z "$1" ] || [ -z "$2" ] && return 1
+data() {
+	[ -z "$1" ] && return 1
 
 	url="$1"
-	price="$2"
+	curl --location --request GET --silent "$url"
+}
 
-	price_old="$(curl -s $url | jq -cr '.data.amount')"
-	difference=$(calc "$price / $price_old * 100 - 100")
+output() {
+	[ -z "$1" ] && return 1
 
 	# Get symbol and color
-	old_higher=$(calc "$price < $price_old" | cut -c 1)
-	if [ $old_higher -eq 0 ]; then
+	difference="$1"
+	possitive=$(calc "$difference >= 0" | cut -c 1)
+	if [ "$possitive" -eq 1 ]; then
 		symbol=""
 		color="$COLOR2"
 	else
@@ -27,19 +29,29 @@ output() {
 }
 
 # Get dates
-date_yesterday="$(date -d 'yesterday' +'%Y-%m-%d')"
-date_last_week="$(date -d 'last week' +'%Y-%m-%d')"
+date_last_week_start="$(date --date 'last week' +%s000)"
+date_last_week_end=$(calc "$date_last_week_start + (1000 * 60 * 60)") # +1h
+date_last_week_end=${date_last_week_end%.00} # cut off ".00" at the end
 
-# Get API URLs
-url="https://api.coinbase.com/v2/prices/BTC-USD/spot"
-url_yesterday="${url}?date=$date_yesterday"
-url_last_week="${url}?date=$date_last_week"
+# API URLs
+url="https://api.coincap.io/v2/assets/bitcoin"
+url_last_week="${url}/history?interval=h1&start=${date_last_week_start}&end=${date_last_week_end}"
 
 # Current price
-price="$(curl -s $url | jq -cr '.data.amount')"
+data="$(data "$url")"
+price="$(echo "$data" | jq --compact-output --raw-output '.data.priceUsd')"
+price=$(calc "$price")
+
+# Get yesterdays difference
+difference_yesterday="$(echo "$data" | jq --compact-output --raw-output '.data.changePercent24Hr')"
+difference_yesterday="$(calc "$difference_yesterday")"
+
+# Get last weeks difference
+price_last_week="$(data "$url_last_week" | jq --compact-output --raw-output '.data[0].priceUsd')"
+difference_last_week=$(calc "$price / $price_last_week * 100 - 100")
 
 # Create output formatting
-difference_yesterday_output="d $(output $url_yesterday $price)"
-difference_last_week_output="w $(output $url_last_week $price)"
+difference_yesterday_output="d $(output "$difference_yesterday")"
+difference_last_week_output="w $(output "$difference_last_week")"
 
 echo "\$$price  $difference_yesterday_output  $difference_last_week_output"

@@ -28,6 +28,15 @@ type = internal/xwindow
 label = %title:0:50:...%
 label-foreground = ${colors.white-bright}
 
+[module/btc]
+type = custom/script
+interval = 300
+
+exec = $HOME/.scripts/panel/btc.sh
+
+label =  %output%
+label-foreground = ${colors.white-bright}
+
 ; https://github.com/polybar/polybar/wiki/Module:-pulseaudio
 [module/pulseaudio]
 type = internal/pulseaudio

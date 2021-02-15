@@ -53,7 +53,7 @@ font-4 = "Font Awesome 5 Brands:pixelsize=16;3"
 
 modules-left = bspwm
 modules-center = title
-modules-right = pulseaudio backlight-acpi wlan eth battery battery-low date powermenu
+modules-right = btc pulseaudio backlight-acpi wlan eth battery battery-low date powermenu
 
 tray-maxsize = 30
 tray-position = right

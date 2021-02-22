@@ -10,13 +10,12 @@ set -- emacsclient -a ''
 
 # ------------------------------------------
 
-# Output formatting
-B=$(tput bold)
-L=$(tput setf 1) # Blue
-N=$(tput sgr0)
-
 format() {
-	echo "${B}${L}::${N}${B} ${1}${N}"
+	b=$(tput bold)
+	blue=$(tput setf 1)
+	n=$(tput sgr0)
+
+	echo "${b}${blue}::${n}${b} ${1}${n}"
 }
 
 cleanup() {
@@ -75,7 +74,7 @@ for file in $files; do
 
 	sed -i "${i}s/.*/${command}/;" "$tmpfile" > /dev/null
 
-	i=$((i+1))
+	i=$((i + 1))
 done
 
 # Delete empty lines

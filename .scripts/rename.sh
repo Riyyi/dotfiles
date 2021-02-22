@@ -86,7 +86,8 @@ prompt=$(cat "$tmpfile")
 printf "\n%s\n\n" "$prompt"
 
 # Confirm with user
-printf "%s " "$(format "Proceed with execution? [Y/n]")"
+prompt=$(format "Proceed with execution? [Y/n]")
+printf "%s " "$prompt"
 read -r execute
 
 # Execute file commands

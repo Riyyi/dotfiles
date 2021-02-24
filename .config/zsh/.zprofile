@@ -62,6 +62,9 @@ if [ "$HIDPI" = true ]; then
 fi
 export QT_QPA_PLATFORMTHEME="qt5ct"
 
+# Sudo
+export SUDO_ASKPASS="$HOME/.scripts/rofipass.sh"
+
 # Terminal
 export TERMINAL="urxvt"
 

@@ -34,7 +34,7 @@ super + shift + space
 # Sticky floating window
 super + shift + f
 	i3-msg fullscreen disable, floating enable, sticky enable; \
-	$HOME/.scripts/wm/hover.sh
+	$HOME/.local/bin/wm/hover.sh
 
 #--- Workspace ---#
 

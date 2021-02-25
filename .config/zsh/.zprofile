@@ -2,8 +2,8 @@
 
 # Directories
 export CAPTURE="$HOME/pictures/screen-captures"
-export FPATH="$FPATH:$HOME/.scripts/completion"
-export PATH="$PATH:$HOME/.scripts"
+export FPATH="$FPATH:$HOME/.local/completion"
+export PATH="$PATH:$HOME/.local/bin"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -63,7 +63,7 @@ fi
 export QT_QPA_PLATFORMTHEME="qt5ct"
 
 # Sudo
-export SUDO_ASKPASS="$HOME/.scripts/rofipass.sh"
+export SUDO_ASKPASS="$HOME/.local/bin/rofipass"
 
 # Terminal
 export TERMINAL="urxvt"

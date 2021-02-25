@@ -55,4 +55,4 @@ case "$CHOOSE" in
 esac
 
 # Reload background
-$HOME/.scripts/wm/wallpaper.sh
+$HOME/.local/bin/wm/wallpaper.sh

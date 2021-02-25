@@ -14,10 +14,10 @@ help() {
 
 	cat << EOF
 ${B}NAME${N}
-	netctl.sh - control the network interfaces
+	netictl - control the network interfaces
 
 ${B}SYNOPSIS${N}
-	${B}netctl.sh${N} ${U}OPTION${N} [${U}ARG${N}]
+	${B}netictl${N} ${U}OPTION${N} [${U}ARG${N}]
 
 ${B}OPTIONS${N}
 	${B}-h${N}	Display usage message and exit.

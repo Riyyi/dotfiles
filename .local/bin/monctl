@@ -7,10 +7,10 @@ help() {
 
 	cat << EOF
 ${B}NAME${N}
-	monctl.sh - monitor manager
+	monctl - monitor manager
 
 ${B}SYNOPSIS${N}
-	${B}monctl.sh${N} [${U}OPTION${N}] [${U}ARG(S)${N}]
+	${B}monctl${N} [${U}OPTION${N}] [${U}ARG(S)${N}]
 
 ${B}OPTIONS${N}
 	${B}a*${N} ${U}width${N} ${U}height${N} ${U}hertz${N} ${U}name${N}
@@ -45,14 +45,14 @@ update() {
 	sleep 4
 
 	# Reconfigure desktops
-	"$HOME"/.scripts/wm/desktops.sh
+	"$HOME/.local/bin/wm/desktops.sh"
 	sleep 1
 
 	# Restart panel
-	"$HOME"/.scripts/panel/polybar.sh &
+	"$HOME/.local/bin/panel/polybar.sh" &
 
 	# Reload wallpaper
-	"$HOME"/.scripts/wm/wallpaper.sh &
+	"$HOME/.local/bin/wm/wallpaper.sh" &
 }
 
 auto() {

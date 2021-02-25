@@ -29,7 +29,7 @@ super + space
 
 # Sticky floating node
 super + shift + f
-	bspc node -t floating -g sticky=on; $HOME/.scripts/wm/hover.sh
+	bspc node -t floating -g sticky=on; $HOME/.local/bin/wm/hover.sh
 
 # Set node flags
 super + ctrl + {s,p,semicolon}

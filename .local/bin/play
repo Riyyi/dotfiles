@@ -9,13 +9,13 @@ help() {
 
 	cat << EOF
 ${B}NAME${N}
-	mpv.sh - mpv playback functions
+	play - mpv playback functions
 
 ${B}SYNOPSIS${N}
-	${B}./mpv.sh${N} [${U}OPTION${N}] [${U}ARGS${N}...]
+	${B}play${N} [${U}OPTION${N}] [${U}ARGS${N}...]
 
 ${B}DESCRIPTION${N}
-	mpv.sh is a script to manage different mpv viewing bahavior.
+	play is a script to manage different mpv viewing bahavior.
 	If no ${U}URLS${N} argument is provided, it is read from clipboard instead.
 	The queue option starts a mpv window with a playlist, which all videos of
 	subsequent queue calls get added to.

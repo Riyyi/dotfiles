@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Control the display brightness
-# Depends: brightnessctl
+# Control the volume
+# Depends: pamixer
 
 help() {
 	B=$(tput bold)
@@ -10,15 +10,15 @@ help() {
 
 	cat << EOF
 ${B}NAME${N}
-	brictl.sh - control the display brightness
+	volctl - control the volume
 
 ${B}SYNOPSIS${N}
-	${B}brictl.sh${N} [${U}OPTION${N}] [${U}COMMAND${N}] [<${U}ARG${N}>]
+	${B}volctl${N} [${U}OPTION${N}] [${U}COMMAND${N}] [<${U}ARG${N}>]
 
 ${B}DESCRIPTION${N}
-	${B}brictl.sh${N} uses brightnessctl to change the brightness of the system.
+	${B}volctl${N} uses pamixer to change the volume of the system.
 
-	Commands can be truncated, i.e. "${B}brictl.sh s${N}" for "${B}brictl.sh set${N}"
+	Commands can be truncated, i.e. "${B}volctl t${N}" for "${B}volctl toggle${N}"
 	Arguments need to be of numeric value.
 
 ${B}OPTIONS${N}
@@ -26,16 +26,28 @@ ${B}OPTIONS${N}
 
 ${B}COMMANDS${N}
 	${B}i${N} <${U}AMOUNT${N}>, ${B}inc${N} <${U}AMOUNT${N}>
-		Increase brightness by ${U}AMOUNT${N}, default of 5.
+		Increase volume by ${U}AMOUNT${N}, default of 2.
 
 	${B}d${N} <${U}AMOUNT${N}>, ${B}dec${N} <${U}AMOUNT${N}>
-		Decrease brightness by ${U}AMOUNT${N}, default of 5.
+		Decrease volume by ${U}AMOUNT${N}, default of 2.
 
 	${B}s${N} <${U}LEVEL${N}>, ${B}set${N} <${U}LEVEL${N}>
-		Set brightness to ${U}LEVEL${N}, default of 30.
+		Set volume to ${U}LEVEL${N}, default of 0.
 
-	${B}g${N}, ${B}get${N}
-		Get brightness level.
+	${B}t${N}, ${B}toggle${N}
+		Toggle mute.
+
+	${B}m${N}, ${B}mute${N}
+		Mute volume.
+
+	${B}u${N}, ${B}unmute${N}
+		Unmute volume.
+
+	${B}getv${N}, ${B}getvolume${N}
+		Get volume level.
+
+	${B}getm${N}, ${B}getmute${N}
+		Get mute status.
 EOF
 }
 
@@ -63,19 +75,31 @@ done
 shift $((OPTIND - 1))
 case "$1" in
 	i*)
-		NUM=${2:-5}
-		brightnessctl -q s +"$NUM"%
+		NUM=${2:-2}
+		pamixer --increase "$NUM"
 		;;
 	d*)
-		NUM=${2:-5}
-		brightnessctl -q s "$NUM"%-
+		NUM=${2:-2}
+		pamixer --decrease "$NUM"
 		;;
 	s*)
-		NUM=${2:-30}
-		brightnessctl -q s "$NUM"%
+		NUM=${2:-0}
+		pamixer --set-volume "$NUM"
 		;;
-	g*)
-		brightnessctl | awk '/%/ {print substr($4, 2, length($4) - 3)}'
+	t*)
+		pamixer --toggle-mute
+		;;
+	m*)
+		pamixer --mute
+		;;
+	n*)
+		pamixer --unmute
+		;;
+	getv*)
+		pamixer --get-volume
+		;;
+	getm*)
+		pamixer --get-mute
 		;;
 	*)
 		echo "$SCRIPT: invalid command '$1'"

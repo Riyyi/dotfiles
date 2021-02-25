@@ -12,7 +12,7 @@ super + d
 
 # mpv
 super + {_,shift} + m
-	mpv.sh {_,queue}
+	play {_,queue}
 
 #--- Control ---#
 
@@ -22,11 +22,11 @@ super + ctrl + r
 
 # System
 super + shift + s
-	system.sh
+	system
 
 # Screen brightness
 super + {F2,F3}
-	brictl.sh {dec,inc} 10
+	brictl {dec,inc} 10
 
 # Screenshot (fullscreen, selection, focused window)
 {_,shift,super} + @Print
@@ -34,19 +34,19 @@ super + {F2,F3}
 
 # Screen record
 ctrl + @Print
-	alias.sh screencast "$CAPTURE/$(date '+%Y-%m-%d-%H%M%S_1500x1000_screencast')"
+	aliases screencast "$CAPTURE/$(date '+%Y-%m-%d-%H%M%S_1280x720_screencast')"
 
 # Volume
 XF86Audio{LowerVolume,RaiseVolume,Mute}
-	volctl.sh {dec 5,inc 5,toggle}
+	volctl {dec 5,inc 5,toggle}
 
 # Touchpad toggle
 XF86HomePage
-	inputctl.sh -d toggle
+	inputctl -d toggle
 
 # Touchscreen toggle
 XF86Search
-	inputctl.sh -s toggle
+	inputctl -s toggle
 
 #--- Mouse ---#
 

@@ -5,7 +5,7 @@ depend() {
 }
 
 emacs() {
-	# Create new frame if (there isnt one || no file specified)
+	# Create new frame (if there isnt one or no file is specified)
 	if [ -z "$(pgrep -f emacsclient.*-c)" ] || [ "$1" = "" ]; then
 		emacsclient -a '' -c "$@" > /dev/null 2>&1 &
 	else
@@ -77,14 +77,13 @@ screencast() {
 
 		notify-send "Started recording.."
 		ffmpeg -y \
-			-threads 4 \
+			-threads 8 \
 			-f x11grab \
-			-framerate 24 \
-			-s 3000x2000 \
-			-i "$DISPLAY.0" \
+			-framerate 30 \
+			-s 1280x720 \
+			-i "$DISPLAY.0+640,180" \
 			$AUDIO_SOURCE \
-			-r 24 \
-			-vf scale=1500:1000 \
+			-r 30 \
 			$AUDIO_CODEC \
 			-c:v libx264 -crf 0 -preset ultrafast \
 			"$NAME.mkv" &
@@ -123,7 +122,8 @@ ytaudio_thumbnail() {
 	# Get mp3 + thumbnail
 	echo "Downloading and converting \"$FILE_NAME\".."
 	youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0 \
-			   --write-thumbnail "$1" > /dev/null
+			   --write-thumbnail --cookies "~/documents/youtube.com_cookies.txt" "$1" > /dev/null
+			   # --write-thumbnail "$1" > /dev/null
 
 	echo "Embedding thumbnail into mp3.."
 

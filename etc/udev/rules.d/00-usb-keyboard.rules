@@ -8,6 +8,6 @@ SUBSYSTEM=="usb",
 		ATTRS{idVendor}=="04d9",
 		ATTRS{idProduct}=="0169",
 		OWNER="rick",
-		RUN+="/home/rick/.scripts/inputctl.sh -k on"
+		RUN+="/home/rick/.local/bin/inputctl -k on"
 
 # https://wiki.archlinux.org/index.php/Udev#Execute_on_VGA_cable_plug_in

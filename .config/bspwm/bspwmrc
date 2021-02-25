@@ -60,11 +60,11 @@ bspc rule -a Zathura                   state=tiled
 #--- Scripts ---#
 
 # Set desktops
-"$HOME"/.scripts/wm/desktops.sh
+"$HOME"/.local/bin/wm/desktops.sh
 
 # Program startup
-"$HOME"/.scripts/wm/wallpaper.sh &
-"$HOME"/.scripts/panel/polybar.sh &
+"$HOME"/.local/bin/wm/wallpaper.sh &
+"$HOME"/.local/bin/panel/polybar.sh &
 [ "$1" = 0 ] && {
 	# Only execute once
 	firefox &

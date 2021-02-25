@@ -86,8 +86,8 @@ alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias cp='cp -i'
 alias df="df -h"
-alias e="$HOME/.scripts/alias.sh emacs"
-alias emacs="$HOME/.scripts/alias.sh emacs"
+alias e="aliases emacs"
+alias emacs="aliases emacs"
 alias fuck='sudo $(fc -ln -1)'
 alias grep="grep --color=always"
 alias ip="ip --color"
@@ -97,7 +97,7 @@ alias la="\ls -lAGh --color --group-directories-first"
 alias less="less -x 4"
 alias ls="ls --color --group-directories-first"
 alias md="mkdir -p"
-alias mkcd="$HOME/.scripts/alias.sh mkcd"
+alias mkcd="aliases mkcd"
 alias mv='mv -i'
 alias pkill="pkill -9"
 alias q="exit"
@@ -109,7 +109,7 @@ alias v="vim --servername VIM"
 alias vim="vim --servername VIM"
 
 # Config
-alias c="$HOME/.scripts/config.sh"
+alias c="config"
 alias zshrc="$EDITOR $ZDOTDIR/.zshrc && source $ZDOTDIR/.zshrc"
 
 alias lxrdb="xrdb $XDG_CONFIG_HOME/xorg/Xresources"
@@ -118,18 +118,18 @@ alias lzshrc="source $ZDOTDIR/.zshrc"
 # Pacman
 alias cache="sudo paccache -r -k 2"
 alias clean='sudo pacman -Rns $(pacman -Qtdq)'
-alias depend="$HOME/.scripts/alias.sh depend"
+alias depend="aliases depend"
 alias download="sudo pacman -Syuw --noconfirm"
 alias install="sudo pacman -S --needed"
 alias remove="sudo pacman -Rns"
-alias search="$HOME/.scripts/alias.sh pacman_search"
+alias search="aliases pacman_search"
 alias update="sudo pacman -Syyu"
-alias update-mirrorlist="$HOME/.scripts/alias.sh update_mirrorlist"
+alias update-mirrorlist="aliases update_mirrorlist"
 
 # Programming
-alias jdoc="$HOME/.scripts/alias.sh java_doc"
-alias jr="$HOME/.scripts/alias.sh java_run"
-alias raspbian="$HOME/.scripts/alias.sh raspbian"
+alias jdoc="aliases java_doc"
+alias jr="aliases java_run"
+alias raspbian="aliases raspbian"
 alias ser="pio device monitor -b 9600"
 alias upl="pio run -t upload"
 alias qmake="qmake -makefile ../ && make"
@@ -150,26 +150,25 @@ alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold bl
 alias gle="git log --graph --stat --format=format:'%C(bold blue)commit %H%C(reset)%C(bold yellow)%d %C(reset)%nAuthor: %C(dim white)%an <%ae>%C(reset)%nDate:   %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
 
 # Scripts
-alias nw="$HOME/.scripts/network.sh"
-alias vc="$HOME/.scripts/volctl.sh"
-alias vp="$HOME/.scripts/vimplugin.sh"
-alias mpvshuffle="$HOME/.scripts/mpv.sh shuffle"
+alias nc="netictl"
+alias vc="volctl"
+alias vp="vimplugin"
 
 # Other
 alias crypto="curl 'https://rate.sx/?qF'"
 alias IP="curl https://ifconfig.me"
 alias len="xclip -o | wc -m"
 alias length="rofi -dmenu -i -p 'String length' -lines 0 | tr -d '\n' | wc -m"
-alias p="$HOME/.scripts/alias.sh pastebin"
-alias screencast="$HOME/.scripts/alias.sh screencast"
-alias stream="$HOME/.scripts/alias.sh stream"
+alias p="aliases pastebin"
+alias screencast="aliases screencast"
+alias stream="aliases stream"
 alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
-alias webmconvert="$HOME/.scripts/alias.sh webmconvert"
+alias webmconvert="aliases webmconvert"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench > /dev/null 2>&1 & disown"
 alias ytv="youtube-dl -f bestvideo\[height\<=\?1080\]+bestaudio/best"
 alias ytvb="youtube-dl -f bestvideo+bestaudio/best"
 alias yta="youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0" # --embed-thumbnail"
-alias ytat="$HOME/.scripts/alias.sh ytaudio_thumbnail"
+alias ytat="aliases ytaudio_thumbnail"
 
 zsh="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f "$zsh" ] && source "$zsh"; unset zsh

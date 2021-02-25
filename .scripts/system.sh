@@ -15,7 +15,7 @@ commands="\
  Reboot:systemctl reboot
  Logout:$logout"
 
-choice=$(echo "$commands" | cut -d ':' -f 1 | rofi -dmenu -i -p "System") || exit 0
+choice=$(echo "$commands" | cut -d ':' -f 1 | rofi -no-fixed-num-lines -dmenu -i -p "System") || exit 0
 
 exec=$(echo "$commands" | grep "^$choice" | cut -d ':' -f 2-)
 

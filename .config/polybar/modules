@@ -182,10 +182,10 @@ menu-0-3 = suspend
 menu-0-3-exec = menu-open-4
 
 menu-1-0 = shutdown
-menu-1-0-exec = poweroff
+menu-1-0-exec = systemctl poweroff
 
 menu-2-0 = reboot
-menu-2-0-exec = reboot
+menu-2-0-exec = systemctl reboot
 
 menu-3-0 = logout
 menu-3-0-exec = bspc quit

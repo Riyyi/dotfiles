@@ -20,17 +20,9 @@ super + {_,shift} + m
 super + ctrl + r
 	pkill -USR1 -x sxhkd && notify-send -t 1000 "sxhkd reloaded."
 
-# Lock
-super + alt + s
-	$HOME/.scripts/wm/lock.sh
-
-# Shutdown
+# System
 super + shift + s
-	prompt.sh "Shutdown computer?" "poweroff"
-
-# Reboot
-super + shift + w
-	prompt.sh "Reboot computer?" "reboot"
+	system.sh
 
 # Screen brightness
 super + {F2,F3}

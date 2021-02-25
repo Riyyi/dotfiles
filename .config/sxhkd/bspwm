@@ -8,10 +8,6 @@
 super + shift + r
 	bspc wm -r && notify-send -t 1000 "bspwm reloaded."
 
-# Logout
-super + shift + e
-	prompt.sh "Logout and exit bspwm?" "bspc quit"
-
 
 ##--- Node ---##
 

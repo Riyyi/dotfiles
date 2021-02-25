@@ -6,10 +6,6 @@
 super + shift + r
 	i3-msg restart
 
-# Logout
-super + shift + e
-	prompt.sh "Logout and exit i3?" "i3-msg exit"
-
 #--- Window ---#
 
 # Kill focused window

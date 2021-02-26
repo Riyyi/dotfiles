@@ -89,11 +89,11 @@ touch "$XDG_DATA_HOME/xorg/Xauthority"
 # Example: *.color0:        #282a2e  ->  COLOR0=#282a2e
 # Example: WmColor.bgcolor: #404552  ->  BGCOLOR=#404552
 # Example: WmWorkSpace.ws0: "10"     ->  WS0="10"
-EXPORTS=$(sed -nE \
-	-e 's/^\*.(\w+): *#/\U\1=#/p' \
-	-e 's/^WmColor.(\w+): */\U\1=/p' \
-	-e 's/^WmWorkSpace.(\w+): */\U\1=/p' \
-	"$XDG_CONFIG_HOME/xorg/Xresources")
-echo "$EXPORTS" | while read -r line; do
-	export $line
+exports=$(sed -nE "
+	s/^\*.(\w+): *#/\U\1=#/p;
+	s/^WmColor.(\w+): */\U\1=/p;
+	s/^WmWorkSpace.(\w+): */\U\1=/p;
+" "$XDG_CONFIG_HOME/xorg/Xresources")
+echo "$exports" | while read -r export; do
+	export $export
 done

@@ -60,8 +60,10 @@ bindkey '\e[7~' beginning-of-line                         # home
 bindkey '\e[8~' end-of-line                               # end
 bindkey '\e[A' history-beginning-search-backward-end      # up
 bindkey '\e[B' history-beginning-search-forward-end       # down
+bindkey '\eh' kill-whole-line                             # meta-h
 bindkey '\ej' history-beginning-search-forward-end        # meta-j
 bindkey '\ek' history-beginning-search-backward-end       # meta-k
+bindkey '\el' accept-line                                 # meta-l
 bindkey '^R' history-incremental-pattern-search-backward  # ctrl-r
 
 # History

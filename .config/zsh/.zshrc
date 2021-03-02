@@ -100,7 +100,6 @@ alias la="\ls -lAGh --color --group-directories-first"
 alias less="less -x 4"
 alias ls="ls --color --group-directories-first"
 alias md="mkdir -p"
-alias mkcd="aliases mkcd"
 alias mv='mv -i'
 alias pkill="pkill -9"
 alias q="exit"
@@ -171,13 +170,15 @@ alias screencast="aliases screencast"
 alias stream="aliases stream"
 alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias webmconvert="aliases webmconvert"
-alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 mysql-workbench > /dev/null 2>&1 & disown"
+alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 setsid -f -- mysql-workbench > /dev/null 2>&1"
 alias ytv="youtube-dl -f bestvideo\[height\<=\?1080\]+bestaudio/best"
 alias ytvb="youtube-dl -f bestvideo+bestaudio/best"
 alias yta="youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0" # --embed-thumbnail"
 alias ytat="aliases ytaudio_thumbnail"
 
-zsh="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-[ -f "$zsh" ] && source "$zsh"; unset zsh
+mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || exit; }
+
+highlighting="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[ -f "$highlighting" ] && source "$highlighting"; unset highlighting
 
 [ -f "$ZDOTDIR/.zshrc_extended" ] && source "$ZDOTDIR/.zshrc_extended"

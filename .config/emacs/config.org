@@ -497,27 +497,32 @@ Autocomplete packages (includes code completion and snippets).
 On the fly syntax checking.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-	:defer t
-	:hook
-	((c-mode-common
-	  emacs-lisp-mode
-	  latex-mode
-	  org-mode
-	  php-mode
-	  shell-mode
-	  shell-script-mode)
-	 . flycheck-mode)
-	:config
-	(setq flycheck-clang-language-standard "c++17")
-	(setq flycheck-gcc-language-standard "c++17"))
+(use-package flycheck
+  :defer t
+  :hook
+  ((c-mode-common
+	emacs-lisp-mode
+	latex-mode
+	org-mode
+	php-mode
+	shell-mode
+	shell-script-mode)
+   . flycheck-mode)
+  :config
+  (setq flycheck-clang-language-standard "c++17")
+  (setq flycheck-gcc-language-standard "c++17"))
 
-  ;; For .el files which are intended to be packages
-  (use-package flycheck-package
-	:after flycheck
-	:config
-	(add-to-list 'flycheck-checkers 'flycheck-emacs-lisp-package)
-	(flycheck-package-setup))
+;; For .el files which are intended to be packages
+(use-package flycheck-package
+  :after flycheck
+  :config
+  (add-to-list 'flycheck-checkers 'flycheck-emacs-lisp-package)
+  (flycheck-package-setup))
+
+(use-package flycheck-clang-tidy
+  :after flycheck
+  :hook (flycheck-mode . flycheck-clang-tidy-setup)
+  :config (setq flycheck-clang-tidy-extra-options "--format-style=file"))
 #+END_SRC
 
 **** LSP

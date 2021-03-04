@@ -535,7 +535,12 @@ Language Server Protocol.
 	 . lsp-deferred)
 	:custom
 	(lsp-auto-guess-root t)
-	(lsp-clients-clangd-args '("--compile-commands-dir=build" "-j=2" "--background-index" "--log=error"))
+	(lsp-clients-clangd-args '("-j=2"
+							   "--background-index"
+							   "--clang-tidy"
+							   "--compile-commands-dir=build"
+							   "--log=error"
+							   "--pch-storage=memory"))
 	(lsp-enable-xref t)
 	(lsp-headerline-breadcrumb-enable nil)
 	(lsp-intelephense-storage-path (concat dot-cache-dir "/lsp-cache"))

@@ -28,13 +28,13 @@ super + shift + s
 super + {F2,F3}
 	brictl {dec,inc} 10
 
-# Screenshot (fullscreen, selection, focused window)
-{_,shift,super} + @Print
-	scrot {_,-s,-u} -e "mv \$f $CAPTURE"
+# Screenshot (fullscreen, selection, active window)
+@Print
+	printscreen
 
 # Screen record
 ctrl + @Print
-	aliases screencast "$CAPTURE/$(date '+%Y-%m-%d-%H%M%S_1280x720_screencast')"
+	aliases screencast
 
 # Volume
 XF86Audio{LowerVolume,RaiseVolume,Mute}

@@ -67,7 +67,10 @@ screencast() {
 		# Kill with SIGKILL, just in case it is still running
 		pkill -9 ffmpeg
 	else
-		NAME=${1:-"output"}
+		width=1280
+		height=720
+		NAME=${1:-"$CAPTURE/$(date '+%Y-%m-%d-%H%M%S')_${width}x${height}_ffmpeg"}
+
 		[ -n "$2" ] && AUDIO_CODEC="-c:a aac"
 		[ -n "$2" ] && AUDIO_SOURCE="-f pulse -ac 2 -i $2" # 1 = system, 2 = mic
 
@@ -76,7 +79,7 @@ screencast() {
 			-threads 8 \
 			-f x11grab \
 			-framerate 30 \
-			-s 1280x720 \
+			-s "${width}x${height}" \
 			-i "$DISPLAY.0+640,180" \
 			$AUDIO_SOURCE \
 			-r 30 \

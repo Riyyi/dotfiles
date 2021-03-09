@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# Take a screenshot with the configured program
+# Depends: scrot / maim / magick
+
+# User-config---------------------------
+
+# scrot / maim / magick import
+screenshotter="scrot"
+
+# --------------------------------------
+
+if [ "$screenshotter" = "scrot" ]; then
+	fullscreen=""
+	selection="-s"
+	activeWindow="-u"
+	filename="-e 'mv \$f $CAPTURE'"
+
+elif [ "$screenshotter" = "maim" ]; then
+	fullscreen=""
+	selection="-s"
+	activeWindow="-i \$(xdotool getactivewindow)"
+	filename="$CAPTURE/$(date '+%Y-%m-%d-%H%M%S')_maim.png"
+elif [ "$screenshotter" = "magick import" ] || [ "$screenshotter" = "import" ]; then
+	fullscreen="-window root"
+	selection=""
+	activeWindow="-window \$(xdotool getactivewindow)"
+	filename="$CAPTURE/$(date '+%Y-%m-%d-%H%M%S')_import.png"
+else
+	echo "Printscreen configuration is invalid"
+	exit 1
+fi
+
+options="\
+Selection
+Active Window
+Fullscreen"
+
+choice=$(echo "$options" | rofi -no-fixed-num-lines -dmenu -i -p "Screenshot") || exit 0
+
+command="$screenshotter"
+[ "$choice" = "Selection" ] && command="$command $selection"
+[ "$choice" = "Active Window" ] && command="$command $activeWindow"
+[ "$choice" = "Fullscreen" ] && command="$command $fullscreen"
+command="$command $filename"
+
+eval "$command"

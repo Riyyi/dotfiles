@@ -107,32 +107,32 @@ These commands need to be run after the first startup.
 Variables for directories, leader keys, etc.
 
 #+BEGIN_SRC emacs-lisp
-  (defvar dot-emacs-dir (directory-file-name (file-truename user-emacs-directory))
-	"Directory base.")
+(defvar dot-emacs-dir (directory-file-name (file-truename user-emacs-directory))
+  "Directory base.")
 
-  (defvar dot-etc-dir (concat dot-emacs-dir "/etc")
-	"Directory for non-volatile storage.")
+(defvar dot-etc-dir (concat dot-emacs-dir "/etc")
+  "Directory for non-volatile storage.")
 
-  (defvar dot-cache-dir (concat (getenv "XDG_CACHE_HOME") "/emacs")
-	"Directory for cache data.")
+(defvar dot-cache-dir (concat (getenv "XDG_CACHE_HOME") "/emacs")
+  "Directory for cache data.")
 
-  (defvar dot/leader-key "SPC"
-	"Leader prefix key.")
+(defvar dot/leader-key "SPC"
+  "Leader prefix key.")
 
-  (defvar dot/leader-alt-key "M-SPC"
-	"Alternative leader prefix key, used for Insert and Emacs states.")
+(defvar dot/leader-alt-key "M-SPC"
+  "Alternative leader prefix key, used for Insert and Emacs states.")
 
-  (defvar dot/localleader-key "SPC m"
-	"Local leader prefix key, for 'major-mode' specific commands.")
+(defvar dot/localleader-key "SPC m"
+  "Local leader prefix key, for 'major-mode' specific commands.")
 
-  (defvar dot/localleader-alt-key "M-SPC m"
-	"Alternative local leader prefix key, used for Insert and Emacs states.")
+(defvar dot/localleader-alt-key "M-SPC m"
+  "Alternative local leader prefix key, used for Insert and Emacs states.")
 
-  (defvar dot/shell "/bin/zsh"
-	"Command interpreter binary path.")
+(defvar dot/shell "/bin/zsh"
+  "Command interpreter binary path.")
 
-  (defvar dot/hidpi (getenv "HIDPI")
-	"Whether the primary screen is HiDPI.")
+(defvar dot/hidpi (getenv "HIDPI")
+  "Whether the primary screen is HiDPI.")
 #+END_SRC
 
 * Customizations
@@ -140,15 +140,15 @@ Variables for directories, leader keys, etc.
 Store customize file separately, don't freak out when it's not found.
 
 #+BEGIN_SRC emacs-lisp
-  (setq custom-file (concat dot-etc-dir "/custom.el"))
-  (load custom-file 'noerror)
+(setq custom-file (concat dot-etc-dir "/custom.el"))
+(load custom-file 'noerror)
 #+END_SRC
 
 Set font.
 
 #+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'default nil :height 90 :family "DejaVu Sans Mono")
-  (set-face-attribute 'fixed-pitch-serif nil :height 100)
+(set-face-attribute 'default nil :height 90 :family "DejaVu Sans Mono")
+(set-face-attribute 'fixed-pitch-serif nil :height 100)
 #+END_SRC
 
 * Package Management
@@ -157,8 +157,8 @@ Set font.
 Ensures packages are installed by default.
 
 #+BEGIN_SRC emacs-lisp
-  (require 'use-package-ensure)
-  (setq use-package-always-ensure t)
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
 #+END_SRC
 
 ** Auto update
@@ -167,13 +167,13 @@ Update pending updates of installed packages at startup.
 https://github.com/rranelli/auto-package-update.el
 
 #+BEGIN_SRC emacs-lisp
-  (use-package auto-package-update
-	:custom
-	(auto-package-update-delete-old-versions t)
-	(auto-package-update-hide-results t)
-	:config
-	(setq auto-package-update-last-update-day-path (concat dot-cache-dir "/last-package-update-day"))
-	(auto-package-update-maybe))
+(use-package auto-package-update
+  :custom
+  (auto-package-update-delete-old-versions t)
+  (auto-package-update-hide-results t)
+  :config
+  (setq auto-package-update-last-update-day-path (concat dot-cache-dir "/last-package-update-day"))
+  (auto-package-update-maybe))
 #+END_SRC
 
 ** Compile
@@ -182,10 +182,10 @@ Automatically compile all packages.
 https://github.com/emacscollective/auto-compile
 
 #+BEGIN_SRC emacs-lisp
-  (use-package auto-compile
-	:config
-	(auto-compile-on-load-mode)
-	(auto-compile-on-save-mode))
+(use-package auto-compile
+  :config
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
 #+END_SRC
 
 ** Packages
@@ -195,65 +195,65 @@ Install and configure packages.
 *** General Packages
 
 #+BEGIN_SRC emacs-lisp
-  (use-package hybrid-reverse-theme
-	:ensure nil
-	:load-path "~/code/elisp/emacs-hybrid-reverse"
-	:config (load-theme 'hybrid-reverse t))
+(use-package hybrid-reverse-theme
+  :ensure nil
+  :load-path "~/code/elisp/emacs-hybrid-reverse"
+  :config (load-theme 'hybrid-reverse t))
 
-  (use-package all-the-icons
-	:defer t)
+(use-package all-the-icons
+  :defer t)
 
-  (use-package which-key
-	:hook (emacs-startup . which-key-mode)
-	:custom
-	(which-key-add-column-padding 1)
-	(which-key-max-display-columns nil)
-	(which-key-min-display-lines 5)
-	(which-key-sort-order 'dot/which-key-prefix-then-key-order-alpha)
-	(which-key-sort-uppercase-first nil))
+(use-package which-key
+  :hook (emacs-startup . which-key-mode)
+  :custom
+  (which-key-add-column-padding 1)
+  (which-key-max-display-columns nil)
+  (which-key-min-display-lines 5)
+  (which-key-sort-order 'dot/which-key-prefix-then-key-order-alpha)
+  (which-key-sort-uppercase-first nil))
 
-  (use-package general)
+(use-package general)
 
-  (use-package selectrum
-	:hook (emacs-startup . selectrum-mode))
+(use-package selectrum
+  :hook (emacs-startup . selectrum-mode))
 
-  (use-package prescient
-	:after selectrum
-	:config
-	(setq prescient-filter-method '(literal regexp fuzzy))
-	(setq prescient-save-file (concat dot-cache-dir "/prescient-save.el"))
-	(prescient-persist-mode))
+(use-package prescient
+  :after selectrum
+  :config
+  (setq prescient-filter-method '(literal regexp fuzzy))
+  (setq prescient-save-file (concat dot-cache-dir "/prescient-save.el"))
+  (prescient-persist-mode))
 
-  (use-package selectrum-prescient
-	:after (selectrum prescient)
-	:config
-	(selectrum-prescient-mode))
+(use-package selectrum-prescient
+  :after (selectrum prescient)
+  :config
+  (selectrum-prescient-mode))
 
-  (use-package marginalia
-    :after selectrum
-    :config
-    (marginalia-mode)
-    (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light)))
+(use-package marginalia
+  :after selectrum
+  :config
+  (marginalia-mode)
+  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light)))
 
-  (use-package avy
-	:defer t)
+(use-package avy
+  :defer t)
 
-  (use-package hungry-delete
-	:config (global-hungry-delete-mode))
+(use-package hungry-delete
+  :config (global-hungry-delete-mode))
 
-  (use-package smart-tabs-mode
-	:config
-	(smart-tabs-add-language-support latex latex-mode-hook
-	  ((latex-indent-line . 4)
-	   (latex-indent-region . 4)))
-	(smart-tabs-insinuate 'c 'c++ 'java 'python 'latex))
+(use-package smart-tabs-mode
+  :config
+  (smart-tabs-add-language-support latex latex-mode-hook
+	((latex-indent-line . 4)
+	 (latex-indent-region . 4)))
+  (smart-tabs-insinuate 'c 'c++ 'java 'python 'latex))
 #+END_SRC
 
 *** Evil
 
- Evil mode and related packages.
+Evil mode and related packages.
 
- #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package undo-tree
   :config (global-undo-tree-mode))
 (use-package goto-chg)
@@ -288,23 +288,23 @@ Install and configure packages.
 (use-package evil-nerd-commenter
   :defer t
   :after evil)
- #+END_SRC
+#+END_SRC
 
 *** Telephone Line
 
 Emacs mode line replacement.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package telephone-line
-	:custom
-	(telephone-line-height (if dot/hidpi 20 15))
-	(telephone-line-lhs
-	 '((evil   . (telephone-line-evil-tag-segment))
-	   (accent . (telephone-line-erc-modified-channels-segment
-				  telephone-line-process-segment
-				  telephone-line-buffer-segment))
-	   (nil    . (telephone-line-projectile-segment))))
-	:config (telephone-line-mode))
+(use-package telephone-line
+  :custom
+  (telephone-line-height (if dot/hidpi 20 15))
+  (telephone-line-lhs
+   '((evil   . (telephone-line-evil-tag-segment))
+	 (accent . (telephone-line-erc-modified-channels-segment
+				telephone-line-process-segment
+				telephone-line-buffer-segment))
+	 (nil    . (telephone-line-projectile-segment))))
+  :config (telephone-line-mode))
 #+END_SRC
 
 *** NeoTree
@@ -312,17 +312,17 @@ Emacs mode line replacement.
 Provides Emacs with a file tree.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package neotree
-	:after all-the-icons
-	:custom
-	(neo-theme (if (display-graphic-p) 'icons 'arrow))
-	(neo-autorefresh nil)
-	(neo-dont-be-alone t)
-	(neo-mode-line-type 'none)
-	(neo-show-hidden-files t)
-	(neo-vc-integration '(face))
-	:hook (neotree-mode . dot/hook-disable-line-numbers)
-	:hook (neotree-mode . hl-line-mode))
+(use-package neotree
+  :after all-the-icons
+  :custom
+  (neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (neo-autorefresh nil)
+  (neo-dont-be-alone t)
+  (neo-mode-line-type 'none)
+  (neo-show-hidden-files t)
+  (neo-vc-integration '(face))
+  :hook (neotree-mode . dot/hook-disable-line-numbers)
+  :hook (neotree-mode . hl-line-mode))
 #+END_SRC
 
 *** Centaur Tabs
@@ -330,26 +330,26 @@ Provides Emacs with a file tree.
 Places buffers as tabs in a bar at the top.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package centaur-tabs
-	:after all-the-icons
-	:demand
-	:custom
-	(centaur-tabs-height (if dot/hidpi 28 18))
-	(centaur-tabs-modified-marker "•")
-	(centaur-tabs-set-icons t)
-	(centaur-tabs-set-modified-marker t)
-	(centaur-tabs-style "slant")
-	:hook
-	((eshell-mode
-	  help-mode
-	  helpful-mode
-	  neotree-mode
-	  org-roam-backlinks-mode
-	  shell-mode)
-	 . centaur-tabs-local-mode)
-	:config
-	(centaur-tabs-headline-match)
-	(centaur-tabs-mode))
+(use-package centaur-tabs
+  :after all-the-icons
+  :demand
+  :custom
+  (centaur-tabs-height (if dot/hidpi 28 18))
+  (centaur-tabs-modified-marker "•")
+  (centaur-tabs-set-icons t)
+  (centaur-tabs-set-modified-marker t)
+  (centaur-tabs-style "slant")
+  :hook
+  ((eshell-mode
+	help-mode
+	helpful-mode
+	neotree-mode
+	org-roam-backlinks-mode
+	shell-mode)
+   . centaur-tabs-local-mode)
+  :config
+  (centaur-tabs-headline-match)
+  (centaur-tabs-mode))
 #+END_SRC
 
 *** Projectile
@@ -357,17 +357,17 @@ Places buffers as tabs in a bar at the top.
 Project manager.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-	:defer t
-	:custom
-	(projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
-	(projectile-completion-system 'default)
-	(projectile-enable-caching t)
-	(projectile-indexing-method 'hybrid)
-	(projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
-	(projectile-project-search-path '("~"))
-	(projectile-sort-order 'recentf)
-	:config (projectile-mode))
+(use-package projectile
+  :defer t
+  :custom
+  (projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
+  (projectile-completion-system 'default)
+  (projectile-enable-caching t)
+  (projectile-indexing-method 'hybrid)
+  (projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
+  (projectile-project-search-path '("~"))
+  (projectile-sort-order 'recentf)
+  :config (projectile-mode))
 #+END_SRC
 
 *** Org Packages
@@ -377,8 +377,8 @@ Project manager.
 Generate table of contents without exporting.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package toc-org
-	:defer t)
+(use-package toc-org
+  :defer t)
 #+END_SRC
 
 **** Org Roam
@@ -386,83 +386,83 @@ Generate table of contents without exporting.
 Setup =org-roam=.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-roam
-	:hook (emacs-startup . org-roam-mode)
-	:hook (org-roam-backlinks-mode . dot/hook-disable-line-numbers)
-	:hook (org-roam-backlinks-mode . dot/hook-disable-mode-line)
-	:config
-	(setq org-roam-completion-system 'default)
-	(setq org-roam-db-location (expand-file-name "org-roam.db" dot-cache-dir))
-	(setq org-roam-directory (expand-file-name "./" org-directory))
-	;; Exclude Syncthing backup directory
-	(setq org-roam-file-exclude-regexp "\\.stversions")
-	(setq org-roam-verbose nil))
+(use-package org-roam
+  :hook (emacs-startup . org-roam-mode)
+  :hook (org-roam-backlinks-mode . dot/hook-disable-line-numbers)
+  :hook (org-roam-backlinks-mode . dot/hook-disable-mode-line)
+  :config
+  (setq org-roam-completion-system 'default)
+  (setq org-roam-db-location (expand-file-name "org-roam.db" dot-cache-dir))
+  (setq org-roam-directory (expand-file-name "./" org-directory))
+  ;; Exclude Syncthing backup directory
+  (setq org-roam-file-exclude-regexp "\\.stversions")
+  (setq org-roam-verbose nil))
 #+END_SRC
 
 Enable [[https://www.orgroam.com/manual/Roam-Protocol.html#Roam-Protocol][Roam-Protocol]], needed to process =org-protocol://= links
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-roam-protocol
-	:ensure nil ; org-roam-protocol.el is part of org-roam
-	:after org-roam)
+(use-package org-roam-protocol
+  :ensure nil ; org-roam-protocol.el is part of org-roam
+  :after org-roam)
 #+END_SRC
 
 Setup =org-roam-server=.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package simple-httpd
-	:after org-roam)
+(use-package simple-httpd
+  :after org-roam)
 
-  (use-package org-roam-server
-	:after (org-roam simple-httpd)
-	:config
-	(setq org-roam-server-host "127.0.0.1")
-	(setq org-roam-server-port 8080)
-	(setq org-roam-server-network-arrows "from")
-	(setq org-roam-server-style
-		  (concat
-		   "button#toggle-preview { margin: 4px; }"
-		   "div#view-menu { margin: 4px; }"
-		   "div#controls { right: 4px; left: 4px; bottom: 4px; }"
-		   "button#toggle-list-type-button { margin: 0 4px; }"
-		   "label#colormode { transform: translate(-25%, 0); }"
-		   "label.toggle-off.btn-sm { padding-left: 0px; }"
-		   )))
+(use-package org-roam-server
+  :after (org-roam simple-httpd)
+  :config
+  (setq org-roam-server-host "127.0.0.1")
+  (setq org-roam-server-port 8080)
+  (setq org-roam-server-network-arrows "from")
+  (setq org-roam-server-style
+		(concat
+		 "button#toggle-preview { margin: 4px; }"
+		 "div#view-menu { margin: 4px; }"
+		 "div#controls { right: 4px; left: 4px; bottom: 4px; }"
+		 "button#toggle-list-type-button { margin: 0 4px; }"
+		 "label#colormode { transform: translate(-25%, 0); }"
+		 "label.toggle-off.btn-sm { padding-left: 0px; }"
+		 )))
 #+END_SRC
 
 Easily searchable .org files via Deft.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package deft
-	:hook (deft-mode . dot/hook-disable-line-numbers)
-	:config
-	(setq deft-auto-save-interval 0)
-	(setq deft-default-extension "org")
-	(setq deft-directory "~/documents/org/")
-	(setq deft-file-naming-rules '((noslash . "-")
-								   (nospace . "-")
-								   (case-fn . downcase)))
-	(setq deft-new-file-format "%Y%m%d%H%M%S-deft")
-	(setq deft-recursive t)
-	(setq deft-use-filename-as-title nil)
-	(setq deft-use-filter-string-for-filename t)
-	(add-to-list 'deft-extensions "tex")
+(use-package deft
+  :hook (deft-mode . dot/hook-disable-line-numbers)
+  :config
+  (setq deft-auto-save-interval 0)
+  (setq deft-default-extension "org")
+  (setq deft-directory "~/documents/org/")
+  (setq deft-file-naming-rules '((noslash . "-")
+								 (nospace . "-")
+								 (case-fn . downcase)))
+  (setq deft-new-file-format "%Y%m%d%H%M%S-deft")
+  (setq deft-recursive t)
+  (setq deft-use-filename-as-title nil)
+  (setq deft-use-filter-string-for-filename t)
+  (add-to-list 'deft-extensions "tex")
 
-	;; Start filtering immediately
-	(evil-set-initial-state 'deft-mode 'insert))
+  ;; Start filtering immediately
+  (evil-set-initial-state 'deft-mode 'insert))
 #+END_SRC
 
 **** Org Export Packages
 #+BEGIN_SRC emacs-lisp
-  ;; HTML exporter
-  (use-package htmlize
-	:defer t
-	:custom (org-export-html-postamble nil))
+;; HTML exporter
+(use-package htmlize
+  :defer t
+  :custom (org-export-html-postamble nil))
   ;org-export-html-postamble-format @ToDo
 
-  ;; Github flavored Markdown exporter
-  (use-package ox-gfm
-	:defer t)
+;; Github flavored Markdown exporter
+(use-package ox-gfm
+  :defer t)
 #+END_SRC
 
 *** Completion
@@ -532,37 +532,55 @@ On the fly syntax checking.
 Language Server Protocol.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode
-	:commands lsp
-	:after which-key
-	:hook
-	((c-mode         ; clangd
-	  c++-mode       ; clangd
-	  php-mode)      ; nodejs-intelephense
-	 . lsp-deferred)
-	:custom
-	(lsp-auto-guess-root t)
-	(lsp-clients-clangd-args '("-j=2"
-							   "--background-index"
-							   "--clang-tidy"
-							   "--compile-commands-dir=build"
-							   "--log=error"
-							   "--pch-storage=memory"))
-	(lsp-enable-xref t)
-	(lsp-headerline-breadcrumb-enable nil)
-	(lsp-intelephense-storage-path (concat dot-cache-dir "/lsp-cache"))
-	(lsp-keep-workspace-alive nil)
-	(lsp-prefer-flymake nil)
-	(lsp-session-file (concat dot-cache-dir "/lsp-session-v1"))
-	:config
-    ;; Mark clangd args variable as safe to modify via .dir-locals.el
-	(put 'lsp-clients-clangd-args 'safe-local-variable #'listp)
+(use-package lsp-mode
+  :commands lsp
+  :after which-key
+  :hook
+  ((c-mode         ; clangd
+	c++-mode       ; clangd
+	php-mode)      ; nodejs-intelephense
+   . lsp-deferred)
+  :config
+  (setq lsp-auto-guess-root t)
+  (setq lsp-clients-clangd-args '("-j=2"
+								  "--background-index"
+								  "--clang-tidy"
+								  "--compile-commands-dir=build"
+								  "--log=error"
+								  "--pch-storage=memory"))
+  (setq lsp-clients-lua-language-server-install-dir "/usr/share/lua-language-server/")
+  (setq lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
+  (setq lsp-enable-xref t)
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-intelephense-storage-path (concat dot-cache-dir "/lsp-cache"))
+  (setq lsp-keep-workspace-alive nil)
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-session-file (concat dot-cache-dir "/lsp-session-v1"))
 
-	;; Enable which-key descriptions
-	(dolist (leader-key (list dot/leader-key dot/leader-alt-key))
-	  (let ((lsp-keymap-prefix (concat leader-key " l")))
-		(lsp-enable-which-key-integration)))
-	)
+  ;; Mark clangd args variable as safe to modify via .dir-locals.el
+  (put 'lsp-clients-clangd-args 'safe-local-variable #'listp)
+
+  ;; Enable which-key descriptions
+  (dolist (leader-key (list dot/leader-key dot/leader-alt-key))
+	(let ((lsp-keymap-prefix (concat leader-key " l")))
+	  (lsp-enable-which-key-integration))))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :after (flycheck lsp-mode)
+  :config
+  (setq lsp-ui-doc-border (face-foreground 'default))
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-doc-header t)
+  (setq lsp-ui-doc-include-signature t)
+  (setq lsp-ui-doc-position 'top)
+  (setq lsp-ui-doc-use-childframe t)
+  (setq lsp-ui-flycheck-enable t)
+  (setq lsp-ui-flycheck-list-position 'right)
+  (setq lsp-ui-flycheck-live-reporting t)
+  (setq lsp-ui-peek-enable nil)
+  (setq lsp-ui-sideline-enable nil))
+#+END_SRC
 
   (use-package lsp-ui
 	:commands lsp-ui-mode
@@ -584,28 +602,28 @@ Language Server Protocol.
 **** YASnippet
 
 #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-	:defer t
-	:hook
-	((fundamental-mode
-	  prog-mode
-	  text-mode)
-	 . yas-minor-mode)
-	:custom
-	(yas-prompt-functions '(yas-completing-prompt))
-	(yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
-	:config (yas-reload-all))
+(use-package yasnippet
+  :defer t
+  :hook
+  ((fundamental-mode
+	prog-mode
+	text-mode)
+   . yas-minor-mode)
+  :custom
+  (yas-prompt-functions '(yas-completing-prompt))
+  (yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
+  :config (yas-reload-all))
 
-  (use-package yasnippet-snippets
-	:after yasnippet)
+(use-package yasnippet-snippets
+  :after yasnippet)
 #+END_SRC
 
 **** C/C++
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company-c-headers
-	:after company
-	:config (push 'company-c-headers company-backends))
+(use-package company-c-headers
+  :after company
+  :config (push 'company-c-headers company-backends))
 #+END_SRC
 
 *** Lua
@@ -638,142 +656,142 @@ Language Server Protocol.
 *** Prettify
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-	:demand
-	:custom
-	(initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-	(dashboard-banner-logo-title "GNU Emacs master race!")
-	(dashboard-center-content t)
-	(dashboard-set-file-icons t)
-	(dashboard-set-footer nil)
-	(dashboard-set-heading-icons t)
-	(dashboard-show-shortcuts t)
-	(dashboard-startup-banner 'logo)
-	(dashboard-items '((projects . 10)
-					   (bookmarks . 5)
-					   (recents . 5)))
-	:hook (dashboard-mode . dot/hook-disable-line-numbers)
-	:config (dashboard-setup-startup-hook))
+(use-package dashboard
+  :demand
+  :hook (dashboard-mode . dot/hook-disable-line-numbers)
+  :config
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq dashboard-banner-logo-title "GNU Emacs master race!")
+  (setq dashboard-center-content t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-set-footer nil)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-show-shortcuts t)
+  (setq dashboard-startup-banner 'logo)
+  (setq dashboard-items '((projects . 10)
+						  (bookmarks . 5)
+						  (recents . 5)))
+  (dashboard-setup-startup-hook))
 
-  ;; A better *help* buffer
-  (use-package helpful
-	:hook (helpful-mode . dot/hook-disable-line-numbers))
+;; A better *help* buffer
+(use-package helpful
+  :hook (helpful-mode . dot/hook-disable-line-numbers))
 
-  (use-package rainbow-mode
-	:hook (prog-mode . rainbow-mode))
+(use-package rainbow-mode
+  :hook (prog-mode . rainbow-mode))
 
-  (use-package rainbow-delimiters
-	:hook (prog-mode . rainbow-delimiters-mode))
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
 
-  (use-package org-bullets
-	:hook (org-mode . org-bullets-mode))
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode))
 
-  ;; Cmake syntax highlighting
-  (use-package cmake-mode
-	:defer t)
+;; Cmake syntax highlighting
+(use-package cmake-mode
+  :defer t)
 
-  ;; Shader syntax highlighting
-  (use-package glsl-mode
-	:defer t)
+;; Shader syntax highlighting
+(use-package glsl-mode
+  :defer t)
 #+END_SRC
 
 *** RSS
 
 #+BEGIN_SRC emacs-lisp
-  (use-package elfeed
-	:custom
-	(elfeed-db-directory (concat dot-cache-dir "/elfeed"))
-	(elfeed-enclosure-default-dir "~/downloads/")
-	(elfeed-search-filter "@6-months-ago +unread")
-	(elfeed-search-clipboard-type 'CLIPBOARD)
-	(elfeed-search-title-max-width 100)
-	(elfeed-search-title-min-width 30)
-	(elfeed-search-trailing-width 55)
-	(elfeed-show-unique-buffers t)
-	:hook (elfeed-search-mode . dot/hook-disable-line-numbers)
-	:hook (elfeed-show-mode   . dot/hook-disable-line-numbers)
-	:config (load (concat dot-etc-dir "/elfeed-feeds")))
+(use-package elfeed
+  :custom
+  (elfeed-db-directory (concat dot-cache-dir "/elfeed"))
+  (elfeed-enclosure-default-dir "~/downloads/")
+  (elfeed-search-filter "@6-months-ago +unread")
+  (elfeed-search-clipboard-type 'CLIPBOARD)
+  (elfeed-search-title-max-width 100)
+  (elfeed-search-title-min-width 30)
+  (elfeed-search-trailing-width 55)
+  (elfeed-show-unique-buffers t)
+  :hook (elfeed-search-mode . dot/hook-disable-line-numbers)
+  :hook (elfeed-show-mode   . dot/hook-disable-line-numbers)
+  :config (load (concat dot-etc-dir "/elfeed-feeds")))
 #+END_SRC
 
 * General
 
 #+BEGIN_SRC emacs-lisp
-  ;; Columns start at 1
-  (setq column-number-indicator-zero-based nil)
+;; Columns start at 1
+(setq column-number-indicator-zero-based nil)
 
-  ;; Dont confirm on quitting Emacs
-  (setq confirm-kill-processes nil)
+;; Dont confirm on quitting Emacs
+(setq confirm-kill-processes nil)
 
-  ;; Custom thems, do not ask if safe
-  (setq custom-safe-themes t)
+;; Custom thems, do not ask if safe
+(setq custom-safe-themes t)
 
-  ;; Dired move to trash
-  (setq delete-by-moving-to-trash t)
+;; Dired move to trash
+(setq delete-by-moving-to-trash t)
 
-  ;; Column indicator character
-  (setq display-fill-column-indicator-character ?\N{U+2503})
+;; Column indicator character
+(setq display-fill-column-indicator-character ?\N{U+2503})
 
-  ;; Scrolling
-  (setq scroll-conservatively 1)
-  (setq mouse-wheel-scroll-amount '(5))
-  (setq mouse-wheel-progressive-speed nil)
+;; Scrolling
+(setq scroll-conservatively 1)
+(setq mouse-wheel-scroll-amount '(5))
+(setq mouse-wheel-progressive-speed nil)
 
-  ;; Parenthesis, set behavior
-  (setq show-paren-delay 0)
-  (setq show-paren-style 'mixed)
+;; Parenthesis, set behavior
+(setq show-paren-delay 0)
+(setq show-paren-style 'mixed)
 
-  ;; Tramp default protocol
-  (setq tramp-default-method "ssh")
+;; Tramp default protocol
+(setq tramp-default-method "ssh")
 
-  ;; Set undo limit, measured in bytes
-  (setq-default undo-limit 400000)
-  (setq-default undo-strong-limit 3000000)
-  (setq-default undo-outer-limit 12000000)
+;; Set undo limit, measured in bytes
+(setq-default undo-limit 400000)
+(setq-default undo-strong-limit 3000000)
+(setq-default undo-outer-limit 12000000)
 
-  ;; Enable line numbers
-  (global-display-line-numbers-mode)
+;; Enable line numbers
+(global-display-line-numbers-mode)
 
-  ;; C++ syntax highlighting for .h files
-  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+;; C++ syntax highlighting for .h files
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
-  ;; When in the GUI version of Emacs, enable pretty symbols
-  (when window-system (global-prettify-symbols-mode t))
+;; When in the GUI version of Emacs, enable pretty symbols
+(when window-system (global-prettify-symbols-mode t))
 
-  ;; Set the frame title
-  (setq frame-title-format
-		`("%b"
-		  (:eval
-		   (if (buffer-file-name)
-			   (concat
-				(if (buffer-modified-p) " •" nil)
-				" ("
-				(abbreviate-file-name
-				 (directory-file-name
-				  (file-name-directory (buffer-file-name))))
-				")")
-			 nil))
-		  ,(format " - GNU Emacs %s" emacs-version)
-		  ))
-  (setq icon-title-format frame-title-format)
+;; Set the frame title
+(setq frame-title-format
+	  `("%b"
+		(:eval
+		 (if (buffer-file-name)
+			 (concat
+			  (if (buffer-modified-p) " •" nil)
+			  " ("
+			  (abbreviate-file-name
+			   (directory-file-name
+				(file-name-directory (buffer-file-name))))
+			  ")")
+		   nil))
+		,(format " - GNU Emacs %s" emacs-version)
+		))
+(setq icon-title-format frame-title-format)
 #+END_SRC
 
 ** Buffers
 
 #+BEGIN_SRC emacs-lisp
-  (setq confirm-nonexistent-file-or-buffer nil)
-  (setq ibuffer-expert t)
+(setq confirm-nonexistent-file-or-buffer nil)
+(setq ibuffer-expert t)
 #+END_SRC
 
 ** Electric
 
 #+BEGIN_SRC emacs-lisp
-  ;; Make return key also do indent of previous line
-  (electric-indent-mode 1)
-  (setq electric-pair-pairs '(
-							  (?\( . ?\))
-							  (?\[ . ?\])
-							  ))
-  (electric-pair-mode 1)
+;; Make return key also do indent of previous line
+(electric-indent-mode 1)
+(setq electric-pair-pairs '(
+							(?\( . ?\))
+							(?\[ . ?\])
+							))
+(electric-pair-mode 1)
 #+END_SRC
 
 ** File Paths
@@ -805,49 +823,49 @@ Set file paths for built-in features like: auto-saves, backups, etc.
 Setup file backups versioning.
 
 #+BEGIN_SRC emacs-lisp
-  (setq backup-by-copying t)    ; Don't cobbler symlinks
-  (setq create-lockfiles nil)   ; Disable lockfiles (.#)
-  (setq delete-old-versions t)  ; Cleanup backups
-  (setq kept-new-versions 5)    ; Newest backups to keep
-  (setq kept-old-versions 2)    ; Oldest backups to keep
-  (setq version-control t)      ; Use version numbers on backups
+(setq backup-by-copying t)    ; Don't cobbler symlinks
+(setq create-lockfiles nil)   ; Disable lockfiles (.#)
+(setq delete-old-versions t)  ; Cleanup backups
+(setq kept-new-versions 5)    ; Newest backups to keep
+(setq kept-old-versions 2)    ; Oldest backups to keep
+(setq version-control t)      ; Use version numbers on backups
 #+END_SRC
 
 ** Formatting
 
 #+BEGIN_SRC emacs-lisp
-  ;; Columnn after line-wrapping happens
-  (setq-default fill-column 80)
+;; Columnn after line-wrapping happens
+(setq-default fill-column 80)
 
-  ;; Automatically add newline on save at the end of the file
-  (setq require-final-newline t)
+;; Automatically add newline on save at the end of the file
+(setq require-final-newline t)
 
-  ;; End sentences with a single space
-  (setq sentence-end-double-space nil)
+;; End sentences with a single space
+(setq sentence-end-double-space nil)
 
-  ;; `tabify' and `untabify' should only affect indentation
-  (setq tabify-regexp "^\t* [ \t]+")
+;; `tabify' and `untabify' should only affect indentation
+(setq tabify-regexp "^\t* [ \t]+")
 
-  ;; Do not wrap lines
-  (setq-default truncate-lines t)
+;; Do not wrap lines
+(setq-default truncate-lines t)
 
-  ;; Wrap lines in the middle of words, gives a \ indicator
-  (setq-default word-wrap nil)
+;; Wrap lines in the middle of words, gives a \ indicator
+(setq-default word-wrap nil)
 #+END_SRC
 
 ** Hide Elements
 
 #+BEGIN_SRC emacs-lisp
-  (menu-bar-mode 0)
-  (scroll-bar-mode 0)
-  (tool-bar-mode 0)
-  (tooltip-mode 0)
-  (fringe-mode 0)
-  (blink-cursor-mode 0)
+(menu-bar-mode 0)
+(scroll-bar-mode 0)
+(tool-bar-mode 0)
+(tooltip-mode 0)
+(fringe-mode 0)
+(blink-cursor-mode 0)
 
-  (setq inhibit-startup-message t)
-  (setq initial-scratch-message nil)
-  (setq ring-bell-function 'ignore)
+(setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+(setq ring-bell-function 'ignore)
 #+END_SRC
 
 ** Org
@@ -855,126 +873,118 @@ Setup file backups versioning.
 *** Org Config
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-	:config
-	(setq org-directory (concat (getenv "HOME") "/documents/org"))
-	(setq org-default-notes-file (expand-file-name "notes.org" org-directory))
-	(setq org-adapt-indentation nil)
-	(setq org-ellipsis "⤵")
-	;; Enable structured template completion
-	(add-to-list 'org-modules 'org-tempo t)
-	(add-to-list 'org-structure-template-alist
-				 '("el" . "src emacs-lisp"))
-	)
+(use-package org
+  :config
+  (setq org-directory (concat (getenv "HOME") "/documents/org"))
+  (setq org-default-notes-file (expand-file-name "notes.org" org-directory))
+  (setq org-adapt-indentation nil)
+  (setq org-ellipsis "⤵")
+  ;; Enable structured template completion
+  (add-to-list 'org-modules 'org-tempo t)
+  (add-to-list 'org-structure-template-alist
+			   '("el" . "src emacs-lisp")))
 #+END_SRC
 
 *** Org Agenda
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-agenda
-	:ensure nil
-	:defer t
-	:config
-	(setq org-agenda-files `(,org-directory ,user-emacs-directory))
-	(setq org-agenda-span 14)
-	(setq org-agenda-window-setup 'current-window)
-	(evil-set-initial-state 'org-agenda-mode 'motion)
-	)
+(use-package org-agenda
+  :ensure nil
+  :defer t
+  :config
+  (setq org-agenda-files `(,org-directory ,user-emacs-directory))
+  (setq org-agenda-span 14)
+  (setq org-agenda-window-setup 'current-window)
+  (evil-set-initial-state 'org-agenda-mode 'motion))
 #+END_SRC
 
 *** Org Keys
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-keys
-	:ensure nil
-	:config
-	(setq org-return-follows-link t)
-	)
+(use-package org-keys
+  :ensure nil
+  :config
+  (setq org-return-follows-link t))
 #+END_SRC
 
 *** Org Links
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ol
-	:ensure nil
-	:config
-	;; Do not open links to .org files in a split window
-	(add-to-list 'org-link-frame-setup '(file . find-file))
-	)
+(use-package ol
+  :ensure nil
+  :config
+  ;; Do not open links to .org files in a split window
+  (add-to-list 'org-link-frame-setup '(file . find-file)))
 #+END_SRC
 
 *** Org Source Code Blocks
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-src
-	:ensure nil
-	:config
-	(setq org-edit-src-content-indentation 0)
-	(setq org-src-fontify-natively t)
-	(setq org-src-preserve-indentation t)
-	(setq org-src-tab-acts-natively t)
-	(setq org-src-window-setup 'current-window)
-	)
+(use-package org-src
+  :ensure nil
+  :config
+  (setq org-edit-src-content-indentation 0)
+  (setq org-src-fontify-natively t)
+  (setq org-src-preserve-indentation t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-window-setup 'current-window))
 #+END_SRC
 
 *** Org Export
 
 #+BEGIN_SRC emacs-lisp
-  ;; Org exporter
-  (use-package ox
-	:ensure nil
-	:defer t
-	:config
-	(setq org-export-coding-system 'utf-8-unix)
-	)
+;; Org exporter
+(use-package ox
+  :ensure nil
+  :defer t
+  :config
+  (setq org-export-coding-system 'utf-8-unix))
 
-  ;; Org latex exporter
-  (use-package ox-latex
-	:ensure nil
-	:defer t
-	:config
-	;; Define how minted (highlighted src code) is added to src code blocks
-	(setq org-latex-listings 'minted)
-	(setq org-latex-minted-options '(("frame" "lines") ("linenos=true")))
-	;; Set 'Table of Contents' layout
-	(setq org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
-	;; Add minted package to every LaTeX header
-	(add-to-list 'org-latex-packages-alist '("" "minted"))
-	;; Append -shell-escape so pdflatex exports minted correctly
-	(add-to-list 'org-latex-pdf-process (replace-regexp-in-string
-										 "%latex "
-										 "%latex -shell-escape "
-										 (car org-latex-pdf-process)))
-	)
+;; Org latex exporter
+(use-package ox-latex
+  :ensure nil
+  :defer t
+  :config
+  ;; Define how minted (highlighted src code) is added to src code blocks
+  (setq org-latex-listings 'minted)
+  (setq org-latex-minted-options '(("frame" "lines") ("linenos=true")))
+  ;; Set 'Table of Contents' layout
+  (setq org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
+  ;; Add minted package to every LaTeX header
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  ;; Append -shell-escape so pdflatex exports minted correctly
+  (add-to-list 'org-latex-pdf-process (replace-regexp-in-string
+									   "%latex "
+									   "%latex -shell-escape "
+									   (car org-latex-pdf-process))))
 #+END_SRC
 
 ** Recentf
 
 #+BEGIN_SRC emacs-lisp
-  (use-package recentf
-	:config
-	(setq recentf-auto-cleanup 'never)
-	(setq recentf-exclude '("~$" "/ssh:" "/sudo:"))
-	(setq recentf-filename-handlers '(abbreviate-file-name))
-	(setq recentf-max-menu-items 0)
-	(setq recentf-max-saved-items 200)
-	(setq recentf-save-file (concat dot-cache-dir "/recentf"))
-	(recentf-mode)
-	)
+(use-package recentf
+  :config
+  (setq recentf-auto-cleanup 'never)
+  (setq recentf-exclude '("~$" "/ssh:" "/sudo:"))
+  (setq recentf-filename-handlers '(abbreviate-file-name))
+  (setq recentf-max-menu-items 0)
+  (setq recentf-max-saved-items 200)
+  (setq recentf-save-file (concat dot-cache-dir "/recentf"))
+  (recentf-mode))
 #+END_SRC
 
 ** Tabs
 
 #+BEGIN_SRC emacs-lisp
-  ;; Tabs
-  (setq-default tab-width 4
-				indent-tabs-mode t)
+;; Tabs
+(setq-default tab-width 4
+			  indent-tabs-mode t)
 
-  ;; C/C++-like languages formatting style
-  ;https://www.emacswiki.org/emacs/IndentingC
-  (setq-default c-basic-offset 4
-				sgml-basic-offset 4
-				c-default-style "linux")
+;; C/C++-like languages formatting style
+;; https://www.emacswiki.org/emacs/IndentingC
+(setq-default c-basic-offset 4
+			  sgml-basic-offset 4
+			  c-default-style "linux")
 #+END_SRC
 
 ** UTF-8
@@ -982,40 +992,40 @@ Setup file backups versioning.
 Set UTF-8 encoding as default.
 
 #+BEGIN_SRC emacs-lisp
-  (prefer-coding-system 'utf-8-unix)
-  (setq locale-coding-system 'utf-8-unix)
-  ;; Default also sets file-name, keyboard and terminal coding system
-  (set-default-coding-systems 'utf-8-unix)
-  (set-buffer-file-coding-system 'utf-8-unix)
-  (set-selection-coding-system 'utf-8-unix)
+(prefer-coding-system 'utf-8-unix)
+(setq locale-coding-system 'utf-8-unix)
+;; Default also sets file-name, keyboard and terminal coding system
+(set-default-coding-systems 'utf-8-unix)
+(set-buffer-file-coding-system 'utf-8-unix)
+(set-selection-coding-system 'utf-8-unix)
 #+END_SRC
 
 ** Window
 
 #+BEGIN_SRC emacs-lisp
-  ;; Set `switch-to-buffer' to respect the window rules
-  (setq switch-to-buffer-obey-display-actions t)
+;; Set `switch-to-buffer' to respect the window rules
+(setq switch-to-buffer-obey-display-actions t)
 
-  ;; Window rules
-  (setq display-buffer-alist
-		'(
-		  ;; ^\*(e?shell|(ansi-|v)?term).*
-		  ("^\\*\\(e?shell\\|\\(ansi-\\|v\\)?term\\).*"
-		   (display-buffer-in-side-window)
-		   (window-height . 0.25)
-		   (side . bottom)
-		   (slot . -1))
-		  ("\\*Faces\\*"
-		   (display-buffer-in-side-window)
-		   (window-height . 0.25)
-		   (side . bottom)
-		   (slot . 1))
-		  ("\\*Help.*"
-		   (display-buffer-in-side-window)
-		   (window-height . 0.25)
-		   (side . bottom)
-		   (slot . 0))
-		  ))
+;; Window rules
+(setq display-buffer-alist
+	  '(
+		;; ^\*(e?shell|(ansi-|v)?term).*
+		("^\\*\\(e?shell\\|\\(ansi-\\|v\\)?term\\).*"
+		 (display-buffer-in-side-window)
+		 (window-height . 0.25)
+		 (side . bottom)
+		 (slot . -1))
+		("\\*Faces\\*"
+		 (display-buffer-in-side-window)
+		 (window-height . 0.25)
+		 (side . bottom)
+		 (slot . 1))
+		("\\*Help.*"
+		 (display-buffer-in-side-window)
+		 (window-height . 0.25)
+		 (side . bottom)
+		 (slot . 0))
+		))
 #+END_SRC
 
 * Functions
@@ -1024,134 +1034,134 @@ Set UTF-8 encoding as default.
 Functions that only use built-in Emacs functionality.
 
 #+BEGIN_SRC emacs-lisp
-  (defun display-startup-echo-area-message ()
-	"Hide default startup message."
-	(message nil))
+(defun display-startup-echo-area-message ()
+  "Hide default startup message."
+  (message nil))
 
-  (defun dot/config-visit ()
-	"Edit config file."
-	(interactive)
-	(find-file (concat dot-emacs-dir "/config.org")))
+(defun dot/config-visit ()
+  "Edit config file."
+  (interactive)
+  (find-file (concat dot-emacs-dir "/config.org")))
 
-  (defun dot/config-reload ()
-	"Reload config file."
-	(interactive)
-	(org-babel-load-file (concat dot-emacs-dir "/config.org")))
+(defun dot/config-reload ()
+  "Reload config file."
+  (interactive)
+  (org-babel-load-file (concat dot-emacs-dir "/config.org")))
 
-  (defun dot/find-file-emacsd ()
-	"Find file under `dot-emacs-dir', recursively."
-	(interactive)
-	(let ((files (mapcar 'abbreviate-file-name
-						 (directory-files-recursively dot-emacs-dir ""))))
-	  (find-file (completing-read "Find file (emacs): " files nil t))))
+(defun dot/find-file-emacsd ()
+  "Find file under `dot-emacs-dir', recursively."
+  (interactive)
+  (let ((files (mapcar 'abbreviate-file-name
+					   (directory-files-recursively dot-emacs-dir ""))))
+	(find-file (completing-read "Find file (emacs): " files nil t))))
 
-  (defun dot/find-file-recentf ()
-	"Use `completing-read' to open a recent file."
-	(interactive)
-	(let ((files (mapcar 'abbreviate-file-name recentf-list)))
-	  (find-file (completing-read "Find file (recent): " files nil t))))
+(defun dot/find-file-recentf ()
+  "Use `completing-read' to open a recent file."
+  (interactive)
+  (let ((files (mapcar 'abbreviate-file-name recentf-list)))
+	(find-file (completing-read "Find file (recent): " files nil t))))
 
-  (defun dot/indent-buffer ()
-	"Indent each nonblank line in the buffer."
-	(interactive)
-	(save-excursion
-	  (indent-region (point-min) (point-max) nil)))
+(defun dot/indent-buffer ()
+  "Indent each nonblank line in the buffer."
+  (interactive)
+  (save-excursion
+	(indent-region (point-min) (point-max) nil)))
 
-  (defun dot/insert-spaces-until-column (until-column)
-	"Insert spaces from point to UNTIL-COLUMN."
-	(interactive "nInsert spaces until column: ")
-	(let ((current-column (current-column)))
-	  ;; Increment column if the index is 1 based
-	  (when (not column-number-indicator-zero-based)
-		(setq current-column (+ current-column 1)))
-	  ;; Insert spaces
-	  (let ((diff (- until-column current-column)))
-		(if (> diff 0)
-			(save-excursion (insert (make-string diff ?\ )))
-		  (user-error "Column should be higher than point")))))
+(defun dot/insert-spaces-until-column (until-column)
+  "Insert spaces from point to UNTIL-COLUMN."
+  (interactive "nInsert spaces until column: ")
+  (let ((current-column (current-column)))
+	;; Increment column if the index is 1 based
+	(when (not column-number-indicator-zero-based)
+	  (setq current-column (+ current-column 1)))
+	;; Insert spaces
+	(let ((diff (- until-column current-column)))
+	  (if (> diff 0)
+		  (save-excursion (insert (make-string diff ?\ )))
+		(user-error "Column should be higher than point")))))
 
-  (defun dot/reload-theme ()
-	"Reload custom theme."
-	(interactive)
-	(mapc 'load (file-expand-wildcards
-				 (concat (car custom-theme-load-path) "*.el")))
-	(load-theme (car custom-enabled-themes) t))
+(defun dot/reload-theme ()
+  "Reload custom theme."
+  (interactive)
+  (mapc 'load (file-expand-wildcards
+			   (concat (car custom-theme-load-path) "*.el")))
+  (load-theme (car custom-enabled-themes) t))
 
-  (defun dot/sudo-find-file (filename)
-	"Edit file FILENAME as root."
-	(interactive "FOpen file (as root): ")
-	(find-file (concat "/sudo:root@localhost:" filename)))
+(defun dot/sudo-find-file (filename)
+  "Edit file FILENAME as root."
+  (interactive "FOpen file (as root): ")
+  (find-file (concat "/sudo:root@localhost:" filename)))
 
-  (defun dot/sudo-this-file ()
-	"Edit the current file as root."
-	(interactive)
-	(if buffer-file-name
-		(find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))
-	  (princ "Current buffer isn't a file")))
+(defun dot/sudo-this-file ()
+  "Edit the current file as root."
+  (interactive)
+  (if buffer-file-name
+	  (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))
+	(princ "Current buffer isn't a file")))
 
-  (defun dot/toggle-fringe ()
-	"Toggle left-only fringe."
-	(interactive)
-	(if (eq fringe-mode 0)
-		(set-fringe-mode '(nil . 0))
-	  (set-fringe-mode 0)))
+(defun dot/toggle-fringe ()
+  "Toggle left-only fringe."
+  (interactive)
+  (if (eq fringe-mode 0)
+	  (set-fringe-mode '(nil . 0))
+	(set-fringe-mode 0)))
 
-  (defun dot/M-x (command)
-	"Prompt and execute COMMAND."
-	(interactive "CCommand: ")
-	(command-execute command))
+(defun dot/M-x (command)
+  "Prompt and execute COMMAND."
+  (interactive "CCommand: ")
+  (command-execute command))
 
-  (defun split-follow-horizontally ()
-	"Split and follow window."
-	(interactive)
-	(split-window-below)
-	(other-window 1))
-  (defun split-follow-vertically ()
-	"Split and follow window."
-	(interactive)
-	(split-window-right)
-	(other-window 1))
+(defun split-follow-horizontally ()
+  "Split and follow window."
+  (interactive)
+  (split-window-below)
+  (other-window 1))
+(defun split-follow-vertically ()
+  "Split and follow window."
+  (interactive)
+  (split-window-right)
+  (other-window 1))
 
-  (defun find-project-root ()
-	"Return root of the project, determined by `.git/', `default-directory' otherwise."
-	(let ((search-directory (locate-dominating-file "." ".git")))
-	  (if search-directory
-		  search-directory
-		default-directory))
-	)
+(defun find-project-root ()
+  "Return root of the project, determined by `.git/', `default-directory' otherwise."
+  (let ((search-directory (locate-dominating-file "." ".git")))
+	(if search-directory
+		search-directory
+	  default-directory))
+  )
 
-  (defun find-file-in-project-root ()
-	"Find file in project root."
-	(interactive)
-	(let ((default-directory (find-project-root)))
-	  (call-interactively 'find-file)))
+(defun find-file-in-project-root ()
+  "Find file in project root."
+  (interactive)
+  (let ((default-directory (find-project-root)))
+	(call-interactively 'find-file)))
 
 
-  ;; https://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
-  (defun rename-file-and-buffer ()
-	"Rename the current buffer and file it is visiting."
-	(interactive)
-	(let ((filename (buffer-file-name)))
-	  (if (not (and filename (file-exists-p filename)))
-		  (message "Buffer is not visiting a file!")
-		(let ((new-name (read-file-name "New name: " filename)))
-		  (cond
-		   ((vc-backend filename) (vc-rename-file filename new-name))
-		   (t
-			(rename-file filename new-name t)
-			(set-visited-file-name new-name t t)))))))
+;; https://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+(defun rename-file-and-buffer ()
+  "Rename the current buffer and file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+	(if (not (and filename (file-exists-p filename)))
+		(message "Buffer is not visiting a file!")
+	  (let ((new-name (read-file-name "New name: " filename)))
+		(cond
+		 ((vc-backend filename) (vc-rename-file filename new-name))
+		 (t
+		  (rename-file filename new-name t)
+		  (set-visited-file-name new-name t t)))))))
 #+END_SRC
 
 Functions that are only used for hook calls.
 
 #+BEGIN_SRC emacs-lisp
-  (defun dot/hook-disable-line-numbers ()
-	"Disable the line numbers."
-	(display-line-numbers-mode 0))
+(defun dot/hook-disable-line-numbers ()
+  "Disable the line numbers."
+  (display-line-numbers-mode 0))
 
-  (defun dot/hook-disable-mode-line ()
-	"Disable the mode line."
-	(setq-local mode-line-format nil))
+(defun dot/hook-disable-mode-line ()
+  "Disable the mode line."
+  (setq-local mode-line-format nil))
 #+END_SRC
 
 ** Package Functions
@@ -1161,100 +1171,97 @@ Functions that use package functionality.
 *** Centaur Tabs Functions
 
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'centaur-tabs
-	(defun centaur-tabs-buffer-groups ()
-	  "Organize tabs into groups by buffer."
-	  (list
-	   (cond
-		((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
-		((memq major-mode '(org-mode
-							emacs-lisp-mode)) "Org Mode")
-		((derived-mode-p 'dired-mode) "Dired")
-		((derived-mode-p 'prog-mode
-						 'text-mode) "Editing")
-		(t "User"))))
+(with-eval-after-load 'centaur-tabs
+  (defun centaur-tabs-buffer-groups ()
+	"Organize tabs into groups by buffer."
+	(list
+	 (cond
+	  ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
+	  ((memq major-mode '(org-mode
+						  emacs-lisp-mode)) "Org Mode")
+	  ((derived-mode-p 'dired-mode) "Dired")
+	  ((derived-mode-p 'prog-mode
+					   'text-mode) "Editing")
+	  (t "User"))))
 
-	(defun centaur-tabs-hide-tab (buffer)
-	  "Hide from the tab bar by BUFFER name."
+  (defun centaur-tabs-hide-tab (buffer)
+	"Hide from the tab bar by BUFFER name."
 
-	  (let ((name (format "%s" buffer)))
-		(or
-		 ;; Current window is dedicated window
-		 (window-dedicated-p (selected-window))
+	(let ((name (format "%s" buffer)))
+	  (or
+	   ;; Current window is dedicated window
+	   (window-dedicated-p (selected-window))
 
-		 ;; Buffer name does match below blacklist
-		 (string-match-p (concat "\\(CAPTURE-\\)?" (format-time-string "%Y%m%d%H%M%S") "-.*\\.org") name)
-		 (string-match-p
-		  (concat "^ ?\\*\\("
-				  "Agenda Commands\\|"
-				  "e?shell\\|"
-				  "Compile-Log\\|"
-				  "Completions\\|"
-				  "clangd\\|"       ; lsp c/c++
-				  "Faces\\|"
-				  "Flycheck\\|"
-				  "Help\\|"
-				  "helpful\\|"
-				  "httpd\\|"
-				  "iph\\|"          ; lsp php
-				  "org-roam\\|"
-				  "Org tags\\|"
-				  "Org todo"
-				  "\\).*")
-		  name)
-		 )))
+	   ;; Buffer name does match below blacklist
+	   (string-match-p (concat "\\(CAPTURE-\\)?" (format-time-string "%Y%m%d%H%M%S") "-.*\\.org") name)
+	   (string-match-p
+		(concat "^ ?\\*\\("
+				"Agenda Commands\\|"
+				"e?shell\\|"
+				"Compile-Log\\|"
+				"Completions\\|"
+				"clangd\\|"       ; lsp c/c++
+				"dap-mouse\\|"
+				"dap-ui-\\|"
+				"Debug\\|"
+				"Faces\\|"
+				"Flycheck\\|"
+				"Help\\|"
+				"helpful\\|"
+				"httpd\\|"
+				"iph\\|"          ; lsp php
+				"org-roam\\|"
+				"Org tags\\|"
+				"Org todo"
+				"\\).*")
+		name))))
 
-	(defun dot/centaur-tabs-buffer-cleanup ()
-	  "Clean up all the hidden buffers."
-	  (interactive)
-	  (dolist (buffer (buffer-list))
-		(when (centaur-tabs-hide-tab buffer)
-		  (kill-buffer buffer))
-		)
-	  )
+  (defun dot/centaur-tabs-buffer-cleanup ()
+	"Clean up all the hidden buffers."
+	(interactive)
+	(dolist (buffer (buffer-list))
+	  (when (centaur-tabs-hide-tab buffer)
+		(kill-buffer buffer))))
 
-	(defun dot/centaur-tabs-kill-buffer-or-window ()
-	  "Delete window of the current buffer, also kill if the buffer is hidden."
-	  (interactive)
-	  (if (centaur-tabs-hide-tab (buffer-name))
-		  (kill-buffer-and-window)
-		(delete-window))
-	  )
-	)
+  (defun dot/centaur-tabs-kill-buffer-or-window ()
+	"Delete window of the current buffer, also kill if the buffer is hidden."
+	(interactive)
+	(if (centaur-tabs-hide-tab (buffer-name))
+		(kill-buffer-and-window)
+	  (delete-window))))
 #+END_SRC
 
 *** Dashboard Functions
 
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'dashboard
-	(defun dot/dashboard-goto ()
-	  "Go to the *dashboard* buffer, create if non-existing."
-	  (interactive)
-	  (let ((buffer "*dashboard*"))
-		(unless (get-buffer buffer)
-		  (generate-new-buffer buffer)
-		  (dashboard-refresh-buffer))
-		(switch-to-buffer buffer)))
-	)
+(with-eval-after-load 'dashboard
+  (defun dot/dashboard-goto ()
+	"Go to the *dashboard* buffer, create if non-existing."
+	(interactive)
+	(let ((buffer "*dashboard*"))
+	  (unless (get-buffer buffer)
+		(generate-new-buffer buffer)
+		(dashboard-refresh-buffer))
+	  (switch-to-buffer buffer))))
 #+END_SRC
 
 Fix keybinds..
 
 #+BEGIN_SRC emacs-lisp
-  (defun dot/dashboard-goto-bookmarks ()
-	"Move point to bookmarks."
-	(interactive)
-	(funcall (local-key-binding "m")))
+(defun dot/dashboard-goto-bookmarks ()
+  "Move point to bookmarks."
+  (interactive)
+  (funcall (local-key-binding "m")))
 
-  (defun dot/dashboard-goto-projects ()
-	"Move point to projects."
-	(interactive)
-	(funcall (local-key-binding "p")))
+(defun dot/dashboard-goto-projects ()
+  "Move point to projects."
+  (interactive)
+  (funcall (local-key-binding "p")))
 
-  (defun dot/dashboard-goto-recent-files ()
-	"Move point to recent files."
-	(interactive)
-	(funcall (local-key-binding "r")))
+(defun dot/dashboard-goto-recent-files ()
+  "Move point to recent files."
+  (interactive)
+  (funcall (local-key-binding "r")))
 #+END_SRC
 
 *** Evil functions
@@ -1314,44 +1321,44 @@ Vim equivalence: >gv"
 *** LSP Functions
 
 #+BEGIN_SRC emacs-lisp
-  (defun lsp-format-region-or-buffer ()
-	"Format the selection (or buffer) with LSP."
-	(interactive)
-	(unless (bound-and-true-p lsp-mode)
-	  (user-error "Not in an LSP buffer"))
-	(call-interactively
-	 (if (use-region-p)
-		 #'lsp-format-region
-	   #'lsp-format-buffer)))
+(defun lsp-format-region-or-buffer ()
+  "Format the selection (or buffer) with LSP."
+  (interactive)
+  (unless (bound-and-true-p lsp-mode)
+	(user-error "Not in an LSP buffer"))
+  (call-interactively
+   (if (use-region-p)
+	   #'lsp-format-region
+	 #'lsp-format-buffer)))
 #+END_SRC
 
 *** Neotree Functions
 
 #+BEGIN_SRC emacs-lisp
-  (defun neotree-toggle-in-project-root ()
-	"Toggle Neotree in project root."
-	(interactive)
-	(let ((default-directory (find-project-root)))
-	  (call-interactively #'neotree-toggle)))
+(defun neotree-toggle-in-project-root ()
+  "Toggle Neotree in project root."
+  (interactive)
+  (let ((default-directory (find-project-root)))
+	(call-interactively #'neotree-toggle)))
 #+END_SRC
 
 *** Org Functions
 
 #+BEGIN_SRC emacs-lisp
-  (defun dot/org-ret-at-point ()
-	"Org return key at point.
+(defun dot/org-ret-at-point ()
+  "Org return key at point.
 
-  If point is on:
-	checkbox   -- toggle it
-	link       -- follow it
-	otherwise  -- run the default (evil-ret) expression"
-	(interactive)
-	(let ((type (org-element-type (org-element-context))))
-	  (pcase type
-		('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
-		((guard (org-at-item-checkbox-p)) (org-toggle-checkbox))
-		(_ (evil-ret))
-		)))
+If point is on:
+  checkbox   -- toggle it
+  link       -- follow it
+  otherwise  -- run the default (evil-ret) expression"
+  (interactive)
+  (let ((type (org-element-type (org-element-context))))
+	(pcase type
+	  ('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
+	  ((guard (org-at-item-checkbox-p)) (org-toggle-checkbox))
+	  (_ (evil-ret))
+	  )))
 #+END_SRC
 
 *** Selectrum Functions
@@ -1370,15 +1377,14 @@ Vim equivalence: >gv"
 *** Which-Key Functions
 
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'which-key
-	(defun dot/which-key-prefix-then-key-order-alpha (acons bcons)
-	  "Order y prefix, then lexicographical."
-	  (let ((apref? (which-key--group-p (cdr acons)))
-			(bpref? (which-key--group-p (cdr bcons))))
-		(if (not (eq apref? bpref?))
-			(and (not apref?) bpref?)
-		  (which-key-key-order-alpha acons bcons))))
-	)
+(with-eval-after-load 'which-key
+  (defun dot/which-key-prefix-then-key-order-alpha (acons bcons)
+	"Order y prefix, then lexicographical."
+	(let ((apref? (which-key--group-p (cdr acons)))
+		  (bpref? (which-key--group-p (cdr bcons))))
+	  (if (not (eq apref? bpref?))
+		  (and (not apref?) bpref?)
+		(which-key-key-order-alpha acons bcons)))))
 #+END_SRC
 
 * Advice and Aliases
@@ -1387,9 +1393,9 @@ Vim equivalence: >gv"
 Define default terminal option.
 
 #+BEGIN_SRC emacs-lisp
-  (defun dot/ansi-term (program &optional new-buffer-name)
-	(interactive (list dot/shell)))
-  (advice-add 'ansi-term :before #'dot/ansi-term)
+(defun dot/ansi-term (program &optional new-buffer-name)
+  (interactive (list dot/shell)))
+(advice-add 'ansi-term :before #'dot/ansi-term)
 #+END_SRC
 
 ** Aliases
@@ -1399,7 +1405,7 @@ Define default terminal option.
 Make confirm easier, by just pressing y/n.
 
 #+BEGIN_SRC emacs-lisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
+(defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 *** Package
@@ -1407,46 +1413,46 @@ Make confirm easier, by just pressing y/n.
 Evil command aliases.
 
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'evil-ex
-    (evil-ex-define-cmd "W" "w")
-    (evil-ex-define-cmd "Q" "q")
-    (evil-ex-define-cmd "WQ" "wq")
-    (evil-ex-define-cmd "Wq" "wq"))
+(with-eval-after-load 'evil-ex
+  (evil-ex-define-cmd "W" "w")
+  (evil-ex-define-cmd "Q" "q")
+  (evil-ex-define-cmd "WQ" "wq")
+  (evil-ex-define-cmd "Wq" "wq"))
 #+END_SRC
 
 * Hooks
 
 #+BEGIN_SRC emacs-lisp
-  ;; Delete trailing whitespace
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; Delete trailing whitespace
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-  ;; Display fill column indicator
-  (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
-  (add-hook 'text-mode-hook 'display-fill-column-indicator-mode)
+;; Display fill column indicator
+(add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
+(add-hook 'text-mode-hook 'display-fill-column-indicator-mode)
 
-  ;; Highlight parenthesis
-  (add-hook 'prog-mode-hook 'show-paren-mode)
+;; Highlight parenthesis
+(add-hook 'prog-mode-hook 'show-paren-mode)
 
-  ;; Enable 'table of contents' in org
-  (add-hook 'org-mode-hook 'toc-org-mode)
+;; Enable 'table of contents' in org
+(add-hook 'org-mode-hook 'toc-org-mode)
 
-  ;; Org-capture in new tab, rather than split window
-  (add-hook 'org-capture-mode-hook 'delete-other-windows)
+;; Org-capture in new tab, rather than split window
+(add-hook 'org-capture-mode-hook 'delete-other-windows)
 
-  ;; C++ // style comments in c-mode
-  (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
+;; C++ // style comments in c-mode
+(add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
 
-  ;; LaTeX, set correct tab mode
-  (add-hook 'latex-mode-hook (lambda () (setq indent-tabs-mode t)))
+;; LaTeX, set correct tab mode
+(add-hook 'latex-mode-hook (lambda () (setq indent-tabs-mode t)))
 
-  ;; Disable line numbers
-  (add-hook 'custom-mode-hook 'dot/hook-disable-line-numbers)
-  (add-hook 'dired-mode-hook 'dot/hook-disable-line-numbers)
-  (add-hook 'Info-mode-hook 'dot/hook-disable-line-numbers)
-  (add-hook 'term-mode-hook 'dot/hook-disable-line-numbers)
+;; Disable line numbers
+(add-hook 'custom-mode-hook 'dot/hook-disable-line-numbers)
+(add-hook 'dired-mode-hook 'dot/hook-disable-line-numbers)
+(add-hook 'Info-mode-hook 'dot/hook-disable-line-numbers)
+(add-hook 'term-mode-hook 'dot/hook-disable-line-numbers)
 
-  ;; Wrap lines in the middle of words, gives a \ indicator
-  (add-hook 'visual-line-mode-hook (lambda () (setq word-wrap nil)))
+;; Wrap lines in the middle of words, gives a \ indicator
+(add-hook 'visual-line-mode-hook (lambda () (setq word-wrap nil)))
 #+END_SRC
 
 * Key Bindings
@@ -1463,13 +1469,13 @@ Useful links:\\
 Disable keybinds of native modes that clash with other custom keybinds.
 
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'org
-	(define-key org-mode-map (kbd "M-h") nil)
-	(define-key org-mode-map (kbd "C-M-h") nil))
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "M-h") nil)
+  (define-key org-mode-map (kbd "C-M-h") nil))
 
-  (with-eval-after-load 'cc-mode
-	(define-key c-mode-base-map (kbd "M-j") nil)
-	(define-key c-mode-base-map (kbd "C-M-h") nil))
+(with-eval-after-load 'cc-mode
+  (define-key c-mode-base-map (kbd "M-j") nil)
+  (define-key c-mode-base-map (kbd "C-M-h") nil))
 #+END_SRC
 
 ** Disable Package
@@ -1477,12 +1483,12 @@ Disable keybinds of native modes that clash with other custom keybinds.
 Disable keybinds of installed packages that clash with other custom keybinds.
 
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'evil-states
-	(define-key evil-motion-state-map (kbd dot/leader-key) nil))
+(with-eval-after-load 'evil-states
+  (define-key evil-motion-state-map (kbd dot/leader-key) nil))
 
-  (with-eval-after-load 'php-mode
-	(define-key php-mode-map (kbd "M-j") nil)
-	(define-key php-mode-map (kbd "C-M-h") nil))
+(with-eval-after-load 'php-mode
+  (define-key php-mode-map (kbd "M-j") nil)
+  (define-key php-mode-map (kbd "C-M-h") nil))
 #+END_SRC
 
 ** Set Native
@@ -1492,36 +1498,36 @@ Set keybinds to native functionality.
 *** Set Native Global Keybinds
 
 #+BEGIN_SRC emacs-lisp
-  ;; Buffers
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (global-set-key (kbd "M-w") 'kill-buffer-and-window)
+;; Buffers
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "M-w") 'kill-buffer-and-window)
 
-  ;; Config edit/reload
-  (global-set-key (kbd "C-c r") 'config-reload)
-  (global-set-key (kbd "C-c v") 'config-visit)
+;; Config edit/reload
+(global-set-key (kbd "C-c r") 'config-reload)
+(global-set-key (kbd "C-c v") 'config-visit)
 
-  ;; Find file
-  (global-set-key (kbd "C-x C-f") 'find-file-in-project-root)
+;; Find file
+(global-set-key (kbd "C-x C-f") 'find-file-in-project-root)
 
-  ;; Split and follow window
-  (global-set-key (kbd "C-x 2") 'split-follow-horizontally)
-  (global-set-key (kbd "C-x 3") 'split-follow-vertically)
+;; Split and follow window
+(global-set-key (kbd "C-x 2") 'split-follow-horizontally)
+(global-set-key (kbd "C-x 3") 'split-follow-vertically)
 
-  ;; Terminal
-  (global-set-key (kbd "<s-backspace>") 'ansi-term)
+;; Terminal
+(global-set-key (kbd "<s-backspace>") 'ansi-term)
 #+END_SRC
 
 *** Set Native Mode Keybinds
 
 #+BEGIN_SRC emacs-lisp
-  ;; Org-mode
-  (with-eval-after-load 'org-capture
-	(define-key org-capture-mode-map (kbd "M-c") #'org-capture-finalize)
-	(define-key org-capture-mode-map (kbd "M-w") #'org-capture-refile)
-	(define-key org-capture-mode-map (kbd "M-k") #'org-capture-kill))
-  (define-key org-mode-map           (kbd "M-c") #'org-edit-special)
-  (define-key org-src-mode-map       (kbd "M-c") #'org-edit-src-exit)
-  (define-key org-src-mode-map       (kbd "M-k") #'org-edit-src-abort)
+;; Org-mode
+(with-eval-after-load 'org-capture
+  (define-key org-capture-mode-map (kbd "M-c") #'org-capture-finalize)
+  (define-key org-capture-mode-map (kbd "M-w") #'org-capture-refile)
+  (define-key org-capture-mode-map (kbd "M-k") #'org-capture-kill))
+(define-key org-mode-map           (kbd "M-c") #'org-edit-special)
+(define-key org-src-mode-map       (kbd "M-c") #'org-edit-src-exit)
+(define-key org-src-mode-map       (kbd "M-k") #'org-edit-src-abort)
 #+END_SRC
 
 ** Set Package
@@ -1529,163 +1535,163 @@ Set keybinds to native functionality.
 Set keybinds to functionality of installed packages.
 
 #+BEGIN_SRC emacs-lisp
-  ;; Buffers
-  (global-set-key (kbd "M-h") 'centaur-tabs-backward-tab)
-  (global-set-key (kbd "M-j") 'centaur-tabs-forward-group)
-  (global-set-key (kbd "M-k") 'centaur-tabs-backward-group)
-  (global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
-  (global-set-key (kbd "M-H") 'centaur-tabs-move-current-tab-to-left)
-  (global-set-key (kbd "M-L") 'centaur-tabs-move-current-tab-to-right)
-  (global-set-key (kbd "M-\`") 'evil-switch-to-windows-last-buffer)
+;; Buffers
+(global-set-key (kbd "M-h") 'centaur-tabs-backward-tab)
+(global-set-key (kbd "M-j") 'centaur-tabs-forward-group)
+(global-set-key (kbd "M-k") 'centaur-tabs-backward-group)
+(global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
+(global-set-key (kbd "M-H") 'centaur-tabs-move-current-tab-to-left)
+(global-set-key (kbd "M-L") 'centaur-tabs-move-current-tab-to-right)
+(global-set-key (kbd "M-\`") 'evil-switch-to-windows-last-buffer)
 
-  (global-set-key (kbd "M-s") 'avy-goto-char-timer)
-  (global-set-key (kbd "M-x") 'dot/M-x)
+(global-set-key (kbd "M-s") 'avy-goto-char-timer)
+(global-set-key (kbd "M-x") 'dot/M-x)
 
-  ;; Helpful overwrite default help functions
-  (global-set-key [remap describe-command]  #'helpful-command)
-  (global-set-key [remap describe-function] #'helpful-callable)
-  (global-set-key [remap describe-key]      #'helpful-key)
-  (global-set-key [remap describe-symbol]   #'helpful-at-point)
-  (global-set-key [remap describe-variable] #'helpful-variable)
-  (which-key-add-key-based-replacements "C-h o" "describe-symbol-at-point")
+;; Helpful overwrite default help functions
+(global-set-key [remap describe-command]  #'helpful-command)
+(global-set-key [remap describe-function] #'helpful-callable)
+(global-set-key [remap describe-key]      #'helpful-key)
+(global-set-key [remap describe-symbol]   #'helpful-at-point)
+(global-set-key [remap describe-variable] #'helpful-variable)
+(which-key-add-key-based-replacements "C-h o" "describe-symbol-at-point")
 
-  ;; Company completion selection
-  (with-eval-after-load 'company
-	(define-key company-active-map (kbd "M-n") nil)
-	(define-key company-active-map (kbd "M-p") nil)
-	(define-key company-active-map (kbd "M-h") #'company-abort)
-	(define-key company-active-map (kbd "M-j") #'company-select-next)
-	(define-key company-active-map (kbd "M-k") #'company-select-previous)
-	(define-key company-active-map (kbd "M-l") #'company-complete-selection)
-	(define-key company-active-map (kbd "<escape>") #'company-abort))
-  ; https://github.com/company-mode/company-mode/blob/master/company.el#L661
+;; Company completion selection
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "M-n") nil)
+  (define-key company-active-map (kbd "M-p") nil)
+  (define-key company-active-map (kbd "M-h") #'company-abort)
+  (define-key company-active-map (kbd "M-j") #'company-select-next)
+  (define-key company-active-map (kbd "M-k") #'company-select-previous)
+  (define-key company-active-map (kbd "M-l") #'company-complete-selection)
+  (define-key company-active-map (kbd "<escape>") #'company-abort))
+										; https://github.com/company-mode/company-mode/blob/master/company.el#L661
 
-  ;; Evil command history selection
-  (with-eval-after-load 'evil-ex
-	(define-key evil-ex-completion-map (kbd "M-h") 'abort-recursive-edit)
-	(define-key evil-ex-completion-map (kbd "M-j") #'next-complete-history-element)
-	(define-key evil-ex-completion-map (kbd "M-k") #'previous-complete-history-element)
-	(define-key evil-ex-completion-map (kbd "M-l") 'exit-minibuffer))
+;; Evil command history selection
+(with-eval-after-load 'evil-ex
+  (define-key evil-ex-completion-map (kbd "M-h") 'abort-recursive-edit)
+  (define-key evil-ex-completion-map (kbd "M-j") #'next-complete-history-element)
+  (define-key evil-ex-completion-map (kbd "M-k") #'previous-complete-history-element)
+  (define-key evil-ex-completion-map (kbd "M-l") 'exit-minibuffer))
 
-  ;; Minibuffer completion selection
-  (general-def minibuffer-local-map
-    "M-h" #'abort-recursive-edit
-    "M-j" #'selectrum-next-candidate
-    "M-k" #'selectrum-previous-candidate
-    "M-l" #'selectrum-select-current-candidate
-    "M-J" #'next-history-element
-    "M-K" #'previous-history-element
-    "<backspace>"   #'dot/selectrum-backspace
-    "<S-backspace>" #'evil-delete-backward-char-and-join)
+;; Minibuffer completion selection
+(general-def minibuffer-local-map
+  "M-h" #'abort-recursive-edit
+  "M-j" #'selectrum-next-candidate
+  "M-k" #'selectrum-previous-candidate
+  "M-l" #'selectrum-select-current-candidate
+  "M-J" #'next-history-element
+  "M-K" #'previous-history-element
+  "<backspace>"   #'dot/selectrum-backspace
+  "<S-backspace>" #'evil-delete-backward-char-and-join)
 
-  ; Overwrite evil keymaps
-  ;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)
-  ;(evil-define-key 'motion 'global (kbd "C-w") 'kill-this-buffer)
-  ;(define-key evil-motion-state-map (kbd "C-w") 'kill-this-buffer) ; @Todo test this with nil
-  ;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
+										; Overwrite evil keymaps
+										;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)
+										;(evil-define-key 'motion 'global (kbd "C-w") 'kill-this-buffer)
+										;(define-key evil-motion-state-map (kbd "C-w") 'kill-this-buffer) ; @Todo test this with nil
+										;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
 
-  (with-eval-after-load 'evil-states
+(with-eval-after-load 'evil-states
 
-	;; Global evil keymap
+  ;; Global evil keymap
 
-	(general-def evil-normal-state-map
-	  "Y" #'dot/evil-copy-until-end-of-line ;; y$
-	  "C-n" #'neotree-toggle-in-project-root
-	  "C-S-p" #'evil-paste-pop-next)
+  (general-def evil-normal-state-map
+	"Y" #'dot/evil-copy-until-end-of-line ;; y$
+	"C-n" #'neotree-toggle-in-project-root
+	"C-S-p" #'evil-paste-pop-next)
 
-	(general-def evil-insert-state-map
-	  "<backtab>" #'dot/evil-insert-shift-left) ;; <<
+  (general-def evil-insert-state-map
+	"<backtab>" #'dot/evil-insert-shift-left) ;; <<
 
-	(general-def evil-visual-state-map
-	  "p" #'dot/evil-visual-paste        ;; pgvy
-	  "<" #'dot/evil-visual-shift-left   ;; <gv
-	  ">" #'dot/evil-visual-shift-right) ;; >gv
+  (general-def evil-visual-state-map
+	"p" #'dot/evil-visual-paste        ;; pgvy
+	"<" #'dot/evil-visual-shift-left   ;; <gv
+	">" #'dot/evil-visual-shift-right) ;; >gv
 
-	;; Custom (M-x customize)
-	(general-def 'normal custom-mode-map
-	  [down-mouse-1] #'widget-button-click
-	  )
-
-	;; Dashboard
-	(general-def 'normal dashboard-mode-map
-	 [down-mouse-1] 'widget-button-click
-	 "g" #'dashboard-refresh-buffer
-	 "m" #'dot/dashboard-goto-bookmarks
-	 "p" #'dot/dashboard-goto-projects
-	 "r" #'dot/dashboard-goto-recent-files
-	 )
-
-	;; Deft
-	(general-def 'normal deft-mode-map
-	  [down-mouse-1] #'widget-button-click
-	  "+"  #'deft-new-file-named
-	  "-"  #'deft-new-file
-	  "a"  #'deft-archive-file
-	  "c"  #'deft-filter-clear
-	  "d"  #'deft-delete-file
-	  "f"  #'deft-find-file
-	  "g"  #'deft-refresh
-	  "q"  #'kill-this-buffer
-	  "R"  #'deft-rename-file
-	  "s"  #'deft-filter
-	  "ts" #'deft-toggle-incremental-search :which-key "Toggle search"
-	  "tt" #'deft-toggle-sort-method        :which-key "Toggle sort"
-	  )
-
-	;; Elfeed
-	(general-def 'normal elfeed-search-mode-map
-	 "b"  'elfeed-search-browse-url
-	 "c"  'elfeed-search-clear-filter
-	 "gr" '(elfeed-search-update--force  :which-key "Refresh buffer")
-	 "gR" '(elfeed-search-fetch          :which-key "Update feeds")
-	 "q"  'elfeed-search-quit-window
-	 "u"  'elfeed-search-tag-all-unread
-	 "U"  nil
-	 "r"  'elfeed-search-untag-all-unread
-	 )
-
-	(general-def 'normal elfeed-show-mode-map
-	 "b" #'elfeed-show-visit
-	 "g" #'elfeed-show-refresh
-	 "q" #'elfeed-kill-buffer
-	 "u" #'elfeed-show-tag--unread
-	 "y" #'elfeed-show-yank
-	 )
-
-	;; Minibuffer
-	(general-def 'normal minibuffer-local-map
-	  "TAB"    #'selectrum-insert-current-candidate
-	  "j"      #'selectrum-next-candidate
-	  "k"      #'selectrum-previous-candidate
-	  "<up>"   #'selectrum-previous-candidate
-	  "<down>" #'selectrum-next-candidate
-	  )
-
-	 ;; Neotree
-	(general-def 'normal neotree-mode-map
-	 "RET"       'neotree-enter
-	 "<backtab>" 'neotree-collapse-all ; <S-tab>
-	 "c"         'neotree-create-node
-	 "r"         'neotree-rename-node
-	 "d"         'neotree-delete-node
-	 "h"         'neotree-select-previous-sibling-node
-	 "g"         'neotree-refresh
-	 "j"         'neotree-next-line
-	 "k"         'neotree-previous-line
-	 "l"         'neotree-enter
-	 "C"         'neotree-change-root
-	 "H"         'neotree-hidden-file-toggle
-	 "q"         'neotree-hide
-	 )
-
-	;; Org
-	(general-def 'normal org-mode-map
-	  "RET" #'dot/org-ret-at-point)
-	(general-def 'insert org-mode-map
-	  "RET" #'evil-ret)
-	(general-def 'motion org-agenda-mode-map
-	  "RET" #'org-agenda-switch-to)
+  ;; Custom (M-x customize)
+  (general-def 'normal custom-mode-map
+	[down-mouse-1] #'widget-button-click
 	)
+
+  ;; Dashboard
+  (general-def 'normal dashboard-mode-map
+	[down-mouse-1] 'widget-button-click
+	"g" #'dashboard-refresh-buffer
+	"m" #'dot/dashboard-goto-bookmarks
+	"p" #'dot/dashboard-goto-projects
+	"r" #'dot/dashboard-goto-recent-files
+	)
+
+  ;; Deft
+  (general-def 'normal deft-mode-map
+	[down-mouse-1] #'widget-button-click
+	"+"  #'deft-new-file-named
+	"-"  #'deft-new-file
+	"a"  #'deft-archive-file
+	"c"  #'deft-filter-clear
+	"d"  #'deft-delete-file
+	"f"  #'deft-find-file
+	"g"  #'deft-refresh
+	"q"  #'kill-this-buffer
+	"R"  #'deft-rename-file
+	"s"  #'deft-filter
+	"ts" #'deft-toggle-incremental-search :which-key "Toggle search"
+	"tt" #'deft-toggle-sort-method        :which-key "Toggle sort"
+	)
+
+  ;; Elfeed
+  (general-def 'normal elfeed-search-mode-map
+	"b"  'elfeed-search-browse-url
+	"c"  'elfeed-search-clear-filter
+	"gr" '(elfeed-search-update--force  :which-key "Refresh buffer")
+	"gR" '(elfeed-search-fetch          :which-key "Update feeds")
+	"q"  'elfeed-search-quit-window
+	"u"  'elfeed-search-tag-all-unread
+	"U"  nil
+	"r"  'elfeed-search-untag-all-unread
+	)
+
+  (general-def 'normal elfeed-show-mode-map
+	"b" #'elfeed-show-visit
+	"g" #'elfeed-show-refresh
+	"q" #'elfeed-kill-buffer
+	"u" #'elfeed-show-tag--unread
+	"y" #'elfeed-show-yank
+	)
+
+  ;; Minibuffer
+  (general-def 'normal minibuffer-local-map
+	"TAB"    #'selectrum-insert-current-candidate
+	"j"      #'selectrum-next-candidate
+	"k"      #'selectrum-previous-candidate
+	"<up>"   #'selectrum-previous-candidate
+	"<down>" #'selectrum-next-candidate
+	)
+
+  ;; Neotree
+  (general-def 'normal neotree-mode-map
+	"RET"       'neotree-enter
+	"<backtab>" 'neotree-collapse-all ; <S-tab>
+	"c"         'neotree-create-node
+	"r"         'neotree-rename-node
+	"d"         'neotree-delete-node
+	"h"         'neotree-select-previous-sibling-node
+	"g"         'neotree-refresh
+	"j"         'neotree-next-line
+	"k"         'neotree-previous-line
+	"l"         'neotree-enter
+	"C"         'neotree-change-root
+	"H"         'neotree-hidden-file-toggle
+	"q"         'neotree-hide
+	)
+
+  ;; Org
+  (general-def 'normal org-mode-map
+	"RET" #'dot/org-ret-at-point)
+  (general-def 'insert org-mode-map
+	"RET" #'evil-ret)
+  (general-def 'motion org-agenda-mode-map
+	"RET" #'org-agenda-switch-to)
+  )
 #+END_SRC
 
 ** Leader
@@ -1695,151 +1701,151 @@ General.el ~leader key binds.
 *** Global Leader
 
 #+BEGIN_SRC emacs-lisp
-  (general-create-definer space-leader
-	:prefix dot/leader-key
-	:non-normal-prefix dot/leader-alt-key
-	:global-prefix dot/leader-alt-key
-	:states '(normal visual insert motion emacs))
+(general-create-definer space-leader
+  :prefix dot/leader-key
+  :non-normal-prefix dot/leader-alt-key
+  :global-prefix dot/leader-alt-key
+  :states '(normal visual insert motion emacs))
 
-  (space-leader
-	"SPC"       '(dot/M-x                    :which-key "Execute command")
-	"RET"       '(bookmark-jump              :which-key "Jump to bookmark")
+(space-leader
+  "SPC"       '(dot/M-x                    :which-key "Execute command")
+  "RET"       '(bookmark-jump              :which-key "Jump to bookmark")
 
-	;; Apps
-	"a"     '(:ignore t                      :which-key "apps")
-	"a d"   '(deft                           :which-key "Deft")
-	"a e"   '(elfeed                         :which-key "Elfeed")
+  ;; Apps
+  "a"     '(:ignore t                      :which-key "apps")
+  "a d"   '(deft                           :which-key "Deft")
+  "a e"   '(elfeed                         :which-key "Elfeed")
 
-	;; Buffer / bookmark
-	"b"         '(:ignore t                         :which-key "buffer/bookmark")
-	"b a"       '(auto-revert-mode                  :which-key "Auto revert buffer")
-	"b b"       '(switch-to-buffer                  :which-key "Switch buffer")
-	"b d"       '(dot/dashboard-goto                :which-key "Dashboard")
-	"b k"       '(kill-current-buffer               :which-key "Kill buffer")
-	"b m"       '(bookmark-set                      :which-key "Make bookmark")
-	"b n"       '(evil-buffer-new                   :which-key "New empty buffer")
-	"b r"       '(revert-buffer                     :which-key "Revert buffer")
-	"b s"       '(basic-save-buffer                 :which-key "Save buffer")
-	"b B"       '(ibuffer                           :which-key "List buffers")
-	"b C"       '(dot/centaur-tabs-buffer-cleanup   :which-key "Cleanup buffers")
-	"b M"       '(bookmark-delete                   :which-key "Delete bookmark")
-	"b S"       '(evil-write-all                    :which-key "Save all buffers")
-	"b <left>"  '(previous-buffer                   :which-key "Previous buffer")
-	"b <right>" '(next-buffer                       :which-key "Next buffer")
+  ;; Buffer / bookmark
+  "b"         '(:ignore t                         :which-key "buffer/bookmark")
+  "b a"       '(auto-revert-mode                  :which-key "Auto revert buffer")
+  "b b"       '(switch-to-buffer                  :which-key "Switch buffer")
+  "b d"       '(dot/dashboard-goto                :which-key "Dashboard")
+  "b k"       '(kill-current-buffer               :which-key "Kill buffer")
+  "b m"       '(bookmark-set                      :which-key "Make bookmark")
+  "b n"       '(evil-buffer-new                   :which-key "New empty buffer")
+  "b r"       '(revert-buffer                     :which-key "Revert buffer")
+  "b s"       '(basic-save-buffer                 :which-key "Save buffer")
+  "b B"       '(ibuffer                           :which-key "List buffers")
+  "b C"       '(dot/centaur-tabs-buffer-cleanup   :which-key "Cleanup buffers")
+  "b M"       '(bookmark-delete                   :which-key "Delete bookmark")
+  "b S"       '(evil-write-all                    :which-key "Save all buffers")
+  "b <left>"  '(previous-buffer                   :which-key "Previous buffer")
+  "b <right>" '(next-buffer                       :which-key "Next buffer")
 
-	;; Comments
-	"c"   '(:ignore t                               :which-key "comment/config")
-	"c c" '(evilnc-comment-or-uncomment-lines       :which-key "Toggle comment")
-	"c p" '(evilnc-comment-or-uncomment-paragraphs  :which-key "Toggle comment paragraph")
-	"c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and copy")
+  ;; Comments
+  "c"   '(:ignore t                               :which-key "comment/config")
+  "c c" '(evilnc-comment-or-uncomment-lines       :which-key "Toggle comment")
+  "c p" '(evilnc-comment-or-uncomment-paragraphs  :which-key "Toggle comment paragraph")
+  "c y" '(evilnc-comment-and-kill-ring-save       :which-key "Comment and copy")
 
-	;; Elisp
-	"e"   '(:ignore t                        :which-key "elisp")
-	"e b" '(eval-buffer                      :which-key "Evaluate buffer")
-	"e e" '(eval-last-sexp                   :which-key "Evaluate last sexp")
-	"e r" '(eval-region                      :which-key "Evaluate region")
-	"e t" '(dot/reload-theme                 :which-key "Reload theme")
+  ;; Elisp
+  "e"   '(:ignore t                        :which-key "elisp")
+  "e b" '(eval-buffer                      :which-key "Evaluate buffer")
+  "e e" '(eval-last-sexp                   :which-key "Evaluate last sexp")
+  "e r" '(eval-region                      :which-key "Evaluate region")
+  "e t" '(dot/reload-theme                 :which-key "Reload theme")
 
-	;; File
-	"f"     '(:ignore t                      :which-key "file")
-	"f e"   '(:ignore t                      :which-key "emacs")
-	"f e c" '(dot/config-visit               :which-key "Config visit")
-	"f e f" '(dot/find-file-emacsd           :which-key "Find emacs file")
-	"f e r" '(dot/config-reload              :which-key "Config reload")
-	"f d"   '(dired                          :which-key "Find directory")
-	"f f"   '(find-file-in-project-root      :which-key "Find file")
-	"f o"   '(ff-find-other-file             :which-key "Find header/source file")
-	"f r"   '(dot/find-file-recentf          :which-key "Find recent file ")
-	"f R"   '(rename-file-and-buffer         :which-key "Rename file")
-	"f s"   '(basic-save-buffer              :which-key "Save file")
-	"f S"   '(write-file                     :which-key "Save file as...")
-	"f u"   '(dot/sudo-find-file             :which-key "Sudo find file")
-	"f U"   '(dot/sudo-this-file             :which-key "Sudo this file")
+  ;; File
+  "f"     '(:ignore t                      :which-key "file")
+  "f e"   '(:ignore t                      :which-key "emacs")
+  "f e c" '(dot/config-visit               :which-key "Config visit")
+  "f e f" '(dot/find-file-emacsd           :which-key "Find emacs file")
+  "f e r" '(dot/config-reload              :which-key "Config reload")
+  "f d"   '(dired                          :which-key "Find directory")
+  "f f"   '(find-file-in-project-root      :which-key "Find file")
+  "f o"   '(ff-find-other-file             :which-key "Find header/source file")
+  "f r"   '(dot/find-file-recentf          :which-key "Find recent file ")
+  "f R"   '(rename-file-and-buffer         :which-key "Rename file")
+  "f s"   '(basic-save-buffer              :which-key "Save file")
+  "f S"   '(write-file                     :which-key "Save file as...")
+  "f u"   '(dot/sudo-find-file             :which-key "Sudo find file")
+  "f U"   '(dot/sudo-this-file             :which-key "Sudo this file")
 
-	;; Help
-	"h"   '(:keymap help-map                 :which-key "help")
-	"h o" '(:ignore t                        :which-key "describe-symbol-at-point")
+  ;; Help
+  "h"   '(:keymap help-map                 :which-key "help")
+  "h o" '(:ignore t                        :which-key "describe-symbol-at-point")
 
-	;; Insert
-	"i"   '(:ignore t                        :which-key "insert")
-	"i b" '(dot/indent-buffer                :which-key "Indent buffer")
-	"i f" '(fill-region                      :which-key "Reflow region")
-	"i F" '(fill-paragraph                   :which-key "Reflow paragraph")
-	"i r" '(indent-region                    :which-key "Indent region")
-	"i s" '(dot/evil-normal-sort-paragraph   :which-key "Sort paragraph")
-	"i S" '(dot/insert-spaces-until-column   :which-key "Insert spaces")
-	"i y" '(yas-insert-snippet               :which-key "Insert yasnippet")
+  ;; Insert
+  "i"   '(:ignore t                        :which-key "insert")
+  "i b" '(dot/indent-buffer                :which-key "Indent buffer")
+  "i f" '(fill-region                      :which-key "Reflow region")
+  "i F" '(fill-paragraph                   :which-key "Reflow paragraph")
+  "i r" '(indent-region                    :which-key "Indent region")
+  "i s" '(dot/evil-normal-sort-paragraph   :which-key "Sort paragraph")
+  "i S" '(dot/insert-spaces-until-column   :which-key "Insert spaces")
+  "i y" '(yas-insert-snippet               :which-key "Insert yasnippet")
 
-	;; Notes
-	"n"     '(:ignore t                      :which-key "notes")
-	"n a"   '(org-agenda                     :which-key "Org agenda")
-	"n r"   '(:ignore t                      :which-key "org-roam")
-	"n r b" '(org-roam-switch-to-buffer      :which-key "Switch buffer")
-	"n r c" '(org-roam-capture               :which-key "Capture")
-	"n r C" '(org-roam-db-build-cache        :which-key "Build cache")
-	"n r f" '(org-roam-find-file             :which-key "Find file")
-	"n r g" '(org-roam-graph-show            :which-key "Show graph")
-	"n r i" '(org-roam-insert                :which-key "Insert")
-	"n r I" '(org-roam-insert-immediate      :which-key "Insert (without capture)")
-	"n r r" '(org-roam                       :which-key "Toggle side-buffer")
-	"n r s" '(org-roam-server-mode           :which-key "Toggle server")
+  ;; Notes
+  "n"     '(:ignore t                      :which-key "notes")
+  "n a"   '(org-agenda                     :which-key "Org agenda")
+  "n r"   '(:ignore t                      :which-key "org-roam")
+  "n r b" '(org-roam-switch-to-buffer      :which-key "Switch buffer")
+  "n r c" '(org-roam-capture               :which-key "Capture")
+  "n r C" '(org-roam-db-build-cache        :which-key "Build cache")
+  "n r f" '(org-roam-find-file             :which-key "Find file")
+  "n r g" '(org-roam-graph-show            :which-key "Show graph")
+  "n r i" '(org-roam-insert                :which-key "Insert")
+  "n r I" '(org-roam-insert-immediate      :which-key "Insert (without capture)")
+  "n r r" '(org-roam                       :which-key "Toggle side-buffer")
+  "n r s" '(org-roam-server-mode           :which-key "Toggle server")
 
-	;; Projectile
-	"p"   '(:keymap projectile-command-map :package projectile :which-key "projectile")
+  ;; Projectile
+  "p"   '(:keymap projectile-command-map :package projectile :which-key "projectile")
 
-	;; Quit
-	"q"   '(:ignore t                        :which-key "quit")
-	"q q" '(save-buffers-kill-terminal       :which-key "Quit Emacs")
-	"q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
-	"q f" '(delete-frame                     :which-key "Close frame")
-	"q o" '(delete-other-frames              :which-key "Close other frames")
+  ;; Quit
+  "q"   '(:ignore t                        :which-key "quit")
+  "q q" '(save-buffers-kill-terminal       :which-key "Quit Emacs")
+  "q Q" '(save-buffers-kill-emacs          :which-key "Quit Emacs (and daemon)")
+  "q f" '(delete-frame                     :which-key "Close frame")
+  "q o" '(delete-other-frames              :which-key "Close other frames")
 
-	;; Search
-	"s"   '(:ignore t                        :which-key "search")
-	"s a" '(avy-goto-char-timer              :which-key "Avy goto char")
-	"s b" '(bookmark-jump                    :which-key "Jump to bookmark")
-	"s l" '(avy-goto-line                    :which-key "Avy goto line")
-	"s s" '(evil-ex-nohighlight              :which-key "Stop search")
+  ;; Search
+  "s"   '(:ignore t                        :which-key "search")
+  "s a" '(avy-goto-char-timer              :which-key "Avy goto char")
+  "s b" '(bookmark-jump                    :which-key "Jump to bookmark")
+  "s l" '(avy-goto-line                    :which-key "Avy goto line")
+  "s s" '(evil-ex-nohighlight              :which-key "Stop search")
 
-	;; Tabs / toggle
-	"t"   '(:ignore t                                 :which-key "tabs/toggle")
-	"t b" '(centaur-tabs-group-buffer-groups          :which-key "Group tabs by buffer")
-	"t f" '(dot/toggle-fringe                         :which-key "Toggle fringe")
-	"t p" '(centaur-tabs-group-by-projectile-project  :which-key "Group tabs by project")
-	"t h" '(centaur-tabs-backward-group               :which-key "Tab backward group")
-	"t j" '(centaur-tabs-select-end-tab               :which-key "Tab select first")
-	"t k" '(centaur-tabs-select-beg-tab               :which-key "Tab select last")
-	"t l" '(centaur-tabs-forward-group                :which-key "Tab forward group")
-	"t n" '(neotree-toggle-in-project-root            :which-key "Toggle Neotree")
-	"t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
+  ;; Tabs / toggle
+  "t"   '(:ignore t                                 :which-key "tabs/toggle")
+  "t b" '(centaur-tabs-group-buffer-groups          :which-key "Group tabs by buffer")
+  "t f" '(dot/toggle-fringe                         :which-key "Toggle fringe")
+  "t p" '(centaur-tabs-group-by-projectile-project  :which-key "Group tabs by project")
+  "t h" '(centaur-tabs-backward-group               :which-key "Tab backward group")
+  "t j" '(centaur-tabs-select-end-tab               :which-key "Tab select first")
+  "t k" '(centaur-tabs-select-beg-tab               :which-key "Tab select last")
+  "t l" '(centaur-tabs-forward-group                :which-key "Tab forward group")
+  "t n" '(neotree-toggle-in-project-root            :which-key "Toggle Neotree")
+  "t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
 
-	;; Update packages
-	"U"   '(auto-package-update-now                   :which-key "Update packages")
+  ;; Update packages
+  "U"   '(auto-package-update-now                   :which-key "Update packages")
 
-	;; Window
-	"w"         '(:ignore t                               :which-key "window")
-	"w +"       '(evil-window-increase-height             :which-key "Increase window height")
-	"w -"       '(evil-window-decrease-height             :which-key "Decrease window height")
-	"w <"       '(evil-window-decrease-width              :which-key "Decrease window width")
-	"w ="       '(balance-windows                         :which-key "Balance windows")
-	"w >"       '(evil-window-increase-width              :which-key "Increase window width")
-	"w _"       '(evil-window-set-height                  :which-key "Maximize window height")
-	"w h"       '(windmove-left                           :which-key "Focus window left")
-	"w j"       '(windmove-down                           :which-key "Focus window down")
-	"w k"       '(windmove-up                             :which-key "Focus window up")
-	"w l"       '(windmove-right                          :which-key "Focus window right")
-	"w o"       '(delete-other-windows                    :which-key "Close other windows")
-	"w s"       '(split-follow-horizontally               :which-key "Split horizontal")
-	"w v"       '(split-follow-vertically                 :which-key "Split vertical")
-	"w w"       '(other-window                            :which-key "Focus other window")
-	"w q"       '(dot/centaur-tabs-kill-buffer-or-window  :which-key "Close window")
-	"w <left>"  '(windmove-left                           :which-key "Focus window left")
-	"w <right>" '(windmove-right                          :which-key "Focus window right")
-	"w <up>"    '(windmove-up                             :which-key "Focus window up")
-	"w <down>"  '(windmove-down                           :which-key "Focus window down")
-	;; winner-redo (built-in window history)
-	;; winner-undo
-	)
+  ;; Window
+  "w"         '(:ignore t                               :which-key "window")
+  "w +"       '(evil-window-increase-height             :which-key "Increase window height")
+  "w -"       '(evil-window-decrease-height             :which-key "Decrease window height")
+  "w <"       '(evil-window-decrease-width              :which-key "Decrease window width")
+  "w ="       '(balance-windows                         :which-key "Balance windows")
+  "w >"       '(evil-window-increase-width              :which-key "Increase window width")
+  "w _"       '(evil-window-set-height                  :which-key "Maximize window height")
+  "w h"       '(windmove-left                           :which-key "Focus window left")
+  "w j"       '(windmove-down                           :which-key "Focus window down")
+  "w k"       '(windmove-up                             :which-key "Focus window up")
+  "w l"       '(windmove-right                          :which-key "Focus window right")
+  "w o"       '(delete-other-windows                    :which-key "Close other windows")
+  "w s"       '(split-follow-horizontally               :which-key "Split horizontal")
+  "w v"       '(split-follow-vertically                 :which-key "Split vertical")
+  "w w"       '(other-window                            :which-key "Focus other window")
+  "w q"       '(dot/centaur-tabs-kill-buffer-or-window  :which-key "Close window")
+  "w <left>"  '(windmove-left                           :which-key "Focus window left")
+  "w <right>" '(windmove-right                          :which-key "Focus window right")
+  "w <up>"    '(windmove-up                             :which-key "Focus window up")
+  "w <down>"  '(windmove-down                           :which-key "Focus window down")
+  ;; winner-redo (built-in window history)
+  ;; winner-undo
+  )
 #+END_SRC
 
 Evaluated keybinds.
@@ -1859,62 +1865,62 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 *** Local Leader
 
 #+BEGIN_SRC emacs-lisp
-  (general-create-definer local-leader
-	:prefix dot/localleader-key
-	:non-normal-prefix dot/localleader-alt-key
-	:global-prefix dot/localleader-alt-key
-	:states '(normal visual insert motion emacs)
+(general-create-definer local-leader
+  :prefix dot/localleader-key
+  :non-normal-prefix dot/localleader-alt-key
+  :global-prefix dot/localleader-alt-key
+  :states '(normal visual insert motion emacs)
 
-	""    '(:ignore t                            :which-key "<localleader>")
-	)
+  ""    '(:ignore t                            :which-key "<localleader>")
+  )
 
-  (local-leader org-mode-map
-	"'"         '(org-edit-special               :which-key "Org edit")
-	"e"         '(org-export-dispatch            :which-key "Org export")
-	"o"         '(org-open-at-point              :which-key "Org open at point")
+(local-leader org-mode-map
+  "'"         '(org-edit-special               :which-key "Org edit")
+  "e"         '(org-export-dispatch            :which-key "Org export")
+  "o"         '(org-open-at-point              :which-key "Org open at point")
 
-	"i"         '(:ignore t                      :which-key "insert")
-	"i c"       '(org-table-insert-column        :which-key "Insert table column")
-	"i h"       '(org-table-insert-hline         :which-key "Insert table hline")
-	"i H"       '(org-table-hline-and-move       :which-key "Insert table hline and move")
-	"i r"       '(org-table-insert-row           :which-key "Insert table row")
-	"i t"       '(org-insert-structure-template  :which-key "Insert template")
+  "i"         '(:ignore t                      :which-key "insert")
+  "i c"       '(org-table-insert-column        :which-key "Insert table column")
+  "i h"       '(org-table-insert-hline         :which-key "Insert table hline")
+  "i H"       '(org-table-hline-and-move       :which-key "Insert table hline and move")
+  "i r"       '(org-table-insert-row           :which-key "Insert table row")
+  "i t"       '(org-insert-structure-template  :which-key "Insert template")
 
-	"l"         '(:ignore t                      :which-key "links")
-	"l i"       '(org-id-store-link              :which-key "Store ID link")
-	"l l"       '(org-insert-link                :which-key "Insert link")
-	"l s"       '(org-store-link                 :which-key "Store link")
-	"l S"       '(org-insert-last-stored-link    :which-key "Insert stored link")
+  "l"         '(:ignore t                      :which-key "links")
+  "l i"       '(org-id-store-link              :which-key "Store ID link")
+  "l l"       '(org-insert-link                :which-key "Insert link")
+  "l s"       '(org-store-link                 :which-key "Store link")
+  "l S"       '(org-insert-last-stored-link    :which-key "Insert stored link")
 
-	"q"         '(org-set-tags-command           :which-key "Org tags")
+  "q"         '(org-set-tags-command           :which-key "Org tags")
 
-	"s"         '(:ignore t                      :which-key "tree/subtree")
-	"s h"       '(org-promote-subtree            :which-key "Org promote subtree")
-	"s j"       '(org-move-subree-down           :which-key "Org move subtree down")
-	"s k"       '(org-move-subtree-up            :which-key "Org move subtree up")
-	"s l"       '(org-demote-subtree             :which-key "Org demote subtree")
-	"s <left>"  '(org-promote-subtree            :which-key "Org promote subtree")
-	"s <right>" '(org-demote-subtree             :which-key "Org demote subtree")
-	"s <up>"    '(org-move-subree-up             :which-key "Org move subtree up")
-	"s <down>"  '(org-move-subtree-down          :which-key "Org move subtree down")
+  "s"         '(:ignore t                      :which-key "tree/subtree")
+  "s h"       '(org-promote-subtree            :which-key "Org promote subtree")
+  "s j"       '(org-move-subree-down           :which-key "Org move subtree down")
+  "s k"       '(org-move-subtree-up            :which-key "Org move subtree up")
+  "s l"       '(org-demote-subtree             :which-key "Org demote subtree")
+  "s <left>"  '(org-promote-subtree            :which-key "Org promote subtree")
+  "s <right>" '(org-demote-subtree             :which-key "Org demote subtree")
+  "s <up>"    '(org-move-subree-up             :which-key "Org move subtree up")
+  "s <down>"  '(org-move-subtree-down          :which-key "Org move subtree down")
 
-	"t"         '(org-todo                       :which-key "Org todo")
-	)
+  "t"         '(org-todo                       :which-key "Org todo")
+  )
 
-  (local-leader org-src-mode-map
-	"k"         '(org-edit-src-abort             :which-key "Org Edit abort"))
+(local-leader org-src-mode-map
+  "k"         '(org-edit-src-abort             :which-key "Org Edit abort"))
 
-  (local-leader elfeed-search-mode-map
-	"g"         '(elfeed-search-update--force    :which-key "Elfeed refresh buffer")
-	"G"         '(elfeed-search-fetch            :which-key "Elfeed update feeds")
-	)
+(local-leader elfeed-search-mode-map
+  "g"         '(elfeed-search-update--force    :which-key "Elfeed refresh buffer")
+  "G"         '(elfeed-search-fetch            :which-key "Elfeed update feeds")
+  )
 
-  (local-leader elfeed-show-mode-map
-	"g"         '(elfeed-show-refresh            :which-key "Elfeed refresh buffer")
-	)
+(local-leader elfeed-show-mode-map
+  "g"         '(elfeed-show-refresh            :which-key "Elfeed refresh buffer")
+  )
 
-  ;; c-fill-paragraph Reflow comment
-  ;; https://youtu.be/hbmV1bnQ-i0?t=1910
+;; c-fill-paragraph Reflow comment
+;; https://youtu.be/hbmV1bnQ-i0?t=1910
 #+END_SRC
 
 * Notes

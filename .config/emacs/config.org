@@ -252,40 +252,40 @@ Install and configure packages.
  Evil mode and related packages.
 
  #+BEGIN_SRC emacs-lisp
-   (use-package undo-tree
-	 :config (global-undo-tree-mode))
-   (use-package goto-chg)
+(use-package undo-tree
+  :config (global-undo-tree-mode))
+(use-package goto-chg)
 
-   (use-package evil
-	 :after (undo-tree goto-chg)
-	 :custom
-	 (evil-search-module 'evil-search)
-	 (evil-ex-complete-emacs-commands nil)
-	 (evil-vsplit-window-right t)
-	 (evil-split-window-below t)
-	 (evil-shift-round nil)
-	 (evil-want-C-u-scroll t)
-	 (evil-undo-system 'undo-tree)
-	 ;; Do not set half cursor in operator state
-	 (evil-operator-state-cursor 'box)
-	 ;; Needed by evil-collection
-	 (evil-want-integration t)
-	 (evil-want-keybinding nil)
-	 :config (evil-mode))
+(use-package evil
+  :after (undo-tree goto-chg)
+  :config
+  (setq evil-ex-complete-emacs-commands nil)
+  (setq evil-search-module 'evil-search)
+  (setq evil-shift-round nil)
+  (setq evil-split-window-below t)
+  (setq evil-undo-system 'undo-tree)
+  (setq evil-vsplit-window-right t)
+  (setq evil-want-C-u-scroll t)
+  ;; Do not set half cursor in operator state
+  (setq evil-operator-state-cursor 'box)
+  ;; Needed by evil-collection
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (evil-mode))
 
-   (use-package evil-collection
-	 :after evil
-	 :custom
-	 (evil-collection-company-use-tng nil)
-	 (evil-collection-key-blacklist (list dot/leader-key dot/localleader-key
-										  dot/leader-alt-key dot/localleader-alt-key
-										  "M-h" "M-j" "M-k" "M-l"))
-	 (evil-collection-setup-minibuffer t)
-	 :config (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :custom
+  (evil-collection-company-use-tng nil)
+  (evil-collection-key-blacklist (list dot/leader-key dot/localleader-key
+									   dot/leader-alt-key dot/localleader-alt-key
+									   "M-h" "M-j" "M-k" "M-l"))
+  (evil-collection-setup-minibuffer t)
+  :config (evil-collection-init))
 
-   (use-package evil-nerd-commenter
-	 :defer t
-	 :after evil)
+(use-package evil-nerd-commenter
+  :defer t
+  :after evil)
  #+END_SRC
 
 *** Telephone Line

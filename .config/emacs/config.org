@@ -36,6 +36,8 @@
       - [[#lsp][LSP]]
       - [[#yasnippet][YASnippet]]
       - [[#cc][C/C++]]
+    - [[#lua][Lua]]
+    - [[#yaml][YAML]]
     - [[#php][PHP]]
     - [[#prettify][Prettify]]
     - [[#rss][RSS]]
@@ -275,13 +277,13 @@ Install and configure packages.
 
 (use-package evil-collection
   :after evil
-  :custom
-  (evil-collection-company-use-tng nil)
-  (evil-collection-key-blacklist (list dot/leader-key dot/localleader-key
-									   dot/leader-alt-key dot/localleader-alt-key
-									   "M-h" "M-j" "M-k" "M-l"))
-  (evil-collection-setup-minibuffer t)
-  :config (evil-collection-init))
+  :config
+  (setq evil-collection-company-use-tng nil)
+  (setq evil-collection-key-blacklist (list dot/leader-key dot/localleader-key
+											dot/leader-alt-key dot/localleader-alt-key
+											"M-h" "M-j" "M-k" "M-l"))
+  (setq evil-collection-setup-minibuffer t)
+  (evil-collection-init))
 
 (use-package evil-nerd-commenter
   :defer t
@@ -604,6 +606,21 @@ Language Server Protocol.
   (use-package company-c-headers
 	:after company
 	:config (push 'company-c-headers company-backends))
+#+END_SRC
+
+*** Lua
+
+#+BEGIN_SRC emacs-lisp
+(use-package lua-mode
+  :defer t
+  :config (setq lua-indent-level 4))
+#+END_SRC
+
+*** YAML
+
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode
+  :defer t)
 #+END_SRC
 
 *** PHP
@@ -1340,14 +1357,14 @@ Vim equivalence: >gv"
 *** Selectrum Functions
 
 #+BEGIN_SRC emacs-lisp
-  (defun dot/selectrum-backspace ()
-	"In Selectrum file completion, backward kill sexp, delete char otherwise."
-	(interactive)
-	(if (and selectrum-active-p
-			 minibuffer-completing-file-name)
-		(evil-with-state 'insert
-		  (move-end-of-line 1) (backward-kill-sexp 1))
-	  (evil-delete-backward-char-and-join 1)))
+(defun dot/selectrum-backspace ()
+  "In Selectrum file completion, backward kill sexp, delete char otherwise."
+  (interactive)
+  (if (and selectrum-active-p
+		   minibuffer-completing-file-name)
+	  (evil-with-state 'insert
+		(move-end-of-line 1) (backward-kill-sexp 1))
+	(evil-delete-backward-char-and-join 1)))
 #+END_SRC
 
 *** Which-Key Functions
@@ -1405,6 +1422,7 @@ Evil command aliases.
 
   ;; Display fill column indicator
   (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
+  (add-hook 'text-mode-hook 'display-fill-column-indicator-mode)
 
   ;; Highlight parenthesis
   (add-hook 'prog-mode-hook 'show-paren-mode)
@@ -1796,7 +1814,7 @@ General.el ~leader key binds.
 	"t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
 
 	;; Update packages
-	"u"   '(auto-package-update-now          :which-key "Update packages")
+	"U"   '(auto-package-update-now                   :which-key "Update packages")
 
 	;; Window
 	"w"         '(:ignore t                               :which-key "window")

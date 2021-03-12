@@ -260,19 +260,17 @@ Evil mode and related packages.
 (use-package evil
   :after (undo-tree goto-chg)
   :init
-  ;; Needed by evil-collection
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  :config
   (setq evil-ex-complete-emacs-commands nil)
+  (setq evil-kill-on-visual-paste nil)
+  (setq evil-operator-state-cursor 'box) ; Do not set half cursor
   (setq evil-search-module 'evil-search)
-  (setq evil-shift-round nil)
   (setq evil-split-window-below t)
   (setq evil-undo-system 'undo-tree)
   (setq evil-vsplit-window-right t)
   (setq evil-want-C-u-scroll t)
-  ;; Do not set half cursor in operator state
-  (setq evil-operator-state-cursor 'box)
+  (setq evil-want-Y-yank-to-eol t)
+  (setq evil-want-keybinding nil) ; Needed by evil-collection
+  :config
   (evil-mode))
 
 (use-package evil-collection
@@ -1263,13 +1261,6 @@ Fix keybinds..
 *** Evil functions
 
 #+BEGIN_SRC emacs-lisp
-(defun dot/evil-copy-until-end-of-line ()
-  "Copy text until the end of the line.
-
-Vim equivalence: y$"
-  (interactive)
-  (evil-yank (point) (line-end-position)))
-
 (defun dot/evil-normal-sort-paragraph ()
   "Sort paragraph cursor is under.
 
@@ -1287,15 +1278,6 @@ Vim equivalence: vip:sort<CR>"
 Vim equivalence: <C-D>"
   (interactive)
   (evil-shift-left (line-beginning-position) (line-end-position)))
-
-(defun dot/evil-visual-paste ()
-  "Paste over visual selection, retains clipboards contents.
-
-Vim equivalence: pgvy"
-  (interactive)
-  (call-interactively 'evil-paste-after)
-  (evil-visual-restore)
-  (call-interactively 'evil-yank))
 
 (defun dot/evil-visual-shift-left ()
   "Shift visual selection left, retains the selection.
@@ -1591,17 +1573,18 @@ Set keybinds to functionality of installed packages.
   ;; Global evil keymap
 
   (general-def evil-normal-state-map
-	"Y" #'dot/evil-copy-until-end-of-line ;; y$
 	"C-n" #'neotree-toggle-in-project-root
-	"C-S-p" #'evil-paste-pop-next)
+	"C-S-p" #'evil-paste-pop-next
+    )
 
   (general-def evil-insert-state-map
-	"<backtab>" #'dot/evil-insert-shift-left) ;; <<
+	"<backtab>" #'dot/evil-insert-shift-left  ;; <<
+    )
 
   (general-def evil-visual-state-map
-	"p" #'dot/evil-visual-paste        ;; pgvy
 	"<" #'dot/evil-visual-shift-left   ;; <gv
-	">" #'dot/evil-visual-shift-right) ;; >gv
+	">" #'dot/evil-visual-shift-right  ;; >gv
+    )
 
   ;; Custom (M-x customize)
   (general-def 'normal custom-mode-map

@@ -260,6 +260,10 @@ Evil mode and related packages.
 
 (use-package evil
   :after (undo-tree goto-chg)
+  :init
+  ;; Needed by evil-collection
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
   :config
   (setq evil-ex-complete-emacs-commands nil)
   (setq evil-search-module 'evil-search)
@@ -270,9 +274,6 @@ Evil mode and related packages.
   (setq evil-want-C-u-scroll t)
   ;; Do not set half cursor in operator state
   (setq evil-operator-state-cursor 'box)
-  ;; Needed by evil-collection
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
   (evil-mode))
 
 (use-package evil-collection

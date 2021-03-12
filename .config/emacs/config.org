@@ -275,12 +275,13 @@ Evil mode and related packages.
 
 (use-package evil-collection
   :after evil
-  :config
+  :init
   (setq evil-collection-company-use-tng nil)
   (setq evil-collection-key-blacklist (list dot/leader-key dot/localleader-key
 											dot/leader-alt-key dot/localleader-alt-key
 											"M-h" "M-j" "M-k" "M-l"))
   (setq evil-collection-setup-minibuffer t)
+  :config
   (evil-collection-init))
 
 (use-package evil-nerd-commenter

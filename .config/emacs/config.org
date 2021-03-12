@@ -168,10 +168,9 @@ https://github.com/rranelli/auto-package-update.el
 
 #+BEGIN_SRC emacs-lisp
 (use-package auto-package-update
-  :custom
-  (auto-package-update-delete-old-versions t)
-  (auto-package-update-hide-results t)
   :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
   (setq auto-package-update-last-update-day-path (concat dot-cache-dir "/last-package-update-day"))
   (auto-package-update-maybe))
 #+END_SRC
@@ -205,12 +204,12 @@ Install and configure packages.
 
 (use-package which-key
   :hook (emacs-startup . which-key-mode)
-  :custom
-  (which-key-add-column-padding 1)
-  (which-key-max-display-columns nil)
-  (which-key-min-display-lines 5)
-  (which-key-sort-order 'dot/which-key-prefix-then-key-order-alpha)
-  (which-key-sort-uppercase-first nil))
+  :config
+  (setq which-key-add-column-padding 1)
+  (setq which-key-max-display-columns nil)
+  (setq which-key-min-display-lines 5)
+  (setq which-key-sort-order 'dot/which-key-prefix-then-key-order-alpha)
+  (setq which-key-sort-uppercase-first nil))
 
 (use-package general)
 
@@ -297,15 +296,15 @@ Emacs mode line replacement.
 
 #+BEGIN_SRC emacs-lisp
 (use-package telephone-line
-  :custom
-  (telephone-line-height (if dot/hidpi 20 15))
-  (telephone-line-lhs
-   '((evil   . (telephone-line-evil-tag-segment))
-	 (accent . (telephone-line-erc-modified-channels-segment
-				telephone-line-process-segment
-				telephone-line-buffer-segment))
-	 (nil    . (telephone-line-projectile-segment))))
-  :config (telephone-line-mode))
+  :config
+  (setq telephone-line-height (if dot/hidpi 20 15))
+  (setq telephone-line-lhs
+		'((evil   . (telephone-line-evil-tag-segment))
+		  (accent . (telephone-line-erc-modified-channels-segment
+					 telephone-line-process-segment
+					 telephone-line-buffer-segment))
+		  (nil    . (telephone-line-projectile-segment))))
+  (telephone-line-mode))
 #+END_SRC
 
 *** NeoTree
@@ -315,15 +314,15 @@ Provides Emacs with a file tree.
 #+BEGIN_SRC emacs-lisp
 (use-package neotree
   :after all-the-icons
-  :custom
-  (neo-theme (if (display-graphic-p) 'icons 'arrow))
-  (neo-autorefresh nil)
-  (neo-dont-be-alone t)
-  (neo-mode-line-type 'none)
-  (neo-show-hidden-files t)
-  (neo-vc-integration '(face))
   :hook (neotree-mode . dot/hook-disable-line-numbers)
-  :hook (neotree-mode . hl-line-mode))
+  :hook (neotree-mode . hl-line-mode)
+  :config
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (setq neo-autorefresh nil)
+  (setq neo-dont-be-alone t)
+  (setq neo-mode-line-type 'none)
+  (setq neo-show-hidden-files t)
+  (setq neo-vc-integration '(face)))
 #+END_SRC
 
 *** Centaur Tabs
@@ -334,12 +333,6 @@ Places buffers as tabs in a bar at the top.
 (use-package centaur-tabs
   :after all-the-icons
   :demand
-  :custom
-  (centaur-tabs-height (if dot/hidpi 28 18))
-  (centaur-tabs-modified-marker "•")
-  (centaur-tabs-set-icons t)
-  (centaur-tabs-set-modified-marker t)
-  (centaur-tabs-style "slant")
   :hook
   ((eshell-mode
 	help-mode
@@ -349,6 +342,11 @@ Places buffers as tabs in a bar at the top.
 	shell-mode)
    . centaur-tabs-local-mode)
   :config
+  (setq centaur-tabs-height (if dot/hidpi 28 18))
+  (setq centaur-tabs-modified-marker "•")
+  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-set-modified-marker t)
+  (setq centaur-tabs-style "slant")
   (centaur-tabs-headline-match)
   (centaur-tabs-mode))
 #+END_SRC
@@ -360,15 +358,15 @@ Project manager.
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :defer t
-  :custom
-  (projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
-  (projectile-completion-system 'default)
-  (projectile-enable-caching t)
-  (projectile-indexing-method 'hybrid)
-  (projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
-  (projectile-project-search-path '("~"))
-  (projectile-sort-order 'recentf)
-  :config (projectile-mode))
+  :config
+  (setq projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
+  (setq projectile-completion-system 'default)
+  (setq projectile-enable-caching t)
+  (setq projectile-indexing-method 'hybrid)
+  (setq projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
+  (setq projectile-project-search-path '("~"))
+  (setq projectile-sort-order 'recentf)
+  (projectile-mode))
 #+END_SRC
 
 *** Org Packages
@@ -458,7 +456,7 @@ Easily searchable .org files via Deft.
 ;; HTML exporter
 (use-package htmlize
   :defer t
-  :custom (org-export-html-postamble nil))
+  :config (setq org-export-html-postamble nil))
   ;org-export-html-postamble-format @ToDo
 
 ;; Github flavored Markdown exporter
@@ -605,19 +603,16 @@ Language Server Protocol.
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :defer t
-  :hook
-  ((fundamental-mode
-	prog-mode
-	text-mode)
-   . yas-minor-mode)
-  :custom
-  (yas-prompt-functions '(yas-completing-prompt))
-  (yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
-  :config (yas-reload-all))
+  :config
+  (setq yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
+  (setq yas-prompt-functions '(yas-completing-prompt))
+  (yas-global-mode))
 
 (use-package yasnippet-snippets
   :after yasnippet)
 #+END_SRC
+
+https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-scenarios-1-region-is-active-2-region-is
 
 **** C/C++
 
@@ -700,18 +695,18 @@ Language Server Protocol.
 
 #+BEGIN_SRC emacs-lisp
 (use-package elfeed
-  :custom
-  (elfeed-db-directory (concat dot-cache-dir "/elfeed"))
-  (elfeed-enclosure-default-dir "~/downloads/")
-  (elfeed-search-filter "@6-months-ago +unread")
-  (elfeed-search-clipboard-type 'CLIPBOARD)
-  (elfeed-search-title-max-width 100)
-  (elfeed-search-title-min-width 30)
-  (elfeed-search-trailing-width 55)
-  (elfeed-show-unique-buffers t)
   :hook (elfeed-search-mode . dot/hook-disable-line-numbers)
   :hook (elfeed-show-mode   . dot/hook-disable-line-numbers)
-  :config (load (concat dot-etc-dir "/elfeed-feeds")))
+  :config
+  (setq elfeed-db-directory (concat dot-cache-dir "/elfeed"))
+  (setq elfeed-enclosure-default-dir "~/downloads/")
+  (setq elfeed-search-filter "@6-months-ago +unread")
+  (setq elfeed-search-clipboard-type 'CLIPBOARD)
+  (setq elfeed-search-title-max-width 100)
+  (setq elfeed-search-title-min-width 30)
+  (setq elfeed-search-trailing-width 55)
+  (setq elfeed-show-unique-buffers t)
+  (load (concat dot-etc-dir "/elfeed-feeds")))
 #+END_SRC
 
 * General

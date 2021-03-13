@@ -68,6 +68,7 @@
     - [[#lsp-functions][LSP Functions]]
     - [[#neotree-functions][Neotree Functions]]
     - [[#org-functions][Org Functions]]
+    - [[#projectile-functions][Projectile Functions]]
     - [[#selectrum-functions][Selectrum Functions]]
     - [[#which-key-functions][Which-Key Functions]]
 - [[#advice-and-aliases][Advice and Aliases]]
@@ -1117,21 +1118,6 @@ Functions that only use built-in Emacs functionality.
   (split-window-right)
   (other-window 1))
 
-(defun find-project-root ()
-  "Return root of the project, determined by `.git/', `default-directory' otherwise."
-  (let ((search-directory (locate-dominating-file "." ".git")))
-	(if search-directory
-		search-directory
-	  default-directory))
-  )
-
-(defun find-file-in-project-root ()
-  "Find file in project root."
-  (interactive)
-  (let ((default-directory (find-project-root)))
-	(call-interactively 'find-file)))
-
-
 ;; https://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 (defun rename-file-and-buffer ()
   "Rename the current buffer and file it is visiting."
@@ -1317,7 +1303,7 @@ Vim equivalence: >gv"
 (defun neotree-toggle-in-project-root ()
   "Toggle Neotree in project root."
   (interactive)
-  (let ((default-directory (find-project-root)))
+  (let ((default-directory (projectile-project-root)))
 	(call-interactively #'neotree-toggle)))
 #+END_SRC
 
@@ -1338,6 +1324,23 @@ If point is on:
 	  ((guard (org-at-item-checkbox-p)) (org-toggle-checkbox))
 	  (_ (evil-ret))
 	  )))
+#+END_SRC
+
+*** Projectile Functions
+
+#+BEGIN_SRC emacs-lisp
+(defun find-file-in-project-root ()
+  "Find file in project root."
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+	(call-interactively 'find-file)))
+
+(defun compile-latex ()
+  "Compile LaTeX project."
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+	(projectile-save-project-buffers)
+	(shell-command "make")))
 #+END_SRC
 
 *** Selectrum Functions

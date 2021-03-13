@@ -1792,12 +1792,12 @@ General.el ~leader key binds.
   ;; Search
   "s"   '(:ignore t                        :which-key "search")
   "s a" '(avy-goto-char-timer              :which-key "Avy goto char")
-  "s b" '(consult-line                     :which-key "Search buffer")
+  "s b" '(bookmark-jump                    :which-key "Jump to bookmark")
   "s f" '(consult-find                     :which-key "Search file")
   "s l" '(avy-goto-line                    :which-key "Avy goto line")
-  "s m" '(bookmark-jump                    :which-key "Jump to bookmark")
   "s p" '(consult-grep                     :which-key "Search project")
   "s q" '(evil-ex-nohighlight              :which-key "Stop search")
+  "s s" '(consult-line                     :which-key "Search buffer")
 
   ;; Tabs / toggle
   "t"   '(:ignore t                                 :which-key "tabs/toggle")

@@ -238,8 +238,7 @@ Install and configure packages.
 (use-package consult
   :after selectrum
   :config
-  (autoload 'projectile-project-root "projectile")
-  (setq consult-project-root-function #'projectile-project-root))
+  (setq consult-project-root-function #'dot/find-project-root))
 
 (use-package avy
   :defer t)
@@ -1309,7 +1308,7 @@ Vim equivalence: >gv"
 (defun neotree-toggle-in-project-root ()
   "Toggle Neotree in project root."
   (interactive)
-  (let ((default-directory (projectile-project-root)))
+  (let ((default-directory (dot/find-project-root)))
 	(call-interactively #'neotree-toggle)))
 #+END_SRC
 
@@ -1335,16 +1334,24 @@ If point is on:
 *** Projectile Functions
 
 #+BEGIN_SRC emacs-lisp
+(defun dot/find-project-root ()
+  "Return root of the project, determined by `.git/' and `.projectile',
+`default-directory' otherwise."
+  (let ((search-directory (projectile-project-root)))
+	(if search-directory
+		search-directory
+	  default-directory)))
+
 (defun find-file-in-project-root ()
   "Find file in project root."
   (interactive)
-  (let ((default-directory (projectile-project-root)))
+  (let ((default-directory (dot/find-project-root)))
 	(call-interactively 'find-file)))
 
 (defun compile-latex ()
   "Compile LaTeX project."
   (interactive)
-  (let ((default-directory (projectile-project-root)))
+  (let ((default-directory (dot/find-project-root)))
 	(projectile-save-project-buffers)
 	(shell-command "make")))
 #+END_SRC

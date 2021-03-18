@@ -68,6 +68,7 @@
     - [[#lsp-functions][LSP Functions]]
     - [[#neotree-functions][Neotree Functions]]
     - [[#org-functions][Org Functions]]
+    - [[#org-roam-functions][Org Roam Functions]]
     - [[#projectile-functions][Projectile Functions]]
     - [[#selectrum-functions][Selectrum Functions]]
     - [[#which-key-functions][Which-Key Functions]]
@@ -400,6 +401,7 @@ Setup =org-roam=.
   (setq org-roam-directory (expand-file-name "./" org-directory))
   ;; Exclude Syncthing backup directory
   (setq org-roam-file-exclude-regexp "\\.stversions")
+  (setq org-roam-title-to-slug-function #'dot/org-roam-title-to-slug)
   (setq org-roam-verbose nil))
 #+END_SRC
 
@@ -1329,6 +1331,16 @@ If point is on:
 	  ((guard (org-at-item-checkbox-p)) (org-toggle-checkbox))
 	  (_ (evil-ret))
 	  )))
+#+END_SRC
+
+*** Org Roam Functions
+
+#+BEGIN_SRC emacs-lisp
+(defun dot/org-roam-title-to-slug (title)
+  "Convert TITLE to a filename-suitable slug, strip out common words."
+  (let ((common-words '("a" "an" "and" "as" "at" "by" "is" "it" "of" "the" "to"))
+		(words (split-string (org-roam--title-to-slug title) "\_")))
+	(string-join (seq-remove (lambda (element) (member element common-words)) words) "_")))
 #+END_SRC
 
 *** Projectile Functions

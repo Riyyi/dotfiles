@@ -3,7 +3,7 @@
 # key: ln
 # --
 /*
- * Copyright (C) `(format-time-string "%Y")` ${1:Author} ${2:<Email>}
+ * Copyright (C) `(format-time-string "%Y")` ${1:Author} ${2:<${3:Email}>}
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

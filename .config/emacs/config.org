@@ -650,6 +650,11 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
 (use-package company-c-headers
   :after company
   :config (push 'company-c-headers company-backends))
+
+(use-package company-glsl
+  :config
+  (when (executable-find "glslangValidator")
+    (add-to-list 'company-backends 'company-glsl)))
 #+END_SRC
 
 *** Lua
@@ -1398,7 +1403,7 @@ If point is on:
 (defun dot/selectrum-backspace ()
   "In Selectrum file completion, backward kill sexp, delete char otherwise."
   (interactive)
-  (if (and selectrum-active-p
+  (if (and selectrum-is-active
 		   minibuffer-completing-file-name)
 	  (evil-with-state 'insert
 		(move-end-of-line 1) (backward-kill-sexp 1))
@@ -1477,7 +1482,7 @@ Evil command aliases.
 (add-hook 'latex-mode-hook (lambda () (setq indent-tabs-mode t)))
 
 ;; Disable line numbers
-(add-hook 'custom-mode-hook 'dot/hook-disable-line-numbers)
+(add-hook 'Custom-mode-hook 'dot/hook-disable-line-numbers)
 (add-hook 'dired-mode-hook 'dot/hook-disable-line-numbers)
 (add-hook 'Info-mode-hook 'dot/hook-disable-line-numbers)
 (add-hook 'term-mode-hook 'dot/hook-disable-line-numbers)

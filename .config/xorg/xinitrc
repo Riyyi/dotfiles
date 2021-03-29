@@ -12,10 +12,6 @@ xsetroot -cursor_name left_ptr
 xset s off
 xset -dpms
 
-# Customize keyboard layout
-inputctl -k off
-inputctl -k on
-
 # Turn off touchscreen
 inputctl -s off
 

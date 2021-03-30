@@ -62,6 +62,7 @@
 - [[#functions][Functions]]
   - [[#general-functions][General Functions]]
   - [[#package-functions][Package Functions]]
+    - [[#auto-package-update-functions][Auto Package Update Functions]]
     - [[#centaur-tabs-functions][Centaur Tabs Functions]]
     - [[#dashboard-functions][Dashboard Functions]]
     - [[#evil-functions][Evil functions]]
@@ -1184,6 +1185,17 @@ Functions that are only used for hook calls.
 
 Functions that use package functionality.
 
+*** Auto Package Update Functions
+
+#+BEGIN_SRC emacs-lisp
+(defun dot/update-packages ()
+  "Update all packages."
+  (interactive)
+  (package-refresh-contents)
+  (auto-package-update-now)
+  (package-quickstart-refresh))
+#+END_SRC
+
 *** Centaur Tabs Functions
 
 #+BEGIN_SRC emacs-lisp
@@ -1860,7 +1872,7 @@ General.el ~leader key binds.
   "t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
 
   ;; Update packages
-  "U"   '(auto-package-update-now                   :which-key "Update packages")
+  "U"   '(dot/update-packages                       :which-key "Update packages")
 
   ;; Window
   "w"         '(:ignore t                               :which-key "window")

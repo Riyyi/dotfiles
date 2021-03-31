@@ -3,8 +3,8 @@
 # key: grd
 # --
 #ifndef ${1:GUARD}_H
-#define ${1:$(yas-c++-class-name yas-text)}_H
+#define $1_H
 
 $0
 
-#endif // ${1:$(yas-c++-class-name yas-text)}_H
+#endif // $1_H

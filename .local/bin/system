@@ -9,7 +9,7 @@ elif [ "$WM" = "i3" ]; then
 fi
 
 commands="\
- Lock:$HOME/.scripts/wm/lock.sh
+ Lock:$HOME/.local/bin/wm/lock.sh
  Suspend:systemctl suspend
  Shutdown:systemctl poweroff
  Reboot:systemctl reboot

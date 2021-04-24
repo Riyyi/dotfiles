@@ -349,6 +349,7 @@ Places buffers as tabs in a bar at the top.
 	shell-mode)
    . centaur-tabs-local-mode)
   :config
+  (setq centaur-tabs-enable-ido-completion nil)
   (setq centaur-tabs-height (if dot/hidpi 28 18))
   (setq centaur-tabs-modified-marker "•")
   (setq centaur-tabs-set-icons t)

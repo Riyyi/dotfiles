@@ -1382,6 +1382,7 @@ If point is on:
   "Convert TITLE to a filename-suitable slug, strip out common words."
   (let* ((common-words '("a" "an" "and" "as" "at" "by" "is" "it" "of" "the" "to"))
 		 (title (replace-regexp-in-string "\\(c\\+\\+\\)" "cpp" title))
+		 (title (replace-regexp-in-string "\\(c\\#\\)" "cs" title))
 		 (words (split-string (org-roam--title-to-slug title) "\_")))
 	(string-join (seq-remove (lambda (element) (member element common-words)) words) "_")))
 #+END_SRC

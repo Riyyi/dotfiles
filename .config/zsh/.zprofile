@@ -34,6 +34,9 @@ fi
 # Gradle
 export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 
+# Java
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 # Less
 export LESS="-R"
 export LESSHISTFILE="-"

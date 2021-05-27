@@ -76,6 +76,7 @@ linux-lts-headers
 llvm
 lvm2
 lxappearance
+maim
 man-db
 man-pages
 mariadb
@@ -129,7 +130,6 @@ rofi
 rsync
 rtmpdump
 rxvt-unicode
-scrot
 signal-desktop
 sloccount
 smartmontools

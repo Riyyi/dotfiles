@@ -1,12 +1,12 @@
 #!/bin/sh
 
 # Take a screenshot with the configured program
-# Depends: scrot / maim / magick
+# Depends: scrot / maim, xdotool / magick, xdotool
 
 # User-config---------------------------
 
 # scrot / maim / magick import
-screenshotter="scrot"
+screenshotter="maim"
 
 # --------------------------------------
 

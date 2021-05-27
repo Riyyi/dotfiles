@@ -48,6 +48,9 @@ export LESS_TERMCAP_se="$(printf '%b' '\e[0m')"         # reset reverse video
 export LESS_TERMCAP_us="$(printf '%b' '\e[04;95m')"     # begin underline
 export LESS_TERMCAP_ue="$(printf '%b' '\e[0m')"         # reset underline
 
+# Make
+export MAKEFLAGS="-j $(getconf _NPROCESSORS_ONLN)"
+
 # npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 

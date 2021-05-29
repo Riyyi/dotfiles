@@ -27,21 +27,21 @@ xset +dpms dpms 30 30 30
 i3lock -n -i "$LOCK" -B 6 -S 1 -e \
 	--radius=47 \
 	--ring-width=5.0 \
-	--verifcolor=00000000 \
-	--wrongcolor=00000000 \
-	--timecolor=00000000 \
-	--datecolor=00000000 \
-	--layoutcolor=00000000 \
-	--insidecolor=00000000 \
-	--insidevercolor=00000000 --insidewrongcolor=00000000 \
-	--ringcolor=00000000 \
-	--ringvercolor=FFFFFFC0 --ringwrongcolor=DA2825C0 \
-	--keyhlcolor=FFFFFFC0 --bshlcolor=DA2825C0 \
-	--linecolor=00000000 --separatorcolor=00000000 \
+	--verif-color=00000000 \
+	--wrong-color=00000000 \
+	--time-color=00000000 \
+	--date-color=00000000 \
+	--layout-color=00000000 \
+	--inside-color=00000000 \
+	--insidever-color=00000000 --insidewrong-color=00000000 \
+	--ring-color=00000000 \
+	--ringver-color=FFFFFFC0 --ringwrong-color=DA2825C0 \
+	--keyhl-color=FFFFFFC0 --bshl-color=DA2825C0 \
+	--line-color=00000000 --separator-color=00000000 \
 	-k \
-	--timesize=64 --datesize=24 \
-	--timestr="%I:%M %p" --datestr="%A, %B %e" \
-	--timepos="ix:iy-250" --datepos="ix:iy-200" \
-	--timecolor=FFFFFFC0 --datecolor=FFFFFFC0
+	--time-size=64 --date-size=24 \
+	--time-str="%I:%M %p" --date-str="%A, %B %e" \
+	--time-pos="ix:iy-250" --date-pos="ix:iy-200" \
+	--time-color=FFFFFFC0 --date-color=FFFFFFC0
 
 revert

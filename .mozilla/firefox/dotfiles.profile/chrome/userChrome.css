@@ -14,6 +14,23 @@
 		background: #2b2e39 !important;
 	}
 
+	/* Navigation bar buttons more compact */
+	#nav-bar toolbarbutton {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+	#nav-bar toolbarbutton#back-button {
+		padding-left: 6px !important;
+	}
+	#nav-bar toolbarbutton#PanelUI-menu-button {
+		padding-right: 6px !important;
+	}
+
+	/* Hide tracking protection icon */
+	#nav-bar #tracking-protection-icon-container {
+		display: none;
+	}
+
 	/* Hide TreeStyleTab header */
 	#sidebar-header {
 		display: none;

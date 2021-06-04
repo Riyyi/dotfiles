@@ -1,17 +1,31 @@
 import os
+import subprocess
 
+# Load autoconfig.yml
 config.load_autoconfig()
 
-## Keybinds
+# Keybinds
+# ---------------------------------------- #
 
 # General
 config.unbind('d')
 config.bind('dd', 'tab-close')
-config.bind('<F1>', 'config-cycle tabs.show always never')
+config.bind('go', 'set-cmd-text :open -s {url:pretty}')
+config.bind('gO', 'set-cmd-text :open -s -t -r {url:pretty}')
+config.bind('o', 'set-cmd-text -s :open -s')
+config.bind('O', 'set-cmd-text -s :open -s -t')
 config.bind('Sb', 'open -t qute://bookmarks#bookmarks')
 config.bind('Sh', 'open -t qute://history')
 config.bind('Sq', 'open -t qute://bookmarks')
 config.bind('Ss', 'open -t qute://settings')
+config.bind('wo', 'set-cmd-text -s :open -s -w')
+config.bind('wO', 'set-cmd-text -s :open -s -w {url:pretty}')
+config.bind('wp', 'open -s -w -- {clipboard}')
+config.bind('wP', 'open -s -w -- {primary}')
+config.bind('<<', 'tab-move -')
+config.bind('>>', 'tab-move +')
+config.bind('<Alt-`>', 'tab-focus last')
+config.bind('<F1>', 'config-cycle tabs.show always never')
 
 # Legacy bindings
 config.bind('<Alt-Left>', 'back')
@@ -20,13 +34,15 @@ config.bind('<Ctrl-B>', 'open -t qute://bookmarks#bookmarks')
 config.bind('<Ctrl-D>', 'bookmark-add')
 config.bind('<Ctrl-F>', 'set-cmd-text /')
 config.bind('<Ctrl-H>', 'open -t qute://history')
-config.bind('<Ctrl-L>', 'set-cmd-text :open {url:pretty}')
+config.bind('<Ctrl-L>', 'set-cmd-text :open -s {url:pretty}')
 config.bind('<Ctrl-R>', 'reload')
 config.bind('<Ctrl-Shift-R>', 'reload -f')
 config.bind('<Ctrl-Shift-T>', 'undo')
 config.bind('<Ctrl-Shift-Tab>', 'tab-prev')
+config.bind('<Ctrl-T>', ':open -t about:blank ;; set-cmd-text -s :open -s ')
 config.bind('<Ctrl-Tab>', 'tab-next')
-config.bind('<F6>', 'set-cmd-text :open {url:pretty}')
+config.bind('<F6>', 'set-cmd-text :open -s {url:pretty}')
+config.bind('<F12>', 'devtools bottom')
 config.bind('<Shift-Space>', 'scroll-page 0 -1')
 config.bind('<Space>', 'scroll-page 0 0.5')
 # j open downloads
@@ -37,29 +53,26 @@ config.bind('<Ctrl-Shift-m>', 'hint links spawn umpv {hint-url}')
 config.bind(';M', 'hint --rapid links spawn umpv {hint-url}')
 
 # Reload browser config
-config.bind('<Alt-Shift-r>', 'config-source')
-
-## Config
+config.bind('<Alt-Shift-r>', 'config-source ;; message-info "qutebrowser reloaded."')
 
 # General
+# ---------------------------------------- #
+
 c.auto_save.session = True
 c.completion.height = '35%'
 #  c.completion.shrink = False
+c.content.geolocation = False
 c.content.headers.accept_language = 'en-US,en;q=0.5'
-c.content.headers.custom = {"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"}
-c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'
-c.content.host_blocking.lists = [
-    'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts',
-    'https://www.malwaredomainlist.com/hostslist/hosts.txt',
-    'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext&useip=0.0.0.0'
-]
-# c.content.host_blocking.whitelist = ['piwik.org']
+c.content.headers.custom = { 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
+c.content.headers.do_not_track = True
+c.content.headers.referer = 'same-domain'
+c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{upstream_browser_version} Safari/537.36'
 c.content.pdfjs = True
-c.fonts.monospace = '"DejaVu Sans", "xos4 Terminus", Terminus, Monospace, Monaco, "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, "Liberation Mono", monospace, Fixed, Consolas, Terminal'
+c.content.webrtc_ip_handling_policy = 'default-public-interface-only'
+c.fonts.default_family = ['DejaVu Sans', 'Source Han Sans JP']
 # c.hints.chars = 'asdfghjkl'
 c.scrolling.bar = 'always'
 c.session.lazy_restore = True
-# $ /usr/share/qutebrowser/scripts/dictcli.py install en-US nl-NL
 c.spellcheck.languages = ['en-US', 'nl-NL']
 c.statusbar.padding = {'top': 1, 'bottom': 3, 'left': 5, 'right': 5}
 c.statusbar.position = 'top'
@@ -68,7 +81,7 @@ c.tabs.indicator.width = 0
 c.tabs.last_close = 'blank'
 c.tabs.padding = {'top': 3, 'bottom': 3, 'left': 5, 'right': 5}
 c.tabs.position = 'left'
-c.tabs.title.format = '{index}: {audio}{title}'
+c.tabs.title.format = '{index}: {audio}{current_title}'
 c.tabs.width = 240
 c.url.default_page = 'about:blank'
 c.url.searchengines = {
@@ -80,8 +93,11 @@ c.url.searchengines = {
     'i': 'https://google.com/search?tbm=isch&q={}',
     'yt': 'https://youtube.com/results?search_query={}',
 }
+c.url.start_pages = 'https://google.com'
 
 # Colors
+# ---------------------------------------- #
+
 e = os.environ
 bgcolor             = e['BGCOLOR']
 bgcolor_inactive    = e['BGCOLOR_INACTIVE']
@@ -206,3 +222,8 @@ c.colors.tabs.selected.odd.fg = white
 
 # Default background color
 c.colors.webpage.bg = fgcolor
+
+# Update external dependencies
+# ---------------------------------------- #
+
+subprocess.run(['setsid', '-f', 'python', os.path.join(e['XDG_CONFIG_HOME'], 'qutebrowser/update.py')] + c.spellcheck.languages)

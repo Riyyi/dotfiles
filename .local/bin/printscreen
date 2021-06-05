@@ -12,14 +12,14 @@ screenshotter="maim"
 
 if [ "$screenshotter" = "scrot" ]; then
 	fullscreen=""
-	selection="-s"
-	activeWindow="-u"
-	filename="-e 'mv \$f $CAPTURE'"
+	selection="--select"
+	activeWindow="--focused"
+	filename="--exec 'mv \$f $CAPTURE'"
 
 elif [ "$screenshotter" = "maim" ]; then
 	fullscreen=""
-	selection="-s"
-	activeWindow="-i \$(xdotool getactivewindow)"
+	selection="--select"
+	activeWindow="--window \$(xdotool getactivewindow)"
 	filename="$CAPTURE/$(date '+%Y-%m-%d-%H%M%S')_maim.png"
 elif [ "$screenshotter" = "magick import" ] || [ "$screenshotter" = "import" ]; then
 	fullscreen="-window root"

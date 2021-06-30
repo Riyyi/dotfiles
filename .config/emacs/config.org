@@ -254,6 +254,9 @@ Install and configure packages.
 	((latex-indent-line . 4)
 	 (latex-indent-region . 4)))
   (smart-tabs-insinuate 'c 'c++ 'java 'python 'latex))
+
+(use-package flyspell-correct
+  :after flyspell)
 #+END_SRC
 
 *** Evil
@@ -1597,6 +1600,10 @@ Set keybinds to functionality of installed packages.
 
 (global-set-key (kbd "M-s") 'avy-goto-char-timer)
 (global-set-key (kbd "M-x") 'dot/M-x)
+
+;; flyspell-correct
+(with-eval-after-load 'flyspell-correct
+  (global-set-key [remap ispell-word] #'flyspell-correct-at-point)) ; z=
 
 ;; Helpful overwrite default help functions
 (global-set-key [remap describe-command]  #'helpful-command)

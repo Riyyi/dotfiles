@@ -256,7 +256,10 @@ Install and configure packages.
   (smart-tabs-insinuate 'c 'c++ 'java 'python 'latex))
 
 (use-package flyspell-correct
-  :after flyspell)
+  :after flyspell
+  :config
+  (setq flyspell-issue-message-flag nil)
+  (setq flyspell-issue-welcome-flag nil))
 #+END_SRC
 
 *** Evil

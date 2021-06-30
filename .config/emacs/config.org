@@ -753,6 +753,30 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
   (load (concat dot-etc-dir "/elfeed-feeds")))
 #+END_SRC
 
+*** Git
+
+#+BEGIN_SRC emacs-lisp
+(use-package diff-hl
+  :demand
+  :hook (prog-mode . turn-on-diff-hl-mode)
+  :hook (prog-mode . (lambda () (when (vc-registered buffer-file-name) (diff-hl-flydiff-mode) (dot/toggle-fringe 1)))))
+
+(use-package transient
+  :config (setq transient-history-file (concat dot-cache-dir "/transient/history.el")))
+
+(use-package magit
+  :after (diff-hl transient)
+  :hook (git-commit-setup . git-commit-turn-on-auto-fill)
+  :hook (git-commit-setup . git-commit-turn-on-flyspell)
+  :hook (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  :hook (magit-post-refresh . diff-hl-magit-post-refresh)
+  :config
+  (setq git-commit-summary-max-length 70)
+  (setq magit-diff-paint-whitespace-lines 'both)
+  (setq magit-repository-directories '(("~/dotfiles" . 0)
+									   ("~/code" . 3))))
+#+END_SRC
+
 * General
 
 #+BEGIN_SRC emacs-lisp
@@ -1139,10 +1163,11 @@ Functions that only use built-in Emacs functionality.
 	  (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))
 	(princ "Current buffer isn't a file")))
 
-(defun dot/toggle-fringe ()
+(defun dot/toggle-fringe (&optional arg)
   "Toggle left-only fringe."
   (interactive)
-  (if (eq fringe-mode 0)
+  (if (or (and (eq fringe-mode 0) (eq arg nil))
+		  (eq arg 1))
 	  (set-fringe-mode '(nil . 0))
 	(set-fringe-mode 0)))
 
@@ -1252,17 +1277,25 @@ Functions that use package functionality.
 				"\\).*")
 		name))))
 
+  (defun dot/centaur-tabs-is-buffer-unimportant (buffer)
+    "Return t if BUFFER is unimportant and can be killed without caution."
+	(let ((name (format "%s" buffer)))
+	  (cond
+	   ((centaur-tabs-hide-tab name) t)
+	   ((string-match-p "^magit\\(-[a-z]+\\)*: .*" name) t)
+	   (t nil))))
+
   (defun dot/centaur-tabs-buffer-cleanup ()
 	"Clean up all the hidden buffers."
 	(interactive)
 	(dolist (buffer (buffer-list))
-	  (when (centaur-tabs-hide-tab buffer)
+	  (when (dot/centaur-tabs-is-buffer-unimportant buffer)
 		(kill-buffer buffer))))
 
   (defun dot/centaur-tabs-kill-buffer-or-window ()
 	"Delete window of the current buffer, also kill if the buffer is hidden."
 	(interactive)
-	(if (centaur-tabs-hide-tab (buffer-name))
+	(if (dot/centaur-tabs-is-buffer-unimportant (buffer-name))
 		(kill-buffer-and-window)
 	  (delete-window))))
 #+END_SRC
@@ -1651,6 +1684,11 @@ Set keybinds to functionality of installed packages.
 										;(define-key evil-motion-state-map (kbd "C-w") 'kill-this-buffer) ; @Todo test this with nil
 										;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
 
+;; with-editor
+(with-eval-after-load 'with-editor
+  (define-key with-editor-mode-map (kbd "M-c") 'with-editor-finish)
+  (define-key with-editor-mode-map (kbd "M-k") 'with-editor-cancel))
+
 (with-eval-after-load 'evil-states
 
   ;; Global evil keymap
@@ -1718,6 +1756,12 @@ Set keybinds to functionality of installed packages.
 	"q" #'elfeed-kill-buffer
 	"u" #'elfeed-show-tag--unread
 	"y" #'elfeed-show-yank
+	)
+
+  ;; Magit
+  (general-def '(normal visual) magit-mode-map
+	"{" #'magit-section-backward-sibling
+	"}" #'magit-section-forward-sibling
 	)
 
   ;; Minibuffer
@@ -1824,6 +1868,31 @@ General.el ~leader key binds.
   "f S"   '(write-file                     :which-key "Save file as...")
   "f u"   '(dot/sudo-find-file             :which-key "Sudo find file")
   "f U"   '(dot/sudo-this-file             :which-key "Sudo this file")
+
+  ;; Git
+  "g"     '(:ignore t                      :which-key "git")
+  "g b"   '(magit-branch-checkout          :which-key "Magit switch branch")
+  "g B"   '(magit-blame-addition           :which-key "Magit blame")
+  "g c"   '(:ignore t                      :which-key "create")
+  "g c c" '(magit-commit-create            :which-key "Commit")
+  "g c b" '(magit-branch-and-checkout      :which-key "Branch")
+  "g c r" '(magit-init                     :which-key "Initialize repo")
+  "g C"   '(magit-clone                    :which-key "Magit clone")
+  "g f"   '(:ignore t                      :which-key "file")
+  "g f c" '(magit-find-git-config-file     :which-key "Find gitconfig file")
+  "g f D" '(magit-file-delete              :which-key "Delete file")
+  "g f f" '(magit-find-file                :which-key "Find file")
+  "g f R" '(magit-file-rename              :which-key "Rename file")
+  "g F"   '(magit-fetch                    :which-key "Magit fetch")
+  "g g"   '(magit-status                   :which-key "Magit status")
+  "g G"   '(magit-status-here              :which-key "Magit status here")
+  "g l"   '(:ignore t                      :which-key "list")
+  "g l r" '(magit-list-repositories        :which-key "List repositories")
+  "g l s" '(magit-list-submodules          :which-key "List submodules")
+  "g L"   '(magit-log                      :which-key "Magit log")
+  "g s"   '(magit-show-commit              :which-key "Magit show commit")
+  "g S"   '(magit-stage-file               :which-key "Stage file")
+  "g U"   '(magit-unstage-file             :which-key "Unstage file")
 
   ;; Help
   "h"   '(:keymap help-map                 :which-key "help")

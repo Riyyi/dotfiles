@@ -41,6 +41,7 @@
     - [[#php][PHP]]
     - [[#prettify][Prettify]]
     - [[#rss][RSS]]
+    - [[#git][Git]]
 - [[#general][General]]
   - [[#buffers][Buffers]]
   - [[#electric][Electric]]

@@ -1767,7 +1767,8 @@ General.el ~leader key binds.
   :prefix dot/leader-key
   :non-normal-prefix dot/leader-alt-key
   :global-prefix dot/leader-alt-key
-  :states '(normal visual insert motion emacs))
+  :states '(normal visual insert motion emacs)
+  :keymaps 'override) ; prevent leader keybindings from ever being overridden
 
 (space-leader
   "SPC"       '(dot/M-x                    :which-key "Execute command")
@@ -1935,6 +1936,7 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
   :non-normal-prefix dot/localleader-alt-key
   :global-prefix dot/localleader-alt-key
   :states '(normal visual insert motion emacs)
+  :keymaps 'override ; prevent leader keybindings from ever being overridden
 
   ""    '(:ignore t                            :which-key "<localleader>")
   )

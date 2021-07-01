@@ -3,7 +3,7 @@
 #+AUTHOR: Riyyi
 #+LANGUAGE: en
 #+OPTIONS: toc:nil
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+LATEX_HEADER: \usepackage{color}
 #+LATEX_HEADER: \usepackage[top=100pt,bottom=100pt,left=75pt,right=75pt]{geometry}
 #+LATEX_HEADER: \definecolor{blue}{rgb}{0,0.5,1}
@@ -92,14 +92,6 @@
     - [[#local-leader][Local Leader]]
 - [[#notes][Notes]]
 
-* Initial setup
-
-These commands need to be run after the first startup.
-
-** All the icons
-
-@@html:<kbd>@@M-x@@html:</kbd>@@ =all-the-icons-install-fonts= @@html:<kbd>@@RET@@html:</kbd>@@
-
 * Lexical Binding
 
 #+BEGIN_SRC emacs-lisp
@@ -112,13 +104,13 @@ Variables for directories, leader keys, etc.
 
 #+BEGIN_SRC emacs-lisp
 (defvar dot-emacs-dir (directory-file-name (file-truename user-emacs-directory))
-  "Directory base.")
+  "Directory base.") ; ~/.config/emacs
 
 (defvar dot-etc-dir (concat dot-emacs-dir "/etc")
-  "Directory for non-volatile storage.")
+  "Directory for non-volatile storage.") ; ~/.config/emacs/etc
 
 (defvar dot-cache-dir (concat (getenv "XDG_CACHE_HOME") "/emacs")
-  "Directory for cache data.")
+  "Directory for cache data.") ; ~/.cache/emacs
 
 (defvar dot/leader-key "SPC"
   "Leader prefix key.")
@@ -204,7 +196,12 @@ Install and configure packages.
   :config (load-theme 'hybrid-reverse t))
 
 (use-package all-the-icons
-  :defer t)
+  :defer t
+  :config
+
+  ;; Install all-the-icons if font files are not found
+  (unless (file-exists-p "~/.local/share/fonts/all-the-icons.ttf")
+	(call-interactively #'all-the-icons-install-fonts)))
 
 (use-package which-key
   :hook (emacs-startup . which-key-mode)
@@ -333,7 +330,6 @@ Provides Emacs with a file tree.
   :config
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   (setq neo-autorefresh nil)
-  (setq neo-dont-be-alone t)
   (setq neo-mode-line-type 'none)
   (setq neo-show-hidden-files t)
   (setq neo-vc-integration '(face)))
@@ -662,6 +658,7 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
   :config (push 'company-c-headers company-backends))
 
 (use-package company-glsl
+  :after company
   :config
   (when (executable-find "glslangValidator")
     (add-to-list 'company-backends 'company-glsl)))
@@ -1849,6 +1846,7 @@ General.el ~leader key binds.
 
   ;; Elisp
   "e"   '(:ignore t                        :which-key "elisp")
+  "e ;" '(eval-expression                  :which-key "Evaluate expression")
   "e b" '(eval-buffer                      :which-key "Evaluate buffer")
   "e e" '(eval-last-sexp                   :which-key "Evaluate last sexp")
   "e r" '(eval-region                      :which-key "Evaluate region")

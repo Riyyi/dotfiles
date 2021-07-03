@@ -76,6 +76,7 @@ linux-headers
 linux-lts
 linux-lts-headers
 llvm
+lua-language-server-git
 lvm2
 lxappearance
 maim
@@ -140,6 +141,7 @@ streamlink
 sxhkd
 synergy2-bin
 sysfsutils
+texlab
 texlive-bibtexextra
 texlive-core
 texlive-fontsextra

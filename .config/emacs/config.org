@@ -405,6 +405,7 @@ Setup =org-roam=.
   :hook (org-roam-backlinks-mode . dot/hook-disable-line-numbers)
   :hook (org-roam-backlinks-mode . dot/hook-disable-mode-line)
   :config
+  (setq org-image-actual-width nil)
   (setq org-roam-completion-system 'default)
   (setq org-roam-db-location (expand-file-name "org-roam.db" dot-cache-dir))
   (setq org-roam-directory (expand-file-name "./" org-directory))
@@ -545,6 +546,7 @@ On the fly syntax checking.
 	latex-mode
 	org-mode
 	php-mode
+	sh-mode
 	shell-mode
 	shell-script-mode)
    . flycheck-mode)
@@ -576,7 +578,9 @@ Language Server Protocol.
   :hook
   ((c-mode         ; clangd
 	c++-mode       ; clangd
+	lua-mode       ; lua-language-server
 	php-mode)      ; nodejs-intelephense
+    latex-mode)    ; texlab
    . lsp-deferred)
   :config
   (setq lsp-auto-guess-root t)
@@ -693,13 +697,15 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
 *** PHP
 
 #+BEGIN_SRC emacs-lisp
-  (use-package php-mode
-	:defer t
-	:hook
-	(php-mode
-	 . (lambda () (progn
-					(setq indent-tabs-mode t)
-					(setq lsp-ui-doc-enable t)))))
+(use-package php-mode
+  :defer t
+  :hook
+  (php-mode . (lambda ()
+				(setq indent-tabs-mode t)
+				(setq lsp-ui-doc-enable t))))
+
+(use-package restclient
+  :defer t)
 #+END_SRC
 
 *** Prettify

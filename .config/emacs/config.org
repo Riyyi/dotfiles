@@ -72,6 +72,7 @@
     - [[#centaur-tabs-functions][Centaur Tabs Functions]]
     - [[#dap-functions][DAP Functions]]
     - [[#dashboard-functions][Dashboard Functions]]
+    - [[#diff-hl-functions][Diff-hl Functions]]
     - [[#evil-functions][Evil functions]]
     - [[#lsp-functions][LSP Functions]]
     - [[#neotree-functions][Neotree Functions]]
@@ -760,7 +761,7 @@ Debug Adapter Protocol.
 (use-package diff-hl
   :demand
   :hook (prog-mode . turn-on-diff-hl-mode)
-  :hook (prog-mode . (lambda () (when (vc-registered buffer-file-name) (diff-hl-flydiff-mode) (dot/toggle-fringe 1)))))
+  :hook (prog-mode . dot/diff-hl-enable-flydiff-and-fringe))
 
 (use-package transient
   :defer t
@@ -1377,6 +1378,17 @@ Fix keybinds..
   "Move point to recent files."
   (interactive)
   (funcall (local-key-binding "r")))
+#+END_SRC
+
+*** Diff-hl Functions
+
+#+BEGIN_SRC emacs-lisp
+(defun dot/diff-hl-enable-flydiff-and-fringe ()
+  "Enable on the fly diff checking if file is under version control."
+  (let ((buffer buffer-file-name))
+	(when (and buffer (vc-registered buffer))
+	  (diff-hl-flydiff-mode)
+	  (dot/toggle-fringe 1))))
 #+END_SRC
 
 *** Evil functions

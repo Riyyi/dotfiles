@@ -1305,6 +1305,19 @@ Functions that use package functionality.
 	  (delete-window))))
 #+END_SRC
 
+*** DAP Functions
+
+#+BEGIN_SRC emacs-lisp
+(defun dot/dap-install-debug-adapters ()
+  "Install and Load debug adapters."
+  (interactive)
+  (unless (bound-and-true-p lsp-mode)
+	(user-error "Not in an LSP buffer"))
+  (when (string-equal major-mode "c++-mode")
+	(require 'dap-cpptools)
+	(dap-cpptools-setup)))
+#+END_SRC
+
 *** Dashboard Functions
 
 #+BEGIN_SRC emacs-lisp

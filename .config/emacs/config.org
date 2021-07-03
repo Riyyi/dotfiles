@@ -2102,7 +2102,9 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
   "s <up>"    '(org-move-subree-up             :which-key "Org move subtree up")
   "s <down>"  '(org-move-subtree-down          :which-key "Org move subtree down")
 
-  "t"         '(org-todo                       :which-key "Org todo")
+  "t"         '(:ignore t                      :which-key "toggle")
+  "t t"       '(org-todo                       :which-key "Org todo state")
+  "t l"       '(org-toggle-link-display        :which-key "Org link display")
   )
 
 (local-leader org-src-mode-map

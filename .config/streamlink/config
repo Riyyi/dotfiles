@@ -1,0 +1,8 @@
+#--- Player ---#
+
+player=mpv
+title={title} - {author}
+
+#--- Video ---#
+
+default-stream=720p,480p,best

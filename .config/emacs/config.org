@@ -579,7 +579,7 @@ Language Server Protocol.
   ((c-mode         ; clangd
 	c++-mode       ; clangd
 	lua-mode       ; lua-language-server
-	php-mode)      ; nodejs-intelephense
+	php-mode       ; nodejs-intelephense
     latex-mode)    ; texlab
    . lsp-deferred)
   :config

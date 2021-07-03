@@ -129,6 +129,10 @@ Variables for directories, leader keys, etc.
 
 (defvar dot/hidpi (getenv "HIDPI")
   "Whether the primary screen is HiDPI.")
+
+;; Create cache directory
+(unless (file-directory-p dot-cache-dir)
+  (make-directory dot-cache-dir t))
 #+END_SRC
 
 * Customizations
@@ -868,8 +872,6 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
 Set file paths for built-in features like: auto-saves, backups, etc.
 
 #+BEGIN_SRC emacs-lisp
-  (unless (file-directory-p dot-cache-dir)
-	(make-directory dot-cache-dir t))
 
   ;; Set Directory locations
   (setq auto-save-list-file-prefix      (concat dot-cache-dir "/auto-save/"))

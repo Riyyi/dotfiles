@@ -872,21 +872,20 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
 Set file paths for built-in features like: auto-saves, backups, etc.
 
 #+BEGIN_SRC emacs-lisp
+;; Set Directory locations
+(setq auto-save-list-file-prefix      (concat dot-cache-dir "/auto-save/"))
+(setq auto-save-file-name-transforms `((".*" ,auto-save-list-file-prefix t)))
+(setq backup-directory-alist         `((".*" . ,(concat dot-cache-dir "/backup/"))))
+(setq eshell-directory-name           (concat dot-cache-dir "/eshell/"))
+(setq org-id-locations-file           (concat dot-cache-dir "/org-id-locations"))
+(setq tramp-auto-save-directory       (concat dot-cache-dir "/tramp-auto-save/"))
+(setq tramp-backup-directory-alist    backup-directory-alist)
+(setq url-configuration-directory     (concat dot-cache-dir "/url/"))
 
-  ;; Set Directory locations
-  (setq auto-save-list-file-prefix      (concat dot-cache-dir "/auto-save/"))
-  (setq auto-save-file-name-transforms `((".*" ,auto-save-list-file-prefix t)))
-  (setq backup-directory-alist         `((".*" . ,(concat dot-cache-dir "/backup/"))))
-  (setq eshell-directory-name           (concat dot-cache-dir "/eshell/"))
-  (setq org-id-locations-file           (concat dot-cache-dir "/org-id-locations"))
-  (setq tramp-auto-save-directory       (concat dot-cache-dir "/tramp-auto-save/"))
-  (setq tramp-backup-directory-alist    backup-directory-alist)
-  (setq url-configuration-directory     (concat dot-cache-dir "/url/"))
-
-  ;; Set file locations
-  (setq bookmark-default-file           (concat dot-etc-dir "/bookmarks"))
-  (setq nsm-settings-file               (concat dot-cache-dir "/network-security.data"))
-  (setq tramp-persistency-file-name     (concat dot-cache-dir "/tramp"))
+;; Set file locations
+(setq bookmark-default-file           (concat dot-etc-dir "/bookmarks"))
+(setq nsm-settings-file               (concat dot-cache-dir "/network-security.data"))
+(setq tramp-persistency-file-name     (concat dot-cache-dir "/tramp"))
 #+END_SRC
 
 ** File Backups Versioning
@@ -1171,7 +1170,7 @@ Functions that only use built-in Emacs functionality.
 	(princ "Current buffer isn't a file")))
 
 (defun dot/toggle-fringe (&optional arg)
-  "Toggle left-only fringe."
+  "Toggle left-only fringe, or set state with ARG."
   (interactive)
   (if (or (and (eq fringe-mode 0) (eq arg nil))
 		  (eq arg 1))
@@ -1719,12 +1718,12 @@ Set keybinds to functionality of installed packages.
     )
 
   (general-def evil-insert-state-map
-	"<backtab>" #'dot/evil-insert-shift-left  ;; <<
+	"<backtab>" #'dot/evil-insert-shift-left  ; <<
     )
 
   (general-def evil-visual-state-map
-	"<" #'dot/evil-visual-shift-left   ;; <gv
-	">" #'dot/evil-visual-shift-right  ;; >gv
+	"<" #'dot/evil-visual-shift-left   ; <gv
+	">" #'dot/evil-visual-shift-right  ; >gv
     )
 
   ;; Custom (M-x customize)

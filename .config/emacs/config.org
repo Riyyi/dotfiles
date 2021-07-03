@@ -855,9 +855,6 @@ Debug Adapter Protocol.
 ;; C++ syntax highlighting for .h files
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
-;; When in the GUI version of Emacs, enable pretty symbols
-(when window-system (global-prettify-symbols-mode t))
-
 ;; Set the frame title
 (setq frame-title-format
 	  `("%b"

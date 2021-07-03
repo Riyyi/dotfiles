@@ -590,7 +590,6 @@ Give Flyspell a selection menu.
 
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell-correct
-  :defer t
   :after flyspell
   :config
   (setq flyspell-issue-message-flag nil)
@@ -1686,16 +1685,33 @@ Set keybinds to functionality of installed packages.
 
 #+BEGIN_SRC emacs-lisp
 ;; Buffers
-(global-set-key (kbd "M-h") 'centaur-tabs-backward-tab)
-(global-set-key (kbd "M-j") 'centaur-tabs-forward-group)
-(global-set-key (kbd "M-k") 'centaur-tabs-backward-group)
-(global-set-key (kbd "M-l") 'centaur-tabs-forward-tab)
-(global-set-key (kbd "M-H") 'centaur-tabs-move-current-tab-to-left)
-(global-set-key (kbd "M-L") 'centaur-tabs-move-current-tab-to-right)
-(global-set-key (kbd "M-\`") 'evil-switch-to-windows-last-buffer)
+(global-set-key (kbd "M-h") #'centaur-tabs-backward-tab)
+(global-set-key (kbd "M-j") #'centaur-tabs-forward-group)
+(global-set-key (kbd "M-k") #'centaur-tabs-backward-group)
+(global-set-key (kbd "M-l") #'centaur-tabs-forward-tab)
+(global-set-key (kbd "M-H") #'centaur-tabs-move-current-tab-to-left)
+(global-set-key (kbd "M-L") #'centaur-tabs-move-current-tab-to-right)
+(global-set-key (kbd "M-\`") #'evil-switch-to-windows-last-buffer)
 
-(global-set-key (kbd "M-s") 'avy-goto-char-timer)
-(global-set-key (kbd "M-x") 'dot/M-x)
+(global-set-key (kbd "M-s") #'avy-goto-char-timer)
+(global-set-key (kbd "M-x") #'dot/M-x)
+
+;; Company completion selection
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "M-n") nil)
+  (define-key company-active-map (kbd "M-p") nil)
+  (define-key company-active-map (kbd "M-h") #'company-abort)
+  (define-key company-active-map (kbd "M-j") #'company-select-next)
+  (define-key company-active-map (kbd "M-k") #'company-select-previous)
+  (define-key company-active-map (kbd "M-l") #'company-complete-selection)
+  (define-key company-active-map (kbd "<escape>") #'company-abort))
+
+;; Evil command history selection
+(with-eval-after-load 'evil-ex
+  (define-key evil-ex-completion-map (kbd "M-h") #'abort-recursive-edit)
+  (define-key evil-ex-completion-map (kbd "M-j") #'next-complete-history-element)
+  (define-key evil-ex-completion-map (kbd "M-k") #'previous-complete-history-element)
+  (define-key evil-ex-completion-map (kbd "M-l") #'exit-minibuffer))
 
 ;; flyspell-correct
 (with-eval-after-load 'flyspell-correct
@@ -1709,24 +1725,6 @@ Set keybinds to functionality of installed packages.
 (global-set-key [remap describe-variable] #'helpful-variable)
 (which-key-add-key-based-replacements "C-h o" "describe-symbol-at-point")
 
-;; Company completion selection
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "M-n") nil)
-  (define-key company-active-map (kbd "M-p") nil)
-  (define-key company-active-map (kbd "M-h") #'company-abort)
-  (define-key company-active-map (kbd "M-j") #'company-select-next)
-  (define-key company-active-map (kbd "M-k") #'company-select-previous)
-  (define-key company-active-map (kbd "M-l") #'company-complete-selection)
-  (define-key company-active-map (kbd "<escape>") #'company-abort))
-										; https://github.com/company-mode/company-mode/blob/master/company.el#L661
-
-;; Evil command history selection
-(with-eval-after-load 'evil-ex
-  (define-key evil-ex-completion-map (kbd "M-h") 'abort-recursive-edit)
-  (define-key evil-ex-completion-map (kbd "M-j") #'next-complete-history-element)
-  (define-key evil-ex-completion-map (kbd "M-k") #'previous-complete-history-element)
-  (define-key evil-ex-completion-map (kbd "M-l") 'exit-minibuffer))
-
 ;; Minibuffer completion selection
 (general-def minibuffer-local-map
   "M-h" #'abort-recursive-edit
@@ -1737,12 +1735,6 @@ Set keybinds to functionality of installed packages.
   "M-K" #'previous-history-element
   "<backspace>"   #'dot/selectrum-backspace
   "<S-backspace>" #'evil-delete-backward-char-and-join)
-
-										; Overwrite evil keymaps
-										;(evil-global-set-key 'motion (kbd "C-w") 'kill-this-buffer)
-										;(evil-define-key 'motion 'global (kbd "C-w") 'kill-this-buffer)
-										;(define-key evil-motion-state-map (kbd "C-w") 'kill-this-buffer) ; @Todo test this with nil
-										;https://github.com/noctuid/evil-guide#global-keybindings-and-evil-states
 
 ;; with-editor
 (with-eval-after-load 'with-editor

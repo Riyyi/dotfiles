@@ -30,17 +30,23 @@
       - [[#org-export-packages][Org Export Packages]]
     - [[#completion][Completion]]
       - [[#company][Company]]
+      - [[#yasnippet][YASnippet]]
+    - [[#checkers][Checkers]]
       - [[#flycheck][Flycheck]]
+      - [[#flyspell][Flyspell]]
+    - [[#programming-integration][Programming Integration]]
       - [[#lsp][LSP]]
       - [[#dap][DAP]]
-      - [[#yasnippet][YASnippet]]
+    - [[#programming-languages][Programming Languages]]
       - [[#cc][C/C++]]
-    - [[#lua][Lua]]
-    - [[#yaml][YAML]]
-    - [[#php][PHP]]
-    - [[#prettify][Prettify]]
+      - [[#lua][Lua]]
+      - [[#php][PHP]]
+      - [[#cmake][CMake]]
+      - [[#glsl][GLSL]]
+      - [[#yaml][YAML]]
     - [[#rss][RSS]]
     - [[#git][Git]]
+    - [[#prettify][Prettify]]
 - [[#general][General]]
   - [[#buffers][Buffers]]
   - [[#electric][Electric]]
@@ -256,12 +262,6 @@ Install and configure packages.
 	((latex-indent-line . 4)
 	 (latex-indent-region . 4)))
   (smart-tabs-insinuate 'c 'c++ 'java 'python 'latex))
-
-(use-package flyspell-correct
-  :after flyspell
-  :config
-  (setq flyspell-issue-message-flag nil)
-  (setq flyspell-issue-welcome-flag nil))
 #+END_SRC
 
 *** Evil
@@ -512,7 +512,6 @@ Autocomplete packages (includes code completion and snippets).
 
 #+BEGIN_SRC emacs-lisp
 (use-package company
-  :defer t
   :hook
   ((c-mode-common
 	emacs-lisp-mode
@@ -533,13 +532,30 @@ Autocomplete packages (includes code completion and snippets).
   :config (company-prescient-mode 1))
 #+END_SRC
 
+**** YASnippet
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :defer t
+  :init
+  (setq yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
+  (setq yas-prompt-functions '(yas-completing-prompt))
+  :config
+  (yas-global-mode))
+
+(use-package yasnippet-snippets
+  :after yasnippet)
+#+END_SRC
+
+https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-scenarios-1-region-is-active-2-region-is
+
+*** Checkers
 **** Flycheck
 
 On the fly syntax checking.
 
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
-  :defer t
   :hook
   ((c-mode-common
 	emacs-lisp-mode
@@ -567,6 +583,20 @@ On the fly syntax checking.
   :config (setq flycheck-clang-tidy-extra-options "--format-style=file"))
 #+END_SRC
 
+**** Flyspell
+
+Give Flyspell a selection menu.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flyspell-correct
+  :defer t
+  :after flyspell
+  :config
+  (setq flyspell-issue-message-flag nil)
+  (setq flyspell-issue-welcome-flag nil))
+#+END_SRC
+
+*** Programming Integration
 **** LSP
 
 Language Server Protocol.
@@ -648,23 +678,7 @@ Debug Adapter Protocol.
 	(make-directory dap-utils-extension-path t)))
 #+END_SRC
 
-**** YASnippet
-
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :defer t
-  :init
-  (setq yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
-  (setq yas-prompt-functions '(yas-completing-prompt))
-  :config
-  (yas-global-mode))
-
-(use-package yasnippet-snippets
-  :after yasnippet)
-#+END_SRC
-
-https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-scenarios-1-region-is-active-2-region-is
-
+*** Programming Languages
 **** C/C++
 
 #+BEGIN_SRC emacs-lisp
@@ -679,7 +693,7 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
     (add-to-list 'company-backends 'company-glsl)))
 #+END_SRC
 
-*** Lua
+**** Lua
 
 #+BEGIN_SRC emacs-lisp
 (use-package lua-mode
@@ -687,14 +701,7 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
   :config (setq lua-indent-level 4))
 #+END_SRC
 
-*** YAML
-
-#+BEGIN_SRC emacs-lisp
-(use-package yaml-mode
-  :defer t)
-#+END_SRC
-
-*** PHP
+**** PHP
 
 #+BEGIN_SRC emacs-lisp
 (use-package php-mode
@@ -706,6 +713,70 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
 
 (use-package restclient
   :defer t)
+#+END_SRC
+
+**** CMake
+
+#+BEGIN_SRC emacs-lisp
+(use-package cmake-mode
+  :defer t)
+#+END_SRC
+
+**** GLSL
+
+#+BEGIN_SRC emacs-lisp
+(use-package glsl-mode
+  :defer t)
+#+END_SRC
+
+**** YAML
+
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode
+  :defer t)
+#+END_SRC
+
+*** RSS
+
+#+BEGIN_SRC emacs-lisp
+(use-package elfeed
+  :hook (elfeed-search-mode . dot/hook-disable-line-numbers)
+  :hook (elfeed-show-mode   . dot/hook-disable-line-numbers)
+  :config
+  (setq elfeed-db-directory (concat dot-cache-dir "/elfeed"))
+  (setq elfeed-enclosure-default-dir "~/downloads/")
+  (setq elfeed-search-filter "@6-months-ago +unread")
+  (setq elfeed-search-clipboard-type 'CLIPBOARD)
+  (setq elfeed-search-title-max-width 100)
+  (setq elfeed-search-title-min-width 30)
+  (setq elfeed-search-trailing-width 55)
+  (setq elfeed-show-unique-buffers t)
+  (load (concat dot-etc-dir "/elfeed-feeds")))
+#+END_SRC
+
+*** Git
+
+#+BEGIN_SRC emacs-lisp
+(use-package diff-hl
+  :demand
+  :hook (prog-mode . turn-on-diff-hl-mode)
+  :hook (prog-mode . (lambda () (when (vc-registered buffer-file-name) (diff-hl-flydiff-mode) (dot/toggle-fringe 1)))))
+
+(use-package transient
+  :defer t
+  :config (setq transient-history-file (concat dot-cache-dir "/transient/history.el")))
+
+(use-package magit
+  :after (diff-hl transient)
+  :hook (git-commit-setup . git-commit-turn-on-auto-fill)
+  :hook (git-commit-setup . git-commit-turn-on-flyspell)
+  :hook (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  :hook (magit-post-refresh . diff-hl-magit-post-refresh)
+  :config
+  (setq git-commit-summary-max-length 70)
+  (setq magit-diff-paint-whitespace-lines 'both)
+  (setq magit-repository-directories '(("~/dotfiles" . 0)
+									   ("~/code" . 3))))
 #+END_SRC
 
 *** Prettify
@@ -740,56 +811,6 @@ https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-sce
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
-
-;; Cmake syntax highlighting
-(use-package cmake-mode
-  :defer t)
-
-;; Shader syntax highlighting
-(use-package glsl-mode
-  :defer t)
-#+END_SRC
-
-*** RSS
-
-#+BEGIN_SRC emacs-lisp
-(use-package elfeed
-  :hook (elfeed-search-mode . dot/hook-disable-line-numbers)
-  :hook (elfeed-show-mode   . dot/hook-disable-line-numbers)
-  :config
-  (setq elfeed-db-directory (concat dot-cache-dir "/elfeed"))
-  (setq elfeed-enclosure-default-dir "~/downloads/")
-  (setq elfeed-search-filter "@6-months-ago +unread")
-  (setq elfeed-search-clipboard-type 'CLIPBOARD)
-  (setq elfeed-search-title-max-width 100)
-  (setq elfeed-search-title-min-width 30)
-  (setq elfeed-search-trailing-width 55)
-  (setq elfeed-show-unique-buffers t)
-  (load (concat dot-etc-dir "/elfeed-feeds")))
-#+END_SRC
-
-*** Git
-
-#+BEGIN_SRC emacs-lisp
-(use-package diff-hl
-  :demand
-  :hook (prog-mode . turn-on-diff-hl-mode)
-  :hook (prog-mode . (lambda () (when (vc-registered buffer-file-name) (diff-hl-flydiff-mode) (dot/toggle-fringe 1)))))
-
-(use-package transient
-  :config (setq transient-history-file (concat dot-cache-dir "/transient/history.el")))
-
-(use-package magit
-  :after (diff-hl transient)
-  :hook (git-commit-setup . git-commit-turn-on-auto-fill)
-  :hook (git-commit-setup . git-commit-turn-on-flyspell)
-  :hook (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  :hook (magit-post-refresh . diff-hl-magit-post-refresh)
-  :config
-  (setq git-commit-summary-max-length 70)
-  (setq magit-diff-paint-whitespace-lines 'both)
-  (setq magit-repository-directories '(("~/dotfiles" . 0)
-									   ("~/code" . 3))))
 #+END_SRC
 
 * General

@@ -32,6 +32,7 @@
       - [[#company][Company]]
       - [[#flycheck][Flycheck]]
       - [[#lsp][LSP]]
+      - [[#dap][DAP]]
       - [[#yasnippet][YASnippet]]
       - [[#cc][C/C++]]
     - [[#lua][Lua]]
@@ -63,6 +64,7 @@
   - [[#package-functions][Package Functions]]
     - [[#auto-package-update-functions][Auto Package Update Functions]]
     - [[#centaur-tabs-functions][Centaur Tabs Functions]]
+    - [[#dap-functions][DAP Functions]]
     - [[#dashboard-functions][Dashboard Functions]]
     - [[#evil-functions][Evil functions]]
     - [[#lsp-functions][LSP Functions]]
@@ -611,24 +613,31 @@ Language Server Protocol.
   (setq lsp-ui-flycheck-list-position 'right)
   (setq lsp-ui-flycheck-live-reporting t)
   (setq lsp-ui-peek-enable nil)
-  (setq lsp-ui-sideline-enable nil))
+  (setq lsp-ui-sideline-enable nil)
+  (setq lsp-ui-sideline-show-symbol nil))
 #+END_SRC
 
-  (use-package lsp-ui
-	:commands lsp-ui-mode
-	:after (flycheck lsp-mode)
-	:custom
-	(lsp-ui-doc-border (face-foreground 'default))
-	(lsp-ui-doc-enable nil)
-	(lsp-ui-doc-header t)
-	(lsp-ui-doc-include-signature t)
-	(lsp-ui-doc-position 'top)
-	(lsp-ui-doc-use-childframe t)
-	(lsp-ui-flycheck-enable t)
-	(lsp-ui-flycheck-list-position 'right)
-	(lsp-ui-flycheck-live-reporting t)
-	(lsp-ui-peek-enable nil)
-	(lsp-ui-sideline-enable nil))
+**** DAP
+
+Debug Adapter Protocol.
+
+#+BEGIN_SRC emacs-lisp
+(use-package treemacs
+  :after all-the-icons
+  :hook (treemacs-mode . dot/hook-disable-line-numbers)
+  :config (setq treemacs-persist-file (concat dot-cache-dir "/treemacs/persist")))
+
+(use-package dap-mode
+  :after (treemacs lsp-mode)
+  :hook (lsp-after-initialize . dot/dap-install-debug-adapters)
+  :config
+  (setq dap-auto-configure-features '(sessions locals expressions controls tooltip))
+  (setq dap-breakpoints-file (concat dot-cache-dir "/dap/breakpoints"))
+  (setq dap-utils-extension-path (concat dot-cache-dir "/dap"))
+
+  ;; Create dap extension directory
+  (unless (file-directory-p dap-utils-extension-path)
+	(make-directory dap-utils-extension-path t)))
 #+END_SRC
 
 **** YASnippet
@@ -1717,6 +1726,11 @@ Set keybinds to functionality of installed packages.
 	"r" #'dot/dashboard-goto-recent-files
 	)
 
+  ;; Dap
+  (general-def 'normal dap-ui-session-mode-map
+	"D" #'dap-ui-delete-session
+	)
+
   ;; Deft
   (general-def 'normal deft-mode-map
 	[down-mouse-1] #'widget-button-click
@@ -1983,11 +1997,15 @@ General.el ~leader key binds.
 Evaluated keybinds.
 
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'lsp-mode
-	(space-leader lsp-mode-map
-	  "l" lsp-command-map
-	  )
-	)
+(with-eval-after-load 'lsp-mode
+  (space-leader lsp-mode-map
+	"l" lsp-command-map
+	))
+
+(with-eval-after-load 'dap-mode
+  (space-leader lsp-mode-map
+	"l d" '(dap-hydra :which-key "DAP hydra")
+    ))
 #+END_SRC
 
 Source:

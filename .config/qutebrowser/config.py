@@ -27,6 +27,13 @@ config.bind('>>', 'tab-move +')
 config.bind('<Alt-`>', 'tab-focus last')
 config.bind('<F1>', 'config-cycle tabs.show always never')
 
+# Command menu selection
+config.bind('<Alt-h>', 'mode-leave', mode='command')
+config.bind('<Alt-j>', 'completion-item-focus --history next', mode='command')
+config.bind('<Alt-k>', 'completion-item-focus --history prev', mode='command')
+config.bind('<Alt-l>', 'command-accept', mode='command')
+config.bind('<Ctrl-g>', 'mode-leave', mode='command')
+
 # Legacy bindings
 config.bind('<Alt-Left>', 'back')
 config.bind('<Alt-Right>', 'forward')

@@ -134,7 +134,6 @@ rsync
 rtmpdump
 rxvt-unicode
 signal-desktop
-sloccount
 smartmontools
 stalonetray
 streamlink
@@ -158,6 +157,7 @@ thunar
 thunar-volman
 thunderbird
 tlp
+tokei
 trizen
 ttf-dejavu
 ttf-dejavu-sans-mono-powerline-git

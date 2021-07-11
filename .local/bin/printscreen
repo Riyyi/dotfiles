@@ -15,10 +15,9 @@ if [ "$screenshotter" = "scrot" ]; then
 	selection="--select"
 	activeWindow="--focused"
 	filename="--exec 'mv \$f $CAPTURE'"
-
 elif [ "$screenshotter" = "maim" ]; then
 	fullscreen=""
-	selection="--select"
+	selection="--select --hidecursor"
 	activeWindow="--window \$(xdotool getactivewindow)"
 	filename="$CAPTURE/$(date '+%Y-%m-%d-%H%M%S')_maim.png"
 elif [ "$screenshotter" = "magick import" ] || [ "$screenshotter" = "import" ]; then
@@ -36,7 +35,7 @@ Selection
 Active Window
 Fullscreen"
 
-choice=$(echo "$options" | rofi -no-fixed-num-lines -dmenu -i -p "Screenshot") || exit 0
+choice="$(echo "$options" | rofi -no-fixed-num-lines -dmenu -i -p "Screenshot")" || exit 0
 
 command="$screenshotter"
 [ "$choice" = "Selection" ] && command="$command $selection"

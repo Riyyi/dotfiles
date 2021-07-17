@@ -782,6 +782,8 @@ Debug Adapter Protocol.
 *** Prettify
 
 #+BEGIN_SRC emacs-lisp
+(use-package page-break-lines)
+
 (use-package dashboard
   :demand
   :hook (dashboard-mode . dot/hook-disable-line-numbers)
@@ -789,6 +791,7 @@ Debug Adapter Protocol.
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
   (setq dashboard-banner-logo-title "GNU Emacs master race!")
   (setq dashboard-center-content t)
+  (setq dashboard-page-separator "\n\f\n")
   (setq dashboard-set-file-icons t)
   (setq dashboard-set-footer nil)
   (setq dashboard-set-heading-icons t)

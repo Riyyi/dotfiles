@@ -776,7 +776,10 @@ Debug Adapter Protocol.
   (setq git-commit-summary-max-length 70)
   (setq magit-diff-paint-whitespace-lines 'both)
   (setq magit-repository-directories '(("~/dotfiles" . 0)
-									   ("~/code" . 3))))
+									   ("~/code" . 3)))
+
+  (put 'magit-log-select-pick :advertised-binding [?\M-c])
+  (put 'magit-log-select-quit :advertised-binding [?\M-k]))
 #+END_SRC
 
 *** Prettify
@@ -1727,6 +1730,11 @@ Set keybinds to functionality of installed packages.
 (global-set-key [remap describe-symbol]   #'helpful-at-point)
 (global-set-key [remap describe-variable] #'helpful-variable)
 (which-key-add-key-based-replacements "C-h o" "describe-symbol-at-point")
+
+;; Magit
+(with-eval-after-load 'magit
+  (define-key magit-log-select-mode-map (kbd "M-c") #'magit-log-select-pick)
+  (define-key magit-log-select-mode-map (kbd "M-k") #'magit-log-select-quit))
 
 ;; Minibuffer completion selection
 (general-def minibuffer-local-map

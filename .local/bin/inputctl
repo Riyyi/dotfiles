@@ -164,7 +164,7 @@ tablet() {
 	case "$1" in
 	ccw)
 		calculatedWidth=$(calc "$tabletHeight * $screenHeight / $screenWidth")
-		offsetWidth=$(calc "($tabletWidth - $calculatedWidth) / 2")
+		offsetWidth=$(calc "($tabletWidth - $calculatedWidth) / 2" | cut -d '.' -f 1)
 		calculatedWidth=$(calc "$calculatedWidth + $offsetWidth" | cut -d '.' -f 1)
 
 		xsetwacom set "$2" Area "$offsetWidth" 0 "$calculatedWidth" "$tabletHeight"
@@ -172,7 +172,7 @@ tablet() {
 		;;
 	normal)
 		calculatedHeight=$(calc "$tabletWidth * $screenHeight / $screenWidth" | cut -d '.' -f 1)
-		offsetHeight=$(calc "($tabletHeight - $calculatedHeight) / 2")
+		offsetHeight=$(calc "($tabletHeight - $calculatedHeight) / 2" | cut -d '.' -f 1)
 
 		xsetwacom set "$2" Area 0 "$offsetHeight" "$tabletWidth" "$calculatedHeight"
 		;;

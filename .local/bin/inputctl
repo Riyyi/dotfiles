@@ -26,6 +26,9 @@ ${B}OPTIONS${N}
 
 	${B}-s${N} ${U}STATE${N}
 		Set touchscreen state, possible values: toggle, on/off, 1/0.
+
+	${B}-t${N} ${U}STATE${N}
+		Set tablet state, possible values: ccw/normal/reset
 EOF
 }
 
@@ -40,7 +43,7 @@ export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
 # Option handling
 SCRIPT="$(basename "$0")"
-while getopts ':h?d:k:s:' opt; do
+while getopts ':h?d:k:s:t:' opt; do
 	case $opt in
 		h)
 			help
@@ -60,6 +63,11 @@ while getopts ':h?d:k:s:' opt; do
 			ARG="$OPTARG"
 			DEV="pointer:04F3200A:00 04F3:2373"
 			;;
+		t)
+			OPTION="t"
+			ARG="$OPTARG"
+			DEV="HUION Huion Tablet_HS64 Pen stylus"
+			;;
 		:)
 			echo "$SCRIPT: option requires an argument '$OPTARG'"
 			echo "Try '$SCRIPT -h' for more information."
@@ -72,6 +80,9 @@ while getopts ':h?d:k:s:' opt; do
 			;;
 	esac
 done
+
+# Enable mathematics in POSIX shell
+calc() { awk "BEGIN{print $*}"; }
 
 toggle_device() {
 	STATUS=$(xinput --list-props "$2" | awk '/Device Enabled/ { print $4 }')
@@ -123,6 +134,53 @@ keyboard() {
 	fi
 }
 
+tablet() {
+	case "$1" in
+		ccw | normal)
+			;;
+		reset)
+			xsetwacom set "$2" ResetArea
+			xsetwacom set "$2" Rotate none
+			xsetwacom set "$2" MapToOutput "desktop"
+			exit 0
+			;;
+		*)
+			echo "$SCRIPT: invalid argument '$1'"
+			echo "Try '$SCRIPT -h' for more information."
+			exit 1
+			;;
+	esac
+
+	screenDimensions=$(xrandr -q | grep primary | awk '{ print substr($4, 0, index($4, "+") - 1) }')
+	screenWidth=$(echo "$screenDimensions" | cut -d 'x' -f 1)
+	screenHeight=$(echo "$screenDimensions" | cut -d 'x' -f 2)
+
+	inputctl -t reset
+
+	tabletDimensions=$(xsetwacom get "$2" Area)
+	tabletWidth=$(echo "$tabletDimensions" | cut -d ' ' -f 3)
+	tabletHeight=$(echo "$tabletDimensions" | cut -d ' ' -f 4)
+
+	case "$1" in
+	ccw)
+		calculatedWidth=$(calc "$tabletHeight * $screenHeight / $screenWidth")
+		offsetWidth=$(calc "($tabletWidth - $calculatedWidth) / 2")
+		calculatedWidth=$(calc "$calculatedWidth + $offsetWidth" | cut -d '.' -f 1)
+
+		xsetwacom set "$2" Area "$offsetWidth" 0 "$calculatedWidth" "$tabletHeight"
+		xsetwacom set "$2" Rotate ccw
+		;;
+	normal)
+		calculatedHeight=$(calc "$tabletWidth * $screenHeight / $screenWidth" | cut -d '.' -f 1)
+		offsetHeight=$(calc "($tabletHeight - $calculatedHeight) / 2")
+
+		xsetwacom set "$2" Area 0 "$offsetHeight" "$tabletWidth" "$calculatedHeight"
+		;;
+	esac
+
+	xsetwacom set "$2" MapToOutput "${screenWidth}x${screenHeight}+0+0"
+}
+
 # Option execution
 # if [ "$DEV" = "Keyboard" ]; then
 # 	keyboard "$ARG"
@@ -133,6 +191,9 @@ case "$OPTION" in
 		;;
 	k)
 		keyboard "$ARG"
+		;;
+	t)
+		tablet "$ARG" "$DEV"
 		;;
 esac
 

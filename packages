@@ -91,6 +91,7 @@ mpv
 mysql-workbench
 ncdu
 neofetch
+nerd-fonts-dejavu-complete
 netctl
 nodejs-intelephense
 ntfs-3g
@@ -160,9 +161,8 @@ tlp
 tokei
 trizen
 ttf-dejavu
-ttf-dejavu-sans-mono-powerline-git
 ttf-joypixels
-ttf-ms-fonts
+ttf-ms-win10
 tumbler-extra-thumbnailers
 tumbler-git
 unrar

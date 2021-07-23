@@ -43,6 +43,9 @@ ${B}COMMANDS${N}
 	${B}u${N}, ${B}unmute${N}
 		Unmute volume.
 
+	${B}p${N} <${U}STATE${N}>, ${B}pulsetcp${N} <${U}STATE${N}>
+		Set PulseAudio TCP module, possible values: on/off, 1/0, default enable.
+
 	${B}getv${N}, ${B}getvolume${N}
 		Get volume level.
 
@@ -71,6 +74,34 @@ while getopts ':h?' opt; do
 	esac
 done
 
+pulseTcp()
+{
+	if test "$1" = "off" || test "$1" = "0"; then
+		if pactl list modules short | grep -q module-simple-protocol-tcp; then
+			pactl unload-module module-simple-protocol-tcp
+		fi
+		exit 0
+	fi
+
+	"$0" p off
+
+	device="$(pactl list sources short | head -n 1)"
+	source="$(echo "$device" | awk '{ print $1; }')"
+	format="$(echo "$device" | awk '{ print $4; }')"
+	channels="$(echo "$device" | awk '{ print $5 + 0; }')"
+	rate="$(echo "$device" | awk '{ print $6 + 0; }')"
+
+	# Load PulseAudio TCP module
+	pactl load-module module-simple-protocol-tcp \
+		  rate="$rate" format="$format" channels="$channels" source="$source" \
+		  record=true port=8000 listen=0.0.0.0 > /dev/null
+
+	# Echo connection info
+	ip="$(ip a show eth0 | awk '/inet / { print substr($2, 0, length($2) - 3) }')"
+	echo "server: $ip:8000"
+	echo "audio:  ${rate}Hz ${channels}ch"
+}
+
 # Command handling
 shift $((OPTIND - 1))
 case "$1" in
@@ -94,6 +125,9 @@ case "$1" in
 		;;
 	n*)
 		pamixer --unmute
+		;;
+	p*)
+		pulseTcp "$2"
 		;;
 	getv*)
 		pamixer --get-volume

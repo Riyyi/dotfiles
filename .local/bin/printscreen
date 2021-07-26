@@ -37,6 +37,9 @@ Fullscreen"
 
 choice="$(echo "$options" | rofi -no-fixed-num-lines -dmenu -i -p "Screenshot")" || exit 0
 
+# Give Rofi menu time to disappear
+sleep 0.1
+
 command="$screenshotter"
 [ "$choice" = "Selection" ] && command="$command $selection"
 [ "$choice" = "Active Window" ] && command="$command $activeWindow"

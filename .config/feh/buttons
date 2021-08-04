@@ -1,0 +1,7 @@
+# Unbind existing
+prev_img unbound
+next_img unbound
+
+# Set bindings
+zoom_in 4
+zoom_out 5

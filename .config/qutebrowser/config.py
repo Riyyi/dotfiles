@@ -37,6 +37,9 @@ config.bind('<Ctrl-g>', 'mode-leave', mode='command')
 # Legacy bindings
 config.bind('<Alt-Left>', 'back')
 config.bind('<Alt-Right>', 'forward')
+config.bind('<Ctrl-->', 'zoom-out')
+config.bind('<Ctrl-=>', 'zoom-in')
+config.bind('<Ctrl-0>', 'zoom')
 config.bind('<Ctrl-B>', 'open -t qute://bookmarks#bookmarks')
 config.bind('<Ctrl-D>', 'bookmark-add')
 config.bind('<Ctrl-F>', 'set-cmd-text /')
@@ -61,6 +64,8 @@ config.bind(';M', 'hint --rapid links spawn umpv {hint-url}')
 
 # Reload browser config
 config.bind('<Alt-Shift-r>', 'config-source ;; message-info "qutebrowser reloaded."')
+
+# Run :debug-keytester to get keybinding names
 
 # General
 # ---------------------------------------- #

@@ -5,8 +5,8 @@ user_pref("browser.download.dir", "~/downloads");
 user_pref("browser.newtabpage.enabled", false);
 user_pref("browser.newtab.url", "about:blank");
 
-// Warn on quit (CTRL+q workaround)
-user_pref("browser.sessionstore.warnOnQuit", true);
+// Disable Ctrl+q browser close shortcut
+user_pref("browser.quitShortcut.disabled", true);
 
 // Old style URL bar
 user_pref("browser.urlbar.openViewOnFocus", false);
@@ -20,6 +20,10 @@ user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
 // No full screen warning
 user_pref("full-screen-api.warning.timeout", 0);
 
+// Disable video autoplay
+user_pref("media.autoplay.blocking_policy", 2);
+user_pref("media.autoplay.default", 5);
+
 // Enable video acceleration
 user_pref("media.ffmpeg.vaapi-drm-display.enabled", true);
 user_pref("media.ffmpeg.vaapi.enabled", true);
@@ -32,6 +36,9 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
 // Disable ALT key menu toggle
 user_pref("ui.key.menuAccessKeyFocuses", false);
+
+// Reduce motion
+user_pref("ui.prefersReducedMotion", true);
 
 // Fix dark GTK themes
 user_pref("widget.content.gtk-theme-override", "Arc");

@@ -211,8 +211,13 @@ Install and configure packages.
   :config
 
   ;; Install all-the-icons if font files are not found
-  (unless (file-exists-p "~/.local/share/fonts/all-the-icons.ttf")
-	(call-interactively #'all-the-icons-install-fonts)))
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t)))
+
+(use-package all-the-icons-dired
+  :after all-the-icons
+  :hook (dired-mode . all-the-icons-dired-mode)
+  :config (setq all-the-icons-dired-monochrome nil))
 
 (use-package which-key
   :hook (emacs-startup . which-key-mode)
@@ -591,6 +596,7 @@ Give Flyspell a selection menu.
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell-correct
   :after flyspell
+  :hook (org-mode . flyspell-mode)
   :config
   (setq flyspell-issue-message-flag nil)
   (setq flyspell-issue-welcome-flag nil))
@@ -1326,7 +1332,8 @@ Functions that use package functionality.
 	(interactive)
 	(dolist (buffer (buffer-list))
 	  (when (dot/centaur-tabs-is-buffer-unimportant buffer)
-		(kill-buffer buffer))))
+		(kill-buffer buffer)))
+	(princ "Cleaned buffers"))
 
   (defun dot/centaur-tabs-kill-buffer-or-window ()
 	"Delete window of the current buffer, also kill if the buffer is hidden."
@@ -1626,6 +1633,9 @@ Disable keybinds of native modes that clash with other custom keybinds.
 (with-eval-after-load 'cc-mode
   (define-key c-mode-base-map (kbd "M-j") nil)
   (define-key c-mode-base-map (kbd "C-M-h") nil))
+
+(with-eval-after-load 'nxml-mode
+  (define-key nxml-mode-map (kbd "M-h") nil))
 #+END_SRC
 
 ** Disable Package

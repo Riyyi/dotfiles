@@ -1,0 +1,141 @@
+#!/bin/sh
+
+# Downloader
+# Depends: aria2, youtube-dl
+
+b=$(tput bold)
+blue=$(tput setf 1)
+red=$(tput setf 4)
+u=$(tput smul)
+n=$(tput sgr0)
+
+help() {
+	cat << EOF
+${b}NAME${n}
+	dl - Downloader
+
+${b}SYNOPSIS${n}
+	${b}dl${n} [${u}OPTION${n}...] [${u}URL${n}...]
+
+${b}DESCRIPTION${n}
+	${b}dl${n} Download audio/video with youtube-dl, using aria2, for each URL.
+
+	A ${u}URL${n} of "${b}-${n}" stands for standard input.
+
+${b}OPTIONS${n}
+	${b}-h${n}	Display usage message and exit.
+
+	${b}-a${n}	Download audio files from ${u}URL${n}.
+
+	${b}-b${n}	Enable the best video quality.
+
+	${b}-t${n}	Enable embedding of thumbnails into audio.
+
+	${b}-v${n}	Download video files from ${u}URL${n}.
+EOF
+}
+
+# Exit if no option is provided
+[ "$#" -eq 0 ] && help && exit 1
+
+script="$(basename "$0")"
+
+# Option handling
+while getopts ':h?abtv' opt; do
+	case $opt in
+		h)
+			help
+			exit 0
+			;;
+		a)
+			audioDownload="true"
+			;;
+		b)
+			videoBest="true"
+			;;
+		t)
+			audioThumbnail="true"
+			;;
+		v)
+			videoDownload="true"
+			;;
+		:)
+			echo "$script: option requires an argument '$OPTARG'"
+			echo "Try '$script -h' for more information."
+			exit 1
+			;;
+		\?)
+			echo "$script: invalid option '$OPTARG'"
+			echo "Try '$script -h' for more information."
+			exit 1
+			;;
+	esac
+done
+
+embedAudioThumbnail()
+{
+	# Get file name
+	fileName="$(youtube-dl --get-filename "$1")"
+	fileName="${fileName%.*}"
+
+	# Convert thumbnail to actually be a jpg
+	yes y | ffmpeg -i "${fileName}.webp" "${fileName}_converted.jpg" > /dev/null 2>&1
+	yes y | ffmpeg -i "${fileName}.jpg" "${fileName}_converted.jpg" > /dev/null 2>&1
+
+	# Embed thumbnail into mp3
+	yes y | ffmpeg -i "${fileName}.mp3" -i "${fileName}_converted.jpg" \
+				  -map 0:0 -map 1:0 -c copy -id3v2_version 3 \
+				  -metadata:s:v title="Album cover" \
+				  -metadata:s:v comment="Cover (front)" \
+				  "${fileName}_embed.mp3" > /dev/null 2>&1
+
+	# Remove left over files
+	rm -f "./${fileName}_converted.jpg" "./${fileName}.jpg" "./${fileName}.mp3"
+	mv "${fileName}_embed.mp3" "${fileName}.mp3"
+}
+
+downloadAudio()
+{
+	[ -z "$1" ] && return 1
+
+	[ -n "$audioThumbnail" ] && thumbnail="--write-thumbnail"
+	youtube-dl --format bestaudio/best \
+			   --extract-audio --audio-format mp3 --audio-quality 0 $thumbnail \
+			   --external-downloader aria2c \
+			   --cookies "$HOME/documents/youtube.com-cookies.txt" "$1"
+	[ -n "$audioThumbnail" ] && embedAudioThumbnail "$1"
+}
+
+downloadVideo()
+{
+	[ -z "$1" ] && return 1
+
+	[ -z "$videoBest" ] && videoLimit="[height<=?1080]"
+	youtube-dl --format "bestvideo${videoLimit}+bestaudio/best" \
+			   --external-downloader aria2c \
+			   --cookies "$HOME/documents/youtube.com-cookies.txt" "$1"
+}
+
+handleUrls()
+{
+	argumentUrls="$(echo "$@" | tr ' ' "\n")"
+	urls="$(echo "$argumentUrls" | sed 's/^-$//')"
+	[ "$argumentUrls" != "$urls" ] && urls="$(printf '%s\n%s' "$urls" "$(cat /dev/stdin)")"
+	parsedUrls="$(echo "$urls" | sed -nE 's#^(https?://\S+\.\S+)$#\1#p')"
+	[ "$urls" != "$parsedUrls" ] && printf '%sReceived invalid URL%s\n' "${b}${red}" "${n}" && exit 1
+}
+
+startDownloads()
+{
+	# Start downloads
+	printf "%s::%s Downloading... %s \n" "${b}${blue}" "${n}${b}" "${n}"
+
+	for url in $parsedUrls; do
+		[ -n "$audioDownload" ] && downloadAudio "$url"
+		[ -n "$videoDownload" ] && downloadVideo "$url"
+	done
+}
+
+shift $((OPTIND - 1))
+handleUrls "$@"
+startDownloads

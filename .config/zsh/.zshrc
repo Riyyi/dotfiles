@@ -173,9 +173,9 @@ alias u="setsid -f urxvt -cd $PWD"
 alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias webmconvert="aliases webmconvert"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 setsid -f -- mysql-workbench > /dev/null 2>&1"
-alias ytv="youtube-dl -f bestvideo\[height\<=\?1080\]+bestaudio/best"
-alias ytvb="youtube-dl -f bestvideo+bestaudio/best"
-alias yta="youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0" # --embed-thumbnail"
+alias ytv="youtube-dl -f bestvideo\[height\<=\?1080\]+bestaudio/best --external-downloader aria2c"
+alias ytvb="youtube-dl -f bestvideo+bestaudio/best --external-downloader aria2c"
+alias yta="youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0 --external-downloader aria2c" # --embed-thumbnail"
 alias ytat="aliases ytaudio_thumbnail"
 
 mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || exit; }

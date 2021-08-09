@@ -150,8 +150,8 @@ ytaudio_thumbnail() {
 	# Get mp3 + thumbnail
 	echo "Downloading and converting \"$FILE_NAME\".."
 	youtube-dl -f bestaudio/best -x --audio-format mp3 --audio-quality 0 \
-			   --write-thumbnail --cookies "~/documents/youtube.com_cookies.txt" "$1" > /dev/null
-			   # --write-thumbnail "$1" > /dev/null
+			   --write-thumbnail --external-downloader aria2c \
+			   --cookies "$HOME/documents/youtube.com-cookies.txt" "$1" > /dev/null
 
 	echo "Embedding thumbnail into mp3.."
 

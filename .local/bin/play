@@ -38,16 +38,17 @@ EOF
 CLIP="$(xclip -se c -o)"
 
 play() {
+	MPV="mpv --ytdl-raw-options=external-downloader=aria2c"
 	if [ -z "$1" ]; then
-		MPV="mpv $CLIP"
+		MPV="$MPV $CLIP"
 		# Cut off everything after space
-		LINK=" $(echo $CLIP | sed -nE 's/^(\S+).*/\1/p')"
+		LINK=" $(echo "$CLIP" | sed -nE 's/^(\S+).*/\1/p')"
 	else
-		MPV="mpv $*"
+		MPV="$MPV $*"
 		# Determain which argument holds the urls
 		[ "$1" = "${1#-}" ] && DISPLAY="$1" || DISPLAY="$2"
 		# Cut off everything after space
-		LINK=" $(echo $DISPLAY | sed -nE 's/^(\S+).*/\1/p')"
+		LINK=" $(echo "$DISPLAY" | sed -nE 's/^(\S+).*/\1/p')"
 	fi
 
 	notify-send -t 2500 "Loading video: $LINK"
@@ -58,27 +59,30 @@ play() {
 shuffle() {
 	# Skip first argument
 	shift 1
-	mpv --no-video --shuffle --ytdl-format='bestaudio[ext=m4a]' "${@:-$CLIP}"
+	mpv --no-video --shuffle \
+		--ytdl-format='bestaudio[ext=m4a]' \
+		--ytdl-raw-options='external-downloader=aria2c' \
+		"${@:-$CLIP}"
 }
 
 queue() {
-	OPTIONS="--no-terminal --force-window --input-file=$PIPE"
+	OPTIONS="--no-terminal --force-window --input-file=$PIPE --ytdl-raw-options=external-downloader=aria2c"
 
 	# Create mpv cache directory
 	DIR="$(dirname "$PIPE")"
 	[ ! -d "$DIR" ] && mkdir -p "$DIR"
 
 	# Delete named pipe if no umpv is running
-	if ! pgrep -f 'mpv $OPTIONS' > /dev/null; then
+	if ! pgrep -f "mpv $OPTIONS" > /dev/null; then
 		rm -f "$PIPE"
 	fi
 
 	# Skip first argument
 	shift 1
 	# Set url to argument if provided, clipboard otherwise
-	URLS="${@:-$CLIP}"
+	URLS="${*:-$CLIP}"
 
-	if [ -p $PIPE ]; then
+	if [ -p "$PIPE" ]; then
 		notify-send -t 2500 "Added video to queue.."
 		# Add video to named pipe
 		echo "$URLS" \

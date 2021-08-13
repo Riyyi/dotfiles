@@ -596,6 +596,7 @@ Give Flyspell a selection menu.
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell-correct
   :after flyspell
+  :demand
   :hook (org-mode . flyspell-mode)
   :config
   (setq flyspell-issue-message-flag nil)

@@ -46,18 +46,18 @@ ${B}OPTIONS${N}
 	${B}-h, --help${N}
 		Display usage message and exit.
 
-	${B}-p${N} [${U}ARG${N}], ${B}--packages${N} [${U}ARG${N}]
-		${B}install${N}
-		Install all core packages of the stored list.
+	${B}-p${N} [${U}FUNCTION${N}], ${B}--packages${N} [${U}FUNCTION${N}]
+		Apply ${U}FUNCTION${N} to the package manager packages.
 
-		${B}install-aur${N}
-		Install all AUR packages of the stored list.
+		${U}install${N}      Install all core packages of the stored list.
 
-		${B}list${N} (default)
-		Display all packages installed on the system.
+		${U}install-aur${N}  Install all AUR packages of the stored list.
 
-		${B}store${N}
-		Stores a list of all installed packages on the system.
+		${U}list${N}         Display all packages installed on the system.
+
+		${U}store${N}        Stores a list of all installed packages on the system.
+
+		The default value is ${U}list${N}.
 
 	${B}-l, --pull${N}
 		Pull each added file from the system to the dotfiles directory.
@@ -66,6 +66,9 @@ ${B}OPTIONS${N}
 		Push each added file to its location on the system.
 EOF
 }
+
+# Exit if no option is provided
+[ "$#" -eq 0 ] && help && exit 1
 
 set_files() {
 	FILES="$(find . -type f -o -type l \

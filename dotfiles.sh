@@ -6,16 +6,16 @@
 # User-config---------------------------
 
 # File which holds all installed packages
-PACKAGE_FILE="packages"
+packageFile="packages"
 
 # Files that are stored in the repository but shouldn't get copied (regex)
-EXCLUDE_FILES="${0#??}|$PACKAGE_FILE|.*.md$|.*README.org$|.git|screenshot.png"
+excludeFiles="${0#??}|$packageFile|.*.md$|.*README.org$|.git|screenshot.png"
 
 # Directories that are treated like a system directory (/) (regex)
-SYSTEM_DIR='boot|etc|usr/share'
+systemDir='boot|etc|usr/share'
 
 # Arch User Repository helper program name (needs pacman flag compatibility!)
-AUR_HELPER="trizen"
+aurHelper="trizen"
 
 # --------------------------------------
 
@@ -71,33 +71,33 @@ EOF
 [ "$#" -eq 0 ] && help >&2 && exit 1
 
 set_files() {
-	FILES="$(find . -type f -o -type l \
-		| awk -v e="^./($EXCLUDE_FILES)" '$0 !~ e { print $0 }')"
+	files="$(find . -type f -o -type l \
+		| awk -v e="^./($excludeFiles)" '$0 !~ e { print $0 }')"
 }
 
 list_files() {
 	# If unset
-	[ -z "${FILES+x}" ] && set_files
+	[ -z "${files+x}" ] && set_files
 
 	# Remove leading ./ from filepaths
-	echo "$FILES" | sed 's/^\.\///'
+	echo "$files" | sed 's/^\.\///'
 }
 
 add() {
 	[ -z "$1" ] && return 1
 
-	FILE="$(readlink -f "$(dirname "$1")")/$(basename "$1")"
-	FILE_CUT_HOME="$(echo "$FILE" \
+	file="$(readlink -f "$(dirname "$1")")/$(basename "$1")"
+	fileCutHome="$(echo "$file" \
 		| awk -v m="^$HOME/" '$0 ~ m { print substr($0, length(m)) }')"
 
 	# /home/<user>/
-	if [ -n "$FILE_CUT_HOME" ]; then
-		mkdir -p "$(pwd)/$(dirname "$FILE_CUT_HOME")"
-		cp -a "$FILE" "$(pwd)/$FILE_CUT_HOME"
+	if [ -n "$fileCutHome" ]; then
+		mkdir -p "$(pwd)/$(dirname "$fileCutHome")"
+		cp -a "$file" "$(pwd)/$fileCutHome"
 	# /
 	else
-		mkdir -p "$(pwd)/$(dirname "$FILE")"
-		sudo cp -a "$FILE" "$(pwd)/$FILE"
+		mkdir -p "$(pwd)/$(dirname "$file")"
+		sudo cp -a "$file" "$(pwd)/$file"
 	fi
 }
 
@@ -106,15 +106,15 @@ pull_push() {
 	[ -z "$1" ] && return 1
 
 	# If unset
-	[ -z "${FILES+x}" ] && set_files
+	[ -z "${files+x}" ] && set_files
 
-	MATCH="^./($SYSTEM_DIR)/"
+	match="^./($systemDir)/"
 
 	# Filter system directories and remove leading ./ from filepaths
-	HOME_FILES="$(echo "$FILES" \
-			| awk -v m="$MATCH" '$0 !~ m { print substr($0, 3) }')"
+	homeFiles="$(echo "$files" \
+			| awk -v m="$match" '$0 !~ m { print substr($0, 3) }')"
 
-	for f in $HOME_FILES; do
+	for f in $homeFiles; do
 		if [ "$1" = "pull" ]; then
 			# cp /home/<user>/<file> /[<some dir>/]dotfiles/<file>
 			cp -a "$HOME/$f" "$(pwd)/$f"
@@ -125,10 +125,10 @@ pull_push() {
 	done
 
 	# Filter non-system directories and remove leading ./ from filepaths
-	SYSTEM_FILES="$(echo "$FILES" \
-		| awk -v m="$MATCH" '$0 ~ m { print substr($0, 3) }')"
+	systemFiles="$(echo "$files" \
+		| awk -v m="$match" '$0 ~ m { print substr($0, 3) }')"
 
-	for f in $SYSTEM_FILES; do
+	for f in $systemFiles; do
 		if [ "$1" = "pull" ]; then
 			# cp /<file> /[<some dir>/]dotfiles/<file>
 			sudo cp -a "/$f" "$(pwd)/$f"
@@ -152,32 +152,32 @@ packages() {
 		exit 1
 	fi
 
-	FILTER_LIST="$( (pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
-	PACKAGE_LIST="$(pacman -Qqe | grep -vx "$FILTER_LIST" | sort)"
+	filterList="$( (pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
+	packageList="$(pacman -Qqe | grep -vx "$filterList" | sort)"
 
 	if [ "$1" = "list" ] || [ "$1" = "" ]; then
-		echo "$PACKAGE_LIST"
+		echo "$packageList"
 	elif [ "$1" = "store" ]; then
-		if [ ! -s $PACKAGE_FILE ]; then
-			touch "$PACKAGE_FILE"
+		if [ ! -s $packageFile ]; then
+			touch "$packageFile"
 		else
-			truncate -s 0 "$PACKAGE_FILE"
+			truncate -s 0 "$packageFile"
 		fi
-		echo "$PACKAGE_LIST" > "$PACKAGE_FILE"
+		echo "$packageList" > "$packageFile"
 	elif [ "$1" = "install" ] || [ "$1" = "install-aur" ]; then
 		# Grab everything off enabled official repositories that is in the list
-		CORE_LIST="$(pacman -Ssq | grep -xf $PACKAGE_FILE)"
+		coreList="$(pacman -Ssq | grep -xf $packageFile)"
 
 		if [ "$1" = "install" ]; then
 			# Install core packages, answer no to pacman questions (honor Ignore)
-			yes n | sudo pacman -Sy --needed $CORE_LIST
+			yes n | sudo pacman -Sy --needed $coreList
 		fi
 		if [ "$1" = "install-aur" ]; then
 			# Determine which packages in the list are from the AUR
-			AUR_LIST="$(grep -vx "$CORE_LIST" < $PACKAGE_FILE)"
+			aurList="$(grep -vx "$coreList" < $packageFile)"
 
 			# Install AUR packages
-			"$AUR_HELPER" -Sy --needed --noconfirm $AUR_LIST
+			"$aurHelper" -Sy --needed --noconfirm $aurList
 		fi
 	fi
 }

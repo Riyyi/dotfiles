@@ -49,6 +49,7 @@
     - [[#prettify][Prettify]]
 - [[#general][General]]
   - [[#buffers][Buffers]]
+  - [[#dired][Dired]]
   - [[#electric][Electric]]
   - [[#file-paths][File Paths]]
   - [[#file-backups-versioning][File Backups Versioning]]
@@ -890,6 +891,12 @@ Debug Adapter Protocol.
 #+BEGIN_SRC emacs-lisp
 (setq confirm-nonexistent-file-or-buffer nil)
 (setq ibuffer-expert t)
+#+END_SRC
+
+** Dired
+
+#+BEGIN_SRC emacs-lisp
+(setq wdired-allow-to-change-permissions t)
 #+END_SRC
 
 ** Electric
@@ -1876,6 +1883,13 @@ Set keybinds to functionality of installed packages.
 	"RET" #'evil-ret)
   (general-def 'motion org-agenda-mode-map
 	"RET" #'org-agenda-switch-to)
+
+  ;; Wdired
+  (with-eval-after-load 'wdired
+	(general-def '(normal insert) wdired-mode-map
+	  "M-c" #'wdired-finish-edit
+	  "M-k" #'wdired-abort-changes
+	  ))
   )
 #+END_SRC
 

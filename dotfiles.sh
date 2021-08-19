@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Manages dotfiles and packages
-# Depends: pacman-contrib
+# Depends: GNU getopt, pacman-contrib
 
 # User-config---------------------------
 
@@ -20,7 +20,7 @@ AUR_HELPER="trizen"
 # --------------------------------------
 
 if [ "$(dirname "$0")" != "." ]; then
-	echo "Please run this script from the directory it resides."
+	echo "Please run this script from the directory it resides." >&2
 	exit 1
 fi
 
@@ -37,7 +37,7 @@ ${B}SYNOPSIS${N}
 	${B}./dotfiles.sh${N} ${U}OPTION${N} [${U}ARG${N}]
 
 ${B}OPTIONS${N}
-	${B}-a${N} ${U}FILE${N}, ${B}--add${N} ${U}FILE${N}
+	${B}-a${N} ${U}FILE${N}, ${B}--add${N}=${U}FILE${N}
 		Add file to the dotfiles directory.
 
 	${B}-f, --files${N}
@@ -46,7 +46,7 @@ ${B}OPTIONS${N}
 	${B}-h, --help${N}
 		Display usage message and exit.
 
-	${B}-p${N} [${U}FUNCTION${N}], ${B}--packages${N} [${U}FUNCTION${N}]
+	${B}-p${N} [${U}FUNCTION${N}], ${B}--packages${N}=[${U}FUNCTION${N}]
 		Apply ${U}FUNCTION${N} to the package manager packages.
 
 		${U}install${N}      Install all core packages of the stored list.
@@ -68,7 +68,7 @@ EOF
 }
 
 # Exit if no option is provided
-[ "$#" -eq 0 ] && help && exit 1
+[ "$#" -eq 0 ] && help >&2 && exit 1
 
 set_files() {
 	FILES="$(find . -type f -o -type l \
@@ -148,7 +148,7 @@ push() {
 
 packages() {
 	if ! pacman -Qqs pacman-contrib > /dev/null; then \
-		echo 'Please install the "pacman-contrib" dependency before running this option.'
+		echo 'Please install the "pacman-contrib" dependency before running this option.' >&2
 		exit 1
 	fi
 
@@ -182,60 +182,57 @@ packages() {
 	fi
 }
 
+# Option handling
 # --------------------------------------
 
-SCRIPT="$(basename "$0")"
+script="$(basename "$0")"
+options="$(getopt --options "ha:fp:ls" --longoptions "help,add:,files,packages:,pull,push" -n "$script" -- "$@" 2>&1)"
+result="$?"
 
-# $1 = -option, $2 message
-option_wrong() {
-	[ -z "$1" ] || [ -z "$2" ] && return 1
-
-	echo "$SCRIPT: $2 '$1'" >&2
-	echo "Try '$SCRIPT -h' or '$SCRIPT --help' for more information." >&2
+# Exit if invalid option is provided
+if [ "$result" -ne 0 ]; then
+	echo "$options" | head -n 1 >&2
+	echo "Try './$script --help' for more information." >&2
 	exit 1
-}
-
-# Get all the -options
-OPTIONS=$(echo "$@" | awk '{
-	for(i=1; i<=NF; i++) { if ($i ~ /^-/) printf "%s ", $i }
-}' | wc -w)
-
-# Check if -options are valid
-if [ "$OPTIONS" -gt 1 ]; then
-	LAST="$(echo "$@" | cut -d ' ' -f $#)"
-	option_wrong "$LAST" "option too many"
-elif [ "$#" -gt 2 ]; then
-	LAST="$(echo "$@" | cut -d ' ' -f $#)"
-	option_wrong "$LAST" "argument too many"
 fi
 
-OPT="$(echo "$* " | cut -d ' ' -f 1)"
-ARG="$(echo "$* " | cut -d ' ' -f 2)"
+eval set -- "$options"
 
-# Parse -options and call functions
-case $OPT in
-	-a | --add)
-		add "$ARG" || option_wrong "$OPT" 'option requires an argument'
-		;;
-	-f | --files)
-		list_files
-		;;
-	-h | --help)
-		help
-		;;
-	-p | --packages)
-		packages "$ARG"
-		;;
-	-l | --pull)
-		pull
-		;;
-	-s | --push)
-		push
-		;;
-	*)
-		option_wrong "$OPT" 'invalid option'
-		;;
-esac
+while true; do
+	case "$1" in
+		-a | --add)
+			add "$2"
+			shift 2
+			;;
+		-f | --files)
+			list_files
+			shift
+			;;
+		-h | --help)
+			help
+			exit
+			;;
+		-p | --packages)
+			packages "$2"
+			shift 2
+			;;
+		-l | --pull)
+			pull
+			shift
+			;;
+		-s | --push)
+			push
+			shift
+			;;
+		--)
+			shift
+			break
+			;;
+		*)
+			break
+			;;
+	esac
+done
 
 # @Todo:
 # push function to push just one file

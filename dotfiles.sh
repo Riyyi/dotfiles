@@ -24,7 +24,8 @@ if [ "$(dirname "$0")" != "." ]; then
 	exit 1
 fi
 
-help() {
+help()
+{
 	B=$(tput bold)
 	U=$(tput smul)
 	N=$(tput sgr0)
@@ -70,20 +71,23 @@ EOF
 # Exit if no option is provided
 [ "$#" -eq 0 ] && help >&2 && exit 1
 
-set_files() {
+setFiles()
+{
 	files="$(find . -type f -o -type l \
 		| awk -v e="^./($excludeFiles)" '$0 !~ e { print $0 }')"
 }
 
-list_files() {
+listFiles()
+{
 	# If unset
-	[ -z "${files+x}" ] && set_files
+	[ -z "${files+x}" ] && setFiles
 
 	# Remove leading ./ from filepaths
 	echo "$files" | sed 's/^\.\///'
 }
 
-add() {
+add()
+{
 	[ -z "$1" ] && return 1
 
 	file="$(readlink -f "$(dirname "$1")")/$(basename "$1")"
@@ -101,12 +105,13 @@ add() {
 	fi
 }
 
-pull_push() {
+pullPush()
+{
 	# If unset or empty string
 	[ -z "$1" ] && return 1
 
 	# If unset
-	[ -z "${files+x}" ] && set_files
+	[ -z "${files+x}" ] && setFiles
 
 	match="^./($systemDir)/"
 
@@ -138,15 +143,16 @@ pull_push() {
 	done
 }
 
-pull() {
-	pull_push "pull"
+pull()
+{
+	pullPush "pull"
 }
 
-push() {
-	pull_push "push"
+push()
+{
+	pullPush "push"
 }
 
-packages() {
 	if ! pacman -Qqs pacman-contrib > /dev/null; then \
 		echo 'Please install the "pacman-contrib" dependency before running this option.' >&2
 		exit 1
@@ -179,6 +185,8 @@ packages() {
 			# Install AUR packages
 			"$aurHelper" -Sy --needed --noconfirm $aurList
 		fi
+packages()
+{
 	fi
 }
 
@@ -205,7 +213,7 @@ while true; do
 			shift 2
 			;;
 		-f | --files)
-			list_files
+			listFiles
 			shift
 			;;
 		-h | --help)

@@ -186,7 +186,7 @@ packages() {
 # --------------------------------------
 
 script="$(basename "$0")"
-options="$(getopt --options "ha:fp:ls" --longoptions "help,add:,files,packages:,pull,push" -n "$script" -- "$@" 2>&1)"
+options="$(getopt --options "ha:fp::ls" --longoptions "help,add:,files,packages::,pull,push" -n "$script" -- "$@" 2>&1)"
 result="$?"
 
 # Exit if invalid option is provided

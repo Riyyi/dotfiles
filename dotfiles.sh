@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Manages dotfiles and packages
-# Depends: GNU getopt, pacman-contrib
+# Depends: GNU getopt, (pacman, pacman-contrib) / (dpkg, apt)
 
 # User-config---------------------------
 
@@ -70,6 +70,9 @@ EOF
 
 # Exit if no option is provided
 [ "$#" -eq 0 ] && help >&2 && exit 1
+
+# Files
+# --------------------------------------
 
 setFiles()
 {
@@ -153,40 +156,113 @@ push()
 	pullPush "push"
 }
 
-	if ! pacman -Qqs pacman-contrib > /dev/null; then \
-		echo 'Please install the "pacman-contrib" dependency before running this option.' >&2
+# Packages
+# --------------------------------------
+
+osDetect()
+{
+	id="$(sed -nE 's/^ID=(.*)/\1/p' /etc/os-release)"
+	idLike="$(sed -nE 's/^ID_LIKE=(.*)/\1/p' /etc/os-release)"
+
+	if [ "$id" = "arch" ]; then
+		os="arch"
+	elif echo "$idLike" | grep -q 'arch'; then
+		os="arch"
+	elif [ "$id" = "debian" ] || [ "$id" = "ubuntu" ]; then
+		os="debian"
+	elif echo "$idLike" | grep -q 'debian'; then
+		os="debian"
+	elif echo "$idLike" | grep -q 'ubuntu'; then
+		os="debian"
+	else
+		echo "Unsupported operating system." >&2
 		exit 1
 	fi
+}
 
-	filterList="$( (pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
-	packageList="$(pacman -Qqe | grep -vx "$filterList" | sort)"
+osDependencies()
+{
+	if [ "$os" = "arch" ]; then
+		binaryDependencyPair="
+			pacman:pacman
+			pactree:pacman-contrib
+		"
+	elif [ "$os" = "debian" ]; then
+		binaryDependencyPair="
+			apt-cache:apt
+			apt-mark:apt
+			dpkg-query:dpkg
+		"
+	fi
+
+	for pair in $binaryDependencyPair; do
+		binary="$(echo "$pair" | cut -d ':' -f 1)"
+		if ! command -v "$binary" > /dev/null; then
+			dependency="$(echo "$pair" | cut -d ':' -f 2)"
+			echo "Please install the '$dependency' dependency before running this option." >&2
+			exit 1
+		fi
+	done
+}
+
+packageList()
+{
+	if [ "$os" = "arch" ]; then
+		filterList="$( (pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
+		packageList="$(pacman -Qqe | grep -vx "$filterList" | sort)"
+	elif [ "$os" = "debian" ]; then
+		installedList="$(dpkg-query --show --showformat='${Package}\t${Priority}\n')"
+		filterList="$(echo "$installedList" | grep -E 'required|important|standard' | cut -f 1)"
+		installedList="$(echo "$installedList" | cut -f 1)"
+		installedManuallyList="$(awk '/Commandline:.* install / && !/APT::/ { print $NF }' /var/log/apt/history.log)"
+		installedManuallyList="$( (echo "$installedManuallyList"; apt-mark showmanual) | sort -u)"
+		packageList="$(echo "$installedManuallyList" | grep -x "$installedList" | grep -vx "$filterList")"
+	fi
+}
+
+packageInstall()
+{
+	if [ "$os" = "arch" ]; then
+		# Grab everything off enabled official repositories that is in the list
+		repoList="$(pacman -Ssq | grep -xf $packageFile)"
+
+		if [ "$1" = "install" ]; then
+			# Install packages
+			echo "$repoList" | xargs --open-tty sudo pacman -Sy --needed
+		fi
+		if [ "$1" = "install-aur" ]; then
+			# Determine which packages in the list are from the AUR
+			aurList="$(grep -vx "$repoList" < $packageFile)"
+
+			# Install AUR packages
+			echo "$aurList" | xargs --open-tty "$aurHelper" -Sy --needed --noconfirm
+		fi
+	elif [ "$os" = "debian" ]; then
+		# Grab everything off enabled official repositories that is in the list
+		repoList="$(apt-cache search .* | cut -d ' ' -f 1 | grep -xf $packageFile)"
+
+		# Install packages
+		echo "$repoList" | xargs --open-tty sudo apt install
+	fi
+}
+
+packages()
+{
+	# If unset
+	if [ -z "$os" ]; then
+		osDetect
+		osDependencies
+		packageList
+	fi
 
 	if [ "$1" = "list" ] || [ "$1" = "" ]; then
 		echo "$packageList"
 	elif [ "$1" = "store" ]; then
-		if [ ! -s $packageFile ]; then
-			touch "$packageFile"
-		else
-			truncate -s 0 "$packageFile"
-		fi
 		echo "$packageList" > "$packageFile"
-	elif [ "$1" = "install" ] || [ "$1" = "install-aur" ]; then
-		# Grab everything off enabled official repositories that is in the list
-		coreList="$(pacman -Ssq | grep -xf $packageFile)"
-
-		if [ "$1" = "install" ]; then
-			# Install core packages, answer no to pacman questions (honor Ignore)
-			yes n | sudo pacman -Sy --needed $coreList
-		fi
-		if [ "$1" = "install-aur" ]; then
-			# Determine which packages in the list are from the AUR
-			aurList="$(grep -vx "$coreList" < $packageFile)"
-
-			# Install AUR packages
-			"$aurHelper" -Sy --needed --noconfirm $aurList
-		fi
-packages()
-{
+	elif [ "$1" = "install" ]; then
+		packageInstall "install"
+	elif [ "$1" = "install-aur" ]; then
+		packageInstall "install-aur"
 	fi
 }
 

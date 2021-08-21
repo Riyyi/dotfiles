@@ -3,7 +3,8 @@
 # Manages dotfiles and packages
 # Depends: GNU getopt, (pacman, pacman-contrib) / (dpkg, apt)
 
-# User-config---------------------------
+# User-config
+# --------------------------------------
 
 # File which holds all installed packages
 packageFile="packages"
@@ -26,44 +27,44 @@ fi
 
 help()
 {
-	B=$(tput bold)
-	U=$(tput smul)
-	N=$(tput sgr0)
+	b=$(tput bold)
+	u=$(tput smul)
+	n=$(tput sgr0)
 
 	cat << EOF
-${B}NAME${N}
+${b}NAME${n}
 	dotfiles - manages dotfiles and packages
 
-${B}SYNOPSIS${N}
-	${B}./dotfiles.sh${N} ${U}OPTION${N} [${U}ARG${N}]
+${b}SYNOPSIS${n}
+	${b}./dotfiles.sh${n} ${u}OPTION${n} [${u}ARG${n}]
 
-${B}OPTIONS${N}
-	${B}-a${N} ${U}FILE${N}, ${B}--add${N}=${U}FILE${N}
+${b}OPTIONS${n}
+	${b}-a${n} ${u}FILE${n}, ${b}--add${n}=${u}FILE${n}
 		Add file to the dotfiles directory.
 
-	${B}-f, --files${N}
+	${b}-f, --files${n}
 		Display all files added to the dotfiles directory.
 
-	${B}-h, --help${N}
+	${b}-h, --help${n}
 		Display usage message and exit.
 
-	${B}-p${N} [${U}FUNCTION${N}], ${B}--packages${N}=[${U}FUNCTION${N}]
-		Apply ${U}FUNCTION${N} to the package manager packages.
+	${b}-p${n} [${u}FUNCTION${n}], ${b}--packages${n}=[${u}FUNCTION${n}]
+		Apply ${u}FUNCTION${n} to the package manager packages.
 
-		${U}install${N}      Install all core packages of the stored list.
+		${u}install${n}      Install all core packages of the stored list.
 
-		${U}install-aur${N}  Install all AUR packages of the stored list.
+		${u}install-aur${n}  Install all AUR packages of the stored list.
 
-		${U}list${N}         Display all packages installed on the system.
+		${u}list${n}         Display all packages installed on the system.
 
-		${U}store${N}        Stores a list of all installed packages on the system.
+		${u}store${n}        Stores a list of all installed packages on the system.
 
-		The default value is ${U}list${N}.
+		The default value is ${u}list${n}.
 
-	${B}-l, --pull${N}
+	${b}-l, --pull${n}
 		Pull each added file from the system to the dotfiles directory.
 
-	${B}-s, --push${N}
+	${b}-s, --push${n}
 		Push each added file to its location on the system.
 EOF
 }

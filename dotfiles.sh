@@ -25,7 +25,7 @@ red="$(tput setf 4)"
 n="$(tput sgr0)"
 
 if [ "$(dirname "$0")" != "." ]; then
-	echo "${b}${red}Error: Please run this script from the directory it resides.${n}" >&2
+	echo "${b}${red}Error:${n} please run this script from the directory it resides." >&2
 	exit 1
 fi
 
@@ -232,7 +232,7 @@ osDetect()
 	elif echo "$idLike" | grep -q 'ubuntu'; then
 		os="debian"
 	else
-		echo "Unsupported operating system." >&2
+		echo "${b}${red}Error:${n} unsupported operating system." >&2
 		exit 1
 	fi
 }
@@ -256,7 +256,7 @@ osDependencies()
 		binary="$(echo "$pair" | cut -d ':' -f 1)"
 		if ! command -v "$binary" > /dev/null; then
 			dependency="$(echo "$pair" | cut -d ':' -f 2)"
-			echo "Please install the '$dependency' dependency before running this option." >&2
+			echo "${b}${red}Error:${n} required dependency '$dependency' is missing." >&2
 			exit 1
 		fi
 	done
@@ -344,12 +344,18 @@ eval set -- "$parsed"
 while true; do
 	case "$1" in
 		-F | --file)
-			[ -n "$mode" ] && echo "${b}${red}Error: only one operation may be used at a time." >&2 && exit 1
+			if [ -n "$mode" ]; then
+				echo "${b}${red}Error:${n} only one operation may be used at a time." >&2
+				exit 1
+			fi
 			mode="file"
 			shift
 			;;
 		-P | --package)
-			[ -n "$mode" ] && echo "${b}${red}Error: only one operation may be used at a time." >&2 && exit 1
+			if [ -n "$mode" ]; then
+				echo "${b}${red}Error:${n} only one operation may be used at a time." >&2
+				exit 1
+			fi
 			mode="package"
 			shift
 			;;
@@ -391,12 +397,20 @@ targetsNoHyphen="$(echo "$targets" | sed -E 's/(^-$|\s-|-\s)//g; s/(\s-\s)/ /;')
 
 # Read targets from stdin
 if [ "$targets" != "$targetsNoHyphen" ]; then
-	[ -t 0 ] && echo "${b}${red}Error: argument '-' specified without input on stdin." >&2 && exit 1
+	if [ -t 0 ]; then
+		echo "${b}${red}Error:${n} argument '-' specified without input on stdin." >&2
+		exit 1
+	fi
 	eval set -- "$targetsNoHyphen $(cat /dev/stdin)"
 fi
 
 # Execute
 # --------------------------------------
+
+if [ -z "$mode" ]; then
+	echo "${b}${red}Error:${n} no operation specified (use -h for help)" >&2
+	exit 1
+fi
 
 if [ "$mode" = "file" ]; then
 	if [ -z "$options" ]; then
@@ -406,7 +420,10 @@ if [ "$mode" = "file" ]; then
 
 	for option in $options; do
 		if [ -z "$*" ]; then
-			[ "$option" = "add" ] && echo "${b}${red}Error: No files or directories selected to add.${n}" >&2 && exit 1
+			if [ "$option" = "add" ];then
+				echo "${b}${red}Error:${n} no files or directories selected to add." >&2
+				exit 1
+			fi
 			files "$option"
 			continue
 		fi

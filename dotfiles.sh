@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Manages dotfiles and packages
+# Tracks dotfiles and packages
 # Depends: GNU getopt, (pacman, pacman-contrib) / (dpkg, apt)
 
 # User-config
@@ -31,48 +31,93 @@ fi
 
 help()
 {
-	u=$(tput smul)
+	(cat << EOF
+.TH DOTFILES.SH 1 "2021-08-22" "dotfiles.sh 0.9" "dotfiles.sh Manual"
 
-	cat << EOF
-${b}NAME${n}
-	dotfiles - manages dotfiles and packages
+.SH NAME
+dotfiles.sh \- config file and package tracking utility
 
-${b}SYNOPSIS${n}
-	${b}./dotfiles.sh${n} ${u}OPTION${n} [${u}ARG${n}]
+.SH SYNOPSIS
+.B ./dotfiles.sh
+.I OPERATION
+.RI [ OPTION ...]\&
+.RI [ TARGET ...]
 
-${b}OPTIONS${n}
-	${b}-a${n} ${u}FILE${n}, ${b}--add${n}=${u}FILE${n}
-		Add file to the dotfiles directory.
+.SH DESCRIPTION
+dotfiles.sh is a config file and package tracking utility that tracks installed packages on a Linux system.
+It features listing and tracking of config files and packages, and the ability to install the tracked packages.
 
-	${b}-f, --files${n}
-		Display all files added to the dotfiles directory.
+Currently, package tracking is only supported on APT and Pacman based distributions.
 
-	${b}-h, --help${n}
-		Display usage message and exit.
+Invoking dotfile.sh involves specifying an operation with any potential options and targets to operate on.
+A \fItarget\fR is usually a file name, directory or a package name.
+Targets can be provided as command line arguments.
+Additionally, if a single hyphen (-) is passed as an argument, targets will be read from stdin.
 
-	${b}-p${n} [${u}FUNCTION${n}], ${b}--packages${n}=[${u}FUNCTION${n}]
-		Apply ${u}FUNCTION${n} to the package manager packages.
+.SH OPERATIONS
+.TP
+.BR \-F ", " \-\-file
+Operate on config files.
+This operation allows you to sync config files between the system and the dotfiles directory.
+In the first case, if no file names are provided in the command line, all files will be selected.
+See File Options below.
 
-		${u}install${n}      Install all core packages of the stored list.
+.TP
+.BR \-P ", " \-\-package
+Operate on packages.
+This operation allows you to track installed packages and reinstall them.
+In the first case, if no package names are provided in the command line, all packages will be selected.
+See Package Options below.
 
-		${u}install-aur${n}  Install all AUR packages of the stored list.
+.TP
+.BR \-h ", " \-\-help
+Display usage message and exit.
 
-		${u}list${n}         Display all packages installed on the system.
+.SH FILE OPTIONS (APPLY TO -F)
+.TP
+.BR \-a ", " \-\-add
+Add selected file \fIpaths\fR to the dotfiles directory.
 
-		${u}store${n}        Stores a list of all installed packages on the system.
+.TP
+.BR \-l ", " \-\-pull
+Pull every (selected) \fIfile\fR from the system to the dotfiles directory.
 
-		The default value is ${u}list${n}.
+.TP
+.BR \-s ", " \-\-push
+Push every (selected) \fIfile\fR from the dotfiles directory to the system.
 
-	${b}-l, --pull${n}
-		Pull each added file from the system to the dotfiles directory.
+.SH PACKAGE OPTIONS (APPLY TO -P)
+.TP
+.BR \-a ", " \-\-aur-install
+Install all AUR packages of the stored list.
 
-	${b}-s, --push${n}
-		Push each added file to its location on the system.
+.TP
+.BR \-i ", " \-\-install
+Install all official packages of the stored list.
+
+.TP
+.BR \-s ", " \-\-store
+Stores a list of all installed packages on the system.
+
+.SH EXAMPLES
+Usage examples:
+
+$ \fB./dotfiles.sh\fR -Fa ~/.zshrc /etc/zsh/zshenv
+.br
+\h'4'Add config files to the dotfiles directory
+
+$ \fB./dotfiles.sh\fR -Pia
+.br
+\h'4'Install all tracked official and AUR packages
+
+.SH AUTHOR
+Riyyi
 EOF
+	) | man -l -
 }
 
 # Exit if no option is provided
-[ "$#" -eq 0 ] && help >&2 && exit 1
+[ "$#" -eq 0 ] && help && exit 1
 
 # Files
 # --------------------------------------

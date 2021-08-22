@@ -20,16 +20,18 @@ aurHelper="trizen"
 
 # --------------------------------------
 
+b="$(tput bold)"
+red="$(tput setf 4)"
+n="$(tput sgr0)"
+
 if [ "$(dirname "$0")" != "." ]; then
-	echo "Please run this script from the directory it resides." >&2
+	echo "${b}${red}Error: Please run this script from the directory it resides.${n}" >&2
 	exit 1
 fi
 
 help()
 {
-	b=$(tput bold)
 	u=$(tput smul)
-	n=$(tput sgr0)
 
 	cat << EOF
 ${b}NAME${n}
@@ -75,24 +77,30 @@ EOF
 # Files
 # --------------------------------------
 
-setFiles()
+getFileList()
 {
-	files="$(find . -type f -o -type l \
+	fileList="$(find . -type f -o -type l \
 		| awk -v e="^./($excludeFiles)" '$0 !~ e { print $0 }')"
 }
 
-listFiles()
+getFilteredFileLists()
 {
-	# If unset
-	[ -z "${files+x}" ] && setFiles
+	[ -z "$fileList" ] && getFileList
 
-	# Remove leading ./ from filepaths
-	echo "$files" | sed 's/^\.\///'
+	match="^./($systemDir)/"
+
+	# Filter system directories and remove leading ./ from filepaths
+	homeFileList="$(echo "$fileList" \
+			| awk -v m="$match" '$0 !~ m { print substr($0, 3) }')"
+
+	# Filter non-system directories and remove leading ./ from filepaths
+	systemFileList="$(echo "$fileList" \
+		| awk -v m="$match" '$0 ~ m { print substr($0, 3) }')"
 }
 
-add()
+fileAdd()
 {
-	[ -z "$1" ] && return 1
+	[ -z "$1" ] && exit 1
 
 	file="$(readlink -f "$(dirname "$1")")/$(basename "$1")"
 	fileCutHome="$(echo "$file" \
@@ -109,52 +117,55 @@ add()
 	fi
 }
 
-pullPush()
+filePull()
 {
-	# If unset or empty string
-	[ -z "$1" ] && return 1
+	if [ -z "$homeFileList" ] || [ -z "$systemFileList" ]; then
+		getFilteredFileLists
+	fi
 
-	# If unset
-	[ -z "${files+x}" ] && setFiles
-
-	match="^./($systemDir)/"
-
-	# Filter system directories and remove leading ./ from filepaths
-	homeFiles="$(echo "$files" \
-			| awk -v m="$match" '$0 !~ m { print substr($0, 3) }')"
-
-	for f in $homeFiles; do
-		if [ "$1" = "pull" ]; then
-			# cp /home/<user>/<file> /[<some dir>/]dotfiles/<file>
-			cp -a "$HOME/$f" "$(pwd)/$f"
-		elif [ "$1" = "push" ]; then
-			mkdir -p "$(dirname "$HOME/$f")"
-			cp -a "$(pwd)/$f" "$HOME/$f"
-		fi
+	for file in $homeFileList; do
+		# /home/<user>/<file>  ->  dotfiles/<file>
+		cp -a "$HOME/$file" "$(pwd)/$file"
 	done
 
-	# Filter non-system directories and remove leading ./ from filepaths
-	systemFiles="$(echo "$files" \
-		| awk -v m="$match" '$0 ~ m { print substr($0, 3) }')"
-
-	for f in $systemFiles; do
-		if [ "$1" = "pull" ]; then
-			# cp /<file> /[<some dir>/]dotfiles/<file>
-			sudo cp -a "/$f" "$(pwd)/$f"
-		elif [ "$1" = "push" ]; then
-			sudo cp -a "$(pwd)/$f" "/$f"
-		fi
+	for file in $systemFileList; do
+		# /<file>  ->  dotfiles/<file>
+		sudo cp -a "/$file" "$(pwd)/$file"
 	done
 }
 
-pull()
+filePush()
 {
-	pullPush "pull"
+	if [ -z "$homeFileList" ] || [ -z "$systemFileList" ]; then
+		getFilteredFileLists
+	fi
+
+	for file in $homeFileList; do
+		# dotfiles/<file>  ->  /home/<user>/<file>
+		mkdir -p "$(dirname "$HOME/$file")"
+		cp -a "$(pwd)/$file" "$HOME/$file"
+	done
+
+	for file in $systemFileList; do
+		# dotfiles/<file>  ->  /<file>
+		sudo mkdir -p "$(dirname "/$file")"
+		sudo cp -a "$(pwd)/$file" "/$file"
+	done
 }
 
-push()
+files()
 {
-	pullPush "push"
+	if [ "$1" = "list" ] || [ "$1" = "" ]; then
+		[ -z "$fileList" ] && getFileList
+		# Remove leading ./ from filepaths
+		echo "$fileList" | sed 's/^\.\///' | grep "$2"
+	elif [ "$1" = "add" ]; then
+		fileAdd "$2"
+	elif [ "$1" = "pull" ]; then
+		filePull "$2"
+	elif [ "$1" = "push" ]; then
+		filePush "$2"
+	fi
 }
 
 # Packages
@@ -206,7 +217,7 @@ osDependencies()
 	done
 }
 
-packageList()
+getPackageList()
 {
 	if [ "$os" = "arch" ]; then
 		filterList="$( (pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
@@ -227,16 +238,15 @@ packageInstall()
 		# Grab everything off enabled official repositories that is in the list
 		repoList="$(pacman -Ssq | grep -xf $packageFile)"
 
-		if [ "$1" = "install" ]; then
-			# Install packages
-			echo "$repoList" | xargs --open-tty sudo pacman -Sy --needed
-		fi
-		if [ "$1" = "install-aur" ]; then
+		if [ "$1" = "aur-install" ]; then
 			# Determine which packages in the list are from the AUR
 			aurList="$(grep -vx "$repoList" < $packageFile)"
 
 			# Install AUR packages
 			echo "$aurList" | xargs --open-tty "$aurHelper" -Sy --needed --noconfirm
+		elif [ "$1" = "install" ]; then
+			# Install packages
+			echo "$repoList" | xargs --open-tty sudo pacman -Sy --needed
 		fi
 	elif [ "$os" = "debian" ]; then
 		# Grab everything off enabled official repositories that is in the list
@@ -253,60 +263,67 @@ packages()
 	if [ -z "$os" ]; then
 		osDetect
 		osDependencies
-		packageList
 	fi
 
 	if [ "$1" = "list" ] || [ "$1" = "" ]; then
-		echo "$packageList"
+		[ -z "$packageList" ] && getPackageList
+		echo "$packageList" | grep "$2"
 	elif [ "$1" = "store" ]; then
+		[ -z "$packageList" ] && getPackageList
 		echo "$packageList" > "$packageFile"
+	elif [ "$1" = "aur-install" ]; then
+		packageInstall "aur-install"
 	elif [ "$1" = "install" ]; then
 		packageInstall "install"
-	elif [ "$1" = "install-aur" ]; then
-		packageInstall "install-aur"
 	fi
 }
 
-# Option handling
+# Option parsing
 # --------------------------------------
 
 script="$(basename "$0")"
-options="$(getopt --options "ha:fp::ls" --longoptions "help,add:,files,packages::,pull,push" -n "$script" -- "$@" 2>&1)"
+parsed="$(getopt --options "hFPails" \
+				  --longoptions "help,file,package,add,aur-install,install,pull,push,store" \
+				  -n "$script" -- "$@" 2>&1)"
 result="$?"
 
 # Exit if invalid option is provided
 if [ "$result" -ne 0 ]; then
-	echo "$options" | head -n 1 >&2
+	echo "$parsed" | head -n 1 >&2
 	echo "Try './$script --help' for more information." >&2
 	exit 1
 fi
 
-eval set -- "$options"
+eval set -- "$parsed"
 
 while true; do
 	case "$1" in
-		-a | --add)
-			add "$2"
-			shift 2
-			;;
-		-f | --files)
-			listFiles
+		-F | --file)
+			[ -n "$mode" ] && echo "${b}${red}Error: only one operation may be used at a time." >&2 && exit 1
+			mode="file"
 			shift
 			;;
-		-h | --help)
-			help
-			exit
+		-P | --package)
+			[ -n "$mode" ] && echo "${b}${red}Error: only one operation may be used at a time." >&2 && exit 1
+			mode="package"
+			shift
 			;;
-		-p | --packages)
-			packages "$2"
-			shift 2
+		-a | --add | --aur-install)
+			[ "$mode" = "file" ] && options="${options}add "
+			[ "$mode" = "package" ] && options="${options}aur-install "
+			shift
+			;;
+		-i | --install)
+			options="${options}install "
+			shift
 			;;
 		-l | --pull)
-			pull
+			options="${options}pull "
 			shift
 			;;
-		-s | --push)
-			push
+		-s | --push | --store)
+			[ "$mode" = "file" ] && options="${options}push "
+			[ "$mode" = "package" ] && options="${options}store "
 			shift
 			;;
 		--)
@@ -321,3 +338,47 @@ done
 
 # @Todo:
 # push function to push just one file
+# Target parsing
+# --------------------------------------
+
+targets="$*"
+targetsNoHyphen="$(echo "$targets" | sed -E 's/(^-$|\s-|-\s)//g; s/(\s-\s)/ /;')"
+
+# Read targets from stdin
+if [ "$targets" != "$targetsNoHyphen" ]; then
+	[ -t 0 ] && echo "${b}${red}Error: argument '-' specified without input on stdin." >&2 && exit 1
+	eval set -- "$targetsNoHyphen $(cat /dev/stdin)"
+fi
+
+# Execute
+# --------------------------------------
+
+if [ "$mode" = "file" ]; then
+	if [ -z "$options" ]; then
+		files "list" "$@"
+		exit
+	fi
+
+	for option in $options; do
+		if [ -z "$*" ]; then
+			[ "$option" = "add" ] && echo "${b}${red}Error: No files or directories selected to add.${n}" >&2 && exit 1
+			files "$option"
+			continue
+		fi
+
+		for path; do
+			files "$option" "$path"
+		done
+	done
+fi
+
+if [ "$mode" = "package" ]; then
+	if [ -z "$options" ]; then
+		packages "list" "$@"
+		exit
+	fi
+
+	for option in $options; do
+		packages "$option"
+	done
+fi

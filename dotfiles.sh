@@ -350,6 +350,10 @@ eval set -- "$parsed"
 
 while true; do
 	case "$1" in
+		-h | --help)
+			help
+			exit
+			;;
 		-F | --file)
 			if [ -n "$mode" ]; then
 				echo "${b}${red}Error:${n} only one operation may be used at a time." >&2

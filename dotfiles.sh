@@ -128,7 +128,7 @@ getFileList()
 		| awk -v e="^./($excludeFiles)" '$0 !~ e { print $0 }')"
 }
 
-getFilteredFileLists()
+separateFileList()
 {
 	[ -z "$fileList" ] && getFileList
 
@@ -141,6 +141,17 @@ getFilteredFileLists()
 	# Filter non-system directories and remove leading ./ from filepaths
 	systemFileList="$(echo "$fileList" \
 		| awk -v m="$match" '$0 ~ m { print substr($0, 3) }')"
+}
+
+filterFileList()
+{
+	if [ -z "$homeFileList" ] || [ -z "$systemFileList" ]; then
+		separateFileList
+	fi
+
+	# Filter on provided file name
+	homeFileListLoop="$(echo "$homeFileList" | grep "^$1")"
+	systemFileListLoop="$(echo "$systemFileList" | grep "^$1")"
 }
 
 fileAdd()
@@ -164,16 +175,14 @@ fileAdd()
 
 filePull()
 {
-	if [ -z "$homeFileList" ] || [ -z "$systemFileList" ]; then
-		getFilteredFileLists
-	fi
+	filterFileList "$1"
 
-	for file in $homeFileList; do
+	for file in $homeFileListLoop; do
 		# /home/<user>/<file>  ->  dotfiles/<file>
 		cp -a "$HOME/$file" "$(pwd)/$file"
 	done
 
-	for file in $systemFileList; do
+	for file in $systemFileListLoop; do
 		# /<file>  ->  dotfiles/<file>
 		sudo cp -a "/$file" "$(pwd)/$file"
 	done
@@ -181,17 +190,15 @@ filePull()
 
 filePush()
 {
-	if [ -z "$homeFileList" ] || [ -z "$systemFileList" ]; then
-		getFilteredFileLists
-	fi
+	filterFileList "$1"
 
-	for file in $homeFileList; do
+	for file in $homeFileListLoop; do
 		# dotfiles/<file>  ->  /home/<user>/<file>
 		mkdir -p "$(dirname "$HOME/$file")"
 		cp -a "$(pwd)/$file" "$HOME/$file"
 	done
 
-	for file in $systemFileList; do
+	for file in $systemFileListLoop; do
 		# dotfiles/<file>  ->  /<file>
 		sudo mkdir -p "$(dirname "/$file")"
 		sudo cp -a "$(pwd)/$file" "/$file"
@@ -387,8 +394,6 @@ while true; do
 	esac
 done
 
-# @Todo:
-# push function to push just one file
 # Target parsing
 # --------------------------------------
 

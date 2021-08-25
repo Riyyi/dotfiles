@@ -1162,6 +1162,18 @@ Functions that only use built-in Emacs functionality.
   (interactive)
   (org-babel-load-file (concat dot-emacs-dir "/config.org")))
 
+(defun dot/dired-find-file ()
+  "In Dired, visit the file or directory named on this line."
+  (interactive)
+  (if (file-directory-p (dired-file-name-at-point))
+      (dired-find-alternate-file)
+    (dired-find-file)))
+
+(defun dot/dired-up-directory ()
+  "Run Dired on parent directory of current directory."
+  (interactive)
+  (find-alternate-file ".."))
+
 (defun dot/find-file-emacsd ()
   "Find file under `dot-emacs-dir', recursively."
   (interactive)
@@ -1693,6 +1705,11 @@ Set keybinds to native functionality.
 *** Set Native Mode Keybinds
 
 #+BEGIN_SRC emacs-lisp
+;; Dired
+(with-eval-after-load 'dired
+  (define-key dired-mode-map [remap dired-find-file] #'dot/dired-find-file)
+  (define-key dired-mode-map [remap dired-up-directory] #'dot/dired-up-directory))
+
 ;; Org-mode
 (with-eval-after-load 'org-capture
   (define-key org-capture-mode-map (kbd "M-c") #'org-capture-finalize)

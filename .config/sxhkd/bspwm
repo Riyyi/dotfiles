@@ -66,11 +66,11 @@ super + shift + bracket{left,right}
 	bspc node -m {prev,next} --follow
 
 # Swap focused and biggest node
-super + g
+super + shift + b
 	bspc node -s biggest.local
 
 # Send focused node to the latest preselect node
-super + y
+super + shift + p
 	bspc node -n newest.!automatic.local
 
 # Move floating window

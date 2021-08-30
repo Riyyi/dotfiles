@@ -30,3 +30,7 @@ bgcolor-inactive = ${xrdb:WmColor.bgcolor_Inactive:#2b2e39}
 bgcolor-urgent   = ${xrdb:WmColor.bgcolor_Urgent:#dc7a43}
 fgcolor          = ${xrdb:WmColor.fgcolor:#ffffff}
 fgcolor-inactive = ${xrdb:WmColor.fgcolor_Inactive:#676e7d}
+
+; System font DPI scaling
+[font]
+dpi = ${xrdb:Xft.dpi:96}

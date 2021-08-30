@@ -168,7 +168,7 @@ fileAdd()
 		cp -a "$file" "$(pwd)/$fileCutHome"
 	# /
 	else
-		mkdir -p "$(pwd)/$(dirname "$file")"
+		sudo mkdir -p "$(pwd)/$(dirname "$file")"
 		sudo cp -a "$file" "$(pwd)/$file"
 	fi
 }

@@ -100,7 +100,7 @@ alias l.="\ls -lAGh --color --group-directories-first | awk -v r='^(.*m)?\\\.' 
 alias la="\ls -lAGh --color --group-directories-first"
 alias less="less -x 4"
 alias ls="ls --color --group-directories-first"
-alias md="mkdir -p"
+alias mkdir="mkdir -pv"
 alias mv='mv -i'
 alias pkill="pkill -9"
 alias q="exit"
@@ -127,6 +127,7 @@ alias install="sudo pacman -S --needed"
 alias remove="sudo pacman -Rns"
 alias search="aliases pacman_search"
 alias update="sudo pacman -Syyu"
+alias update-all="trizen -Syyu --devel --needed"
 alias update-mirrorlist="aliases update_mirrorlist"
 
 # Programming
@@ -141,16 +142,20 @@ alias qmake="qmake -makefile ../ && make"
 alias g="git"
 alias ga="git add"
 alias gap="git add -p"
+alias gb="git branch"
 alias gc="git commit"
 alias gch="git checkout"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gds="git diff --staged"
+alias gf="git fetch"
 alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 alias gle="git log --graph --stat --format=format:'%C(bold blue)commit %H%C(reset)%C(bold yellow)%d %C(reset)%nAuthor: %C(dim white)%an <%ae>%C(reset)%nDate:   %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
+alias gm="git merge"
 alias gp="git pull"
 alias gps="git push"
 alias gpsa="git remote | xargs -I remotes git push remotes master"
+alias gpsaf="git remote | xargs -I remotes git push --force remotes master"
 alias gr="git reset"
 alias gs="git status"
 alias gsh="git show --format=format:'%C(bold blue)commit %H%C(reset) %C(bold yellow)%d %C(reset)%nAuthor: %C(dim white)%an <%ae>%C(reset)%nDate:   %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
@@ -174,7 +179,7 @@ alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias webmconvert="aliases webmconvert"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 setsid -f -- mysql-workbench > /dev/null 2>&1"
 
-mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || exit; }
+mkcd() { mkdir -pv -- "$1" && cd -P -- "$1" || exit; }
 
 highlighting="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f "$highlighting" ] && source "$highlighting"; unset highlighting

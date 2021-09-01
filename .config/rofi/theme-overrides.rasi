@@ -2,8 +2,10 @@
 
 window {
 	border: 4;
+	width: 50%;
 }
 
 listview {
+	lines: 8;
 	scrollbar: false;
 }

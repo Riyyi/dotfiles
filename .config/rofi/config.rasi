@@ -10,8 +10,6 @@ configuration {
 
 	/* Layout */
 	font: "DejaVu Sans Mono, Font Awesome 5 Free 12";
-	lines: 8;
-	width: 50;
 
 	/* Icons */
 	icon-theme: "Arc";

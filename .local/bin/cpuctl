@@ -1,0 +1,129 @@
+#!/bin/sh
+
+# Control the processor characteristics
+# Depends: -
+
+b="$(tput bold)"
+u="$(tput smul)"
+red="$(tput setf 4)"
+n="$(tput sgr0)"
+
+help() {
+	cat << EOF
+${b}NAME${n}
+	cpuctl - control the processor characteristics
+
+${b}SYNOPSIS${n}
+	${b}cpuctl${n} ${u}OPTION${n} [${u}ARG${n}]
+
+${b}OPTIONS${n}
+	${b}-h${n}, ${b}--help${n} Display usage message and exit.
+
+	${b}-l${n}, ${b}--list${n}
+		List the available energy performance modes.
+
+	${b}-g${n}, ${b}--get${n}
+		Get the energy performance mode.
+
+	${b}-s${n}[${u}MODE${n}], ${b}--set [${n}${u}MODE${n}]
+		Set the energy performance to ${U}MODE${N}, asks for the mode if left empty.
+EOF
+}
+
+# Exit if no option is provided
+[ "$#" -eq 0 ] && help && exit 1
+
+# Main program
+# --------------------------------------
+
+listModes()
+{
+	modes="/sys/devices/system/cpu/cpufreq/policy0/energy_performance_available_preferences"
+	tr ' ' '\n' < "$modes" | sed  '/^$/d' \
+		| awk -v line="$1" '{ if (line == "") print NR") "$0; else if (NR == line) print $0; }'
+}
+
+getMode()
+{
+	mode="/sys/devices/system/cpu/cpufreq/policy0/energy_performance_preference"
+	cat "$mode"
+}
+
+setMode()
+{
+	option="$1"
+	if [ -z "$option" ]; then
+		listModes
+		printf "Enter the number to set: "
+		read -r option
+	fi
+	mode="$(listModes "$option")"
+
+	if ! sudo -v; then
+		echo "${b}${red}Error:${n} setting energy performance mode requires root privileges." >&2
+		exit 1
+	fi
+
+	for i in /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference; do
+		echo "$mode" | sudo tee "$i" > /dev/null
+	done
+}
+
+# Option parsing
+# --------------------------------------
+
+script="$(basename "$0")"
+parsed="$(getopt --options "hlgs::" --longoptions "help,list,get,set::" -n "$script" -- "$@" 2>&1)"
+result="$?"
+
+# Exit if invalid option is provided
+if [ "$result" -ne 0 ]; then
+	echo "$parsed" | head -n 1 >&2
+	echo "Try './$script --help' for more information." >&2
+	exit 1
+fi
+
+eval set -- "$parsed"
+
+while true; do
+	case "$1" in
+		-h)
+			help
+			exit
+			;;
+		-l | --list)
+			option="list"
+			shift
+			;;
+		-g | --get)
+			option="get"
+			shift
+			;;
+		-s | --set)
+			option="set"
+			shift
+			;;
+		--)
+			shift
+			break
+			;;
+		*)
+			break
+			;;
+	esac
+done
+
+# Execute
+# --------------------------------------
+
+case "$option" in
+	list)
+		listModes
+		;;
+	get)
+		getMode
+		;;
+	set)
+		setMode "$1"
+		;;
+esac

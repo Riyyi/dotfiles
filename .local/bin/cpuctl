@@ -14,19 +14,26 @@ ${b}NAME${n}
 	cpuctl - control the processor characteristics
 
 ${b}SYNOPSIS${n}
-	${b}cpuctl${n} ${u}OPTION${n} [${u}ARG${n}]
+	${b}cpuctl${n} ${u}OPERATION${n} [${u}OPTION${n}] [${u}ARG${n}]
 
-${b}OPTIONS${n}
+${b}OPERATIONS${n}
+	${b}-E${n}, ${b}--energy${n}
+		Perform ${u}OPTION${n} on energy performance mode.
+
+	${b}-G${n}, ${b}--governor${n}
+		Perform ${u}OPTION${n} on scaling governor.
+
 	${b}-h${n}, ${b}--help${n} Display usage message and exit.
 
+${b}OPTIONS (APPLY TO -E or -G)${n}
 	${b}-l${n}, ${b}--list${n}
-		List the available energy performance modes.
+		List the available items.
 
 	${b}-g${n}, ${b}--get${n}
-		Get the energy performance mode.
+		Get the current item.
 
-	${b}-s${n}[${u}MODE${n}], ${b}--set [${n}${u}MODE${n}]
-		Set the energy performance to ${U}MODE${N}, asks for the mode if left empty.
+	${b}-s${n}[${u}ITEM${n}], ${b}--set [${n}${u}ITEM${n}]
+		Set the ${u}ITEM${n}, prompt for ${u}ITEM${n} if left empty.
 EOF
 }
 
@@ -36,36 +43,54 @@ EOF
 # Main program
 # --------------------------------------
 
-listModes()
+listItems()
 {
-	modes="/sys/devices/system/cpu/cpufreq/policy0/energy_performance_available_preferences"
+	if [ "$mode" = "energy" ]; then
+		modes="/sys/devices/system/cpu/cpufreq/policy0/energy_performance_available_preferences"
+	elif [ "$mode" = "governor" ]; then
+		modes="/sys/devices/system/cpu/cpufreq/policy0/scaling_available_governors"
+	fi
+
 	tr ' ' '\n' < "$modes" | sed  '/^$/d' \
 		| awk -v line="$1" '{ if (line == "") print NR") "$0; else if (NR == line) print $0; }'
 }
 
-getMode()
+getItem()
 {
-	mode="/sys/devices/system/cpu/cpufreq/policy0/energy_performance_preference"
+	if [ "$mode" = "energy" ]; then
+		mode="/sys/devices/system/cpu/cpufreq/policy0/energy_performance_preference"
+	elif [ "$mode" = "governor" ]; then
+		mode="/sys/devices/system/cpu/cpufreq/policy0/scaling_governor"
+	fi
+
 	cat "$mode"
 }
 
-setMode()
+setItem()
 {
-	option="$1"
-	if [ -z "$option" ]; then
-		listModes
+	select="$1"
+	if [ -z "$select" ]; then
+		listItems
 		printf "Enter the number to set: "
-		read -r option
+		read -r select
 	fi
-	mode="$(listModes "$option")"
+	item="$(listItems "$select")"
+
+	if [ "$mode" = "energy" ]; then
+		message="energy performance mode"
+		type="/sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference"
+	elif [ "$mode" = "governor" ]; then
+		message="scaling governor"
+		type="/sys/devices/system/cpu/cpufreq/policy*/scaling_governor"
+	fi
 
 	if ! sudo -v; then
-		echo "${b}${red}Error:${n} setting energy performance mode requires root privileges." >&2
+		echo "${b}${red}Error:${n} setting $message requires root privileges." >&2
 		exit 1
 	fi
 
-	for i in /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference; do
-		echo "$mode" | sudo tee "$i" > /dev/null
+	for i in $type; do
+		echo "$item" | sudo tee "$i" > /dev/null
 	done
 }
 
@@ -73,7 +98,9 @@ setMode()
 # --------------------------------------
 
 script="$(basename "$0")"
-parsed="$(getopt --options "hlgs::" --longoptions "help,list,get,set::" -n "$script" -- "$@" 2>&1)"
+parsed="$(getopt --options "hEGlgs::" \
+				 --longoptions "help,energy,governor,list,get,set::" \
+				 -n "$script" -- "$@" 2>&1)"
 result="$?"
 
 # Exit if invalid option is provided
@@ -90,6 +117,22 @@ while true; do
 		-h)
 			help
 			exit
+			;;
+		-E | --energy)
+			if [ -n "$mode" ]; then
+				echo "${b}${red}Error:${n} only one operation may be used at a time." >&2
+				exit 1
+			fi
+			mode="energy"
+			shift
+			;;
+		-G | --governor)
+			if [ -n "$mode" ]; then
+				echo "${b}${red}Error:${n} only one operation may be used at a time." >&2
+				exit 1
+			fi
+			mode="governor"
+			shift
 			;;
 		-l | --list)
 			option="list"
@@ -116,14 +159,21 @@ done
 # Execute
 # --------------------------------------
 
-case "$option" in
-	list)
-		listModes
-		;;
-	get)
-		getMode
-		;;
-	set)
-		setMode "$1"
-		;;
-esac
+if [ -z "$mode" ]; then
+	echo "${b}${red}Error:${n} no operation specified (use -h for help)" >&2
+	exit 1
+fi
+
+if [ "$mode" = "energy" ] || [ "$mode" = "governor" ]; then
+	case "$option" in
+		list | "")
+			listItems
+			;;
+		get)
+			getItem
+			;;
+		set)
+			setItem "$1"
+			;;
+	esac
+fi

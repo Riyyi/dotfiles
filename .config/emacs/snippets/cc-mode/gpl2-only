@@ -1,10 +1,10 @@
 # -*- mode: snippet -*-
-# name: bsd2
-# key: bsd2
+# name: gpl2-only
+# key: gpl2-only
 # --
 /*
  * Copyright (C) `(format-time-string "%Y")` ${1:Author} ${2:<${3:Email}>}
  *
- * SPDX-License-Identifier: BSD-2-Clause
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 $0

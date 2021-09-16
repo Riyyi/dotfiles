@@ -1,11 +1,21 @@
 /* -*- css -*- */
 
 window {
-	border: 4;
+	border: 0.13em;
 	width: 50%;
 }
 
 listview {
 	lines: 8;
 	scrollbar: false;
+}
+
+element-icon {
+	margin: 0.05em 0 0.05em 0.2em;
+	size: 1em;
+}
+
+element-text {
+	background-color: default;
+	margin: 0.05em 0 0.05em 0.3em;
 }

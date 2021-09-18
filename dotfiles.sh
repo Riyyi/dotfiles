@@ -165,11 +165,11 @@ fileAdd()
 	# /home/<user>/
 	if [ -n "$fileCutHome" ]; then
 		mkdir -p "$(pwd)/$(dirname "$fileCutHome")"
-		cp -a "$file" "$(pwd)/$fileCutHome"
+		cp -a "$file" "$(pwd)/$(dirname "$fileCutHome")"
 	# /
 	else
 		sudo mkdir -p "$(pwd)/$(dirname "$file")"
-		sudo cp -a "$file" "$(pwd)/$file"
+		sudo cp -a "$file" "$(pwd)/$(dirname "$file")"
 	fi
 }
 

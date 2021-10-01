@@ -269,6 +269,11 @@ Install and configure packages.
 	((latex-indent-line . 4)
 	 (latex-indent-region . 4)))
   (smart-tabs-insinuate 'c 'c++ 'java 'python 'latex))
+
+(use-package super-save
+  :config
+  (setq super-save-auto-save-when-idle t)
+  (super-save-mode))
 #+END_SRC
 
 *** Evil

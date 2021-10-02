@@ -86,7 +86,12 @@
 	}
 
 	/* Hide buttons in the top-right */
-	#masthead #end #buttons > :not(:nth-child(3)) {
+	#masthead #end #buttons > :nth-child(1) {
+		display: none !important;
+	}
+
+	/* Hide voice search button */
+	#voice-search-button {
 		display: none !important;
 	}
 

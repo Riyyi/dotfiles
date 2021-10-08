@@ -28,6 +28,9 @@ user_pref("media.autoplay.default", 5);
 user_pref("media.ffmpeg.vaapi-drm-display.enabled", true);
 user_pref("media.ffmpeg.vaapi.enabled", true);
 
+// Dont make it too easy for phishers
+user_pref("network.IDN_show_punycode", true);
+
 // Do not save logins
 lockPref("signon.rememberSignons", false);
 

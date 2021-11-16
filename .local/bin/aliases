@@ -117,6 +117,9 @@ stream() {
 		echo "Starting stream https://twitch.tv/$channel at quality: $quality"
 		setsid -f streamlink \
 			   --twitch-low-latency \
+			   --twitch-disable-ads \
+			   --twitch-disable-hosting \
+			   --twitch-disable-reruns \
 			   --player mpv \
 			   --player-args '--cache=yes --demuxer-max-bytes=750k' \
 			   --stream-sorting-excludes "<480p,>=1080p" \

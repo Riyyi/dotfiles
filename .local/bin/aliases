@@ -101,30 +101,31 @@ shuffle() {
 
 stream() {
 	channel="$1"
-	quality=${2:-"best"}
+	quality="$2"
 	lowLatency="$3"
 
-	if [ "$quality" = "list" ]; then
-		streamlink "https://twitch.tv/$1" --config "/dev/null"
-	elif [ "$quality" != "low" ] && [ -z "$lowLatency" ]; then
-		echo "Starting stream https://twitch.tv/$channel at quality: $quality"
-		setsid -f streamlink \
-			   --player mpv \
-			   --stream-sorting-excludes "<480p,>=1080p" \
-			   "https://twitch.tv/$channel" "$quality" > /dev/null 2>&1 &
-	else
-		[ "$quality" = "low" ] && quality="best"
-		echo "Starting stream https://twitch.tv/$channel at quality: $quality"
-		setsid -f streamlink \
-			   --twitch-low-latency \
-			   --twitch-disable-ads \
-			   --twitch-disable-hosting \
-			   --twitch-disable-reruns \
-			   --player mpv \
-			   --player-args '--cache=yes --demuxer-max-bytes=750k' \
-			   --stream-sorting-excludes "<480p,>=1080p" \
-			   "https://twitch.tv/$channel" "$quality" > /dev/null 2>&1 &
+	if [ -z "$quality" ]; then
+		streamlink --quiet --config "/dev/null" "https://twitch.tv/$1"
+		printf "Select stream quality: "
+		read -r quality
 	fi
+
+	if [ -n "$lowLatency" ]; then
+		arguments="\
+			--twitch-low-latency \
+			--player-args '--cache=yes --demuxer-max-bytes=750k' \
+		"
+	fi
+
+	echo "Starting stream https://twitch.tv/$channel @ $quality"
+	command="setsid -f streamlink \
+		--twitch-disable-hosting \
+		--twitch-disable-reruns \
+		--player mpv \
+		--stream-sorting-excludes '<480p,>=1080p' \
+		$arguments \
+		https://twitch.tv/$channel $quality > /dev/null 2>&1"
+	eval "$command"
 }
 
 update_mirrorlist() {

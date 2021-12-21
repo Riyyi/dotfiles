@@ -65,10 +65,14 @@
 
 @-moz-document domain("wiki.archlinux.org") {
 	.mw-page-container,
-	.mw-workspace-container,
+	.mw-workspace-container {
+		max-width: unset !important;
+	}
+
 	.mw-content-container,
 	.mw-article-toolbar-container {
-		max-width: unset !important;
+		margin-left: 11.5em !important;
+		max-width: calc(100% - 11em) !important;
 	}
 }
 

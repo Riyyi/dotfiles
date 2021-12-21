@@ -63,6 +63,15 @@
 	}
 }
 
+@-moz-document domain("wiki.archlinux.org") {
+	.mw-page-container,
+	.mw-workspace-container,
+	.mw-content-container,
+	.mw-article-toolbar-container {
+		max-width: unset !important;
+	}
+}
+
 @-moz-document domain("youtube.com") {
 	/* Center content */
 	#columns {

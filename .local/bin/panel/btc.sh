@@ -30,6 +30,10 @@ output() {
 	echo "%{F$color}$symbol $difference%%{F$COLOR15}"
 }
 
+# Only pull if older than 10 seconds
+lastModified=$(calc "$(date +%s) - $(date +%s -r $file) >= 10" | cut -c 1)
+if [ "$lastModified" -eq 0 ]; then cat "$file"; exit; fi
+
 # Get dates
 date_last_week_start="$(date --date 'last week' +%s000)"
 date_last_week_end=$(calc "$date_last_week_start + (1000 * 60 * 60)") # +1h

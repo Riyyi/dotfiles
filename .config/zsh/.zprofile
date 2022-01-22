@@ -48,6 +48,9 @@ export LESS_TERMCAP_se="$(printf '%b' '\e[0m')"         # reset reverse video
 export LESS_TERMCAP_us="$(printf '%b' '\e[04;95m')"     # begin underline
 export LESS_TERMCAP_ue="$(printf '%b' '\e[0m')"         # reset underline
 
+# ls (LS_COLORS)
+eval "$(dircolors -b)"
+
 # Make
 export MAKEFLAGS="-j $(getconf _NPROCESSORS_ONLN)"
 

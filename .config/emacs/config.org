@@ -4,8 +4,8 @@
 #+LANGUAGE: en
 #+OPTIONS: toc:nil
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
-#+LATEX_HEADER: \usepackage{color}
 #+LATEX_HEADER: \usepackage[top=100pt,bottom=100pt,left=75pt,right=75pt]{geometry}
+#+LATEX_HEADER: \usepackage{color}
 #+LATEX_HEADER: \definecolor{blue}{rgb}{0,0.5,1}
 #+LATEX_HEADER: \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
 
@@ -225,7 +225,7 @@ Install and configure packages.
   :config
   (setq which-key-add-column-padding 1)
   (setq which-key-max-display-columns nil)
-  (setq which-key-min-display-lines 5)
+  (setq which-key-min-display-lines 6)
   (setq which-key-sort-order 'dot/which-key-prefix-then-key-order-alpha)
   (setq which-key-sort-uppercase-first nil))
 
@@ -655,6 +655,7 @@ Language Server Protocol.
   :after (flycheck lsp-mode)
   :config
   (setq lsp-ui-doc-border (face-foreground 'default))
+  (setq lsp-ui-doc-delay 0.5)
   (setq lsp-ui-doc-enable nil)
   (setq lsp-ui-doc-header t)
   (setq lsp-ui-doc-include-signature t)
@@ -732,6 +733,7 @@ Debug Adapter Protocol.
 
 #+BEGIN_SRC emacs-lisp
 (use-package cmake-mode
+  :config (setq cmake-tab-width 4)
   :defer t)
 #+END_SRC
 
@@ -786,7 +788,9 @@ Debug Adapter Protocol.
   :hook (magit-pre-refresh . diff-hl-magit-pre-refresh)
   :hook (magit-post-refresh . diff-hl-magit-post-refresh)
   :config
+  (setq git-commit-fill-column 72)
   (setq git-commit-summary-max-length 70)
+  (setq magit-completing-read-function #'selectrum-completing-read)
   (setq magit-diff-paint-whitespace-lines 'both)
   (setq magit-repository-directories '(("~/dotfiles" . 0)
 									   ("~/code" . 3)))
@@ -823,7 +827,7 @@ Debug Adapter Protocol.
   :hook (helpful-mode . dot/hook-disable-line-numbers))
 
 (use-package rainbow-mode
-  :hook (prog-mode . rainbow-mode))
+  :hook (css-mode . rainbow-mode))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))

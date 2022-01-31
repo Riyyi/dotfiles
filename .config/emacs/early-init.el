@@ -7,6 +7,8 @@
 
 ;;; Code:
 
+;; (setq debug-on-error t)
+
 ;; Defer the garbage collection during startup
 (setq gc-cons-threshold most-positive-fixnum)
 (add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold 8000000)))

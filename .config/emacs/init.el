@@ -16,6 +16,12 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(use-package benchmark-init
+  :ensure t
+  :config
+  ;; To disable collection of benchmark data after init is complete
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+
 ;; -------------------------------------
 
 ;; Tangle and load configuration file

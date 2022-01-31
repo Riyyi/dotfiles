@@ -3,6 +3,9 @@
 # Disable Ctrl+S and Ctrl+Q
 stty -ixon
 
+# Use hard tabs
+stty tab0
+
 # Set tab width
 tabs -4
 

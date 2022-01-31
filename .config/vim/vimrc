@@ -144,6 +144,10 @@ endfunction
 
 "" Keybindings
 
+" Change default behavior
+nnoremap Y y$
+vnoremap p pgvy
+
 " Tab/Shift+Tab functionality
 nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_

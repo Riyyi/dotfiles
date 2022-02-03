@@ -1629,7 +1629,18 @@ Evil command aliases.
 (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
 
 ;; LaTeX, set correct tab mode
-(add-hook 'latex-mode-hook (lambda () (setq indent-tabs-mode t)))
+(add-hook 'latex-mode-hook (lambda ()
+							 (setq indent-tabs-mode t)
+							 (setq tab-width 4)))
+(add-hook 'LaTeX-mode-hook (lambda ()
+							 (setq indent-tabs-mode t)
+							 (setq tab-width 4)))
+
+;; Python
+(add-hook 'python-mode-hook (lambda ()
+							  (setq indent-tabs-mode t)
+							  (setq python-indent-offset 4)
+							  (setq tab-width 4)))
 
 ;; Disable line numbers
 (add-hook 'Custom-mode-hook 'dot/hook-disable-line-numbers)

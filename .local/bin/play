@@ -42,13 +42,13 @@ play() {
 	if [ -z "$1" ]; then
 		MPV="$MPV $CLIP"
 		# Cut off everything after space
-		LINK=" $(echo "$CLIP" | sed -nE 's/^(\S+).*/\1/p')"
+		LINK="$(echo "$CLIP" | sed -nE 's/^(\S+).*/\1/p')"
 	else
 		MPV="$MPV $*"
 		# Determain which argument holds the urls
 		[ "$1" = "${1#-}" ] && DISPLAY="$1" || DISPLAY="$2"
 		# Cut off everything after space
-		LINK=" $(echo "$DISPLAY" | sed -nE 's/^(\S+).*/\1/p')"
+		LINK="$(echo "$DISPLAY" | sed -nE 's/^(\S+).*/\1/p')"
 	fi
 
 	notify-send -t 2500 "Loading video: $LINK"

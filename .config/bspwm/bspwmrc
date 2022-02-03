@@ -48,6 +48,7 @@ bspc rule -a krita                     desktop="$WS5" follow=on
 bspc rule -a Arandr                    state=floating
 bspc rule -a Emacs                     state=tiled
 bspc rule -a feh                       state=floating
+bspc rule -a firefox:Browser           state=floating
 bspc rule -a firefox:Places            state=floating
 bspc rule -a Inferno                   state=floating
 bspc rule -a Lxappearance              state=floating

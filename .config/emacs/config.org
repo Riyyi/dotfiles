@@ -2192,8 +2192,8 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
 
   "s"         '(:ignore t                      :which-key "tree/subtree")
   "s h"       '(org-promote-subtree            :which-key "Org promote subtree")
-  "s j"       '(org-move-subree-down           :which-key "Org move subtree down")
-  "s k"       '(org-move-subtree-up            :which-key "Org move subtree up")
+  "s j"       '(org-metadown                   :which-key "Org move subtree down")
+  "s k"       '(org-metaup                     :which-key "Org move subtree up")
   "s l"       '(org-demote-subtree             :which-key "Org demote subtree")
   "s <left>"  '(org-promote-subtree            :which-key "Org promote subtree")
   "s <right>" '(org-demote-subtree             :which-key "Org demote subtree")

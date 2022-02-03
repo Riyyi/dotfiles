@@ -707,6 +707,13 @@ Debug Adapter Protocol.
 **** C/C++
 
 #+BEGIN_SRC emacs-lisp
+(use-package c++-mode
+  :ensure nil
+  :defer t
+  :hook
+  (c++-mode . (lambda ()
+				(setq lsp-ui-doc-enable t))))
+
 (use-package company-c-headers
   :after company
   :config (push 'company-c-headers company-backends))

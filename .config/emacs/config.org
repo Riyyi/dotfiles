@@ -37,6 +37,7 @@
     - [[#programming-integration][Programming Integration]]
       - [[#lsp][LSP]]
       - [[#dap][DAP]]
+      - [[#web-mode][Web Mode]]
     - [[#programming-languages][Programming Languages]]
       - [[#cc][C/C++]]
       - [[#lua][Lua]]
@@ -44,6 +45,7 @@
       - [[#cmake][CMake]]
       - [[#glsl][GLSL]]
       - [[#yaml][YAML]]
+      - [[#kotlin][Kotlin]]
     - [[#rss][RSS]]
     - [[#git][Git]]
     - [[#prettify][Prettify]]
@@ -623,7 +625,9 @@ Language Server Protocol.
 	c++-mode       ; clangd
 	lua-mode       ; lua-language-server
 	php-mode       ; nodejs-intelephense
-    latex-mode)    ; texlab
+    latex-mode     ; texlab
+    kotlin-mode    ; kotlin-language-server
+    web-mode)
    . lsp-deferred)
   :config
   (setq lsp-auto-guess-root t)
@@ -692,6 +696,13 @@ Debug Adapter Protocol.
 	(make-directory dap-utils-extension-path t)))
 #+END_SRC
 
+**** Web Mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode
+  :defer t)
+#+END_SRC
+
 *** Programming Languages
 **** C/C++
 
@@ -748,6 +759,13 @@ Debug Adapter Protocol.
 
 #+BEGIN_SRC emacs-lisp
 (use-package yaml-mode
+  :defer t)
+#+END_SRC
+
+**** Kotlin
+
+#+BEGIN_SRC emacs-lisp
+(use-package kotlin-mode
   :defer t)
 #+END_SRC
 

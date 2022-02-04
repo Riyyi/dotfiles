@@ -1,0 +1,108 @@
+# -*- conf -*-
+
+#--- Account ---#
+IMAPAccount info
+Host mail.riyyi.com
+Port 993
+UserCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.config/emacs/etc/authinfo.gpg | awk -F ' ' '/info/ { print $(NF-2); exit; }'"
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.config/emacs/etc/authinfo.gpg | awk -F ' ' '/info/ { print $NF; exit; }'"
+# SSL
+SSLType IMAPS
+SSLVersions TLSv1.3
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+#--- Remote ---#
+IMAPStore info-remote
+Account info
+
+#--- Local ---#
+MaildirStore info-local
+# IMAP subfolders represent local subfolders
+SubFolders Verbatim
+# The trailing "/" is important
+Path ~/mail/info/
+Inbox ~/mail/info/Inbox
+
+#--- Sync ---#
+Channel info
+Far :info-remote:
+Near :info-local:
+# Automatically create missing mailboxes, only locally
+Create Near
+# Do not permanently remove all messages marked for deletion
+Expunge None
+# Include everything
+Patterns *
+# Save the synchronization state files in the relevant directory
+SyncState *
+# Make sure the date of the arrival stays the same when you move messages around
+CopyArrivalDate yes
+
+# ------------------------------------------
+
+#--- Account ---#
+IMAPAccount private
+Host mail.riyyi.com
+Port 993
+UserCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.config/emacs/etc/authinfo.gpg | awk -F ' ' '/private/ { print $(NF-2); exit; }'"
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.config/emacs/etc/authinfo.gpg | awk -F ' ' '/private/ { print $NF; exit; }'"
+# SSL
+SSLType IMAPS
+SSLVersions TLSv1.3
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+#--- Remote ---#
+IMAPStore private-remote
+Account private
+
+#--- Local ---#
+MaildirStore private-local
+# IMAP subfolders represent local subfolders
+SubFolders Verbatim
+# The trailing "/" is important
+Path ~/mail/private/
+Inbox ~/mail/private/Inbox
+
+#--- Sync ---#
+Channel private
+Far :private-remote:
+Near :private-local:
+# Automatically create missing mailboxes, only locally
+Create Near
+# Do not permanently remove all messages marked for deletion
+Expunge None
+# Include everything
+Patterns *
+# Save the synchronization state files in the relevant directory
+SyncState *
+# Make sure the date of the arrival stays the same when you move messages around
+CopyArrivalDate yes
+
+# ------------------------------------------
+
+# https://www.gnu.org/software/emacs/manual/html_node/smtpmail/Authentication.html
+
+# Example config:
+
+# machine info port 993 login <MAIL> password <SECRET>
+# machine private port 993 login <MAIL> password <SECRET>
+
+# machine mail.riyyi.com port 587 login <MAIL> password <SECRET>
+# machine mail.riyyi.com port 587 login <MAIL> password <SECRET>
+
+# Create password file:
+
+# $ touch ~/.config/emacs/etc/authinfo.gpg
+# $ echo "<CONFIG>" > ~/.config/emacs/etc/authinfo.gpg
+# $ gpg -e -r <MAIL_USED_FOR_GPG> ~/.config/emacs/etc/authinfo.gpg
+
+# Run to sync mail:
+# $ mbsync -a -c ~/.config/isync/mbsyncrc
+
+# Initialize mu:
+# mu init --maildir=~/mail --my-address=<MAIL> --my-address=<MAIL2>
+# mu index
+
+# Packages:
+# isync
+# mu (AUR)

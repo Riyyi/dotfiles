@@ -84,6 +84,8 @@ CopyArrivalDate yes
 
 # Example config:
 
+# machine fullname login "<FULL_NAME>"
+
 # machine info port 993 login <MAIL> password <SECRET>
 # machine private port 993 login <MAIL> password <SECRET>
 

@@ -937,6 +937,7 @@ Debug Adapter Protocol.
 
 (use-package smtpmail ; built-in
   :ensure nil
+  :after mu4e
   :init (setq smtpmail-default-smtp-server "mail.riyyi.com")
   :config
   (setq smtpmail-smtp-server "mail.riyyi.com")
@@ -947,10 +948,12 @@ Debug Adapter Protocol.
 
 (use-package sendmail ; built-in
   :ensure nil
+  :after mu4e
   :config (setq send-mail-function 'smtpmail-send-it))
 
 (use-package message ; built-in
   :ensure nil
+  :after mu4e
   :config
   (setq message-kill-buffer-on-exit t)
   (setq message-send-mail-function 'smtpmail-send-it))

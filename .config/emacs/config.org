@@ -860,6 +860,9 @@ Set keybinds to functionality of installed packages.
 	"<up>"   #'selectrum-previous-candidate
 	"<down>" #'selectrum-next-candidate
 	)
+  (general-def 'insert minibuffer-local-map
+	"TAB"    #'selectrum-insert-current-candidate
+	)
 
   ;; Mu4e
   (general-def 'normal mu4e-compose-mode-map

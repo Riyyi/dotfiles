@@ -1,0 +1,406 @@
+#+TITLE: Development
+#+OPTIONS: toc:nil
+#+PROPERTY: header-args:emacs-lisp :shebang ";;; -*- lexical-binding: t; -*-\n"
+
+** Table of Contents :toc_4:
+  - [[#company][Company]]
+  - [[#git][Git]]
+  - [[#projectile][Projectile]]
+  - [[#languages][Languages]]
+    - [[#language-server-support][Language Server Support]]
+    - [[#debug-adapter-support][Debug Adapter Support]]
+    - [[#cc][C/C++]]
+    - [[#cmake][CMake]]
+    - [[#glsl][GLSL]]
+    - [[#html][HTML]]
+    - [[#kotlin][Kotlin]]
+    - [[#lua][Lua]]
+    - [[#php][PHP]]
+    - [[#python][Python]]
+    - [[#yaml][YAML]]
+  - [[#quality-of-life][Quality of Life]]
+      - [[#flycheck][Flycheck]]
+      - [[#flyspell][Flyspell]]
+      - [[#rainbow-delimiters][Rainbow Delimiters]]
+      - [[#rainbow-mode][Rainbow Mode]]
+      - [[#yasnippet][YASnippet]]
+
+** Company
+
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :hook
+  ((c-mode-common
+	emacs-lisp-mode
+	latex-mode
+	org-mode
+	php-mode
+	shell-mode
+	shell-script-mode)
+   . company-mode)
+  :config
+  (setq company-idle-delay 0.2)
+  (setq company-minimum-prefix-length 2)
+  (setq company-show-numbers t)
+  (setq company-tooltip-align-annotations 't))
+#+END_SRC
+
+Sort Company completions.
+
+#+BEGIN_SRC emacs-lisp
+(use-package company-prescient
+  :after (company prescient)
+  :config (company-prescient-mode))
+#+END_SRC
+
+Auto-completion for C/C++ headers.
+
+#+BEGIN_SRC emacs-lisp
+(use-package company-c-headers
+  :after company
+  :config (add-to-list 'company-backends 'company-c-headers))
+#+END_SRC
+
+GLSL integration with company requires the package: ~glslang~.
+
+#+BEGIN_SRC emacs-lisp
+(when (executable-find "glslangValidator")
+  (use-package company-glsl
+	:after company
+	:config (add-to-list 'company-backends 'company-glsl)))
+#+END_SRC
+
+** Git
+
+#+BEGIN_SRC emacs-lisp
+(use-package diff-hl
+  :demand
+  :hook (prog-mode . turn-on-diff-hl-mode)
+  :hook (prog-mode . dot/diff-hl-enable-flydiff-and-fringe)
+  :config
+
+  (defun dot/diff-hl-enable-flydiff-and-fringe ()
+	"Enable on the fly diff checking if file is under version control."
+	(let ((buffer buffer-file-name))
+	  (when (and buffer (vc-registered buffer))
+		(diff-hl-flydiff-mode)
+		(dot/toggle-fringe 1)))))
+
+(use-package transient
+  :defer t
+  :config (setq transient-history-file (concat dot-cache-dir "/transient/history.el")))
+
+(use-package magit
+  :after (diff-hl transient)
+  :hook (git-commit-setup . git-commit-turn-on-auto-fill)
+  :hook (git-commit-setup . git-commit-turn-on-flyspell)
+  :hook (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  :hook (magit-post-refresh . diff-hl-magit-post-refresh)
+  :config
+  (setq git-commit-fill-column 72)
+  (setq git-commit-summary-max-length 70)
+  (setq magit-completing-read-function #'selectrum-completing-read)
+  (setq magit-diff-paint-whitespace-lines 'both)
+  (setq magit-repository-directories '(("~/dotfiles" . 0)
+									   ("~/code" . 3)))
+
+  (put 'magit-log-select-pick :advertised-binding [?\M-c])
+  (put 'magit-log-select-quit :advertised-binding [?\M-k]))
+#+END_SRC
+** Projectile
+
+Project manager.
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :defer t
+  :config
+  (setq projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
+  (setq projectile-completion-system 'default)
+  (setq projectile-enable-caching t)
+  (setq projectile-indexing-method 'hybrid)
+  (setq projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
+  (setq projectile-project-search-path '("~"))
+  (setq projectile-sort-order 'recentf)
+
+  (defun dot/find-project-root ()
+	"Return root of the project, determined by `.git/' and `.projectile',
+`default-directory' otherwise."
+	(let ((search-directory (projectile-project-root)))
+	  (if search-directory
+		  search-directory
+		default-directory)))
+
+  (defun dot/find-file-in-project-root ()
+	"Find file in project root."
+	(interactive)
+	(let ((default-directory (dot/find-project-root)))
+	  (call-interactively 'find-file)))
+
+  (projectile-mode))
+#+END_SRC
+
+** Languages
+
+*** Language Server Support
+
+Language Server Protocol.
+
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-mode
+  :commands lsp
+  :after which-key
+  :hook
+  ((c-mode         ; clangd
+	c++-mode       ; clangd
+	lua-mode       ; lua-language-server
+	php-mode       ; nodejs-intelephense
+    latex-mode     ; texlab
+    kotlin-mode    ; kotlin-language-server
+    web-mode)
+   . lsp-deferred)
+  :config
+  (setq lsp-auto-guess-root t)
+  (setq lsp-clients-clangd-args '("-j=2"
+								  "--background-index"
+								  "--clang-tidy"
+								  "--compile-commands-dir=build"
+								  "--log=error"
+								  "--pch-storage=memory"))
+  (setq lsp-clients-lua-language-server-install-dir "/usr/share/lua-language-server/")
+  (setq lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
+  (setq lsp-enable-xref t)
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-intelephense-storage-path (concat dot-cache-dir "/lsp-cache"))
+  (setq lsp-keep-workspace-alive nil)
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-session-file (concat dot-cache-dir "/lsp-session-v1"))
+
+  ;; Mark clangd args variable as safe to modify via .dir-locals.el
+  (put 'lsp-clients-clangd-args 'safe-local-variable #'listp)
+
+  ;; Enable which-key descriptions
+  (dolist (leader-key (list dot/leader-key dot/leader-alt-key))
+	(let ((lsp-keymap-prefix (concat leader-key " l")))
+	  (lsp-enable-which-key-integration)))
+
+  (defun lsp-format-buffer-or-region ()
+	"Format the selection (or buffer) with LSP."
+	(interactive)
+	(unless (bound-and-true-p lsp-mode)
+	  (message "Not in an LSP buffer"))
+	(call-interactively
+	 (if (use-region-p)
+		 #'lsp-format-region
+	   #'lsp-format-buffer))))
+
+;; TODO: add lsp-signature keybinds
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :after (flycheck lsp-mode)
+  :config
+  (setq lsp-ui-doc-border (face-foreground 'default))
+  (setq lsp-ui-doc-delay 0.5)
+  (setq lsp-ui-doc-enable t)
+  (setq lsp-ui-doc-header t)
+  (setq lsp-ui-doc-include-signature t)
+  (setq lsp-ui-doc-position 'top)
+  (setq lsp-ui-doc-use-childframe t)
+  (setq lsp-ui-flycheck-list-position 'right)
+  (setq lsp-ui-imenu-enable nil)
+  (setq lsp-ui-peek-enable nil)
+  (setq lsp-ui-sideline-enable nil))
+#+END_SRC
+
+*** Debug Adapter Support
+
+Debug Adapter Protocol.
+
+#+BEGIN_SRC emacs-lisp
+(use-package treemacs
+  :after all-the-icons
+  :hook (treemacs-mode . dot/hook-disable-line-numbers)
+  :config (setq treemacs-persist-file (concat dot-cache-dir "/treemacs/persist")))
+
+(use-package dap-mode
+  :after (treemacs lsp-mode)
+  :hook (lsp-after-initialize . dot/dap-install-debug-adapters)
+  :config
+  (setq dap-auto-configure-features '(sessions locals expressions controls tooltip))
+  (setq dap-breakpoints-file (concat dot-cache-dir "/dap/breakpoints"))
+  (setq dap-utils-extension-path (concat dot-cache-dir "/dap"))
+
+  ;; Create dap extension directory
+  (unless (file-directory-p dap-utils-extension-path)
+	(make-directory dap-utils-extension-path t))
+
+  (defun dot/dap-install-debug-adapters ()
+	"Install and Load debug adapters."
+	(interactive)
+	(unless (bound-and-true-p lsp-mode)
+	  (user-error "Not in an LSP buffer"))
+	(when (string-equal major-mode "c++-mode")
+	  (require 'dap-cpptools)
+	  (dap-cpptools-setup))))
+#+END_SRC
+
+*** C/C++
+
+#+BEGIN_SRC emacs-lisp
+(use-package c-mode
+  :ensure nil
+  :defer t
+  ;; C++ // line comment style in c-mode
+  :hook (c-mode . (lambda ()
+					(c-toggle-comment-style -1))))
+#+END_SRC
+
+*** CMake
+
+#+BEGIN_SRC emacs-lisp
+(use-package cmake-mode
+  :config (setq cmake-tab-width 4)
+  :defer t)
+#+END_SRC
+
+*** GLSL
+
+#+BEGIN_SRC emacs-lisp
+(use-package glsl-mode
+  :defer t)
+#+END_SRC
+
+*** HTML
+
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode
+  :defer t)
+#+END_SRC
+
+*** Kotlin
+
+#+BEGIN_SRC emacs-lisp
+(use-package kotlin-mode
+  :defer t)
+#+END_SRC
+
+*** Lua
+
+#+BEGIN_SRC emacs-lisp
+(use-package lua-mode
+  :defer t
+  :config (setq lua-indent-level 4))
+#+END_SRC
+
+*** PHP
+
+#+BEGIN_SRC emacs-lisp
+(use-package php-mode
+  :defer t
+  :hook
+  (php-mode . (lambda ()
+				(setq indent-tabs-mode t))))
+
+(use-package restclient
+  :defer t)
+#+END_SRC
+
+*** Python
+
+#+BEGIN_SRC emacs-lisp
+(use-package python-mode
+  :ensure nil
+  :defer t
+  :hook (python-mode . (lambda ()
+						 (setq indent-tabs-mode t)
+						 (setq python-indent-offset 4)
+						 (setq tab-width 4))))
+#+END_SRC
+
+*** YAML
+
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode
+  :defer t)
+#+END_SRC
+
+** Quality of Life
+
+**** Flycheck
+
+On the fly syntax checking.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :hook
+  ((c-mode-common
+	emacs-lisp-mode
+	latex-mode
+	org-mode
+	php-mode
+	sh-mode
+	shell-mode
+	shell-script-mode)
+   . flycheck-mode)
+  :config
+  (setq flycheck-clang-language-standard "c++17")
+  (setq flycheck-gcc-language-standard "c++17"))
+
+;; For .el files which are intended to be packages
+(use-package flycheck-package
+  :after flycheck
+  :config
+  (add-to-list 'flycheck-checkers 'flycheck-emacs-lisp-package)
+  (flycheck-package-setup))
+
+(use-package flycheck-clang-tidy
+  :after flycheck
+  :hook (flycheck-mode . flycheck-clang-tidy-setup)
+  :config (setq flycheck-clang-tidy-extra-options "--format-style=file"))
+#+END_SRC
+
+**** Flyspell
+
+Give Flyspell a selection menu.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flyspell-correct
+  :after flyspell
+  :demand
+  :hook (org-mode . flyspell-mode)
+  :config
+  (setq flyspell-issue-message-flag nil)
+  (setq flyspell-issue-welcome-flag nil))
+#+END_SRC
+
+**** Rainbow Delimiters
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
+
+**** Rainbow Mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-mode
+  :hook (css-mode . rainbow-mode))
+#+END_SRC
+
+**** YASnippet
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :defer t
+  :init
+  (setq yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
+  (setq yas-prompt-functions '(yas-completing-prompt))
+  :config
+  (yas-global-mode))
+
+(use-package yasnippet-snippets
+  :after yasnippet)
+#+END_SRC
+
+https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-scenarios-1-region-is-active-2-region-is

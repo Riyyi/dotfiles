@@ -1,0 +1,105 @@
+#+TITLE: Evil
+#+OPTIONS: toc:nil
+#+PROPERTY: header-args:emacs-lisp :shebang ";;; -*- lexical-binding: t; -*-\n"
+
+** Table of Contents :toc_4:
+  - [[#evil][Evil]]
+
+** Evil
+
+Evil mode and related packages.
+
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :config (global-undo-tree-mode))
+
+(use-package goto-chg)
+
+(use-package evil
+  :after (undo-tree goto-chg)
+  :init
+  (setq evil-ex-complete-emacs-commands nil)
+  (setq evil-kill-on-visual-paste nil)
+  (setq evil-operator-state-cursor 'box) ; Do not set half cursor
+  (setq evil-search-module 'evil-search)
+  (setq evil-split-window-below t)
+  (setq evil-undo-system 'undo-tree)
+  (setq evil-vsplit-window-right t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-Y-yank-to-eol t)
+  (setq evil-want-keybinding nil) ; Needed by evil-collection
+  :config
+
+  (defun dot/evil-normal-sort-paragraph ()
+	"Sort paragraph cursor is under.
+
+Vim equivalence: vip:sort<CR>"
+	(interactive)
+	(let ((p (point)))
+	  (evil-visual-char)
+	  (call-interactively 'evil-inner-paragraph)
+	  (evil-ex-sort (region-beginning) (region-end))
+	  (goto-char p)))
+
+  (defun dot/evil-insert-shift-left ()
+	"Shift line left, retains cursor position.
+
+Vim equivalence: <C-D>"
+	(interactive)
+	(evil-shift-left-line 1))
+
+	(defun dot/evil-insert-shift-right ()
+	"Shift line right, retains cursor position.
+
+Vim equivalence: <Tab>"
+	(interactive)
+	(insert "\t"))
+
+  (defun dot/evil-visual-shift-left ()
+	"Shift visual selection left, retains the selection.
+
+Vim equivalence: <gv"
+	(interactive)
+	(evil-shift-left (region-beginning) (region-end))
+	(funcall (evil-visual-restore)))
+
+  (defun dot/evil-visual-shift-right ()
+	"Shift visual selection left, retains the selection.
+
+Vim equivalence: >gv"
+	(interactive)
+	(evil-shift-right (region-beginning) (region-end))
+	(funcall (evil-visual-restore)))
+
+  (evil-mode))
+#+END_SRC
+
+Evil command aliases.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-ex
+  :ensure nil ; evil-ex.el is part of evil
+  :after evil
+  :config
+  (evil-ex-define-cmd "W" "w")
+  (evil-ex-define-cmd "Q" "q")
+  (evil-ex-define-cmd "WQ" "wq")
+  (evil-ex-define-cmd "Wq" "wq"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-collection
+  :after evil
+  :init
+  (setq evil-collection-company-use-tng nil)
+  (setq evil-collection-key-blacklist (list dot/leader-key dot/localleader-key
+											dot/leader-alt-key dot/localleader-alt-key
+											"M-h" "M-j" "M-k" "M-l"))
+  (setq evil-collection-setup-minibuffer t)
+  :config
+  (evil-collection-init))
+
+(use-package evil-nerd-commenter
+  :defer t
+  :after evil)
+#+END_SRC

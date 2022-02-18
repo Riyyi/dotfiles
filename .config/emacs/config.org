@@ -15,41 +15,12 @@
 - [[#customizations][Customizations]]
 - [[#package-management][Package Management]]
   - [[#ensure][Ensure]]
-  - [[#auto-update][Auto update]]
+  - [[#auto-update][Auto Update]]
   - [[#compile][Compile]]
   - [[#packages][Packages]]
+    - [[#load-modules][Load Modules]]
     - [[#general-packages][General Packages]]
-    - [[#evil][Evil]]
-    - [[#telephone-line][Telephone Line]]
-    - [[#neotree][NeoTree]]
-    - [[#centaur-tabs][Centaur Tabs]]
-    - [[#projectile][Projectile]]
-    - [[#org-packages][Org Packages]]
-      - [[#org-toc][Org ToC]]
-      - [[#org-roam][Org Roam]]
-      - [[#org-export-packages][Org Export Packages]]
-    - [[#completion][Completion]]
-      - [[#company][Company]]
-      - [[#yasnippet][YASnippet]]
-    - [[#checkers][Checkers]]
-      - [[#flycheck][Flycheck]]
-      - [[#flyspell][Flyspell]]
-    - [[#programming-integration][Programming Integration]]
-      - [[#lsp][LSP]]
-      - [[#dap][DAP]]
-      - [[#web-mode][Web Mode]]
-    - [[#programming-languages][Programming Languages]]
-      - [[#cc][C/C++]]
-      - [[#lua][Lua]]
-      - [[#php][PHP]]
-      - [[#cmake][CMake]]
-      - [[#glsl][GLSL]]
-      - [[#yaml][YAML]]
-      - [[#kotlin][Kotlin]]
     - [[#rss][RSS]]
-    - [[#git][Git]]
-    - [[#mail][Mail]]
-    - [[#prettify][Prettify]]
 - [[#general][General]]
   - [[#buffers][Buffers]]
   - [[#dired][Dired]]
@@ -58,37 +29,15 @@
   - [[#file-backups-versioning][File Backups Versioning]]
   - [[#formatting][Formatting]]
   - [[#hide-elements][Hide Elements]]
-  - [[#org][Org]]
-    - [[#org-config][Org Config]]
-    - [[#org-agenda][Org Agenda]]
-    - [[#org-keys][Org Keys]]
-    - [[#org-links][Org Links]]
-    - [[#org-source-code-blocks][Org Source Code Blocks]]
-    - [[#org-export][Org Export]]
   - [[#recentf][Recentf]]
   - [[#tabs][Tabs]]
   - [[#utf-8][UTF-8]]
   - [[#window][Window]]
 - [[#functions][Functions]]
   - [[#general-functions][General Functions]]
-  - [[#package-functions][Package Functions]]
-    - [[#auto-package-update-functions][Auto Package Update Functions]]
-    - [[#centaur-tabs-functions][Centaur Tabs Functions]]
-    - [[#dap-functions][DAP Functions]]
-    - [[#dashboard-functions][Dashboard Functions]]
-    - [[#diff-hl-functions][Diff-hl Functions]]
-    - [[#evil-functions][Evil functions]]
-    - [[#lsp-functions][LSP Functions]]
-    - [[#neotree-functions][Neotree Functions]]
-    - [[#org-functions][Org Functions]]
-    - [[#projectile-functions][Projectile Functions]]
-    - [[#selectrum-functions][Selectrum Functions]]
-    - [[#which-key-functions][Which-Key Functions]]
 - [[#advice-and-aliases][Advice and Aliases]]
   - [[#advice][Advice]]
   - [[#aliases][Aliases]]
-    - [[#general-1][General]]
-    - [[#package][Package]]
 - [[#hooks][Hooks]]
 - [[#key-bindings][Key Bindings]]
   - [[#disable-native][Disable Native]]
@@ -165,7 +114,7 @@ Ensures packages are installed by default.
 (setq use-package-always-ensure t)
 #+END_SRC
 
-** Auto update
+** Auto Update
 
 Update pending updates of installed packages at startup.
 https://github.com/rranelli/auto-package-update.el
@@ -176,6 +125,14 @@ https://github.com/rranelli/auto-package-update.el
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (setq auto-package-update-last-update-day-path (concat dot-cache-dir "/last-package-update-day"))
+
+  (defun dot/update-packages ()
+	"Update all packages."
+	(interactive)
+	(package-refresh-contents)
+	(auto-package-update-now)
+	(package-quickstart-refresh))
+
   (auto-package-update-maybe))
 #+END_SRC
 
@@ -195,63 +152,27 @@ https://github.com/emacscollective/auto-compile
 
 Install and configure packages.
 
+*** Load Modules
+
+#+BEGIN_SRC emacs-lisp
+(defun dot/load-org (file)
+  "Tangle then load org FILE."
+  (if (file-readable-p file)
+	  (org-babel-load-file file)
+	(user-error (format "Init: could not load module '%s'" (file-name-base file)))))
+
+(dot/load-org (concat dot-emacs-dir "/config/ui.org"))
+(dot/load-org (concat dot-emacs-dir "/config/evil.org"))
+(dot/load-org (concat dot-emacs-dir "/config/development.org"))
+(dot/load-org (concat dot-emacs-dir "/config/selection.org"))
+(dot/load-org (concat dot-emacs-dir "/config/org-mode.org"))
+(dot/load-org (concat dot-emacs-dir "/config/mail.org"))
+#+END_SRC
+
 *** General Packages
 
 #+BEGIN_SRC emacs-lisp
-(use-package hybrid-reverse-theme
-  :ensure nil
-  :load-path "~/code/elisp/emacs-hybrid-reverse"
-  :config (load-theme 'hybrid-reverse t))
-
-(use-package all-the-icons
-  :defer t
-  :config
-
-  ;; Install all-the-icons if font files are not found
-  (unless (find-font (font-spec :name "all-the-icons"))
-    (all-the-icons-install-fonts t)))
-
-(use-package all-the-icons-dired
-  :after all-the-icons
-  :hook (dired-mode . all-the-icons-dired-mode)
-  :config (setq all-the-icons-dired-monochrome nil))
-
-(use-package which-key
-  :hook (emacs-startup . which-key-mode)
-  :config
-  (setq which-key-add-column-padding 1)
-  (setq which-key-max-display-columns nil)
-  (setq which-key-min-display-lines 6)
-  (setq which-key-sort-order 'dot/which-key-prefix-then-key-order-alpha)
-  (setq which-key-sort-uppercase-first nil))
-
 (use-package general)
-
-(use-package selectrum
-  :hook (emacs-startup . selectrum-mode))
-
-(use-package prescient
-  :after selectrum
-  :config
-  (setq prescient-filter-method '(literal regexp fuzzy))
-  (setq prescient-save-file (concat dot-cache-dir "/prescient-save.el"))
-  (prescient-persist-mode))
-
-(use-package selectrum-prescient
-  :after (selectrum prescient)
-  :config
-  (selectrum-prescient-mode))
-
-(use-package marginalia
-  :after selectrum
-  :config
-  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light))
-  (marginalia-mode))
-
-(use-package consult
-  :after selectrum
-  :config
-  (setq consult-project-root-function #'dot/find-project-root))
 
 (use-package avy
   :defer t)
@@ -272,529 +193,6 @@ Install and configure packages.
   (super-save-mode))
 #+END_SRC
 
-*** Evil
-
-Evil mode and related packages.
-
-#+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :config (global-undo-tree-mode))
-(use-package goto-chg)
-
-(use-package evil
-  :after (undo-tree goto-chg)
-  :init
-  (setq evil-ex-complete-emacs-commands nil)
-  (setq evil-kill-on-visual-paste nil)
-  (setq evil-operator-state-cursor 'box) ; Do not set half cursor
-  (setq evil-search-module 'evil-search)
-  (setq evil-split-window-below t)
-  (setq evil-undo-system 'undo-tree)
-  (setq evil-vsplit-window-right t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-Y-yank-to-eol t)
-  (setq evil-want-keybinding nil) ; Needed by evil-collection
-  :config
-  (evil-mode))
-
-(use-package evil-collection
-  :after evil
-  :init
-  (setq evil-collection-company-use-tng nil)
-  (setq evil-collection-key-blacklist (list dot/leader-key dot/localleader-key
-											dot/leader-alt-key dot/localleader-alt-key
-											"M-h" "M-j" "M-k" "M-l"))
-  (setq evil-collection-setup-minibuffer t)
-  :config
-  (evil-collection-init))
-
-(use-package evil-nerd-commenter
-  :defer t
-  :after evil)
-#+END_SRC
-
-*** Telephone Line
-
-Emacs mode line replacement.
-
-#+BEGIN_SRC emacs-lisp
-(use-package telephone-line
-  :config
-  (setq telephone-line-height (if dot/hidpi 20 15))
-  (setq telephone-line-lhs
-		'((evil   . (telephone-line-evil-tag-segment))
-		  (accent . (telephone-line-erc-modified-channels-segment
-					 telephone-line-process-segment
-					 telephone-line-buffer-segment))
-		  (nil    . (telephone-line-projectile-segment))))
-  (telephone-line-mode))
-#+END_SRC
-
-*** NeoTree
-
-Provides Emacs with a file tree.
-
-#+BEGIN_SRC emacs-lisp
-(use-package neotree
-  :after all-the-icons
-  :hook (neotree-mode . dot/hook-disable-line-numbers)
-  :hook (neotree-mode . hl-line-mode)
-  :config
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-  (setq neo-autorefresh nil)
-  (setq neo-mode-line-type 'none)
-  (setq neo-show-hidden-files t)
-  (setq neo-vc-integration '(face)))
-#+END_SRC
-
-*** Centaur Tabs
-
-Places buffers as tabs in a bar at the top.
-
-#+BEGIN_SRC emacs-lisp
-(use-package centaur-tabs
-  :after all-the-icons
-  :demand
-  :hook
-  ((eshell-mode
-	help-mode
-	helpful-mode
-	mu4e-view-mode
-	neotree-mode
-	shell-mode)
-   . centaur-tabs-local-mode)
-  :config
-  (setq centaur-tabs-enable-ido-completion nil)
-  (setq centaur-tabs-height (if dot/hidpi 28 18))
-  (setq centaur-tabs-modified-marker "•")
-  (setq centaur-tabs-set-icons t)
-  (setq centaur-tabs-set-modified-marker t)
-  (setq centaur-tabs-style "slant")
-  (centaur-tabs-headline-match)
-  (centaur-tabs-mode))
-#+END_SRC
-
-*** Projectile
-
-Project manager.
-
-#+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :defer t
-  :config
-  (setq projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
-  (setq projectile-completion-system 'default)
-  (setq projectile-enable-caching t)
-  (setq projectile-indexing-method 'hybrid)
-  (setq projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
-  (setq projectile-project-search-path '("~"))
-  (setq projectile-sort-order 'recentf)
-  (projectile-mode))
-#+END_SRC
-
-*** Org Packages
-
-**** Org ToC
-
-Generate table of contents without exporting.
-
-#+BEGIN_SRC emacs-lisp
-(use-package toc-org
-  :defer t)
-#+END_SRC
-
-**** Org Roam
-
-Setup =org-roam=.
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-roam
-  :defer 5
-  :init
-  (setq org-roam-v2-ack t)
-  :config
-  (setq org-image-actual-width nil) ;; TODO: Move to org section
-  (setq org-roam-db-location (expand-file-name "org-roam.db" dot-cache-dir))
-  (setq org-roam-directory (expand-file-name "./" org-directory))
-  ;; Exclude Syncthing backup directory
-  (setq org-roam-file-exclude-regexp "\\.stversions")
-  (setq org-roam-verbose nil)
-
-  (setq org-roam-capture-templates
-		'(("d" "default" plain
-		   "%?"
-		   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: %^{File tags}\n")
-		   :unnarrowed t)))
-
-  (defun dot/org-roam-node-insert-immediate (arg &rest args)
-	(interactive "P")
-	(let ((args (push arg args))
-          (org-roam-capture-templates (list (append (car org-roam-capture-templates)
-													'(:immediate-finish t)))))
-      (apply #'org-roam-node-insert args)))
-
-  (cl-defmethod org-roam-node-slug ((node org-roam-node))
-	"Return the slug of NODE, strip out common words."
-	(let* ((title (org-roam-node-title node))
-		   (words (split-string title " "))
-		   (common-words '("a" "an" "and" "as" "at" "by" "is" "it" "of" "the" "to"))
-		   (title (string-join (seq-remove (lambda (element) (member element common-words)) words) "_"))
-		   (pairs '(("c\\+\\+" . "cpp")             ;; convert c++ -> cpp
-					("c#" . "cs")                   ;; convert  c# -> cs
-					("[^[:alnum:][:digit:]]" . "_") ;; convert anything not alphanumeric
-					("__*" . "_")                   ;; remove sequential underscores
-					("^_" . "")                     ;; remove starting underscore
-					("_$" . ""))))                  ;; remove ending underscore
-	  (cl-flet* ((cl-replace (title pair)
-							 (replace-regexp-in-string (car pair) (cdr pair) title)))
-		(downcase (-reduce-from #'cl-replace title pairs)))))
-
-  ;; Right-align org-roam-node-tags in the completion menu without a length limit
-  ;; Source: https://github.com/org-roam/org-roam/issues/1775#issue-971157225
-  (setq org-roam-node-display-template "${title} ${tags:0}")
-  (setq org-roam-node-annotation-function #'dot/org-roam-annotate-tag)
-  (defun dot/org-roam-annotate-tag (node)
-	(let ((tags (mapconcat 'identity (org-roam-node-tags node) " #")))
-      (unless (string-empty-p tags)
-		(concat
-		 (propertize " " 'display `(space :align-to (- right ,(+ 2 (length tags)))))
-		 (propertize (concat "#" tags) 'face 'bold)))))
-
-  (org-roam-setup))
-#+END_SRC
-
-Enable [[https://www.orgroam.com/manual.html#Roam-Protocol][Roam Protocol]], needed to process =org-protocol://= links
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-roam-protocol
-  :ensure nil ; org-roam-protocol.el is part of org-roam
-  :after org-roam
-  :config
-
-  ;; Templates used when creating a new file from a bookmark
-  (setq org-roam-capture-ref-templates
-		'(("r" "ref" plain
-		   "%?"
-		   :target (file+head "${slug}.org" "#+TITLE: ${title}\n \n${body}")
-		   :unnarrowed t))))
-#+END_SRC
-
-The roam-ref protocol bookmarks to add:
-
-#+BEGIN_SRC javascript :tangle no
-javascript:location.href =
-	'org-protocol://roam-ref?template=r'
-	+ '&ref=' + encodeURIComponent(location.href)
-	+ '&title=' + encodeURIComponent(document.title)
-	+ '&body=' + encodeURIComponent(window.getSelection())
-#+END_SRC
-
-Setup =org-roam-ui=, runs at http://127.0.0.1:35901.
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-roam-ui
-  :after org-roam
-  ;; :hook (emacs-startup . org-roam-ui-mode)
-  :config
-  (setq org-roam-ui-follow t)
-  (setq org-roam-ui-open-on-start t)
-  (setq org-roam-ui-sync-theme nil) ;; FIXME: Make this work (org-roam-ui-get-theme)
-  (setq org-roam-ui-update-on-save t))
-#+END_SRC
-
-Easily searchable .org files via Deft.
-
-#+BEGIN_SRC emacs-lisp
-(use-package deft
-  :hook (deft-mode . dot/hook-disable-line-numbers)
-  :config
-  (setq deft-auto-save-interval 0)
-  (setq deft-default-extension "org")
-  (setq deft-directory "~/documents/org/")
-  (setq deft-file-naming-rules '((noslash . "-")
-								 (nospace . "-")
-								 (case-fn . downcase)))
-  (setq deft-new-file-format "%Y%m%d%H%M%S-deft")
-  (setq deft-recursive t)
-  (setq deft-use-filename-as-title nil)
-  (setq deft-use-filter-string-for-filename t)
-  (add-to-list 'deft-extensions "tex")
-
-  ;; Start filtering immediately
-  (evil-set-initial-state 'deft-mode 'insert))
-#+END_SRC
-
-**** Org Export Packages
-#+BEGIN_SRC emacs-lisp
-;; HTML exporter
-(use-package htmlize
-  :defer t
-  :config (setq org-export-html-postamble nil))
-  ;org-export-html-postamble-format @ToDo
-
-;; Github flavored Markdown exporter
-(use-package ox-gfm
-  :defer t)
-#+END_SRC
-
-*** Completion
-
-Autocomplete packages (includes code completion and snippets).
-
-**** Company
-
-#+BEGIN_SRC emacs-lisp
-(use-package company
-  :hook
-  ((c-mode-common
-	emacs-lisp-mode
-	latex-mode
-	org-mode
-	php-mode
-	shell-mode
-	shell-script-mode)
-   . company-mode)
-  :config
-  (setq company-idle-delay 0.2)
-  (setq company-minimum-prefix-length 2)
-  (setq company-show-numbers t)
-  (setq company-tooltip-align-annotations 't))
-
-(use-package company-prescient
-  :after company
-  :config (company-prescient-mode 1))
-#+END_SRC
-
-**** YASnippet
-
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :defer t
-  :init
-  (setq yas-snippet-dirs (list (concat dot-emacs-dir "/snippets")))
-  (setq yas-prompt-functions '(yas-completing-prompt))
-  :config
-  (yas-global-mode))
-
-(use-package yasnippet-snippets
-  :after yasnippet)
-#+END_SRC
-
-https://stackoverflow.com/questions/22735895/configuring-a-yasnippet-for-two-scenarios-1-region-is-active-2-region-is
-
-*** Checkers
-**** Flycheck
-
-On the fly syntax checking.
-
-#+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :hook
-  ((c-mode-common
-	emacs-lisp-mode
-	latex-mode
-	org-mode
-	php-mode
-	sh-mode
-	shell-mode
-	shell-script-mode)
-   . flycheck-mode)
-  :config
-  (setq flycheck-clang-language-standard "c++17")
-  (setq flycheck-gcc-language-standard "c++17"))
-
-;; For .el files which are intended to be packages
-(use-package flycheck-package
-  :after flycheck
-  :config
-  (add-to-list 'flycheck-checkers 'flycheck-emacs-lisp-package)
-  (flycheck-package-setup))
-
-(use-package flycheck-clang-tidy
-  :after flycheck
-  :hook (flycheck-mode . flycheck-clang-tidy-setup)
-  :config (setq flycheck-clang-tidy-extra-options "--format-style=file"))
-#+END_SRC
-
-**** Flyspell
-
-Give Flyspell a selection menu.
-
-#+BEGIN_SRC emacs-lisp
-(use-package flyspell-correct
-  :after flyspell
-  :demand
-  :hook (org-mode . flyspell-mode)
-  :config
-  (setq flyspell-issue-message-flag nil)
-  (setq flyspell-issue-welcome-flag nil))
-#+END_SRC
-
-*** Programming Integration
-**** LSP
-
-Language Server Protocol.
-
-#+BEGIN_SRC emacs-lisp
-(use-package lsp-mode
-  :commands lsp
-  :after which-key
-  :hook
-  ((c-mode         ; clangd
-	c++-mode       ; clangd
-	lua-mode       ; lua-language-server
-	php-mode       ; nodejs-intelephense
-    latex-mode     ; texlab
-    kotlin-mode    ; kotlin-language-server
-    web-mode)
-   . lsp-deferred)
-  :config
-  (setq lsp-auto-guess-root t)
-  (setq lsp-clients-clangd-args '("-j=2"
-								  "--background-index"
-								  "--clang-tidy"
-								  "--compile-commands-dir=build"
-								  "--log=error"
-								  "--pch-storage=memory"))
-  (setq lsp-clients-lua-language-server-install-dir "/usr/share/lua-language-server/")
-  (setq lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
-  (setq lsp-enable-xref t)
-  (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-intelephense-storage-path (concat dot-cache-dir "/lsp-cache"))
-  (setq lsp-keep-workspace-alive nil)
-  (setq lsp-prefer-flymake nil)
-  (setq lsp-session-file (concat dot-cache-dir "/lsp-session-v1"))
-
-  ;; Mark clangd args variable as safe to modify via .dir-locals.el
-  (put 'lsp-clients-clangd-args 'safe-local-variable #'listp)
-
-  ;; Enable which-key descriptions
-  (dolist (leader-key (list dot/leader-key dot/leader-alt-key))
-	(let ((lsp-keymap-prefix (concat leader-key " l")))
-	  (lsp-enable-which-key-integration))))
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :after (flycheck lsp-mode)
-  :config
-  (setq lsp-ui-doc-border (face-foreground 'default))
-  (setq lsp-ui-doc-delay 0.5)
-  (setq lsp-ui-doc-enable nil)
-  (setq lsp-ui-doc-header t)
-  (setq lsp-ui-doc-include-signature t)
-  (setq lsp-ui-doc-position 'top)
-  (setq lsp-ui-doc-use-childframe t)
-  (setq lsp-ui-flycheck-enable t)
-  (setq lsp-ui-flycheck-list-position 'right)
-  (setq lsp-ui-flycheck-live-reporting t)
-  (setq lsp-ui-peek-enable nil)
-  (setq lsp-ui-sideline-enable nil)
-  (setq lsp-ui-sideline-show-symbol nil))
-#+END_SRC
-
-**** DAP
-
-Debug Adapter Protocol.
-
-#+BEGIN_SRC emacs-lisp
-(use-package treemacs
-  :after all-the-icons
-  :hook (treemacs-mode . dot/hook-disable-line-numbers)
-  :config (setq treemacs-persist-file (concat dot-cache-dir "/treemacs/persist")))
-
-(use-package dap-mode
-  :after (treemacs lsp-mode)
-  :hook (lsp-after-initialize . dot/dap-install-debug-adapters)
-  :config
-  (setq dap-auto-configure-features '(sessions locals expressions controls tooltip))
-  (setq dap-breakpoints-file (concat dot-cache-dir "/dap/breakpoints"))
-  (setq dap-utils-extension-path (concat dot-cache-dir "/dap"))
-
-  ;; Create dap extension directory
-  (unless (file-directory-p dap-utils-extension-path)
-	(make-directory dap-utils-extension-path t)))
-#+END_SRC
-
-**** Web Mode
-
-#+BEGIN_SRC emacs-lisp
-(use-package web-mode
-  :defer t)
-#+END_SRC
-
-*** Programming Languages
-**** C/C++
-
-#+BEGIN_SRC emacs-lisp
-(use-package c++-mode
-  :ensure nil
-  :defer t
-  :hook
-  (c++-mode . (lambda ()
-				(setq lsp-ui-doc-enable t))))
-
-(use-package company-c-headers
-  :after company
-  :config (push 'company-c-headers company-backends))
-
-(use-package company-glsl
-  :after company
-  :config
-  (when (executable-find "glslangValidator")
-    (add-to-list 'company-backends 'company-glsl)))
-#+END_SRC
-
-**** Lua
-
-#+BEGIN_SRC emacs-lisp
-(use-package lua-mode
-  :defer t
-  :config (setq lua-indent-level 4))
-#+END_SRC
-
-**** PHP
-
-#+BEGIN_SRC emacs-lisp
-(use-package php-mode
-  :defer t
-  :hook
-  (php-mode . (lambda ()
-				(setq indent-tabs-mode t)
-				(setq lsp-ui-doc-enable t))))
-
-(use-package restclient
-  :defer t)
-#+END_SRC
-
-**** CMake
-
-#+BEGIN_SRC emacs-lisp
-(use-package cmake-mode
-  :config (setq cmake-tab-width 4)
-  :defer t)
-#+END_SRC
-
-**** GLSL
-
-#+BEGIN_SRC emacs-lisp
-(use-package glsl-mode
-  :defer t)
-#+END_SRC
-
-**** YAML
-
-#+BEGIN_SRC emacs-lisp
-(use-package yaml-mode
-  :defer t)
-#+END_SRC
-
-**** Kotlin
-
-#+BEGIN_SRC emacs-lisp
-(use-package kotlin-mode
-  :defer t)
-#+END_SRC
-
 *** RSS
 
 #+BEGIN_SRC emacs-lisp
@@ -811,190 +209,6 @@ Debug Adapter Protocol.
   (setq elfeed-search-trailing-width 55)
   (setq elfeed-show-unique-buffers t)
   (load (concat dot-etc-dir "/elfeed-feeds")))
-#+END_SRC
-
-*** Git
-
-#+BEGIN_SRC emacs-lisp
-(use-package diff-hl
-  :demand
-  :hook (prog-mode . turn-on-diff-hl-mode)
-  :hook (prog-mode . dot/diff-hl-enable-flydiff-and-fringe))
-
-(use-package transient
-  :defer t
-  :config (setq transient-history-file (concat dot-cache-dir "/transient/history.el")))
-
-(use-package magit
-  :after (diff-hl transient)
-  :hook (git-commit-setup . git-commit-turn-on-auto-fill)
-  :hook (git-commit-setup . git-commit-turn-on-flyspell)
-  :hook (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  :hook (magit-post-refresh . diff-hl-magit-post-refresh)
-  :config
-  (setq git-commit-fill-column 72)
-  (setq git-commit-summary-max-length 70)
-  (setq magit-completing-read-function #'selectrum-completing-read)
-  (setq magit-diff-paint-whitespace-lines 'both)
-  (setq magit-repository-directories '(("~/dotfiles" . 0)
-									   ("~/code" . 3)))
-
-  (put 'magit-log-select-pick :advertised-binding [?\M-c])
-  (put 'magit-log-select-quit :advertised-binding [?\M-k]))
-#+END_SRC
-
-*** Mail
-
-#+BEGIN_SRC emacs-lisp
-(use-package mu4e
-  :ensure nil
-  :load-path "/usr/share/emacs/site-lisp/mu4e"
-  :defer 5
-  :config
-  (setq auth-sources `(,(concat dot-etc-dir "/authinfo.gpg")))
-  (setq user-full-name (dot/mail-auth-get-field "fullname" :user))
-  (setq user-mail-address (dot/mail-auth-get-field "info" :user))
-  (setq mail-user-agent 'mu4e-user-agent)
-
-  ;; Headers
-  (setq mu4e-headers-date-format "%d-%m-%Y")
-  (setq mu4e-headers-time-format "%I:%M %p")
-  (setq mu4e-headers-long-date-format "%d-%m-%Y %I:%M:%S %p")
-
-  ;; Syncing
-  (setq mu4e-get-mail-command (concat "mbsync -a -c " (getenv "XDG_CONFIG_HOME") "/isync/mbsyncrc"))
-  (setq mu4e-update-interval (* 15 60)) ; 15 minutes
-  (setq mu4e-maildir "~/mail")
-  (setq mu4e-attachment-dir "~/downloads")
-
-  ;; Avoid mail syncing issues when using mbsync
-  (setq mu4e-change-filenames-when-moving t)
-
-  ;; Misc
-  (setq mu4e-completing-read-function 'completing-read)
-  (setq mu4e-confirm-quit nil)
-  (setq mu4e-display-update-status-in-modeline t)
-  (setq mu4e-hide-index-messages t)
-  (setq mu4e-sent-messages-behavior 'sent)
-  (setq mu4e-view-show-addresses t)
-  (setq mu4e-view-show-images nil)
-
-  ;; Compose
-  (setq mu4e-compose-context-policy 'ask)
-  (setq mu4e-compose-dont-reply-to-self t)
-  (setq mu4e-compose-signature (concat (dot/mail-auth-get-field "fullname" :user) "\nriyyi.com\n"))
-  (setq mu4e-compose-signature-auto-include t)
-
-  ;; Contexts
-  (setq mu4e-context-policy 'pick-first)
-  (setq mu4e-contexts
-		`(,(make-mu4e-context
-			:name "info"
-			:match-func (lambda (msg)
-						  (when msg
-							(string= (mu4e-message-field msg :maildir) "/info")))
-			:vars `((user-mail-address  . ,(dot/mail-auth-get-field "info" :user))
-					(mu4e-drafts-folder . "/info/Drafts")
-					(mu4e-refile-folder . "/info/Archive")
-					(mu4e-sent-folder   . "/info/Sent")
-					(mu4e-trash-folder  . "/info/Trash")))
-		  ,(make-mu4e-context
-			:name "private"
-			:match-func (lambda (msg)
-						  (when msg
-							(string= (mu4e-message-field msg :maildir) "/private")))
-			:vars `((user-mail-address  . ,(dot/mail-auth-get-field "private" :user))
-					(mu4e-drafts-folder . "/private/Drafts")
-					(mu4e-refile-folder . "/private/Archive")
-					(mu4e-sent-folder   . "/private/Sent")
-					(mu4e-trash-folder  . "/private/Trash")))
-		  ))
-
-  ;; Do not mark messages as IMAP-deleted, just move them to the Trash directory!
-  ;; https://github.com/djcb/mu/issues/1136#issuecomment-486177435
-  (setf (alist-get 'trash mu4e-marks)
-		(list :char '("d" . "▼")
-              :prompt "dtrash"
-              :dyn-target (lambda (target msg)
-							(mu4e-get-trash-folder msg))
-              :action (lambda (docid msg target)
-						(mu4e~proc-move docid (mu4e~mark-check-target target) "-N"))))
-
-  ;; Start mu4e in the background for mail syncing
-  (mu4e t))
-
-(use-package mu4e-alert
-  :after mu4e
-  :config
-  (mu4e-alert-set-default-style 'libnotify)
-  (mu4e-alert-enable-notifications))
-
-(use-package smtpmail ; built-in
-  :ensure nil
-  :after mu4e
-  :init (setq smtpmail-default-smtp-server "mail.riyyi.com")
-  :config
-  (setq smtpmail-smtp-server "mail.riyyi.com")
-  (setq smtpmail-local-domain "riyyi.com")
-  (setq smtpmail-smtp-service 587)
-  (setq smtpmail-stream-type 'starttls)
-  (setq smtpmail-queue-mail nil))
-
-(use-package sendmail ; built-in
-  :ensure nil
-  :after mu4e
-  :config (setq send-mail-function 'smtpmail-send-it))
-
-(use-package message ; built-in
-  :ensure nil
-  :after mu4e
-  :config
-  (setq message-kill-buffer-on-exit t)
-  (setq message-send-mail-function 'smtpmail-send-it))
-#+END_SRC
-
-Sources:
-- https://rakhim.org/fastmail-setup-with-emacs-mu4e-and-mbsync-on-macos/
-- https://wiki.archlinux.org/title/Isync
-- https://gitlab.com/protesilaos/dotfiles/-/blob/master/mbsync/.mbsyncrc
-- https://gitlab.com/protesilaos/dotfiles/-/blob/master/emacs/.emacs.d/prot-lisp/prot-mail.el
-- https://gitlab.com/protesilaos/dotfiles/-/blob/master/emacs/.emacs.d/prot-lisp/prot-mu4e-deprecated-conf.el
-
-*** Prettify
-
-#+BEGIN_SRC emacs-lisp
-(use-package page-break-lines)
-
-(use-package dashboard
-  :demand
-  :hook (dashboard-mode . dot/hook-disable-line-numbers)
-  :config
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-  (setq dashboard-banner-logo-title "GNU Emacs master race!")
-  (setq dashboard-center-content t)
-  (setq dashboard-page-separator "\n\f\n")
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-set-footer nil)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-show-shortcuts t)
-  (setq dashboard-startup-banner 'logo)
-  (setq dashboard-items '((projects . 10)
-						  (bookmarks . 5)
-						  (recents . 5)))
-  (dashboard-setup-startup-hook))
-
-;; A better *help* buffer
-(use-package helpful
-  :hook (helpful-mode . dot/hook-disable-line-numbers))
-
-(use-package rainbow-mode
-  :hook (css-mode . rainbow-mode))
-
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package org-bullets
-  :hook (org-mode . org-bullets-mode))
 #+END_SRC
 
 * General
@@ -1152,101 +366,11 @@ Setup file backups versioning.
 (setq ring-bell-function 'ignore)
 #+END_SRC
 
-** Org
-
-*** Org Config
-
-#+BEGIN_SRC emacs-lisp
-(use-package org
-  :config
-  (setq org-directory (concat (getenv "HOME") "/documents/org"))
-  (setq org-default-notes-file (expand-file-name "notes.org" org-directory))
-  (setq org-adapt-indentation nil)
-  (setq org-ellipsis "⤵")
-  ;; Enable structured template completion
-  (add-to-list 'org-modules 'org-tempo t)
-  (add-to-list 'org-structure-template-alist
-			   '("el" . "src emacs-lisp")))
-#+END_SRC
-
-*** Org Agenda
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-agenda
-  :ensure nil
-  :defer t
-  :config
-  (setq org-agenda-files `(,org-directory ,user-emacs-directory))
-  (setq org-agenda-span 14)
-  (setq org-agenda-window-setup 'current-window)
-  (evil-set-initial-state 'org-agenda-mode 'motion))
-#+END_SRC
-
-*** Org Keys
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-keys
-  :ensure nil
-  :config
-  (setq org-return-follows-link t))
-#+END_SRC
-
-*** Org Links
-
-#+BEGIN_SRC emacs-lisp
-(use-package ol
-  :ensure nil
-  :config
-  ;; Do not open links to .org files in a split window
-  (add-to-list 'org-link-frame-setup '(file . find-file)))
-#+END_SRC
-
-*** Org Source Code Blocks
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-src
-  :ensure nil
-  :config
-  (setq org-edit-src-content-indentation 0)
-  (setq org-src-fontify-natively t)
-  (setq org-src-preserve-indentation t)
-  (setq org-src-tab-acts-natively t)
-  (setq org-src-window-setup 'current-window))
-#+END_SRC
-
-*** Org Export
-
-#+BEGIN_SRC emacs-lisp
-;; Org exporter
-(use-package ox
-  :ensure nil
-  :defer t
-  :config
-  (setq org-export-coding-system 'utf-8-unix))
-
-;; Org latex exporter
-(use-package ox-latex
-  :ensure nil
-  :defer t
-  :config
-  ;; Define how minted (highlighted src code) is added to src code blocks
-  (setq org-latex-listings 'minted)
-  (setq org-latex-minted-options '(("frame" "lines") ("linenos=true")))
-  ;; Set 'Table of Contents' layout
-  (setq org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
-  ;; Add minted package to every LaTeX header
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  ;; Append -shell-escape so pdflatex exports minted correctly
-  (add-to-list 'org-latex-pdf-process (replace-regexp-in-string
-									   "%latex "
-									   "%latex -shell-escape "
-									   (car org-latex-pdf-process))))
-#+END_SRC
-
 ** Recentf
 
 #+BEGIN_SRC emacs-lisp
 (use-package recentf
+  :ensure nil ; built-in
   :config
   (setq recentf-auto-cleanup 'never)
   (setq recentf-exclude '("~$" "/ssh:" "/sudo:"))
@@ -1376,13 +500,6 @@ Functions that only use built-in Emacs functionality.
 		  (save-excursion (insert (make-string diff ?\ )))
 		(user-error "Column should be higher than point")))))
 
-(defun dot/mail-auth-get-field (host prop)
-  "Find PROP in `auth-sources' for HOST entry."
-  (when-let ((source (auth-source-search :max 1 :host host)))
-    (if (eq prop :secret)
-		(funcall (plist-get (car source) prop))
-      (plist-get (flatten-list source) prop))))
-
 (defun dot/reload-theme ()
   "Reload custom theme."
   (interactive)
@@ -1453,282 +570,6 @@ Functions that are only used for hook calls.
   (setq-local mode-line-format nil))
 #+END_SRC
 
-** Package Functions
-
-Functions that use package functionality.
-
-*** Auto Package Update Functions
-
-#+BEGIN_SRC emacs-lisp
-(defun dot/update-packages ()
-  "Update all packages."
-  (interactive)
-  (package-refresh-contents)
-  (auto-package-update-now)
-  (package-quickstart-refresh))
-#+END_SRC
-
-*** Centaur Tabs Functions
-
-#+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'centaur-tabs
-  (defun centaur-tabs-buffer-groups ()
-	"Organize tabs into groups by buffer."
-	(list
-	 (cond
-	  ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
-	  ((memq major-mode '(org-mode
-						  emacs-lisp-mode)) "Org Mode")
-	  ((derived-mode-p 'dired-mode) "Dired")
-	  ((derived-mode-p 'prog-mode
-					   'text-mode) "Editing")
-	  (t "User"))))
-
-  (defun centaur-tabs-hide-tab (buffer)
-	"Hide from the tab bar by BUFFER name."
-
-	(let ((name (format "%s" buffer)))
-	  (or
-	   ;; Current window is dedicated window
-	   (window-dedicated-p (selected-window))
-
-	   ;; Buffer name does match below blacklist
-	   (string-match-p (concat "\\(CAPTURE-\\)?" (format-time-string "%Y%m%d%H%M%S") "-.*\\.org") name)
-	   (string-match-p
-		(concat "^ ?\\*\\("
-				"Agenda Commands\\|"
-				"e?shell\\|"
-				"Compile-Log\\|"
-				"Completions\\|"
-				"clangd\\|"       ; lsp c/c++
-				"dap-mouse\\|"
-				"dap-ui-\\|"
-				"Debug\\|"
-				"Faces\\|"
-				"Flycheck\\|"
-				"Help\\|"
-				"helpful\\|"
-				"httpd\\|"
-				"iph\\|"          ; lsp php
-				"org-roam\\|"
-				"Org tags\\|"
-				"Org todo"
-				"\\).*")
-		name))))
-
-  (defun dot/centaur-tabs-is-buffer-unimportant (buffer)
-    "Return t if BUFFER is unimportant and can be killed without caution."
-	(let ((name (format "%s" buffer)))
-	  (cond
-	   ((centaur-tabs-hide-tab name) t)
-	   ((string-match-p "^magit\\(-[a-z]+\\)*: .*" name) t)
-	   (t nil))))
-
-  (defun dot/centaur-tabs-buffer-cleanup ()
-	"Clean up all the hidden buffers."
-	(interactive)
-	(dolist (buffer (buffer-list))
-	  (when (dot/centaur-tabs-is-buffer-unimportant buffer)
-		(kill-buffer buffer)))
-	(princ "Cleaned buffers"))
-
-  (defun dot/centaur-tabs-kill-buffer-or-window ()
-	"Delete window of the current buffer, also kill if the buffer is hidden."
-	(interactive)
-	(if (dot/centaur-tabs-is-buffer-unimportant (buffer-name))
-		(kill-buffer-and-window)
-	  (delete-window))))
-#+END_SRC
-
-*** DAP Functions
-
-#+BEGIN_SRC emacs-lisp
-(defun dot/dap-install-debug-adapters ()
-  "Install and Load debug adapters."
-  (interactive)
-  (unless (bound-and-true-p lsp-mode)
-	(user-error "Not in an LSP buffer"))
-  (when (string-equal major-mode "c++-mode")
-	(require 'dap-cpptools)
-	(dap-cpptools-setup)))
-#+END_SRC
-
-*** Dashboard Functions
-
-#+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'dashboard
-  (defun dot/dashboard-goto ()
-	"Go to the *dashboard* buffer, create if non-existing."
-	(interactive)
-	(let ((buffer "*dashboard*"))
-	  (unless (get-buffer buffer)
-		(generate-new-buffer buffer)
-		(dashboard-refresh-buffer))
-	  (switch-to-buffer buffer))))
-#+END_SRC
-
-Fix keybinds..
-
-#+BEGIN_SRC emacs-lisp
-(defun dot/dashboard-goto-bookmarks ()
-  "Move point to bookmarks."
-  (interactive)
-  (funcall (local-key-binding "m")))
-
-(defun dot/dashboard-goto-projects ()
-  "Move point to projects."
-  (interactive)
-  (funcall (local-key-binding "p")))
-
-(defun dot/dashboard-goto-recent-files ()
-  "Move point to recent files."
-  (interactive)
-  (funcall (local-key-binding "r")))
-#+END_SRC
-
-*** Diff-hl Functions
-
-#+BEGIN_SRC emacs-lisp
-(defun dot/diff-hl-enable-flydiff-and-fringe ()
-  "Enable on the fly diff checking if file is under version control."
-  (let ((buffer buffer-file-name))
-	(when (and buffer (vc-registered buffer))
-	  (diff-hl-flydiff-mode)
-	  (dot/toggle-fringe 1))))
-#+END_SRC
-
-*** Evil functions
-
-#+BEGIN_SRC emacs-lisp
-(defun dot/evil-normal-sort-paragraph ()
-  "Sort paragraph cursor is under.
-
-Vim equivalence: vip:sort<CR>"
-  (interactive)
-  (let ((p (point)))
-	(evil-visual-char)
-	(call-interactively 'evil-inner-paragraph)
-	(evil-ex-sort (region-beginning) (region-end))
-	(goto-char p)))
-
-(defun dot/evil-insert-shift-left ()
-  "Shift line left, retains cursor position.
-
-Vim equivalence: <C-D>"
-  (interactive)
-  (evil-shift-left (line-beginning-position) (line-end-position)))
-
-(defun dot/evil-visual-shift-left ()
-  "Shift visual selection left, retains the selection.
-
-Vim equivalence: <gv"
-  (interactive)
-  (evil-shift-left (region-beginning) (region-end))
-  (funcall (evil-visual-restore)))
-
-(defun dot/evil-visual-shift-right ()
-  "Shift visual selection left, retains the selection.
-
-Vim equivalence: >gv"
-  (interactive)
-  (evil-shift-right (region-beginning) (region-end))
-  (funcall (evil-visual-restore)))
-#+END_SRC
-
-*** LSP Functions
-
-#+BEGIN_SRC emacs-lisp
-(defun lsp-format-region-or-buffer ()
-  "Format the selection (or buffer) with LSP."
-  (interactive)
-  (unless (bound-and-true-p lsp-mode)
-	(user-error "Not in an LSP buffer"))
-  (call-interactively
-   (if (use-region-p)
-	   #'lsp-format-region
-	 #'lsp-format-buffer)))
-#+END_SRC
-
-*** Neotree Functions
-
-#+BEGIN_SRC emacs-lisp
-(defun neotree-toggle-in-project-root ()
-  "Toggle Neotree in project root."
-  (interactive)
-  (let ((default-directory (dot/find-project-root)))
-	(call-interactively #'neotree-toggle)))
-#+END_SRC
-
-*** Org Functions
-
-#+BEGIN_SRC emacs-lisp
-(defun dot/org-ret-at-point ()
-  "Org return key at point.
-
-If point is on:
-  checkbox   -- toggle it
-  link       -- follow it
-  otherwise  -- run the default (evil-ret) expression"
-  (interactive)
-  (let ((type (org-element-type (org-element-context))))
-	(pcase type
-	  ('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
-	  ((guard (org-at-item-checkbox-p)) (org-toggle-checkbox))
-	  (_ (evil-ret))
-	  )))
-#+END_SRC
-
-*** Projectile Functions
-
-#+BEGIN_SRC emacs-lisp
-(defun dot/find-project-root ()
-  "Return root of the project, determined by `.git/' and `.projectile',
-`default-directory' otherwise."
-  (let ((search-directory (projectile-project-root)))
-	(if search-directory
-		search-directory
-	  default-directory)))
-
-(defun find-file-in-project-root ()
-  "Find file in project root."
-  (interactive)
-  (let ((default-directory (dot/find-project-root)))
-	(call-interactively 'find-file)))
-
-(defun compile-latex ()
-  "Compile LaTeX project."
-  (interactive)
-  (let ((default-directory (dot/find-project-root)))
-	(projectile-save-project-buffers)
-	(shell-command "make")))
-#+END_SRC
-
-*** Selectrum Functions
-
-#+BEGIN_SRC emacs-lisp
-(defun dot/selectrum-backspace ()
-  "In Selectrum file completion, backward kill sexp, delete char otherwise."
-  (interactive)
-  (if (and selectrum-is-active
-		   minibuffer-completing-file-name)
-	  (evil-with-state 'insert
-		(move-end-of-line 1) (backward-kill-sexp 1))
-	(evil-delete-backward-char-and-join 1)))
-#+END_SRC
-
-*** Which-Key Functions
-
-#+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'which-key
-  (defun dot/which-key-prefix-then-key-order-alpha (acons bcons)
-	"Order y prefix, then lexicographical."
-	(let ((apref? (which-key--group-p (cdr acons)))
-		  (bpref? (which-key--group-p (cdr bcons))))
-	  (if (not (eq apref? bpref?))
-		  (and (not apref?) bpref?)
-		(which-key-key-order-alpha acons bcons)))))
-#+END_SRC
-
 * Advice and Aliases
 ** Advice
 
@@ -1742,24 +583,10 @@ Define default terminal option.
 
 ** Aliases
 
-*** General
-
 Make confirm easier, by just pressing y/n.
 
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-
-*** Package
-
-Evil command aliases.
-
-#+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'evil-ex
-  (evil-ex-define-cmd "W" "w")
-  (evil-ex-define-cmd "Q" "q")
-  (evil-ex-define-cmd "WQ" "wq")
-  (evil-ex-define-cmd "Wq" "wq"))
 #+END_SRC
 
 * Hooks
@@ -1774,29 +601,6 @@ Evil command aliases.
 
 ;; Highlight parenthesis
 (add-hook 'prog-mode-hook 'show-paren-mode)
-
-;; Enable 'table of contents' in org
-(add-hook 'org-mode-hook 'toc-org-mode)
-
-;; Org-capture in new tab, rather than split window
-(add-hook 'org-capture-mode-hook 'delete-other-windows)
-
-;; C++ // style comments in c-mode
-(add-hook 'c-mode-hook (lambda () (c-toggle-comment-style 0)))
-
-;; LaTeX, set correct tab mode
-(add-hook 'latex-mode-hook (lambda ()
-							 (setq indent-tabs-mode t)
-							 (setq tab-width 4)))
-(add-hook 'LaTeX-mode-hook (lambda ()
-							 (setq indent-tabs-mode t)
-							 (setq tab-width 4)))
-
-;; Python
-(add-hook 'python-mode-hook (lambda ()
-							  (setq indent-tabs-mode t)
-							  (setq python-indent-offset 4)
-							  (setq tab-width 4)))
 
 ;; Disable line numbers
 (add-hook 'Custom-mode-hook 'dot/hook-disable-line-numbers)
@@ -1868,7 +672,7 @@ Set keybinds to native functionality.
 (global-set-key (kbd "C-c v") 'config-visit)
 
 ;; Find file
-(global-set-key (kbd "C-x C-f") 'find-file-in-project-root)
+(global-set-key (kbd "C-x C-f") #'dot/find-file-in-project-root)
 
 ;; Split and follow window
 (global-set-key (kbd "C-x 2") 'split-follow-horizontally)
@@ -1977,7 +781,8 @@ Set keybinds to functionality of installed packages.
     )
 
   (general-def evil-insert-state-map
-	"<backtab>" #'dot/evil-insert-shift-left  ; <<
+	"<backtab>" #'dot/evil-insert-shift-left  ; <S-Tab>
+	"TAB"       #'dot/evil-insert-shift-right ; <Tab>
     )
 
   (general-def evil-visual-state-map
@@ -2158,7 +963,7 @@ General.el ~leader key binds.
   "f e f" '(dot/find-file-emacsd           :which-key "Find emacs file")
   "f e r" '(dot/config-reload              :which-key "Config reload")
   "f d"   '(dired                          :which-key "Find directory")
-  "f f"   '(find-file-in-project-root      :which-key "Find file")
+  "f f"   '(dot/find-file-in-project-root  :which-key "Find file")
   "f o"   '(ff-find-other-file             :which-key "Find header/source file")
   "f r"   '(dot/find-file-recentf          :which-key "Find recent file ")
   "f R"   '(rename-file-and-buffer         :which-key "Rename file")
@@ -2286,6 +1091,7 @@ Evaluated keybinds.
 (with-eval-after-load 'lsp-mode
   (space-leader lsp-mode-map
 	"l" lsp-command-map
+	"l = f" '(lsp-format-buffer-or-region :which-key "format buffer or region")
 	))
 
 (with-eval-after-load 'dap-mode

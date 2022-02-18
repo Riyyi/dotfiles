@@ -3,6 +3,7 @@
 #+AUTHOR: Riyyi
 #+LANGUAGE: en
 #+OPTIONS: toc:nil
+#+PROPERTY: header-args:emacs-lisp :shebang ";;; -*- lexical-binding: t; -*-\n"
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+LATEX_HEADER: \usepackage[top=100pt,bottom=100pt,left=75pt,right=75pt]{geometry}
 #+LATEX_HEADER: \usepackage{color}
@@ -10,7 +11,6 @@
 #+LATEX_HEADER: \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
 
 * Table of Contents :toc_4:
-- [[#lexical-binding][Lexical Binding]]
 - [[#global-variables][Global Variables]]
 - [[#customizations][Customizations]]
 - [[#package-management][Package Management]]
@@ -101,12 +101,6 @@
     - [[#global-leader][Global Leader]]
     - [[#local-leader][Local Leader]]
 - [[#notes][Notes]]
-
-* Lexical Binding
-
-#+BEGIN_SRC emacs-lisp
-  ;;; -*- lexical-binding: t; -*-
-#+END_SRC
 
 * Global Variables
 

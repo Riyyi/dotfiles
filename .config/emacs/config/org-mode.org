@@ -19,7 +19,8 @@
   :defer t
   :hook (latex-mode . (lambda ()
 						(setq indent-tabs-mode t)
-						(setq tab-width 4)))
+						(setq tab-width 4)
+						(setq tex-indent-basic 4)))
   :config
 
   (with-eval-after-load 'projectile

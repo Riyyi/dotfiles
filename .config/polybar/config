@@ -50,9 +50,9 @@ dpi-y = ${font.dpi}
 ; https://github.com/polybar/polybar/wiki/Fonts
 font-0 = "DejaVu Sans:pixelsize=9;3"
 font-1 = "Source Han Sans JP Medium:pixelsize=9;3"
-font-2 = "Font Awesome 5 Free:style=Regular:pixelsize=8;3"
-font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=8;3"
-font-4 = "Font Awesome 5 Brands:pixelsize=8;3"
+font-2 = "Font Awesome 6 Free:style=Regular:pixelsize=8;3"
+font-3 = "Font Awesome 6 Free:style=Solid:pixelsize=8;3"
+font-4 = "Font Awesome 6 Brands:pixelsize=8;3"
 
 modules-left = bspwm
 modules-center = title

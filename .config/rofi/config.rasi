@@ -9,7 +9,7 @@ configuration {
 	display-drun: "run";
 
 	/* Layout */
-	font: "DejaVu Sans Mono, Font Awesome 5 Free 12";
+	font: "DejaVu Sans Mono, Font Awesome 6 Free 12";
 
 	/* Icons */
 	icon-theme: "Arc";

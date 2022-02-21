@@ -116,10 +116,10 @@ alias fuck='sudo $(fc -ln -1)'
 alias grep="grep --color=always"
 alias ip="ip --color"
 alias ipb="ip --color --brief a"
-alias l.="\ls -lAGh --color --group-directories-first | awk '{ if (\$NF ~ /^(.*m)?\./) print }'"
-alias la="\ls -lAGh --color --group-directories-first"
+alias l.="\ls -lAGh --color --group-directories-first --hyperlink | awk '{ if (\$NF ~ /^(.*m)?\./) print }'"
+alias la="\ls -lAGh --color --group-directories-first --hyperlink"
 alias less="less -x 4"
-alias ls="ls --color --group-directories-first"
+alias ls="ls --color --group-directories-first --hyperlink"
 alias mkdir="mkdir -pv"
 alias mv='mv -i'
 alias pkill="pkill -9"

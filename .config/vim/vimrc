@@ -61,6 +61,7 @@ set shiftwidth=4
 set laststatus=2
 set noshowmode
 set nowrap
+set title
 
 "" Plugin configuration
 

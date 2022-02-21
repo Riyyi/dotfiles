@@ -167,8 +167,9 @@ Language Server Protocol.
 								  "--compile-commands-dir=build"
 								  "--log=error"
 								  "--pch-storage=memory"))
-  (setq lsp-clients-lua-language-server-install-dir "/usr/share/lua-language-server/")
   (setq lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
+  (setq lsp-clients-lua-language-server-install-dir "/usr/lib/lua-language-server/")
+  (setq lsp-clients-lua-language-server-main-location "/usr/lib/lua-language-server/main.lua")
   (setq lsp-enable-xref t)
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq lsp-intelephense-storage-path (concat dot-cache-dir "/lsp-cache"))

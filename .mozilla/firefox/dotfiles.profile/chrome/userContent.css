@@ -39,6 +39,8 @@
 
 	/* Make posts the full width */
 	.postContainer.replyContainer .post.reply { width: 100% }
+	.postContainer.replyContainer.yourPost .post.reply { width: calc(100% - 3px); }
+	.postContainer.replyContainer.quotesYou .post.reply { width: calc(100% - 3px); }
 }
 
 @-moz-document domain("github.com") {

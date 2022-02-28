@@ -272,7 +272,7 @@ osDependencies()
 getPackageList()
 {
 	if [ "$os" = "arch" ]; then
-		filterList="$( (pacman -Qqg base base-devel; pactree -u base | tail -n +2) | sort)"
+		filterList="$( (pacman -Qqg base base-devel 2> /dev/null; pactree -u base | tail -n +2) | sort -u)"
 		packageList="$(pacman -Qqe | grep -vx "$filterList" | sort)"
 	elif [ "$os" = "debian" ]; then
 		installedList="$(dpkg-query --show --showformat='${Package}\t${Priority}\n')"
@@ -302,7 +302,7 @@ packageInstall()
 		fi
 	elif [ "$os" = "debian" ]; then
 		# Grab everything off enabled official repositories that is in the list
-		repoList="$(apt-cache search .* | cut -d ' ' -f 1 | grep -xf $packageFile)"
+		repoList="$(apt-cache search . | cut -d ' ' -f 1 | grep -xf $packageFile)"
 
 		# Install packages
 		echo "$repoList" | xargs --open-tty sudo apt install
@@ -319,6 +319,7 @@ packages()
 
 	if [ "$1" = "list" ] || [ "$1" = "" ]; then
 		[ -z "$packageList" ] && getPackageList
+		# FIXME: This only selects 1 target
 		echo "$packageList" | grep "$2"
 	elif [ "$1" = "store" ]; then
 		[ -z "$packageList" ] && getPackageList
@@ -335,8 +336,8 @@ packages()
 
 script="$(basename "$0")"
 parsed="$(getopt --options "hFPails" \
-				  --longoptions "help,file,package,add,aur-install,install,pull,push,store" \
-				  -n "$script" -- "$@" 2>&1)"
+				 --longoptions "help,file,package,add,aur-install,install,pull,push,store" \
+				 -n "$script" -- "$@" 2>&1)"
 result="$?"
 
 # Exit if invalid option is provided

@@ -173,13 +173,13 @@ alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold bl
 alias gle="git log --graph --stat --format=format:'%C(bold blue)commit %H%C(reset)%C(bold yellow)%d %C(reset)%nAuthor: %C(dim white)%an <%ae>%C(reset)%nDate:   %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
 alias gm="git merge"
 alias gp="git pull"
-alias gps="git push"
-alias gpsa="git remote | xargs -I remotes git push remotes master"
-alias gpsaf="git remote | xargs -I remotes git push --force remotes master"
+alias gps='git push || git push origin $(git branch --show-current)'
+alias gpsa='git remote | xargs -I remotes git push remotes $(git branch --show-current)'
+alias gpsaf='git remote | xargs -I remotes git push --force remotes $(git branch --show-current)'
 alias gr="git reset"
 alias gs="git status"
 alias gsh="git show --format=format:'%C(bold blue)commit %H%C(reset) %C(bold yellow)%d %C(reset)%nAuthor: %C(dim white)%an <%ae>%C(reset)%nDate:   %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
-alias gt='git ls-tree -r --name-only master .'
+alias gt='git ls-tree -r --name-only $(git branch --show-current) .'
 
 # Scripts
 alias nc="netictl"
@@ -194,14 +194,21 @@ alias length="rofi -dmenu -i -p 'String length' -lines 0 | tr -d '\n' | wc -m"
 alias p="aliases pastebin"
 alias screencast="aliases screencast"
 alias stream="aliases stream"
+alias temp="watch -n 2 sensors"
 alias u="setsid -f urxvt -cd $PWD"
 alias weather="curl -s 'https://wttr.in/dordrecht?q&n&p' | head -n -3"
 alias webmconvert="aliases webmconvert"
+alias windowname="xprop | grep -e WM_CLASS -e WM_NAME"
 alias workbench="GDK_SCALE=1 GDK_DPI_SCALE=1 setsid -f -- mysql-workbench > /dev/null 2>&1"
 
 mkcd() { mkdir -pv -- "$1" && cd -P -- "$1" || exit; }
 
 highlighting="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-[ -f "$highlighting" ] && source "$highlighting"; unset highlighting
+if [ -f "$highlighting" ]; then
+	source "$highlighting";
+	ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+	ZSH_HIGHLIGHT_STYLES[path]="fg=12,underline"
+fi
+unset highlighting
 
 [ -f "$ZDOTDIR/.zshrc_extended" ] && source "$ZDOTDIR/.zshrc_extended"

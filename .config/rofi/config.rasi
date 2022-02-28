@@ -11,6 +11,10 @@ configuration {
 	/* Layout */
 	font: "DejaVu Sans Mono, Font Awesome 6 Free 12";
 
+	/* >>> hostname=arch-laptop */
+	/* dpi: 192; */
+	/* <<< */
+
 	/* Icons */
 	icon-theme: "Arc";
 	show-icons: true;

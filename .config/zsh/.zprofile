@@ -20,7 +20,10 @@ export PLATFORMIO_HOME_DIR="$XDG_DATA_HOME/platformio"
 export R_ENVIRON_USER="$XDG_CONFIG_HOME/R/Renviron"
 
 # HiDPI screen
-export HIDPI=true
+
+# >>> hostname=arch-laptop
+# export HIDPI=true
+# <<<
 
 # GPG
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"

@@ -90,6 +90,7 @@ lua-language-server-git
 lvm2
 lxappearance
 maim
+manafiles-git
 man-db
 man-pages
 mariadb
@@ -106,6 +107,7 @@ ncdu
 neofetch
 nerd-fonts-dejavu-complete
 netctl
+nlohmann-json
 nodejs-intelephense
 ntfs-3g
 openssh

@@ -10,7 +10,13 @@ indicate_hidden = false
 padding = 10
 shrink = false
 
-frame_width = 3
+# >>> hostname=arch-desktop
+frame_width = 2
+# <<<
+# >>> hostname=arch-laptop
+# frame_width = 3
+# <<<
+
 separator_height = 3
 separator_color = frame
 

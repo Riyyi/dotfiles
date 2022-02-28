@@ -1,8 +1,10 @@
 # Dotfiles
 
-This is a collection of dotfiles and scripts for my i3 setup, previewed below:
+This is a collection of dotfiles and scripts for my i3/bspwm setup, previewed below:
 
 ![Screenshot](screenshot.png)
+
+[[Archived](https://github.com/Riyyi/dotfiles/blob/8d8a21166b106bdb06a5b3e48724c9cd930a7e4b/dotfiles.sh)] dotfiles.sh: script to manage dotfiles.
 
 ### Software:
 

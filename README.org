@@ -1,32 +1,36 @@
-# Dotfiles
+#+TITLE: Dotfiles
+#+OPTIONS: toc:nil
 
 This is a collection of dotfiles and scripts for my i3/bspwm setup, previewed below:
 
-![Screenshot](screenshot.png)
+[[screenshot.png]]
 
-[[Archived](https://github.com/Riyyi/dotfiles/blob/8d8a21166b106bdb06a5b3e48724c9cd930a7e4b/dotfiles.sh)] dotfiles.sh: script to manage dotfiles.
+[[[https://github.com/Riyyi/dotfiles/blob/8d8a21166b106bdb06a5b3e48724c9cd930a7e4b/dotfiles.sh][Archived]]] dotfiles.sh: script to manage dotfiles.
 
-### Software:
+** Software:
 
 All packages that are manually installed via pacman -S, can be found in the packages file,
 dependencies are not included.
 
+** Configuration:
 
-### Configuration:
+Below are all the system changes that were made.\\
+- ~$~ command @@html:<br>@@
+- ~<>~ variable @@html:<br>@@
+- ~()~ action
 
-Below are all the system changes that were made.<br>
-$ = command<br>
-<> = variable<br>
-() = action
+*** Pre-reboot
 
 Boot defaults:
-```
+
+#+BEGIN_SRC shell-script
 $ vim /boot/loader/loader.conf
 timeout 3
 default arch
-```
+#+END_SRC
+
 Boot config:
-```
+#+BEGIN_SRC shell-script
 <uuid> = $ blkid # from the / 'root' partition
 $ vim /boot/loader/entries/arch.conf
 title Arch Linux
@@ -34,28 +38,47 @@ linux /vmlinuz-linux
 initrd /intel-ucode.img
 initrd /initramfs-linux.img
 options root=PARTUUID=<uuid> rw
-```
+#+END_SRC
+
 Predictable network interface names:
-```
+#+BEGIN_SRC shell-script
 $ ln -s /dev/null /etc/systemd/network/99-default.link
-```
+#+END_SRC
+
 Network:
-```sh
+#+BEGIN_SRC shell-script
 $ systemctl enable netctl-auto@wlan0.service
-```
+$ wifi-menu
+#+END_SRC
+
+Trim:
+#+BEGIN_SRC shell-script
+$ systemctl enable fstrim.timer
+#+END_SRC
+
 Give wheel users sudo permission:
-```sh
-$ vim /etc/sudoers
+#+BEGIN_SRC shell-script
+$ sudo EDITOR=vim visudo
 (add)Defaults insults
 (uncomment)%wheel ALL=(ALL) ALL
-```
+#+END_SRC
+
 Add user:
-```sh
+#+BEGIN_SRC shell-script
 $ useradd -m -G wheel -s /bin/bash <username>
 $ passwd <username>
-```
+#+END_SRC
+
+Pacman colors:
+#+BEGIN_SRC shell-script
+$ vim /etc/pacman.conf
+(uncomment)Color
+#+END_SRC
+
+*** Post-reboot:
+
 Installing AUR helper:
-```sh
+#+BEGIN_SRC shell-script
 $ git clone https://aur.archlinux.org/trizen.git
 $ cd trizen
 $ makepkg -si
@@ -63,58 +86,52 @@ $ cd ..
 
 $ trizen -S trizen
 $ rm -rf trizen
-```
+#+END_SRC
+
 Switch shell to zsh:
-```sh
+#+BEGIN_SRC shell-script
 $ chsh -s /bin/zsh
-```
-Pacman colors:
-```sh
-$ vim /etc/pacman.conf
-(uncomment)Color
-```
+#+END_SRC
+
 Git:
-```sh
+#+BEGIN_SRC shell-script
 $ git config --global user.email "<email address>"
 $ git config --global user.name "<name>"
-```
-Tlp:
-```sh
-$ systemctl enable tlp.service
-$ systemctl enable tlp-sleep.service
+#+END_SRC
 
-$ vim /etc/default/tlp
+Tlp:
+#+BEGIN_SRC shell-script
+$ systemctl enable tlp.service
+
+$ vim /etc/tlp.conf
 (edit)SOUND_POWER_SAVE_ON_BAT=0
-```
-Trim:
-```sh
-$ systemctl enable fstrim.timer
-```
-Clock internet sync:
-```sh
-$ timedatectl set-ntp true
-```
+#+END_SRC
+
 Mail gpg:
-```sh
+#+BEGIN_SRC shell-script
 $ gpg --decrypt <backup.pgp> | gpg --import
 $ gpg --search-keys <email address>
-```
-Give permission to /dev/ttyUSB0 for PlatformIO:
-```sh
+#+END_SRC
+
+Give permission to ~/dev/ttyUSB0~ to PlatformIO:
+#+BEGIN_SRC shell-script
 $ gpasswd -a <user> uucp
-```
-Give permisson to change brightness for brightnessctl:
-```sh
+#+END_SRC
+
+Give permissions to change the brightness to brightnessctl:
+#+BEGIN_SRC shell-script
 $ gpasswd -a <user> input
 $ gpasswd -a <user> video
-```
+#+END_SRC
+
 Set Firefox as default browser:
-```sh
+#+BEGIN_SRC shell-script
 $ xdg-settings set default-web-browser firefox.desktop
-```
-Prevent bricking motherboard by mounting efivars read-only:<br>
+#+END_SRC
+
+Prevent bricking motherboard by mounting efivars read-only:\\
 https://wiki.archlinux.org/index.php/Unified_Extensible_Firmware_Interface#Mount_efivarfs
-```sh
+#+BEGIN_SRC shell-script
 $ vim /etc/fstab
 (add)efivarfs    /sys/firmware/efi/efivars    efivarfs    ro,nosuid,nodev,noexec,noatime 0 0
-```
+#+END_SRC

@@ -106,6 +106,8 @@ stream() {
 
 	if [ -z "$quality" ]; then
 		streamlink --quiet --config "/dev/null" "https://twitch.tv/$1"
+		[ "$?" -ne 0 ] && return 1
+
 		printf "Select stream quality: "
 		read -r quality
 	fi

@@ -112,6 +112,7 @@ downloadVideo()
 
 	[ -z "$videoBest" ] && videoLimit="[height<=?1080]"
 	youtube-dl --format "bestvideo${videoLimit}+bestaudio/best" \
+			   --add-metadata \
 			   --external-downloader aria2c \
 			   --cookies "$HOME/documents/youtube.com-cookies.txt" "$1"
 }

@@ -142,10 +142,12 @@ python-zstandard
 qbittorrent
 qemu
 qemu-arch-extra
-qt5ct
 qt5-serialport
-qt5-styleplugins
 qt5-tools
+qt5ct
+qt5gtk2
+qt6ct
+qt6gtk2
 r
 redshift
 reflector

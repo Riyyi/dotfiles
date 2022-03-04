@@ -72,7 +72,7 @@ if [ "$HIDPI" = true ]; then
 	export QT_AUTO_SCREEN_SCALE_FACTOR=0
 	export QT_SCREEN_SCALE_FACTORS=2
 fi
-export QT_QPA_PLATFORMTHEME="qt5ct"
+export QT_QPA_PLATFORMTHEME="qt5gtk2"
 
 # Sudo
 export SUDO_ASKPASS="$HOME/.local/bin/rofipass"

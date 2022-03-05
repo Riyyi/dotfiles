@@ -24,9 +24,18 @@ revert() {
 trap revert HUP INT TERM
 xset +dpms dpms 30 30 30
 
+# >>> hostname=arch-desktop
+radius=92
+ringWidth="10.0"
+# <<<
+# >>> hostname=arch-laptop
+# radius=46
+# ringWidth="5.0"
+# <<<
+
 i3lock -n -i "$LOCK" -B 6 -S 1 -e \
-	--radius=47 \
-	--ring-width=5.0 \
+	--radius="$radius" \
+	--ring-width="$ringWidth" \
 	--verif-color=00000000 \
 	--wrong-color=00000000 \
 	--time-color=00000000 \

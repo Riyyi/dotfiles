@@ -99,37 +99,6 @@ shuffle() {
 	echo "$1" | fold -w 1 | shuf | tr -d '\n'
 }
 
-stream() {
-	channel="$1"
-	quality="$2"
-	lowLatency="$3"
-
-	if [ -z "$quality" ]; then
-		streamlink --quiet --config "/dev/null" "https://twitch.tv/$1"
-		[ "$?" -ne 0 ] && return 1
-
-		printf "Select stream quality: "
-		read -r quality
-	fi
-
-	if [ -n "$lowLatency" ]; then
-		arguments="\
-			--twitch-low-latency \
-			--player-args '--cache=yes --demuxer-max-bytes=750k' \
-		"
-	fi
-
-	echo "Starting stream https://twitch.tv/$channel @ $quality"
-	command="setsid -f streamlink \
-		--twitch-disable-hosting \
-		--twitch-disable-reruns \
-		--player mpv \
-		--stream-sorting-excludes '<480p,>=1080p' \
-		$arguments \
-		https://twitch.tv/$channel $quality > /dev/null 2>&1"
-	eval "$command"
-}
-
 update_mirrorlist() {
 	sudo rm /etc/pacman.d/mirrorlist.pacnew
 	sudo reflector --latest 100 --protocol https --sort rate --save /etc/pacman.d/mirrorlist

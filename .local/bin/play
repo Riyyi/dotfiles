@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Depends: socat
+# Depends: GNU getopt, mpv, socat, streamlink
 
 SOCK="/tmp/umpv-fifo"
 
@@ -18,95 +18,230 @@ ${B}SYNOPSIS${N}
 
 ${B}DESCRIPTION${N}
 	play is a script to manage different mpv viewing bahavior.
-	If no ${U}URLS${N} argument is provided, it is read from clipboard instead.
+	If no ${U}URLS${N} argument is provided, it is read from the clipboard instead.
 	The queue option starts a mpv window with a playlist, which all videos of
 	subsequent queue calls get added to.
 
 ${B}OPTIONS${N}
-	${B}help${N}
+	${B}-h${N}, ${B}--help${N}
 		Display usage message and exit.
 
-	[${B}play${N}] [${U}URLS${N}...] (default)
-		Plays videos in a new mpv window.
+	${B}-q${N}, ${B}--quality${N} ${U}QUALITY${N}
+		Set the video quality, example: ${U}720p60${N}.
 
-	${B}shuffle${N} [${U}URLS${N}...]
+	${B}-f${N}, ${B}--shuffle${N} [${U}URLS${N}...]
 		Shuffle audio playlist (disables video playback).
 
-	${B}queue${N} [${U}URLS${N}...]
+	${B}-q${N}, ${B}--queue${N} [${U}URLS${N}...]
 		Add multiple videos to the unique mpv's queue.
+
+	${B}-s${N}, ${B}--stream${N} [${U}URLS${N}...]
+		Play video(s) using streamlink.
+
+	${B}-l${N}, ${B}--low-latency${N}
+		Enable twitch low-latency mode in streamlink.
 EOF
 }
 
-CLIP="$(xclip -selection clipboard -out)"
+# --------------------------------------
+
+qualityFormat() {
+	# , separator = download several formats
+	# + separator = merge several formats into a single file
+	# / separator = or
+	if [ -z "$quality" ]; then
+		echo "bestvideo[height<=?1080]+bestaudio/best"
+	else
+		height="$(echo "$quality" | awk -F 'p' '{ print $1 }')"
+		fps="$(echo "$quality" | awk -F 'p' '{ print $2 }')"
+
+		format="bestvideo[height<=?$height]"
+		if [ -n "$fps" ]; then
+			format="${format}[fps<=?$fps]"
+		fi
+		format="$format+bestaudio/best"
+
+		echo "$format"
+	fi
+}
 
 play() {
-	MPV="mpv --ytdl-raw-options=add-metadata=,external-downloader=aria2c"
-	if [ -z "$1" ]; then
-		MPV="$MPV $CLIP"
-		# Cut off everything after space
-		LINK="$(echo "$CLIP" | sed -nE 's/^(\S+).*/\1/p')"
-	else
-		MPV="$MPV $*"
-		# Determain which argument holds the urls
-		[ "$1" = "${1#-}" ] && DISPLAY="$1" || DISPLAY="$2"
-		# Cut off everything after space
-		LINK="$(echo "$DISPLAY" | sed -nE 's/^(\S+).*/\1/p')"
-	fi
+	url="$1"
 
-	notify-send -t 2500 "Loading video: $LINK"
-	# Attempt to load video
-	[ "$($MPV)" ] && notify-send -u critical -t 4000 "Loading video failed.."
+	notify-send -t 2500 "Loading video: $url"
+	setsid -f mpv --no-terminal \
+		   --ytdl-format="$(qualityFormat)" \
+		   --ytdl-raw-options=add-metadata=,external-downloader=aria2c \
+		   "$url"
 }
 
 shuffle() {
-	# Skip first argument
-	shift 1
-	setsid -f mpv --no-video --shuffle \
-		   --ytdl-format='bestaudio[ext=m4a]' \
-		   "${@:-$CLIP}"
+	urls="$*"
+
+	mpv --no-video --shuffle \
+		--ytdl-format='bestaudio[ext=m4a]' \
+		--ytdl-raw-options=add-metadata=,external-downloader=aria2c \
+		"$urls"
 }
 
 queue() {
-	OPTIONS="--no-terminal --force-window --input-ipc-server=$SOCK --"
+	urls="$*"
+
+	options="--no-terminal --force-window --input-ipc-server=$SOCK"
 
 	# Create mpv cache directory
-	DIR="$(dirname "$SOCK")"
-	[ ! -d "$DIR" ] && mkdir -p "$DIR"
+	dir="$(dirname "$SOCK")"
+	[ ! -d "$dir" ] && mkdir -p "$dir"
 
 	# Delete socket if no umpv is running
-	if ! pgrep -f "mpv $OPTIONS" > /dev/null; then
+	if ! pgrep -f "mpv $options" > /dev/null; then
 		rm -f "$SOCK"
 	fi
-
-	# Skip first argument
-	shift 1
-	# Set url to argument if provided, clipboard otherwise
-	URLS="${*:-$CLIP}"
 
 	if [ -S "$SOCK" ]; then
 		notify-send -t 2500 "Added video to queue.."
 		# Add video to named pipe
-		echo "$URLS" | awk -v RS=' ' '{ print "raw loadfile "$1" append" }' \
+		echo "$urls" | awk -v RS=' ' '{ print "raw loadfile "$1" append" }' \
 			| socat UNIX-CONNECT:"$SOCK" -
 	else
 		# Play video
-		notify-send -t 2500 "Loading video: $URLS"
+		notify-send -t 2500 "Loading video: $urls"
 		# shellcheck disable=2086
-		setsid -f mpv $OPTIONS $URLS
+		setsid -f mpv $options \
+			   --ytdl-format="$(qualityFormat)" \
+			   --ytdl-raw-options=add-metadata=,external-downloader=aria2c \
+			   $urls
 	fi
 }
 
-case "$1" in
-	help)
-		help
-		;;
-	shuffle)
-		shuffle "$@"
-		;;
-	queue)
-		queue "$@"
-		;;
-	*)
-		play "$@"
-		;;
-esac
+stream() {
+	channel="$1"
+	quality="$2"
+	lowLatency="$3"
+
+	if [ -z "$quality" ]; then
+		if ! streamlink --quiet --config /dev/null "$channel"; then
+			return 1
+		fi
+
+		printf "Select stream quality: "
+		read -r quality
+	fi
+
+	if [ -n "$lowLatency" ]; then
+		arguments="\
+			--twitch-low-latency \
+			--player-args '--cache=yes --demuxer-max-bytes=750k'"
+	fi
+
+	echo "Starting stream $channel @ $quality"
+	command="setsid -f streamlink \
+		--twitch-disable-hosting \
+		--twitch-disable-reruns \
+		--player mpv \
+		--stream-sorting-excludes '<480p,>=1080p' \
+		$arguments \
+		$channel $quality > /dev/null 2>&1"
+	eval "$command"
+}
+
+# Option parsing
+# --------------------------------------
+
+script="$(basename "$0")"
+parsed="$(getopt --options "hslquf" \
+				 --longoptions "help,stream,quality,queue,shuffle" \
+				 -n "$script" -- "$@" 2>&1)"
+result="$?"
+
+# Exit if invalid option is provided
+if [ "$result" -ne 0 ]; then
+	echo "$parsed" | head -n 1 >&2
+	echo "Try './$script --help' for more information." >&2
+	exit 1
+fi
+
+eval set -- "$parsed"
+
+streamOption=0
+qualityOption=0
+lowLatencyOption=0
+queueOption=0
+shuffleOption=0
+while true; do
+	case "$1" in
+		-h | --help)
+			help
+			exit
+			;;
+		-s | --stream)
+			streamOption=1
+			shift
+			;;
+		-l | --low-latency)
+			lowLatencyOption=1
+			shift
+			;;
+		-q | --quality)
+			qualityOption=1
+			shift
+			;;
+		-u | --queue)
+			queueOption=1
+			shift
+			;;
+		-f | --shuffle)
+			shuffleOption=1
+			shift
+			;;
+		--)
+			shift
+			break
+			;;
+		*)
+			break
+			;;
+	esac
+done
+
+# Target parsing
+# --------------------------------------
+
+# Incompatible flags
+result=$((streamOption + queueOption + shuffleOption))
+if [ $result -gt 1 ]; then
+	echo "Incompatible flags." >&2
+	echo "Try './$script --help' for more information." >&2
+	exit 1;
+fi
+
+# Get quality
+if [ $qualityOption -eq 1 ]; then
+	quality="$1"
+	shift
+fi
+
+# Set url to clipboard if none provided
+clip="$(xclip -selection clipboard -out)"
+if [ "$#" -eq 0 ]; then
+	eval set -- "$clip"
+fi
+
+[ $lowLatencyOption -eq 1 ] && lowLatency="1"
+
+# Execute
+# --------------------------------------
+
+if [ $streamOption -eq 1 ]; then
+	for url in "$@"; do
+		stream "$url" "$quality" "$lowLatency"
+	done
+elif [ $shuffleOption -eq 1 ]; then
+	shuffle "$*"
+elif [ $queueOption -eq 1 ]; then
+	queue "$*"
+else
+	for url in "$@"; do
+		play "$url"
+	done
+fi

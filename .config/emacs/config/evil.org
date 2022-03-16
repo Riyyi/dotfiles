@@ -11,7 +11,10 @@ Evil mode and related packages.
 
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
-  :config (global-undo-tree-mode))
+  :config
+  (setq undo-tree-auto-save-history t)
+  (setq undo-tree-history-directory-alist `(("." . ,(concat dot-cache-dir "/undo-tree"))))
+  (global-undo-tree-mode))
 
 (use-package goto-chg)
 
@@ -48,7 +51,7 @@ Vim equivalence: <C-D>"
 	(interactive)
 	(evil-shift-left-line 1))
 
-	(defun dot/evil-insert-shift-right ()
+  (defun dot/evil-insert-shift-right ()
 	"Shift line right, retains cursor position.
 
 Vim equivalence: <Tab>"

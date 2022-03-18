@@ -3,13 +3,7 @@
 xrdb "$XDG_CONFIG_HOME/xorg/Xresources"
 
 # Setup display
-
-# >>> hostname=arch-desktop
-monctl primary DP-1 &
-# <<<
-# >>> hostname=arch-laptop
-# monctl auto 3000 2000 48 eDP-1 &
-# <<<
+autorandr --change
 
 # Set default X cursor to arrow
 xsetroot -cursor_name left_ptr

@@ -32,7 +32,7 @@ ${B}OPTIONS${N}
 	${B}-f${N}, ${B}--shuffle${N} [${U}URLS${N}...]
 		Shuffle audio playlist (disables video playback).
 
-	${B}-q${N}, ${B}--queue${N} [${U}URLS${N}...]
+	${B}-u${N}, ${B}--queue${N} [${U}URLS${N}...]
 		Add multiple videos to the unique mpv's queue.
 
 	${B}-s${N}, ${B}--stream${N} [${U}URLS${N}...]
@@ -46,6 +46,18 @@ EOF
 # --------------------------------------
 
 qualityFormat() {
+	url="$1"
+
+	# Twitch urls dont support fancy matching
+	if echo "$url" | grep -q "twitch\.tv"; then
+		if [ -z "$quality" ]; then
+			echo "Source"
+		else
+			echo "$quality"
+		fi
+		return
+	fi
+
 	# , separator = download several formats
 	# + separator = merge several formats into a single file
 	# / separator = or
@@ -70,7 +82,7 @@ play() {
 
 	notify-send -t 2500 "Loading video: $url"
 	setsid -f mpv --no-terminal \
-		   --ytdl-format="$(qualityFormat)" \
+		   --ytdl-format="$(qualityFormat "$url")" \
 		   --ytdl-raw-options=add-metadata=,external-downloader=aria2c \
 		   "$url"
 }
@@ -108,7 +120,7 @@ queue() {
 		notify-send -t 2500 "Loading video: $urls"
 		# shellcheck disable=2086
 		setsid -f mpv $options \
-			   --ytdl-format="$(qualityFormat)" \
+			   --ytdl-format="$(qualityFormat $urls)" \
 			   --ytdl-raw-options=add-metadata=,external-downloader=aria2c \
 			   $urls
 	fi

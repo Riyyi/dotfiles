@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Looking Glass (client)
+GenericName=Control a VM with PCI pass-through
+Exec=looking-glass-client
+Icon=find
+Type=Application
+Terminal=false

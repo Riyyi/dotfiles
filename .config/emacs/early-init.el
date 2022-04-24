@@ -34,6 +34,9 @@
 ;; Precompute activation actions to speed up startup
 (setq package-quickstart t)
 
+;; Native compilation
+(setq package-native-compile t)
+
 ;; -------------------------------------
 
 ;; Disable frame bars before they're loaded in

@@ -30,7 +30,7 @@ dunst
 ebtables
 edk2-ovmf
 efibootmgr
-emacs
+emacs-nativecomp
 evtest
 exfat-utils
 feh

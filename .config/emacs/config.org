@@ -29,6 +29,7 @@
   - [[#file-backups-versioning][File Backups Versioning]]
   - [[#formatting][Formatting]]
   - [[#hide-elements][Hide Elements]]
+  - [[#native-compilation][Native Compilation]]
   - [[#recentf][Recentf]]
   - [[#tabs][Tabs]]
   - [[#utf-8][UTF-8]]
@@ -364,6 +365,12 @@ Setup file backups versioning.
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq ring-bell-function 'ignore)
+#+END_SRC
+
+** Native Compilation
+
+#+BEGIN_SRC emacs-lisp
+(setq native-comp-async-report-warnings-errors nil)
 #+END_SRC
 
 ** Recentf

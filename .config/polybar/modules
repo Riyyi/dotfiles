@@ -150,7 +150,7 @@ format =
 type = internal/date
 interval = 5
 
-time = %I:%M %p
+time = %I:%M %p  %a
 time-alt =
 
 format = %{A1:$HOME/.local/bin/panel/date.sh:}<label>%{A}

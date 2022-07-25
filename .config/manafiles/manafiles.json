@@ -1,0 +1,16 @@
+{
+	"ignorePatterns": [
+		".git/",
+		"*.md",
+		"manafiles.json",
+		"packages",
+		"README.org",
+		"screenshot.png"
+	],
+	"systemPatterns": [
+		"/boot/",
+		"/etc/",
+		"/usr/lib/",
+		"/usr/share/"
+	]
+}

@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# fiio - systemd suspend/resume hook
+#
+# Disable FiiO DAC when going to sleep.
+# Usb vendor/product ID found using lsusb.
+#
+# Reference:
+# https://bbs.archlinux.org/viewtopic.php?id=242633
+
+id="262a:100e"
+file="/tmp/systemd-system-sleep-fiio"
+
+case $1 in
+    pre)
+		device=$(tree /sys | grep -i "usb.*$id" | sed -E '1s/.*\/(.*):[0-9]\.[0-9].*/\1/;2,$d')
+
+		# Bail if device isnt connected
+		[ -z "$device" ] && exit 1
+
+		echo "Suspending device [FiiO USB DAC E17K] on usb $device"
+		echo "$device" > "$file"
+		echo "$device" > /sys/bus/usb/drivers/usb/unbind
+		;;
+    post)
+		# Bail if device isnt connected
+		[ ! -f "$file" ] && exit 1
+
+		echo "Resuming device [FiiO USB DAC E17K] on usb $(cat file)"
+		cat "$file" > /sys/bus/usb/drivers/usb/bind
+		rm "$file"
+		;;
+esac

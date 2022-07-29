@@ -130,11 +130,11 @@ Org latex exporter.
   (setq org-latex-toc-command "\\newpage \\tableofcontents \\newpage")
   ;; Add minted package to every LaTeX header
   (add-to-list 'org-latex-packages-alist '("" "minted"))
-  ;; Append -shell-escape so pdflatex exports minted correctly
-  (add-to-list 'org-latex-pdf-process (replace-regexp-in-string
-									   "%latex "
-									   "%latex -shell-escape "
-									   (car org-latex-pdf-process))))
+  ;; Add -shell-escape so pdflatex exports minted correctly
+  (setcar org-latex-pdf-process (replace-regexp-in-string
+								 "-%latex -interaction"
+								 "-%latex -shell-escape -interaction"
+								 (car org-latex-pdf-process))))
 #+END_SRC
 
 ** Org Functions

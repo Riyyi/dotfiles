@@ -993,10 +993,6 @@ General.el ~leader key binds.
 
   ;; File
   "f"     '(:ignore t                      :which-key "file")
-  "f e"   '(:ignore t                      :which-key "emacs")
-  "f e c" '(dot/config-visit               :which-key "Config visit")
-  "f e f" '(dot/find-file-emacsd           :which-key "Find emacs file")
-  "f e r" '(dot/config-reload              :which-key "Config reload")
   "f d"   '(dired                          :which-key "Find directory")
   "f f"   '(dot/find-file-in-project-root  :which-key "Find file")
   "f o"   '(ff-find-other-file             :which-key "Find header/source file")
@@ -1006,31 +1002,10 @@ General.el ~leader key binds.
   "f S"   '(write-file                     :which-key "Save file as...")
   "f u"   '(dot/sudo-find-file             :which-key "Sudo find file")
   "f U"   '(dot/sudo-this-file             :which-key "Sudo this file")
-
-  ;; Git
-  "g"     '(:ignore t                      :which-key "git")
-  "g b"   '(magit-branch-checkout          :which-key "Magit switch branch")
-  "g B"   '(magit-blame-addition           :which-key "Magit blame")
-  "g c"   '(:ignore t                      :which-key "create")
-  "g c c" '(magit-commit-create            :which-key "Commit")
-  "g c b" '(magit-branch-and-checkout      :which-key "Branch")
-  "g c r" '(magit-init                     :which-key "Initialize repo")
-  "g C"   '(magit-clone                    :which-key "Magit clone")
-  "g f"   '(:ignore t                      :which-key "file")
-  "g f c" '(magit-find-git-config-file     :which-key "Find gitconfig file")
-  "g f D" '(magit-file-delete              :which-key "Delete file")
-  "g f f" '(magit-find-file                :which-key "Find file")
-  "g f R" '(magit-file-rename              :which-key "Rename file")
-  "g F"   '(magit-fetch                    :which-key "Magit fetch")
-  "g g"   '(magit-status                   :which-key "Magit status")
-  "g G"   '(magit-status-here              :which-key "Magit status here")
-  "g l"   '(:ignore t                      :which-key "list")
-  "g l r" '(magit-list-repositories        :which-key "List repositories")
-  "g l s" '(magit-list-submodules          :which-key "List submodules")
-  "g L"   '(magit-log                      :which-key "Magit log")
-  "g s"   '(magit-show-commit              :which-key "Magit show commit")
-  "g S"   '(magit-stage-file               :which-key "Stage file")
-  "g U"   '(magit-unstage-file             :which-key "Unstage file")
+  "f e"   '(:ignore t                      :which-key "emacs")
+  "f e c" '(dot/config-visit               :which-key "Config visit")
+  "f e f" '(dot/find-file-emacsd           :which-key "Find emacs file")
+  "f e r" '(dot/config-reload              :which-key "Config reload")
 
   ;; Help
   "h"   '(:keymap help-map                 :which-key "help")
@@ -1092,6 +1067,31 @@ General.el ~leader key binds.
 
   ;; Update packages
   "U"   '(dot/update-packages                       :which-key "Update packages")
+
+  ;; Version control
+  "v"     '(:ignore t                      :which-key "git")
+  "v b"   '(magit-branch-checkout          :which-key "Magit switch branch")
+  "v B"   '(magit-blame-addition           :which-key "Magit blame")
+  "v C"   '(magit-clone                    :which-key "Magit clone")
+  "v F"   '(magit-fetch                    :which-key "Magit fetch")
+  "v L"   '(magit-log                      :which-key "Magit log")
+  "v s"   '(magit-show-commit              :which-key "Magit show commit")
+  "v S"   '(magit-stage-file               :which-key "Stage file")
+  "v U"   '(magit-unstage-file             :which-key "Unstage file")
+  "v v"   '(magit-status                   :which-key "Magit status")
+  "v V"   '(magit-status-here              :which-key "Magit status here")
+  "v c"   '(:ignore t                      :which-key "create")
+  "v c c" '(magit-commit-create            :which-key "Commit")
+  "v c b" '(magit-branch-and-checkout      :which-key "Branch")
+  "v c r" '(magit-init                     :which-key "Initialize repo")
+  "v f"   '(:ignore t                      :which-key "file")
+  "v f c" '(magit-find-git-config-file     :which-key "Find gitconfig file")
+  "v f D" '(magit-file-delete              :which-key "Delete file")
+  "v f f" '(magit-find-file                :which-key "Find file")
+  "v f R" '(magit-file-rename              :which-key "Rename file")
+  "v l"   '(:ignore t                      :which-key "list")
+  "v l r" '(magit-list-repositories        :which-key "List repositories")
+  "v l s" '(magit-list-submodules          :which-key "List submodules")
 
   ;; Window
   "w"         '(:ignore t                               :which-key "window")

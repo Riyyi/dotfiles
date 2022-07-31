@@ -40,5 +40,13 @@
   (marginalia-mode))
 
 (use-package consult
-  :after selectrum)
+  :after selectrum
+  :config (setq consult-narrow-key (kbd "?")))
+
+(use-package consult-flycheck
+  :after (consult flycheck))
+
+(use-package consult-project-extra
+  :after (consult project)
+  :config (setq project-switch-commands 'consult-project-extra-find))
 #+END_SRC

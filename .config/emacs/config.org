@@ -507,12 +507,6 @@ Functions that only use built-in Emacs functionality.
 					   (directory-files-recursively dot-emacs-dir ""))))
 	(find-file (completing-read "Find file (emacs): " files nil t))))
 
-(defun dot/find-file-recentf ()
-  "Use `completing-read' to open a recent file."
-  (interactive)
-  (let ((files (mapcar 'abbreviate-file-name recentf-list)))
-	(find-file (completing-read "Find file (recent): " files nil t))))
-
 (defun dot/indent-buffer ()
   "Indent each nonblank line in the buffer."
   (interactive)
@@ -953,7 +947,7 @@ General.el ~leader key binds.
 
 (space-leader
   "SPC"       '(dot/M-x                    :which-key "Execute command")
-  "RET"       '(bookmark-jump              :which-key "Jump to bookmark")
+  "RET"       '(consult-bookmark           :which-key "Go to bookmark")
 
   ;; Apps
   "a"     '(:ignore t                      :which-key "apps")
@@ -963,7 +957,7 @@ General.el ~leader key binds.
   ;; Buffer / bookmark
   "b"         '(:ignore t                         :which-key "buffer/bookmark")
   "b a"       '(auto-revert-mode                  :which-key "Auto revert buffer")
-  "b b"       '(switch-to-buffer                  :which-key "Switch buffer")
+  "b b"       '(consult-buffer                    :which-key "Switch buffer")
   "b d"       '(dot/dashboard-goto                :which-key "Dashboard")
   "b k"       '(kill-current-buffer               :which-key "Kill buffer")
   "b m"       '(bookmark-set                      :which-key "Make bookmark")
@@ -996,7 +990,7 @@ General.el ~leader key binds.
   "f d"   '(dired                          :which-key "Find directory")
   "f f"   '(dot/find-file-in-project-root  :which-key "Find file")
   "f o"   '(ff-find-other-file             :which-key "Find header/source file")
-  "f r"   '(dot/find-file-recentf          :which-key "Find recent file ")
+  "f r"   '(consult-recent-file            :which-key "Find recent file")
   "f R"   '(rename-file-and-buffer         :which-key "Rename file")
   "f s"   '(basic-save-buffer              :which-key "Save file")
   "f S"   '(write-file                     :which-key "Save file as...")
@@ -1006,6 +1000,12 @@ General.el ~leader key binds.
   "f e c" '(dot/config-visit               :which-key "Config visit")
   "f e f" '(dot/find-file-emacsd           :which-key "Find emacs file")
   "f e r" '(dot/config-reload              :which-key "Config reload")
+
+  ;; Go to
+  "g"     '(:ignore t                      :which-key "goto")
+  "g b"   '(consult-bookmark               :which-key "Go to bookmark")
+  "g f"   '(consult-flycheck               :which-key "Go to flycheck error")
+  "g m"   '(consult-mark                   :which-key "Go to marker")
 
   ;; Help
   "h"   '(:keymap help-map                 :which-key "help")
@@ -1036,6 +1036,9 @@ General.el ~leader key binds.
 
   ;; Project
   "p"   '(:keymap project-prefix-map       :which-key "project")
+  "p b" '(consult-project-buffer           :which-key "project-switch-buffer")
+  "p f" '(consult-project-extra-find       :which-key "project-find-file")
+  "p g" '(consult-grep                     :which-key "project-find-regexp")
 
   ;; Quit
   "q"   '(:ignore t                        :which-key "quit")
@@ -1047,7 +1050,6 @@ General.el ~leader key binds.
   ;; Search
   "s"   '(:ignore t                        :which-key "search")
   "s a" '(avy-goto-char-timer              :which-key "Avy goto char")
-  "s b" '(bookmark-jump                    :which-key "Jump to bookmark")
   "s f" '(consult-find                     :which-key "Search file")
   "s l" '(avy-goto-line                    :which-key "Avy goto line")
   "s p" '(consult-grep                     :which-key "Search project")
@@ -1155,6 +1157,10 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
   "'"         '(org-edit-special               :which-key "Org edit")
   "e"         '(org-export-dispatch            :which-key "Org export")
   "o"         '(org-open-at-point              :which-key "Org open at point")
+  "q"         '(org-set-tags-command           :which-key "Org tags")
+
+  "g"         '(:ignore t                      :which-key "goto")
+  "g o"       '(consult-outline                :which-key "Org go to heading")
 
   "i"         '(:ignore t                      :which-key "insert")
   "i c"       '(org-table-insert-column        :which-key "Insert table column")
@@ -1168,8 +1174,6 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
   "l l"       '(org-insert-link                :which-key "Insert link")
   "l s"       '(org-store-link                 :which-key "Store link")
   "l S"       '(org-insert-last-stored-link    :which-key "Insert stored link")
-
-  "q"         '(org-set-tags-command           :which-key "Org tags")
 
   "s"         '(:ignore t                      :which-key "tree/subtree")
   "s h"       '(org-promote-subtree            :which-key "Org promote subtree")

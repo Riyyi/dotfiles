@@ -53,17 +53,30 @@ Places buffers as tabs in a bar at the top of the frame.
   (setq centaur-tabs-set-modified-marker t)
   (setq centaur-tabs-style "slant")
 
+  (setq centaur-tabs-project-buffer-group-calc nil)
   (defun centaur-tabs-buffer-groups ()
 	"Organize tabs into groups by buffer."
-	(list
-	 (cond
-	  ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
-	  ((memq major-mode '(org-mode
-						  emacs-lisp-mode)) "Org Mode")
-	  ((derived-mode-p 'dired-mode) "Dired")
-	  ((derived-mode-p 'prog-mode
-					   'text-mode) "Editing")
-	  (t "User"))))
+	(unless centaur-tabs-project-buffer-group-calc
+	  (set (make-local-variable 'centaur-tabs-project-buffer-group-calc)
+		   (list
+			(cond
+			 ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
+			 ((or (memq major-mode '(magit-process-mode
+									 magit-status-mode
+									 magit-diff-mode
+									 magit-log-mode
+									 magit-file-mode
+									 magit-blob-mode
+									 magit-blame-mode))
+				  (string= (buffer-name) "COMMIT_EDITMSG")) "Magit")
+			 ((project-current) (dot/project-project-name))
+			 ((memq major-mode '(org-mode
+								 emacs-lisp-mode)) "Org Mode")
+			 ((derived-mode-p 'dired-mode) "Dired")
+			 ((derived-mode-p 'prog-mode
+							  'text-mode) "Editing")
+			 (t "Other")))))
+	(symbol-value 'centaur-tabs-project-buffer-group-calc))
 
   (defun centaur-tabs-hide-tab (buffer)
 	"Hide from the tab bar by BUFFER name."
@@ -137,6 +150,7 @@ Places buffers as tabs in a bar at the top of the frame.
   (setq dashboard-banner-logo-title "GNU Emacs master race!")
   (setq dashboard-center-content t)
   (setq dashboard-page-separator "\n\f\n")
+  (setq dashboard-projects-backend 'project-el)
   (setq dashboard-set-file-icons t)
   (setq dashboard-set-footer nil)
   (setq dashboard-set-heading-icons t)
@@ -196,7 +210,7 @@ Provides Emacs with a file tree.
   :init
 
   ;; This needs to be in init to actually start loading the package
-  (with-eval-after-load 'projectile
+  (with-eval-after-load 'project
 	(defun neotree-toggle-in-project-root ()
 	  "Toggle Neotree in project root."
 	  (interactive)
@@ -224,7 +238,7 @@ Emacs mode line replacement.
 		  (accent . (telephone-line-erc-modified-channels-segment
 					 telephone-line-process-segment
 					 telephone-line-buffer-segment))
-		  (nil    . (telephone-line-projectile-segment))))
+		  (nil    . (telephone-line-project-segment))))
   (telephone-line-mode))
 #+END_SRC
 

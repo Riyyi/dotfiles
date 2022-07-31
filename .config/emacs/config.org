@@ -463,6 +463,31 @@ Functions that only use built-in Emacs functionality.
   (interactive)
   (org-babel-load-file (concat dot-emacs-dir "/config.org")))
 
+;; Reference: http://turingmachine.org/bl/2013-05-29-recursively-listing-directories-in-elisp.html
+(defun dot/directory-files-recursively-depth (dir regexp include-directories maxdepth)
+  "Depth limited variant of the built-in `directory-files-recursively'."
+  (let ((result '())
+		(current-directory-list (directory-files dir t)))
+	(dolist (path current-directory-list)
+	  (cond
+	   ((and (file-regular-p path)
+			 (file-readable-p path)
+			 (string-match regexp path))
+		(setq result (cons path result)))
+	   ((and (file-directory-p path)
+			 (file-readable-p path)
+			 (not (string-equal "/.." (substring path -3)))
+			 (not (string-equal "/." (substring path -2))))
+		(when (and include-directories
+				   (string-match regexp path))
+		  (setq result (cons path result)))
+		(when (> maxdepth 1)
+          (setq result (append (nreverse (dot/directory-files-recursively-depth
+										  path regexp include-directories (- maxdepth 1)))
+							   result))))
+	   (t)))
+	(reverse result)))
+
 (defun dot/dired-find-file ()
   "In Dired, visit the file or directory named on this line."
   (interactive)
@@ -1034,8 +1059,8 @@ General.el ~leader key binds.
   "n r r" '(org-roam-buffer-toggle              :which-key "Toggle buffer")
   "n r s" '(org-roam-ui-mode                    :which-key "Toggle server")
 
-  ;; Projectile
-  "p"   '(:keymap projectile-command-map :package projectile :which-key "projectile")
+  ;; Project
+  "p"   '(:keymap project-prefix-map       :which-key "project")
 
   ;; Quit
   "q"   '(:ignore t                        :which-key "quit")
@@ -1056,9 +1081,8 @@ General.el ~leader key binds.
 
   ;; Tabs / toggle
   "t"   '(:ignore t                                 :which-key "tabs/toggle")
-  "t b" '(centaur-tabs-group-buffer-groups          :which-key "Group tabs by buffer")
   "t f" '(dot/toggle-fringe                         :which-key "Toggle fringe")
-  "t p" '(centaur-tabs-group-by-projectile-project  :which-key "Group tabs by project")
+  "t g" '(centaur-tabs-switch-group                 :which-key "Switch tab group")
   "t h" '(centaur-tabs-backward-group               :which-key "Tab backward group")
   "t j" '(centaur-tabs-select-end-tab               :which-key "Tab select first")
   "t k" '(centaur-tabs-select-beg-tab               :which-key "Tab select last")

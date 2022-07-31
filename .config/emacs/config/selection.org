@@ -40,7 +40,5 @@
   (marginalia-mode))
 
 (use-package consult
-  :after selectrum
-  :config
-  (setq consult-project-root-function #'dot/find-project-root))
+  :after selectrum)
 #+END_SRC

@@ -23,12 +23,12 @@
 						(setq tex-indent-basic 4)))
   :config
 
-  (with-eval-after-load 'projectile
+  (with-eval-after-load 'project
 	(defun compile-latex ()
 	  "Compile LaTeX project."
 	  (interactive)
 	  (let ((default-directory (dot/find-project-root)))
-		(projectile-save-project-buffers)
+		(dot/project-save-project-buffers)
 		(shell-command "make")))))
 #+END_SRC
 

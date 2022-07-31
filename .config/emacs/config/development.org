@@ -5,7 +5,7 @@
 ** Table of Contents :toc_4:
   - [[#company][Company]]
   - [[#git][Git]]
-  - [[#projectile][Projectile]]
+  - [[#project][Project]]
   - [[#languages][Languages]]
     - [[#language-server-support][Language Server Support]]
     - [[#debug-adapter-support][Debug Adapter Support]]
@@ -107,28 +107,29 @@ GLSL integration with company requires the package: ~glslang~.
   (put 'magit-log-select-pick :advertised-binding [?\M-c])
   (put 'magit-log-select-quit :advertised-binding [?\M-k]))
 #+END_SRC
-** Projectile
+
+** Project
 
 Project manager.
 
+[[https://michael.stapelberg.ch/posts/2021-04-02-emacs-project-override/][Adding to project.el project directory detection]].
+
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
+(use-package project
   :defer t
+  :init (setq project-list-file (concat dot-cache-dir "/projects"))
   :config
-  (setq projectile-cache-file (concat dot-cache-dir "/projectile.cache"))
-  (setq projectile-completion-system 'default)
-  (setq projectile-enable-caching t)
-  (setq projectile-indexing-method 'hybrid)
-  (setq projectile-known-projects-file (concat dot-cache-dir "/projectile-bookmarks.eld"))
-  (setq projectile-project-search-path '("~"))
-  (setq projectile-sort-order 'recentf)
+  (defun dot/project-find (dir)
+	(let ((root (locate-dominating-file dir ".project")))
+	  (and root (cons 'vc root))))
+  (add-hook 'project-find-functions #'dot/project-find)
 
   (defun dot/find-project-root ()
-	"Return root of the project, determined by `.git/' and `.projectile',
+	"Return root of the project, determined by `.git/' and `.project',
 `default-directory' otherwise."
-	(let ((search-directory (projectile-project-root)))
-	  (if search-directory
-		  search-directory
+	(let ((project (project-current)))
+	  (if project
+		  (project-root project)
 		default-directory)))
 
   (defun dot/find-file-in-project-root ()
@@ -137,7 +138,31 @@ Project manager.
 	(let ((default-directory (dot/find-project-root)))
 	  (call-interactively 'find-file)))
 
-  (projectile-mode))
+  (defun dot/project-remember-projects-under (dir maxdepth)
+	"Index all projects below directory DIR recursively, until MAXDEPTH."
+	(let ((files (mapcar 'file-name-directory
+						 (dot/directory-files-recursively-depth
+						  dir "\\.git$\\|\\.project$" t maxdepth))))
+	  (dolist (path files)
+		(project-remember-projects-under path))))
+
+  (unless (file-exists-p project-list-file)
+	(project-remember-projects-under "~/dotfiles")
+	(dot/project-remember-projects-under "~/code" 4))
+
+  (defun dot/project-project-name ()
+	"Return project name."
+	(let ((project (project-current)))
+	  (if project
+		  (file-name-nondirectory (directory-file-name (project-root project)))
+		"-")))
+
+  (defun dot/project-save-project-buffers ()
+	"Save all project buffers."
+	(interactive)
+	(let ((buffers (cl-remove-if (lambda (buffer) (not (buffer-file-name buffer)))
+								 (project-buffers (project-current)))))
+	  (save-some-buffers t (lambda () (member (current-buffer) buffers))))))
 #+END_SRC
 
 ** Languages

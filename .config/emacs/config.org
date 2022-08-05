@@ -1127,7 +1127,7 @@ Evaluated keybinds.
 (with-eval-after-load 'lsp-mode
   (space-leader lsp-mode-map
 	"l" lsp-command-map
-	"l = f" '(lsp-format-buffer-or-region :which-key "format buffer or region")
+	"l = f" '(dot/lsp-format-buffer-or-region :which-key "format buffer or region")
 	))
 
 (with-eval-after-load 'dap-mode

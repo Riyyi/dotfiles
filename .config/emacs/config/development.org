@@ -210,7 +210,7 @@ Language Server Protocol.
 	(let ((lsp-keymap-prefix (concat leader-key " l")))
 	  (lsp-enable-which-key-integration)))
 
-  (defun lsp-format-buffer-or-region ()
+  (defun dot/lsp-format-buffer-or-region ()
 	"Format the selection (or buffer) with LSP."
 	(interactive)
 	(unless (bound-and-true-p lsp-mode)
@@ -218,7 +218,23 @@ Language Server Protocol.
 	(call-interactively
 	 (if (use-region-p)
 		 #'lsp-format-region
-	   #'lsp-format-buffer))))
+	   #'lsp-format-buffer)))
+
+  ;; This is cached to prevent unneeded I/O
+  (setq lsp-in-cpp-project-cache nil)
+  (defun dot/lsp-format-cpp-buffer ()
+	"Format buffer in C++ projects."
+	(unless lsp-in-cpp-project-cache
+	  (set (make-local-variable 'lsp-in-cpp-project-cache)
+		   (list
+			(if (and (eq major-mode 'c++-mode)
+					 (bound-and-true-p lsp-mode)
+					 (project-current))
+				t
+			  nil))))
+	(when (car lsp-in-cpp-project-cache)
+	  (lsp-format-buffer)))
+  (add-hook 'before-save-hook #'dot/lsp-format-cpp-buffer))
 
 ;; TODO: add lsp-signature keybinds
 

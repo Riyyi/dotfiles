@@ -229,7 +229,9 @@ Language Server Protocol.
 		   (list
 			(if (and (eq major-mode 'c++-mode)
 					 (bound-and-true-p lsp-mode)
-					 (project-current))
+					 (or
+					  (locate-dominating-file "." ".clang-format")
+					  (locate-dominating-file "." "_clang-format")))
 				t
 			  nil))))
 	(when (car lsp-in-cpp-project-cache)

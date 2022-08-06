@@ -191,7 +191,8 @@ Language Server Protocol.
 								  "--clang-tidy"
 								  "--compile-commands-dir=build"
 								  "--log=error"
-								  "--pch-storage=memory"))
+								  "--pch-storage=memory"
+								  "--enable-config"))
   (setq lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
   (setq lsp-clients-lua-language-server-install-dir "/usr/lib/lua-language-server/")
   (setq lsp-clients-lua-language-server-main-location "/usr/lib/lua-language-server/main.lua")
@@ -388,8 +389,8 @@ On the fly syntax checking.
 	shell-script-mode)
    . flycheck-mode)
   :config
-  (setq flycheck-clang-language-standard "c++17")
-  (setq flycheck-gcc-language-standard "c++17"))
+  (setq flycheck-clang-language-standard "c++20")
+  (setq flycheck-gcc-language-standard "c++20"))
 
 ;; For .el files which are intended to be packages
 (use-package flycheck-package

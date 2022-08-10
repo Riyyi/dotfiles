@@ -140,10 +140,13 @@ stream() {
 		read -r quality
 	fi
 
-	if [ -n "$lowLatency" ]; then
+	if [ -z "$lowLatency" ]; then
+		arguments="\
+			--player-args '--force-window'"
+	else
 		arguments="\
 			--twitch-low-latency \
-			--player-args '--cache=yes --demuxer-max-bytes=750k'"
+			--player-args '--force-window --cache=yes --demuxer-max-bytes=750k'"
 	fi
 
 	echo "Starting stream $channel @ $quality"

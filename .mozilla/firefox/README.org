@@ -73,3 +73,4 @@ Block YouTube video player loading
 
 - https://www.4chan-x.net/builds/4chan-X.user.js
 - https://greasyfork.org/en/scripts/395257-better-google
+- https://greasyfork.org/en/scripts/29420-google-dwimages

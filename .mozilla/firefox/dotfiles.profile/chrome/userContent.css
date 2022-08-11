@@ -13,6 +13,7 @@
 	#toggleMsgBtn { display: none; }
 	.adg-rects.desktop { display: none; }
 	.middlead.center { display: none !important; }
+	.replacedSideArrows { display: none; }
 	form[name=post] { display: none; }
 	hr.aboveMidAd { display: none; }
 	hr.abovePostForm { display: none; }

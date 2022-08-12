@@ -1,4 +1,4 @@
-## Settings
+#--- General ---#
 
 # Directories
 export CAPTURE="$HOME/pictures/screen-captures"
@@ -20,10 +20,14 @@ export PLATFORMIO_HOME_DIR="$XDG_DATA_HOME/platformio"
 export R_ENVIRON_USER="$XDG_CONFIG_HOME/R/Renviron"
 
 # HiDPI screen
-
 # >>> hostname=arch-laptop
 # export HIDPI=true
 # <<<
+
+#--- Program Specific ---#
+
+# Android
+export ANDROID_HOME="$XDG_DATA_HOME/android"
 
 # GPG
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
@@ -67,12 +71,19 @@ export RANDFILE="$XDG_CACHE_HOME/rnd"
 [ "$HIDPI" = true ] && export PANEL_HEIGHT=38 || export PANEL_HEIGHT=22
 export PANEL_NAME="polybar_panel"
 
+# Python
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+
 # Qt5
 if [ "$HIDPI" = true ]; then
 	export QT_AUTO_SCREEN_SCALE_FACTOR=0
 	export QT_SCREEN_SCALE_FACTORS=2
 fi
 export QT_QPA_PLATFORMTHEME="qt5gtk2"
+
+# Rust
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
 # Sudo
 export SUDO_ASKPASS="$HOME/.local/bin/rofipass"
@@ -88,6 +99,9 @@ export BROWSER="firefox"
 
 # Wget
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
+
+# Wine
+export WINEPREFIX="$XDG_DATA_HOME/wine"
 
 # WM
 export WM="bspwm"

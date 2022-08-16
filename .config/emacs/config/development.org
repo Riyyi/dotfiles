@@ -416,7 +416,18 @@ Give Flyspell a selection menu.
   :hook (org-mode . flyspell-mode)
   :config
   (setq flyspell-issue-message-flag nil)
-  (setq flyspell-issue-welcome-flag nil))
+  (setq flyspell-issue-welcome-flag nil)
+
+  (defun dot/flyspell-toggle ()
+	"Toggle Flyspell, prompt for language."
+	(interactive)
+	(if (symbol-value flyspell-mode)
+		(flyspell-mode -1)
+	  (call-interactively 'ispell-change-dictionary)
+	  (if (derived-mode-p 'prog-mode)
+		  (flyspell-prog-mode)
+		(flyspell-mode))
+	  (flyspell-buffer))))
 #+END_SRC
 
 **** Rainbow Delimiters

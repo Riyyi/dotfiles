@@ -1065,6 +1065,7 @@ General.el ~leader key binds.
   "t k" '(centaur-tabs-select-beg-tab               :which-key "Tab select last")
   "t l" '(centaur-tabs-forward-group                :which-key "Tab forward group")
   "t n" '(neotree-toggle-in-project-root            :which-key "Toggle Neotree")
+  "t s" '(dot/flyspell-toggle                       :which-key "Toggle spell checker")
   "t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
 
   ;; Update packages

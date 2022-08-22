@@ -399,6 +399,7 @@ Setup file backups versioning.
 ;; https://www.emacswiki.org/emacs/IndentingC
 (setq-default c-basic-offset 4
 			  sgml-basic-offset 4
+			  sh-basic-offset 4
 			  c-default-style "linux")
 #+END_SRC
 
@@ -441,6 +442,12 @@ Set UTF-8 encoding as default.
 		 (side . bottom)
 		 (slot . 0))
 		))
+#+END_SRC
+
+Allow 'undo' and 'redo' changes in Window Configuration.
+
+#+BEGIN_SRC emacs-lisp
+(winner-mode)
 #+END_SRC
 
 * Functions
@@ -552,23 +559,6 @@ Functions that only use built-in Emacs functionality.
 		  (eq arg 1))
 	  (set-fringe-mode '(nil . 0))
 	(set-fringe-mode 0)))
-
-;; Reference: https://gist.github.com/mads-hartmann/3402786#gistcomment-4263171
-(defun dot/toggle-window-maximize ()
-  "Toggle window maximize."
-  (interactive)
-  (save-excursion
-    (if (and (= 1 (length (cl-remove-if
-                           (lambda (w)
-                             (or (and (fboundp 'treemacs-is-treemacs-window?)
-                                      (treemacs-is-treemacs-window? w))
-                                 (and (bound-and-true-p neo-global--window)
-                                      (eq neo-global--window w))))
-                           (window-list))))
-             (assoc ?_ register-alist))
-        (jump-to-register ?_)
-      (window-configuration-to-register ?_)
-      (delete-other-windows))))
 
 (defun dot/M-x (command)
   "Prompt and execute COMMAND."
@@ -1081,7 +1071,6 @@ General.el ~leader key binds.
   "t j" '(centaur-tabs-select-end-tab               :which-key "Tab select first")
   "t k" '(centaur-tabs-select-beg-tab               :which-key "Tab select last")
   "t l" '(centaur-tabs-forward-group                :which-key "Tab forward group")
-  "t m" '(dot/toggle-window-maximize                :which-key "Toggle window maximize")
   "t n" '(neotree-toggle-in-project-root            :which-key "Toggle Neotree")
   "t s" '(dot/flyspell-toggle                       :which-key "Toggle spell checker")
   "t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
@@ -1126,18 +1115,17 @@ General.el ~leader key binds.
   "w j"       '(windmove-down                           :which-key "Focus window down")
   "w k"       '(windmove-up                             :which-key "Focus window up")
   "w l"       '(windmove-right                          :which-key "Focus window right")
-  "w m"       '(dot/toggle-window-maximize              :which-key "Toggle window maximize")
   "w o"       '(delete-other-windows                    :which-key "Close other windows")
   "w s"       '(split-follow-horizontally               :which-key "Split horizontal")
   "w v"       '(split-follow-vertically                 :which-key "Split vertical")
   "w w"       '(other-window                            :which-key "Focus other window")
   "w q"       '(dot/centaur-tabs-kill-buffer-or-window  :which-key "Close window")
+  "w r"       '(winner-redo                             :which-key "Redo window configuration")
+  "w u"       '(winner-undo                             :which-key "Undo window configuration")
   "w <left>"  '(windmove-left                           :which-key "Focus window left")
   "w <right>" '(windmove-right                          :which-key "Focus window right")
   "w <up>"    '(windmove-up                             :which-key "Focus window up")
   "w <down>"  '(windmove-down                           :which-key "Focus window down")
-  ;; winner-redo (built-in window history)
-  ;; winner-undo
   )
 #+END_SRC
 

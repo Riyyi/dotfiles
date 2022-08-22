@@ -779,6 +779,11 @@ Set keybinds to functionality of installed packages.
 (global-set-key [remap describe-variable] #'helpful-variable)
 (which-key-add-key-based-replacements "C-h o" "describe-symbol-at-point")
 
+;; LSP
+(with-eval-after-load 'lsp-mode
+  (define-key lsp-signature-mode-map (kbd "M-j") #'lsp-signature-next)
+  (define-key lsp-signature-mode-map (kbd "M-k") #'lsp-signature-previous))
+
 ;; Magit
 (with-eval-after-load 'magit
   (define-key magit-log-select-mode-map (kbd "M-c") #'magit-log-select-pick)

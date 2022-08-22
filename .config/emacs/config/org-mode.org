@@ -147,12 +147,14 @@ Org latex exporter.
 If point is on:
   checkbox   -- toggle it
   link       -- follow it
+  table      -- go to next row
   otherwise  -- run the default (evil-ret) expression"
 	(interactive)
 	(let ((type (org-element-type (org-element-context))))
 	  (pcase type
 		('link (if org-return-follows-link (org-open-at-point) (evil-ret)))
 		((guard (org-at-item-checkbox-p)) (org-toggle-checkbox))
+		('table-cell (org-table-next-row))
 		(_ (evil-ret))
 		))))
 #+END_SRC

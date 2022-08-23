@@ -85,30 +85,8 @@ Places buffers as tabs in a bar at the top of the frame.
 	  (or
 	   ;; Current window is dedicated window
 	   (window-dedicated-p (selected-window))
-
-	   ;; Buffer name does match below blacklist
-	   (string-match-p (concat "\\(CAPTURE-\\)?" (format-time-string "%Y%m%d%H%M%S") "-.*\\.org") name)
-	   (string-match-p
-		(concat "^ ?\\*\\("
-				"Agenda Commands\\|"
-				"e?shell\\|"
-				"Compile-Log\\|"
-				"Completions\\|"
-				;; "clangd\\|"       ; lsp c/c++
-				"dap-mouse\\|"
-				"dap-ui-\\|"
-				"Debug\\|"
-				"Faces\\|"
-				"Flycheck\\|"
-				"Help\\|"
-				"helpful\\|"
-				"httpd\\|"
-				"iph\\|"          ; lsp php
-				"org-roam\\|"
-				"Org tags\\|"
-				"Org todo"
-				"\\).*")
-		name))))
+	   ;; Buffer name matches below blacklist
+	   (string-match-p "^ ?\\*.*\\*" name))))
 
   (defun dot/centaur-tabs-is-buffer-unimportant (buffer)
     "Return t if BUFFER is unimportant and can be killed without caution."

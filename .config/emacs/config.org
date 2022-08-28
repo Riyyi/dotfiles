@@ -195,7 +195,7 @@ Install and configure packages.
   ;; Fix for issues: super-save #38 and lsp-mode #1322
   (defun dot/super-save-disable-advice (orig-fun &rest args)
 	"Dont auto-save under these conditions."
-	(unless (string= (car args) " *LV*")
+	(unless (equal (car args) " *LV*")
 	  (apply orig-fun args)))
   (advice-add 'super-save-command-advice :around #'dot/super-save-disable-advice)
 

@@ -88,7 +88,9 @@ GLSL integration with company requires the package: ~glslang~.
 
 (use-package transient
   :defer t
-  :config (setq transient-history-file (concat dot-cache-dir "/transient/history.el")))
+  :config
+  (setq transient-history-file (concat dot-cache-dir "/transient/history.el"))
+  (setq transient-values-file (concat dot-cache-dir "/transient/values.el")))
 
 (use-package magit
   :after (diff-hl transient)
@@ -98,14 +100,21 @@ GLSL integration with company requires the package: ~glslang~.
   :hook (magit-post-refresh . diff-hl-magit-post-refresh)
   :config
   (setq git-commit-fill-column 72)
-  (setq git-commit-summary-max-length 70)
+  (setq git-commit-summary-max-length 72)
   (setq magit-completing-read-function #'selectrum-completing-read)
   (setq magit-diff-paint-whitespace-lines 'both)
+  (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   (setq magit-repository-directories '(("~/dotfiles" . 0)
 									   ("~/code" . 3)))
 
   (put 'magit-log-select-pick :advertised-binding [?\M-c])
-  (put 'magit-log-select-quit :advertised-binding [?\M-k]))
+  (put 'magit-log-select-quit :advertised-binding [?\M-k])
+
+  (defun dot/magit-select-repo ()
+	"Select project repo."
+	(interactive)
+	(let ((current-prefix-arg '(t)))
+	  (call-interactively #'magit-status))))
 #+END_SRC
 
 ** Project

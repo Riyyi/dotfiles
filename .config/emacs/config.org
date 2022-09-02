@@ -1115,6 +1115,7 @@ General.el ~leader key binds.
   "v l"   '(:ignore t                      :which-key "list")
   "v l r" '(magit-list-repositories        :which-key "List repositories")
   "v l s" '(magit-list-submodules          :which-key "List submodules")
+  "v r"   '(dot/magit-select-repo          :which-key "Select repo")
 
   ;; Window
   "w"         '(:ignore t                               :which-key "window")

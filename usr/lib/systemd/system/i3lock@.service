@@ -1,0 +1,19 @@
+# -*- conf -*-
+
+[Unit]
+Description=Lock the screen with i3lock
+Before=sleep.target
+
+[Service]
+User=%I
+Type=forking
+Environment=DISPLAY=:0
+Environment=XDG_CACHE_HOME=/home/%I/.cache
+ExecStart=/bin/setsid -f /home/%I/.local/bin/wm/lock.sh
+ExecStartPost=/bin/sleep 1
+
+[Install]
+WantedBy=sleep.target
+
+# Reference:
+# https://wiki.archlinux.org/title/Power_management#Sleep_hooks

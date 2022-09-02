@@ -51,6 +51,7 @@ i3lock -n -i "$LOCK" -B 6 -S 1 -e \
 	--time-size=64 --date-size=24 \
 	--time-str="%I:%M %p" --date-str="%A, %B %e" \
 	--time-pos="ix:iy-250" --date-pos="ix:iy-200" \
-	--time-color=FFFFFFC0 --date-color=FFFFFFC0
+	--time-color=FFFFFFC0 --date-color=FFFFFFC0 \
+	--no-modkey-text
 
 revert

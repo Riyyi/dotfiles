@@ -65,8 +65,8 @@ $ sudo EDITOR=vim visudo
 
 Add user:
 #+BEGIN_SRC shell-script
-$ useradd -m -G wheel -s /bin/bash <username>
-$ passwd <username>
+$ useradd -m -G wheel -s /bin/bash <user>
+$ passwd <user>
 #+END_SRC
 
 Pacman colors:
@@ -97,6 +97,11 @@ Git:
 #+BEGIN_SRC shell-script
 $ git config --global user.email "<email address>"
 $ git config --global user.name "<name>"
+#+END_SRC
+
+Lock before sleep:
+#+BEGIN_SRC shell-script
+$ sudo systemctl enable i3lock@<user>
 #+END_SRC
 
 Tlp:

@@ -22,7 +22,7 @@ configuration {
 	/* Keybinds */
 	kb-cancel: "Escape,Control+g,Control+bracketleft,Alt+h";
 	kb-row-down: "Down,Control+n,Alt+j";
-	kb-row-up: "Up,Control+p,ISO_Left_Tab,Alt+k";
+	kb-row-up: "Up,Control+p,Alt+k";
 	kb-accept-entry: "Control+j,Control+m,Return,KP_Enter,Alt+l";
 }
 

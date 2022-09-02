@@ -478,6 +478,27 @@ Functions that only use built-in Emacs functionality.
   (interactive)
   (org-babel-load-file (concat dot-emacs-dir "/config.org")))
 
+(defun dot/copy-cpp-function-implementation ()
+  (interactive)
+  (save-excursion
+	(let ((func (save-excursion
+				  (re-search-backward "\\b")
+				  (re-search-forward "\\([^;]+\\);")
+				  (match-string 1)))
+          (type (progn
+				  (re-search-backward "\\b")
+				  (push-mark)
+				  (back-to-indentation)
+				  (buffer-substring (mark) (point))))
+          (class (progn
+                   (backward-up-list)
+                   (backward-sexp)
+                   (back-to-indentation)
+                   (forward-to-word 1)
+                   (current-word))))
+	  (kill-new (concat type class "::" func "\n{\n}"))))
+  (message "Copied function implementation"))
+
 ;; Reference: http://turingmachine.org/bl/2013-05-29-recursively-listing-directories-in-elisp.html
 (defun dot/directory-files-recursively-depth (dir regexp include-directories maxdepth)
   "Depth limited variant of the built-in `directory-files-recursively'."
@@ -1171,8 +1192,12 @@ https://github.com/suyashbire1/emacs.d/blob/master/init.el
   :global-prefix dot/localleader-alt-key
   :states '(normal visual insert motion emacs)
   :keymaps 'override ; prevent leader keybindings from ever being overridden
-
   ""    '(:ignore t                            :which-key "<localleader>")
+  )
+
+(local-leader c++-mode-map
+  "i"         '(:ignore t                             :which-key "insert")
+  "i i"       '(dot/copy-cpp-function-implementation  :which-key "Copy function implementation")
   )
 
 (local-leader org-mode-map

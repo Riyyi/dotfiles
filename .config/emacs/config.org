@@ -173,7 +173,16 @@ Install and configure packages.
 *** General Packages
 
 #+BEGIN_SRC emacs-lisp
-(use-package general)
+(use-package general
+  :after evil
+  :config
+  ;; Fix for issue: general #493
+  (defun dot/general-fix-leader-key ()
+	"Fix leader key in *Messages* buffer."
+	(when-let ((messages-buffer (get-buffer "*Messages*")))
+	  (with-current-buffer messages-buffer
+		(evil-normalize-keymaps))))
+  (add-hook 'emacs-startup-hook #'dot/general-fix-leader-key))
 
 (use-package avy
   :defer t)
@@ -200,12 +209,27 @@ Install and configure packages.
   (advice-add 'super-save-command-advice :around #'dot/super-save-disable-advice)
 
   (super-save-mode))
+
+(use-package desktop
+  :after centaur-tabs
+  :config
+  (setq desktop-dirname (concat dot-cache-dir "/desktop/"))
+  (setq desktop-path (list (concat dot-cache-dir "/desktop/")))
+
+  (defun dot/desktop-save-on-exit ()
+	"Save state of open buffers before closing Emacs."
+	(dot/centaur-tabs-buffer-cleanup)
+	(desktop-save desktop-dirname t)
+	(desktop-release-lock desktop-dirname))
+  (add-hook 'kill-emacs-hook #'dot/desktop-save-on-exit))
 #+END_SRC
 
 *** RSS
 
 #+BEGIN_SRC emacs-lisp
 (use-package elfeed
+  :defer t
+  :commands elfeed
   :hook (elfeed-search-mode . dot/hook-disable-line-numbers)
   :hook (elfeed-show-mode   . dot/hook-disable-line-numbers)
   :config

@@ -63,16 +63,16 @@ Vim equivalence: <Tab>"
 
 Vim equivalence: <gv"
 	(interactive)
-	(evil-shift-left (region-beginning) (region-end))
-	(funcall (evil-visual-restore)))
+	(call-interactively #'evil-shift-left)
+	(setq deactivate-mark nil))
 
   (defun dot/evil-visual-shift-right ()
 	"Shift visual selection left, retains the selection.
 
 Vim equivalence: >gv"
 	(interactive)
-	(evil-shift-right (region-beginning) (region-end))
-	(funcall (evil-visual-restore)))
+	(call-interactively #'evil-shift-right)
+	(setq deactivate-mark nil))
 
   (evil-mode))
 #+END_SRC

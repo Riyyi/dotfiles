@@ -97,12 +97,7 @@
 	}
 
 	/* Hide homepage recommendations */
-	ytd-rich-grid-renderer {
-		display: none !important;
-	}
-
-	/* Hide buttons in the top-right */
-	#masthead #end #buttons > :nth-child(1) {
+	ytd-two-column-browse-results-renderer[page-subtype="home"] {
 		display: none !important;
 	}
 

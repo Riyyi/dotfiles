@@ -2,31 +2,23 @@
 
 ;;; Commentary:
 
-;; Setup package archives and build configuration file.
+;; Load modules.
 
 ;;; Code:
 
-(require 'package)
+;; -----------------------------------------
 
-;; Add the MELPA repository to the package manager
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'load-path (locate-user-emacs-file "site-lisp"))
 
-;; Install the `use-package' dependency
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(require 'dot-elpaca)
+(require 'dot-setup-el)
 
-(use-package benchmark-init
-  :ensure t
-  :config
-  ;; To disable collection of benchmark data after init is complete
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
-
-;; -------------------------------------
-
-;; Tangle and load configuration file
-(require 'org)
-(when (file-readable-p (concat user-emacs-directory "config.org"))
-  (org-babel-load-file (concat user-emacs-directory "config.org")))
-
-;;; init.el ends here
+(require 'dot-core)
+(require 'dot-ui)
+(require 'dot-evil)
+(require 'dot-development)
+(require 'dot-selection)
+(require 'dot-org-mode)
+(require 'dot-mail)
+(require 'dot-rss)
+(require 'dot-keybinds)

@@ -23,19 +23,8 @@
 ;; Prefer to `load' the newest elisp file
 (setq load-prefer-newer t)
 
-;; Set package install location
-(setq package-user-dir (concat user-emacs-directory "elpa"))
-
-;; Set package quickstart location
-(setq package-quickstart-file (concat
-							   (getenv "XDG_CACHE_HOME")
-							   "/emacs/package-quickstart.el"))
-
-;; Precompute activation actions to speed up startup
-(setq package-quickstart t)
-
-;; Native compilation
-(setq package-native-compile t)
+;; Disable package.el
+(setq package-enable-at-startup nil)
 
 ;; -------------------------------------
 

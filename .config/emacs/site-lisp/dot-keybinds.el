@@ -409,7 +409,7 @@
            "b"         '(:ignore t                         :which-key "buffer/bookmark")
            "b a"       '(auto-revert-mode                  :which-key "Auto revert buffer")
            "b b"       '(consult-buffer                    :which-key "Switch buffer")
-           "b d"       '(dot/dashboard-goto                :which-key "Dashboard")
+           "b d"       '(dashboard-refresh-buffer          :which-key "Dashboard")
            "b k"       '(kill-current-buffer               :which-key "Kill buffer")
            "b m"       '(bookmark-set                      :which-key "Make bookmark")
            "b n"       '(evil-buffer-new                   :which-key "New empty buffer")

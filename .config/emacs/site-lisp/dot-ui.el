@@ -117,7 +117,7 @@
   (:require dashboard)
   (:hook dot/hook-disable-line-numbers)
   (:when-loaded
-    (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+    (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*") (dashboard-refresh-buffer)))
     (setq dashboard-banner-logo-title "GNU Emacs master race!")
     (setq dashboard-center-content t)
     (setq dashboard-page-separator "\n\f\n")
@@ -130,15 +130,6 @@
     (setq dashboard-items '((projects . 10)
                             (bookmarks . 5)
                             (recents . 5)))
-
-    (defun dot/dashboard-goto ()
-      "Go to the *dashboard* buffer, create if non-existing."
-      (interactive)
-      (let ((buffer "*dashboard*"))
-        (unless (get-buffer buffer)
-          (generate-new-buffer buffer)
-          (dashboard-refresh-buffer))
-        (switch-to-buffer buffer)))
 
     ;; Fix keybinds..
 
@@ -157,9 +148,7 @@
       (interactive)
       (funcall (local-key-binding "r")))
 
-    (let ((command-line-args '("emacs"))) ;; TODO: Remove this when switching over
-      (dashboard-setup-startup-hook)
-      )
+    (dashboard-setup-startup-hook)
     ))
 
 ;; -----------------------------------------

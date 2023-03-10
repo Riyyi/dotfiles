@@ -10,7 +10,6 @@
   (:require prescient)
   (:when-loaded
 	(setq completion-styles '(prescient basic))
-	(setq prescient-completion-enable-sort nil)
 	(setq prescient-filter-method '(literal regexp fuzzy))
 	(setq prescient-save-file (expand-file-name "prescient-save.el" dot-cache-dir))
 	(prescient-persist-mode)))
@@ -18,17 +17,6 @@
 (elpaca-setup (vertico :files (:defaults "extensions/*"))
   (:load-after prescient)
   (:when-loaded
-    (setq vertico-sort-function #'prescient-completion-sort)
-    (setq vertico-sort-override-function #'prescient-completion-sort)
-
-    (defun dot/vertico-prescient-remember ()
-      "Remember the chosen candidate with Prescient."
-      (when (>= vertico--index 0)
-        (prescient-remember
-         (substring-no-properties
-          (nth vertico--index vertico--candidates)))))
-    (advice-add #'vertico-insert :after #'dot/vertico-prescient-remember)
-
 	(setq vertico-previous-directory nil)
 	(defun dot/vertico-backspace ()
       "In Vertico file completion, backward kill sexp, delete char otherwise."
@@ -56,6 +44,11 @@
 (elpaca nil (setup vertico-mouse ; vertico-mouse.el is part of vertico
 	   (:load-after vertico)
 	   (:when-loaded (vertico-mouse-mode))))
+
+(elpaca-setup vertico-prescient
+  (:load-after vertico prescient)
+  (:when-loaded
+    (vertico-prescient-mode)))
 
 (elpaca-setup marginalia
   (:load-after vertico)

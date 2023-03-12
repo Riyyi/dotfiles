@@ -142,6 +142,8 @@ If point is on:
 
 ;;; Org Roam
 
+(elpaca-setup emacsql-sqlite)
+
 (elpaca-setup org-roam
   (:autoload org-roam-node-find) ;; TODO, is this enough?
   (setq org-roam-v2-ack t)

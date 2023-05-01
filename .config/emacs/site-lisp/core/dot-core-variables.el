@@ -17,8 +17,8 @@
 (defvar dot-etc-dir (expand-file-name "etc" dot-emacs-dir)
   "Directory for non-volatile storage.") ; ~/.config/emacs/etc
 
-;; TODO: remove "-modules" when switching over
-(defvar dot-cache-dir (expand-file-name "emacs" (getenv "XDG_CACHE_HOME"))
+(defvar dot-cache-dir
+  (expand-file-name "emacs" (if (getenv "XDG_CACHE_HOME") (getenv "XDG_CACHE_HOME") "~/.cache"))
   "Directory for cache data.") ; ~/.cache/emacs
 
 (defvar dot/leader-key "SPC"

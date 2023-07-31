@@ -142,7 +142,7 @@ If point is on:
 
 ;;; Org Roam
 
-(elpaca emacsql-sqlite-builtin)
+(elpaca-setup emacsql-sqlite-builtin)
 
 (elpaca-setup org-roam
   (:autoload org-roam-node-find) ;; TODO, is this enough?

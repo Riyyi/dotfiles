@@ -142,11 +142,12 @@ If point is on:
 
 ;;; Org Roam
 
-(elpaca-setup emacsql-sqlite)
+(elpaca emacsql-sqlite-builtin)
 
 (elpaca-setup org-roam
   (:autoload org-roam-node-find) ;; TODO, is this enough?
   (setq org-roam-v2-ack t)
+  (setq org-roam-database-connector 'sqlite-builtin)
   (:when-loaded
     (setq org-roam-db-location (expand-file-name "org-roam.db" dot-cache-dir))
     (setq org-roam-directory org-directory)

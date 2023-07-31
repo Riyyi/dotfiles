@@ -34,6 +34,7 @@
 ;; Parenthesis, set behavior
 (setq show-paren-delay 0)
 (setq show-paren-style 'mixed)
+(setq show-paren-context-when-offscreen t)
 
 ;; Tramp default protocol
 (setq tramp-default-method "ssh")
@@ -101,7 +102,10 @@
 (setq eshell-directory-name           (expand-file-name "eshell/" dot-cache-dir))
 (setq tramp-auto-save-directory       (expand-file-name "tramp-auto-save/" dot-cache-dir))
 (setq tramp-backup-directory-alist    backup-directory-alist)
+(setq treesit-extra-load-path        `(,(expand-file-name "tree-sitter" dot-cache-dir)))
 (setq url-configuration-directory     (expand-file-name "url/" dot-cache-dir))
+
+(startup-redirect-eln-cache (expand-file-name "eln-cache" dot-cache-dir))
 
 ;; Set file locations
 (setq bookmark-default-file           (expand-file-name "bookmarks" dot-etc-dir))

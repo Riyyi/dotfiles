@@ -323,7 +323,7 @@
 ;; - omnisharp-roslyn-bin
 ;; - netcoredbg (edit PKGBUILD to detect dotnet -6.0 dependencies)
 
-(elpaca-setup csharp-mode)
+(elpaca nil (setup csharp-mode)) ; built-in
 
 ;;; CMake
 

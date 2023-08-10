@@ -30,6 +30,7 @@
 (setq scroll-conservatively 1)
 (setq mouse-wheel-scroll-amount '(5))
 (setq mouse-wheel-progressive-speed nil)
+(setq pixel-scroll-precision-mode t)
 
 ;; Parenthesis, set behavior
 (setq show-paren-delay 0)

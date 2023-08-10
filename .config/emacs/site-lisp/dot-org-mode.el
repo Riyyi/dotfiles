@@ -37,6 +37,7 @@
     (setq org-adapt-indentation nil)
     (setq org-ellipsis "⤵")
     (setq org-image-actual-width nil)
+    (setq org-startup-folded nil)
 
     ;; Enable structured template completion
     (add-to-list 'org-modules 'org-tempo t)

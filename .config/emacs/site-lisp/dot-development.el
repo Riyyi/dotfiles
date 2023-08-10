@@ -424,6 +424,13 @@
 
 ;;; Flyspell
 
+(elpaca nil (setup ispell ; built-in
+              (:when-loaded
+                (setq ispell-program-name "/usr/bin/hunspell")
+                (ispell-set-spellchecker-params)
+                (ispell-hunspell-add-multi-dic "en_US,nl_NL")
+                (setq ispell-dictionary "en_US,nl_NL"))))
+
 ;; Give Flyspell a selection menu.
 (elpaca-setup flyspell-correct
   (:load-after flyspell)

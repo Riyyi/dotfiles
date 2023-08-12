@@ -505,7 +505,8 @@
            "s l" '(avy-goto-line                    :which-key "Avy goto line")
            "s p" '(consult-grep                     :which-key "Search project")
            "s q" '(evil-ex-nohighlight              :which-key "Stop search")
-           "s s" '(consult-line                     :which-key "Search buffer")
+           "s s" '(dot/consult-line-no-fuzzy        :which-key "Search buffer")
+           "s S" '(consult-line-multi               :which-key "Search all buffers")
 
            ;; Tabs / toggle
            "t"   '(:ignore t                                 :which-key "tabs/toggle")

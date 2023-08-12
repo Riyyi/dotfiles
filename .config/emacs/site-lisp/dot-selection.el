@@ -58,7 +58,18 @@
 
 (elpaca-setup consult
   (:load-after vertico)
-  (:when-loaded (setq consult-narrow-key (kbd "?"))))
+  (:when-loaded
+    (setq consult-narrow-key (kbd "?"))
+
+	(defun dot/consult-line-no-fuzzy ()
+      "Call consult-line without fuzzy matching."
+      (interactive)
+	  (let ((prescient-filter-method (delete 'fuzzy (copy-tree prescient-filter-method))))
+        (consult-line)))
+
+    (consult-customize
+     dot/consult-line-no-fuzzy :prompt "Search: "
+     consult-line-multi :prompt "Search: " :initial nil)))
 
 (elpaca-setup consult-flycheck
   (:load-after consult flycheck))

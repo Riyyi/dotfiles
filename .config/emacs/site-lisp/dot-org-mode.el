@@ -78,8 +78,8 @@ When ANYWHERE is non-nil, search beyond the preamble."
                                  t)
           (point)))))
 
-  (defun dot/org-set-file-time-property (property value)
-    "Set the file time PROPERTY in the preamble."
+  (defun dot/org-set-file-property (property value)
+    "Set the file PROPERTY in the preamble."
     (when-let ((pos (dot/org-find-file-property property)))
       (save-excursion
         (goto-char pos)
@@ -92,8 +92,8 @@ When ANYWHERE is non-nil, search beyond the preamble."
   (defun dot/org-set-last-modified ()
     "Update the LAST_MODIFIED file property in the preamble."
     (when (derived-mode-p 'org-mode)
-      (dot/org-set-file-time-property "LAST_MODIFIED"
-                                      (format-time-string "[%Y-%m-%d %a %H:%M]")))))))
+      (dot/org-set-file-property "LAST_MODIFIED"
+                                 (format-time-string "[%Y-%m-%d %a %H:%M]")))))))
 
 ;; Org agenda.
 

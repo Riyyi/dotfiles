@@ -33,6 +33,8 @@
 (elpaca nil (setup org ; built-in
   (setq org-directory (expand-file-name "documents/org" (getenv "HOME")))
   (setq org-default-notes-file (expand-file-name "notes.org" org-directory))
+  (:with-mode before-save
+    (:hook dot/org-set-last-modified))
   (:when-loaded
     (setq org-adapt-indentation nil)
     (setq org-ellipsis "⤵")
@@ -60,7 +62,38 @@ If point is on:
             ((guard (org-at-item-checkbox-p)) (org-toggle-checkbox))
             ('table-cell (org-table-next-row))
             (_ (evil-ret))
-            )))))))
+            ))))
+
+  (defun dot/org-find-file-property (property &optional anywhere)
+    "Return the position of the file PROPERTY if it exists.
+
+When ANYWHERE is non-nil, search beyond the preamble."
+    (save-excursion
+      (goto-char (point-min))
+      (let ((first-heading
+             (save-excursion
+               (re-search-forward org-outline-regexp-bol nil t))))
+        (when (re-search-forward (format "^#\\+%s:" property)
+                                 (if anywhere nil first-heading)
+                                 t)
+          (point)))))
+
+  (defun dot/org-set-file-time-property (property value)
+    "Set the file time PROPERTY in the preamble."
+    (when-let ((pos (dot/org-find-file-property property)))
+      (save-excursion
+        (goto-char pos)
+        (if (looking-at-p " ")
+            (forward-char)
+          (insert " "))
+        (delete-region (point) (line-end-position))
+        (insert value))))
+
+  (defun dot/org-set-last-modified ()
+    "Update the LAST_MODIFIED file property in the preamble."
+    (when (derived-mode-p 'org-mode)
+      (dot/org-set-file-time-property "LAST_MODIFIED"
+                                      (format-time-string "[%Y-%m-%d %a %H:%M]")))))))
 
 ;; Org agenda.
 
@@ -159,7 +192,7 @@ If point is on:
     (setq org-roam-capture-templates
           '(("d" "default" plain
              "%?"
-             :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: %^{File tags||:structure:}\n")
+             :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+LAST_MODIFIED:\n#+FILETAGS: %^{File tags||:structure:}\n")
              :unnarrowed t)))
 
     (defun dot/org-roam-node-insert-immediate (arg &rest args)

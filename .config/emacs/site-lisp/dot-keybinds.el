@@ -521,7 +521,7 @@
            "t w" '(visual-line-mode                          :which-key "Toggle line wrapping")
 
            ;; Update packages
-           "U"   '(elpaca-update-all                         :which-key "Update packages")
+           "U"   '(elpaca-merge-all                          :which-key "Update packages")
 
            ;; Version control
            "v"     '(:ignore t                      :which-key "git")

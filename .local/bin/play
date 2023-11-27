@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Depends: GNU getopt, mpv, socat, streamlink
+# Depends: GNU getopt, mpv, socat, streamlink, xclip
 
 SOCK="/tmp/umpv-fifo"
 
@@ -256,7 +256,11 @@ elif [ $shuffleOption -eq 1 ]; then
 elif [ $queueOption -eq 1 ]; then
 	queue "$*"
 else
-	for url in "$@"; do
-		play "$url"
-	done
+	if [ "$*" = "" ]; then
+		play "$(xclip -o)"
+	else
+		for url in "$@"; do
+			play "$url"
+		done
+	fi
 fi

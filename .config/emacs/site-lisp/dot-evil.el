@@ -59,7 +59,7 @@ Vim equivalence: <C-D>"
       "Shift line right, retains cursor position.
 Vim equivalence: <Tab>"
       (interactive)
-      (when (not (yas-expand))
+      (unless (yas-expand)
         (insert "\t")))
 
 

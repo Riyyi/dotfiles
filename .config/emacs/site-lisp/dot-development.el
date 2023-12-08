@@ -463,7 +463,7 @@
 ;;; YASnippet
 
 (elpaca-setup yasnippet
-  (:autoload yas-insert-snippet)
+  (:autoload yas-expand yas-insert-snippet)
   (setq yas-snippet-dirs (list (expand-file-name "snippets" dot-emacs-dir)))
   (setq yas-prompt-functions '(yas-completing-prompt))
   (:when-loaded

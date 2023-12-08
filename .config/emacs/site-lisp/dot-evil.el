@@ -59,7 +59,9 @@ Vim equivalence: <C-D>"
       "Shift line right, retains cursor position.
 Vim equivalence: <Tab>"
       (interactive)
-      (insert "\t"))
+      (when (not (yas-expand))
+        (insert "\t")))
+
 
     (defun dot/evil-visual-shift-left ()
       "Shift visual selection left, retains the selection.

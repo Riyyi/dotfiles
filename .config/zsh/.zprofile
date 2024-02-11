@@ -92,7 +92,7 @@ export SUDO_ASKPASS="$HOME/.local/bin/rofipass"
 export TERMINAL="urxvt"
 
 # Vim
-export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
+export VIMINIT="source $XDG_CONFIG_HOME/nvim/init.lua"
 
 # Web browser
 export BROWSER="firefox"

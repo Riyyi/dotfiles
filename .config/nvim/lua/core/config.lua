@@ -44,5 +44,6 @@ vim.opt.shadafile = vim.fn.stdpath("cache") .. "/netrwhist"
 vim.opt.colorcolumn = "81"
 vim.opt.completeopt = "menuone,noselect"
 vim.opt.cursorline = true
+vim.opt.showtabline = 0
 vim.opt.termguicolors = true
 vim.opt.title = true

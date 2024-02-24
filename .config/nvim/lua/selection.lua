@@ -28,7 +28,9 @@ return {
 					layout_strategy = "config",
 					layout_config = {
 						height = 10, -- amount of results
-						search_condensed = true,
+						config = { -- apply settings to the "config" layout
+							search_condensed = true,
+						}
 					},
 					border = true,
 
@@ -72,7 +74,7 @@ return {
 				results.borderchars = { "─", "│", "─", "│", "├", "┤", "╯", "╰" }
 
 				local bs = picker.window.border and 2 or 0
-				local search_condensed = bs ~= 0 and layout_config.search_condensed and 2 or 0
+				local search_condensed = bs ~= 0 and layout_config.config.search_condensed and 2 or 0
 
 				-- Height
 				prompt.height = 1

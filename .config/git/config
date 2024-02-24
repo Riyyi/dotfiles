@@ -7,3 +7,11 @@
 [user]
 	name = Riyyi
 	email = riyyi3@gmail.com
+[diff]
+	tool = nvimdiff
+[merge]
+	tool = nvimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false
+	keepBackup = false

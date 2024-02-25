@@ -26,6 +26,7 @@ return {
 			"nvim-telescope/telescope.nvim",
 
 			"sindrets/diffview.nvim", -- diff integration
+			-- { "sindrets/diffview.nvim", opts = { enhanced_diff_hl = true } }, -- diff integration
 		},
 		opts = {},
 	},

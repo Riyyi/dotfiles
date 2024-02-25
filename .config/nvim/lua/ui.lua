@@ -13,25 +13,41 @@ return {
 			vim.cmd.colorscheme "base16-tomorrow-night"
 
 			local colors = require("base16-colorscheme").colors
-			local blue = colors.base0D -- #81a2be
+			-- local blue_m1 = "#9cc4e6"
+			local blue    = colors.base0D -- #81a2be
+			-- local blue_p1 = "#5f819d"
+			local blue_p2 = "#445666"
+			local blue_p3 = "#2a3640"
 			local cyan = colors.base0C -- #8abeb7
 			local fg = colors.base05 -- #c5c8c6
-			local green_dark = "#8c9440"
+			local fg_dark = "#515151"
+			-- local green = colors.base0B -- #b5bd68
+			local green_p1 = "#8c9440"
+			-- local green_p2 = "#5f875f"
+			local green_bg = "#404324"
+			-- local orange = colors.base09 -- #de935f
+			-- local magenta = colors.base0E -- #b294bb
 			local red = colors.base08 -- #cc6666
+			local red_bg = "#4e2626"
 			local yellow = colors.base0A -- #f0c674
 
 			-- Cursor
-			vim.api.nvim_command("highlight CursorLineNr     guifg=" .. yellow .. " gui=bold")
+			vim.api.nvim_command("highlight CursorLineNr                                      guifg=" .. yellow .. " gui=bold")
+			-- Diffview
+			vim.api.nvim_command("highlight DiffviewDiffAdd         guibg=" .. green_bg)
+			vim.api.nvim_command("highlight DiffviewDiffChange      guibg=" .. blue_p3) -- Unchanged part on a change line
+			vim.api.nvim_command("highlight DiffviewDiffDelete      guibg=" .. red_bg .. "    guifg=" .. fg_dark)
+			vim.api.nvim_command("highlight DiffviewDiffText        guibg=" .. blue_p2) -- Changed part on a change line
 			-- Git gutter
-			vim.api.nvim_command("highlight GitSignsAdd      guifg=" .. green_dark)
-			vim.api.nvim_command("highlight GitSignsChange   guifg=" .. yellow)
+			vim.api.nvim_command("highlight GitSignsAdd                                       guifg=" .. green_p1)
+			vim.api.nvim_command("highlight GitSignsChange                                    guifg=" .. yellow)
 			-- Rainbow delimiters
-			vim.api.nvim_command("highlight RainbowDelimiterBlue    guifg=" .. blue)
-			vim.api.nvim_command("highlight RainbowDelimiterCyan    guifg=" .. cyan)
-			vim.api.nvim_command("highlight RainbowDelimiterGreen   guifg=" .. green_dark)
-			vim.api.nvim_command("highlight RainbowDelimiterOrange  guifg=" .. fg)
-			vim.api.nvim_command("highlight RainbowDelimiterRed     guifg=" .. red)
-			vim.api.nvim_command("highlight RainbowDelimiterYellow  guifg=" .. yellow)
+			vim.api.nvim_command("highlight RainbowDelimiterBlue                              guifg=" .. blue)
+			vim.api.nvim_command("highlight RainbowDelimiterCyan                              guifg=" .. cyan)
+			vim.api.nvim_command("highlight RainbowDelimiterGreen                             guifg=" .. green_p1)
+			vim.api.nvim_command("highlight RainbowDelimiterOrange                            guifg=" .. fg)
+			vim.api.nvim_command("highlight RainbowDelimiterRed                               guifg=" .. red)
+			vim.api.nvim_command("highlight RainbowDelimiterYellow                            guifg=" .. yellow)
 		end,
 	},
 
@@ -153,5 +169,11 @@ return {
 			require("rainbow-delimiters.setup").setup(opts)
 		end,
 	},
+
+	-- Rainbow-mode
+	{ -- https://github.com/norcalli/nvim-colorizer.lua
+		"norcalli/nvim-colorizer.lua",
+		opts = {},
+	}, -- :ColorizerToggle
 
 }

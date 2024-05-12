@@ -24,7 +24,7 @@
 ;; Key bindings
 ;; [https://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Keybindings.html#MSGV-Keybindings]
 
-(elpaca nil (setup mu4e ; loaded from AUR package
+(elpaca-nil (setup mu4e ; loaded from AUR package
        (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
        (:autoload mu4e mu4e-update-index)
        (:when-loaded
@@ -114,7 +114,7 @@
 
 ;; Sending mail.
 
-(elpaca nil (setup smtpmail ; built-in
+(elpaca-nil (setup smtpmail ; built-in
        (setq smtpmail-default-smtp-server "mail.riyyi.com")
        (:load-after mu4e)
        (:when-loaded
@@ -124,11 +124,11 @@
          (setq smtpmail-stream-type 'starttls)
          (setq smtpmail-queue-mail nil))))
 
-(elpaca nil (setup sendmail ; built-in
+(elpaca-nil (setup sendmail ; built-in
        (:load-after mu4e)
        (:when-loaded (setq send-mail-function 'smtpmail-send-it))))
 
-(elpaca nil (setup message ; built-in
+(elpaca-nil (setup message ; built-in
        (:load-after mu4e)
        (:when-loaded
          (setq message-kill-buffer-on-exit t)

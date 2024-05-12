@@ -60,7 +60,7 @@
 
   (super-save-mode)))
 
-(elpaca nil (setup desktop  ; built-in
+(elpaca-nil (setup desktop  ; built-in
        (:require desktop)
        (:when-loaded
          (setq desktop-base-file-name "state")

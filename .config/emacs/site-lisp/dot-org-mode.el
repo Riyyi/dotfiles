@@ -9,7 +9,7 @@
 ;; -----------------------------------------
 ;; LaTeX Configuration
 
-(elpaca nil (setup tex-mode ; built-in
+(elpaca-nil (setup tex-mode ; built-in
        (:when-loaded
          (defun dot/tex-mode-init () ""
                 (setq indent-tabs-mode t)
@@ -30,7 +30,7 @@
 
 ;; Base Org.
 
-(elpaca nil (setup org ; built-in
+(elpaca-nil (setup org ; built-in
   (setq org-directory (expand-file-name "documents/org" (getenv "HOME")))
   (setq org-default-notes-file (expand-file-name "notes.org" org-directory))
   (:with-mode before-save
@@ -97,7 +97,7 @@ When ANYWHERE is non-nil, search beyond the preamble."
 
 ;; Org agenda.
 
-(elpaca nil (setup org-agenda ; built-in
+(elpaca-nil (setup org-agenda ; built-in
        (:load-after evil org)
        (:when-loaded
          (setq org-agenda-files `(,org-directory ,user-emacs-directory))
@@ -107,26 +107,26 @@ When ANYWHERE is non-nil, search beyond the preamble."
 
 ;; Org capture.
 
-(elpaca nil (setup org-capture ; built-in
+(elpaca-nil (setup org-capture ; built-in
        ;; Org-capture in new tab, rather than split window
        (:hook delete-other-windows)))
 
 ;; Org keys.
 
-(elpaca nil (setup org-keys ; built-in
+(elpaca-nil (setup org-keys ; built-in
        (:when-loaded
          (setq org-return-follows-link t))))
 
 ;; Org links.
 
-(elpaca nil (setup ol ; built-in
+(elpaca-nil (setup ol ; built-in
        (:when-loaded
          ;; Do not open links to .org files in a split window
          (add-to-list 'org-link-frame-setup '(file . find-file)))))
 
 ;; Org source code blocks.
 
-(elpaca nil (setup org-src ; built-in
+(elpaca-nil (setup org-src ; built-in
        (:when-loaded
          (setq org-edit-src-content-indentation 0)
          (setq org-src-fontify-natively t)
@@ -136,13 +136,13 @@ When ANYWHERE is non-nil, search beyond the preamble."
 
 ;; Org exporter.
 
-(elpaca nil (setup ox ; built-in
+(elpaca-nil (setup ox ; built-in
        (:when-loaded
          (setq org-export-coding-system 'utf-8-unix))))
 
 ;; Org latex exporter.
 
-(elpaca nil (setup ox-latex ; built-in
+(elpaca-nil (setup ox-latex ; built-in
        (:when-loaded
          ;; Define how minted (highlighted src code) is added to src code blocks
          (setq org-latex-listings 'minted)
@@ -233,7 +233,7 @@ When ANYWHERE is non-nil, search beyond the preamble."
 
 ;; Enable https://www.orgroam.com/manual.html#org_002droam_002dprotocol, needed to process org-protocol:// links
 
-(elpaca nil (setup org-roam-protocol ; org-roam-protocol.el is part of org-roam
+(elpaca-nil (setup org-roam-protocol ; org-roam-protocol.el is part of org-roam
        (:load-after org-roam)
        (:when-loaded
 

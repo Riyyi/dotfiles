@@ -169,7 +169,7 @@
 ;; -----------------------------------------
 ;; Recentf
 
-(elpaca nil (setup recentf ; built-in
+(elpaca-nil (setup recentf ; built-in
        (:require recentf)
        (:when-loaded
          (setq recentf-auto-cleanup 'never)

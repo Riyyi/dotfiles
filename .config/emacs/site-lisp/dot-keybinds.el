@@ -35,7 +35,7 @@
 
 ;; Disable keybinds of native modes that clash with other custom keybinds.
 
-(elpaca nil (setup emacs
+(elpaca-nil (setup emacs
        (:global
         "M-h" nil
         "M-j" nil
@@ -43,18 +43,18 @@
         "M-l" nil
         )))
 
-(elpaca nil (setup org
+(elpaca-nil (setup org
        (:bind "M-h" nil
               "C-M-h" nil
               )))
 
-(elpaca nil (setup cc-mode
+(elpaca-nil (setup cc-mode
        (:bind-into c-mode-base-map
          "M-j" nil
          "C-M-h" nil
          )))
 
-(elpaca nil (setup nxml-mode
+(elpaca-nil (setup nxml-mode
        (:bind "M-h" nil
               )))
 
@@ -63,16 +63,16 @@
 
 ;; Disable keybinds of installed packages that clash with other custom keybinds.
 
-(elpaca nil (setup evil-states
+(elpaca-nil (setup evil-states
        (:bind-into evil-motion-state-map dot/leader-key nil
                    )))
 
-(elpaca nil (setup magit
+(elpaca-nil (setup magit
        (:evil-bind normal
                    ;; Do not close magit when pressing escape
                    "<escape>" nil)))
 
-(elpaca nil (setup php-mode
+(elpaca-nil (setup php-mode
        (:bind "M-j" nil
               "C-M-h" nil
               )))
@@ -84,7 +84,7 @@
 
 ;;; Set Native Global Keybinds
 
-(elpaca nil (setup emacs
+(elpaca-nil (setup emacs
        (:global
         ;; Buffers
         "C-x C-b" ibuffer
@@ -111,21 +111,21 @@
 ;;; Set Native Mode Keybinds
 
 ;; Dired
-(elpaca nil (setup dired
+(elpaca-nil (setup dired
        (:bind
         [remap dired-find-file] dot/dired-find-file
         [remap dired-up-directory] dot/dired-up-directory
         )))
 
 ;; Org
-(elpaca nil (setup org
+(elpaca-nil (setup org
        (:bind "M-c" org-edit-special
               )))
-(elpaca nil (setup org-src
+(elpaca-nil (setup org-src
        (:bind "M-c" org-edit-src-exit
               "M-k" org-edit-src-abort
               )))
-(elpaca nil (setup org-capture
+(elpaca-nil (setup org-capture
        (:bind "M-c" org-capture-finalize
               "M-w" org-capture-refile
               "M-k" org-capture-kill
@@ -136,7 +136,7 @@
 
 ;; Set keybinds to functionality of installed packages.
 
-(elpaca nil (setup emacs
+(elpaca-nil (setup emacs
        (:global
         ;; Buffers
         "M-h" centaur-tabs-backward-tab
@@ -151,7 +151,7 @@
         "M-x" dot/M-x
         )))
 
-(elpaca nil (setup company
+(elpaca-nil (setup company
        (:bind-into company-active-map
          ;; Company completion selection
          "M-n" nil
@@ -163,7 +163,7 @@
          "<escape>" company-abort
          )))
 
-(elpaca nil (setup evil-ex
+(elpaca-nil (setup evil-ex
        (:bind-into evil-ex-completion-map
          ;; Evil command history selection
          "M-h" abort-recursive-edit
@@ -172,7 +172,7 @@
          "M-l" exit-minibuffer
          )))
 
-(elpaca nil (setup emacs
+(elpaca-nil (setup emacs
        (:global
         ;; flyspell-correct
         [remap ispell-word] flyspell-correct-at-point ; z=
@@ -189,26 +189,26 @@
            (which-key-add-key-based-replacements "C-h o" "describe-symbol-at-point")))))
 
 ;; LSP
-(elpaca nil (setup lsp-mode
+(elpaca-nil (setup lsp-mode
        (:bind-into lsp-signature-mode-map
          "M-j" lsp-signature-next
          "M-k" lsp-signature-previous
          )))
 
 ;; Magit
-(elpaca nil (setup magit
+(elpaca-nil (setup magit
        (:bind-into magit-log-select-mode-map
          "M-c" magit-log-select-pick
          "M-k" magit-log-select-quit
          )))
 
 ;; Org-roam
-(elpaca nil (setup org-roam
+(elpaca-nil (setup org-roam
        (:bind [down-mouse-1] org-roam-visit-thing
               )))
 
 ;; Minibuffer completion selection
-(elpaca nil (setup minibuffer
+(elpaca-nil (setup minibuffer
        (:bind-into minibuffer-local-map
          "M-J" next-history-element
          "M-K" previous-history-element
@@ -223,7 +223,7 @@
          )))
 
 ;; with-editor
-(elpaca nil (setup with-editor
+(elpaca-nil (setup with-editor
        (:bind
         "M-c" with-editor-finish
         "M-k" with-editor-cancel
@@ -231,7 +231,7 @@
 
 ;;; Global evil keymap
 
-(elpaca nil (setup evil
+(elpaca-nil (setup evil
        (:bind-into evil-normal-state-map
          "C-n"      neotree-toggle-in-project-root
          "C-S-p"    evil-paste-pop-next
@@ -256,13 +256,13 @@
 ;;; Other evil state-related keybinds
 
 ;; Custom (M-x customize)
-(elpaca nil (setup cus-edit
+(elpaca-nil (setup cus-edit
        (:evil-bind-into normal custom-mode-map
                         [down-mouse-1] widget-button-click
                         )))
 
 ;; Dashboard
-(elpaca nil (setup dashboard
+(elpaca-nil (setup dashboard
        (:evil-bind normal
                    [down-mouse-1] widget-button-click
                    "g" dashboard-refresh-buffer
@@ -272,13 +272,13 @@
                    )))
 
 ;; Dap
-(elpaca nil (setup dap-ui
+(elpaca-nil (setup dap-ui
        (:evil-bind-into normal dap-ui-session-mode-map
                         "D" dap-ui-delete-session
                         )))
 
 ;; Deft
-(elpaca nil (setup deft
+(elpaca-nil (setup deft
        (:evil-bind normal
                    [down-mouse-1] widget-button-click
                    "+" deft-new-file-named
@@ -296,7 +296,7 @@
                    )))
 
 ;; Elfeed
-(elpaca nil (setup elfeed
+(elpaca-nil (setup elfeed
        (:evil-bind-into normal elfeed-search-mode-map
                         "b"  elfeed-search-browse-url
                         "c"  elfeed-search-clear-filter
@@ -316,14 +316,14 @@
                         )))
 
 ;; Magit
-(elpaca nil (setup magit
+(elpaca-nil (setup magit
        (:evil-bind (normal visual)
                    "{" magit-section-backward-sibling
                    "}" magit-section-forward-sibling
                    )))
 
 ;; Minibuffer
-(elpaca nil (setup minibuffer
+(elpaca-nil (setup minibuffer
        (:evil-bind-into normal minibuffer-local-map
                         "TAB"    vertico-insert
                         "j"      vertico-next
@@ -336,7 +336,7 @@
                         )))
 
 ;; Mu4e
-(elpaca nil (setup mu4e
+(elpaca-nil (setup mu4e
        (:evil-bind-into normal mu4e-compose-mode-map
                         "q"   mu4e-message-kill-buffer
                         "M-c" message-send-and-exit
@@ -344,7 +344,7 @@
                         )))
 
 ;; Neotree
-(elpaca nil (setup neotree
+(elpaca-nil (setup neotree
        (:evil-bind normal
                    "RET"       neotree-enter
                    "<backtab>" neotree-collapse-all ; <S-tab>
@@ -362,7 +362,7 @@
                    )))
 
 ;; Org
-(elpaca nil (setup org
+(elpaca-nil (setup org
        (:evil-bind normal
                    "RET" dot/org-ret-at-point
                    )
@@ -374,7 +374,7 @@
                         )))
 
 ;; Wdired
-(elpaca nil (setup wdired
+(elpaca-nil (setup wdired
        (:evil-bind (normal insert)
                    "M-c" wdired-finish-edit
                    "M-k" wdired-abort-changes
@@ -387,7 +387,7 @@
 
 ;;; Global Leader
 
-(elpaca nil (setup general
+(elpaca-nil (setup general
        (:when-loaded
          (general-create-definer space-leader
            :prefix dot/leader-key
@@ -593,7 +593,7 @@
 
 ;;; Local Leader
 
-(elpaca nil (setup general
+(elpaca-nil (setup general
        (:when-loaded
          (general-create-definer local-leader
            :prefix dot/localleader-key

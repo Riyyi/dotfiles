@@ -41,7 +41,7 @@
 	  (setq vertico-previous-directory nil)))
   (advice-add 'vertico--update-candidates :after #'dot/vertico-dired-goto-last-visited))
 
-(elpaca nil (setup vertico-mouse ; vertico-mouse.el is part of vertico
+(elpaca-nil (setup vertico-mouse ; vertico-mouse.el is part of vertico
 	   (:load-after vertico)
 	   (:when-loaded (vertico-mouse-mode))))
 

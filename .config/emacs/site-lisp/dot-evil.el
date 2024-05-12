@@ -81,7 +81,7 @@ Vim equivalence: >gv"
 
 ;; Evil command aliases.
 
-(elpaca nil (setup evil-ex ; evil-ex.el is part of evil
+(elpaca-nil (setup evil-ex ; evil-ex.el is part of evil
        (:when-loaded
          (evil-ex-define-cmd "W" "w")
          (evil-ex-define-cmd "Q" "q")

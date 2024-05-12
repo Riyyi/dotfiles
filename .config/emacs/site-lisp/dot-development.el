@@ -105,7 +105,7 @@
 ;; Adding to project.el project directory detection
 ;; https://michael.stapelberg.ch/posts/2021-04-02-emacs-project-override/
 
-(elpaca nil (setup project ; built-in
+(elpaca-nil (setup project ; built-in
        (setq project-list-file (expand-file-name "projects" dot-cache-dir))
        (:when-loaded
 
@@ -159,12 +159,12 @@
 
 ;; Enable color escape codes.
 
-(elpaca nil (setup ansi-color ; built-in
+(elpaca-nil (setup ansi-color ; built-in
        (:with-mode compilation-filter (:hook ansi-color-compilation-filter))
        ;; :hook (compilation-filter . ansi-color-compilation-filter)
        (:when-loaded (setq ansi-color-bold-is-bright t))))
 
-(elpaca nil (setup compile ; built-in
+(elpaca-nil (setup compile ; built-in
        (defun dot/compile-disable-underline () ""
               (face-remap-add-relative 'underline :underline nil))
        (:with-mode comint-mode (:hook dot/compile-disable-underline))
@@ -307,7 +307,7 @@
 
 ;;; C/C++
 
-(elpaca nil (setup c-mode ; built-in
+(elpaca-nil (setup c-mode ; built-in
        ;; C++ // line comment style in c-mode
        (defun dot/c-mode-comment-style () ""
               (c-toggle-comment-style -1))
@@ -323,7 +323,7 @@
 ;; - omnisharp-roslyn-bin
 ;; - netcoredbg (edit PKGBUILD to detect dotnet -6.0 dependencies)
 
-(elpaca nil (setup csharp-mode)) ; built-in
+(elpaca-nil (setup csharp-mode)) ; built-in
 
 ;;; CMake
 
@@ -333,7 +333,7 @@
 
 ;;; Emacs Lisp
 
-(elpaca nil (setup emacs-lisp ; built-in
+(elpaca-nil (setup emacs-lisp ; built-in
        (defun dot/elisp-init () ""
               (setq-local indent-tabs-mode nil))
        (:hook dot/elisp-init)))
@@ -366,7 +366,7 @@
 
 ;;; Python
 
-(elpaca nil (setup python-mode ; built-in
+(elpaca-nil (setup python-mode ; built-in
        (defun dot/python-mode-init () ""
               (setq-local indent-tabs-mode t)
               (setq-local tab-width (default-value 'tab-width))
@@ -424,7 +424,7 @@
 
 ;;; Flyspell
 
-(elpaca nil (setup ispell ; built-in
+(elpaca-nil (setup ispell ; built-in
               (:when-loaded
                 (setq ispell-program-name "/usr/bin/hunspell")
                 (ispell-set-spellchecker-params)

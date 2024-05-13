@@ -52,7 +52,7 @@
 (defmacro elpaca-nil (body)
   "Defer execution until all Elpaca queues have been processed."
   (declare (indent 1))
-  `(add-hook 'elpaca-after-init-hook (lambda () (,@body))))
+  `(add-hook 'elpaca-after-init-hook (lambda () (,@body)) 1))
 
 ;; Stop coping with startup time, its done loading when its done loading
 (elpaca-nil (setq after-init-time (current-time)))

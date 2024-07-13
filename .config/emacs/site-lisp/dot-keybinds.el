@@ -485,6 +485,12 @@
            "n r r" '(org-roam-buffer-toggle              :which-key "Toggle buffer")
            "n r s" '(org-roam-ui-mode                    :which-key "Toggle server")
 
+           ;; Org
+           "o"     '(:ignore t                           :which-key "org")
+           "o i"   '(dot/org-clock-in                    :which-key "Clock in")
+           "o o"   '(dot/org-clock-out                   :which-key "Clock out")
+           "o s"   '(dot/org-switch-task                 :which-key "Switch task")
+
            ;; Project
            "p"   '(:keymap project-prefix-map       :which-key "project")
            "p b" '(consult-project-buffer           :which-key "project-switch-buffer")

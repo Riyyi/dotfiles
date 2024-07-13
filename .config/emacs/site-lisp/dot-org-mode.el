@@ -46,6 +46,51 @@
     (add-to-list 'org-structure-template-alist
                  '("el" . "src emacs-lisp"))
 
+    (defun dot/org-find-or-create-heading (heading level)
+      "Find or create heading"
+      (if (re-search-forward (format org-complex-heading-regexp-format
+                                     (regexp-quote heading))
+                             nil t)
+          (beginning-of-line)
+        (goto-char (point-max))
+        (unless (bolp) (insert "\n"))
+        (insert (concat (make-string level ?*) " ") heading "\n")
+        (beginning-of-line 0)))
+
+    (defun dot/org-find-month-week-day ()
+      "Find or create the journal tree for the current week under current month"
+      (unless (derived-mode-p 'org-mode)
+        (error "Target buffer \"%s\" for dot/find-org-week should be in Org mode"
+               (current-buffer)))
+      (org-capture-put-target-region-and-position)
+      (widen)
+      (goto-char (point-min))
+      (dot/org-find-or-create-heading "Worklog" 1)
+      (org-narrow-to-subtree)
+      (dot/org-find-or-create-heading (format-time-string "%B") 2) ;; month
+      (org-narrow-to-subtree)
+      (dot/org-find-or-create-heading (format-time-string "Week %W") 3)
+      (org-narrow-to-subtree)
+      (dot/org-find-or-create-heading (format-time-string "%A") 4) ;; day
+      (org-end-of-subtree))
+
+    ;; Capture templates
+    (setq org-capture-templates
+          `(("i" "Clock in" plain (file+function ,(expand-file-name "worklog.org" org-directory) dot/org-find-month-week-day)
+             "| %<%Y-%m-%d> | IN | %<%H:%M> | %^{Location|Office|Home|Office|Visit} |\n===================================%?"
+             :immediate-finish t)
+            ("o" "Clock out" plain (file+function ,(expand-file-name "worklog.org" org-directory) dot/org-find-month-week-day)
+             "===================================\n| %<%Y-%m-%d> | OUT | %<%H:%M> |%?"
+             :immediate-finish t)
+            ("s" "Switch task" plain (file+function ,(expand-file-name "worklog.org" org-directory) dot/org-find-month-week-day)
+             "| %<%Y-%m-%d> | %<%H:%M> | %^{Item ID} | X | %^{Description|-} |%?"
+             :immediate-finish t)))
+
+    ;; Keybind functions
+    (defun dot/org-clock-in () (interactive) (org-capture nil "i"))
+    (defun dot/org-clock-out () (interactive) (org-capture nil "o"))
+    (defun dot/org-switch-task () (interactive) (org-capture nil "s"))
+
     (with-eval-after-load 'evil-commands
       (defun dot/org-ret-at-point ()
         "Org return key at point.

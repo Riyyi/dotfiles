@@ -42,8 +42,9 @@
 	}
 
 	/* Url bar color */
-	#urlbar {
+	#urlbar-background {
 		background: #404552 !important;
+		border-radius: 0;
 	}
 
 	/* Hide ... button in URL bar */
@@ -53,13 +54,6 @@
 
 	#urlbar #pageActionSeparator {
 		display: none;
-	}
-
-	/* Unzoom URL bar */
-	#urlbar[breakout-extend] {
-		top: calc((var(--urlbar-toolbar-height) - var(--urlbar-height)) / 2) !important;
-		left: calc((var(--urlbar-toolbar-width) - var(--urlbar-width)) / 2) !important;
-		width: 100% !important;
 	}
 
 	#urlbar[breakout-extend] #urlbar-input-container {

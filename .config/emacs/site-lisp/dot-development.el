@@ -195,6 +195,7 @@
        lua-mode       ; lua-language-server
        latex-mode     ; texlab
        kotlin-mode    ; kotlin-language-server
+       swift-mode     ; swift-bin
        web-mode)
     (:hook lsp-deferred))
   (:when-loaded
@@ -363,6 +364,8 @@
   (:hook dot/php-mode-init))
 
 (elpaca-setup restclient)
+(elpaca-setup restclient-jq
+  (:load-ater restclient))
 
 ;;; Python
 
@@ -372,6 +375,14 @@
               (setq-local tab-width (default-value 'tab-width))
               (setq python-indent-offset (default-value 'tab-width)))
        (:hook dot/python-mode-init)))
+
+;;; Swift
+
+(elpaca-setup swift-mode)
+(elpaca-setup lsp-sourcekit
+  (:load-after lsp-mode)
+  (:when-loaded
+    (setq lsp-sourcekit-executable "/usr/bin/sourcekit-lsp")))
 
 ;;; YAML
 

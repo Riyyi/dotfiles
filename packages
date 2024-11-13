@@ -54,6 +54,9 @@ gvfs-gphoto2
 gvfs-mtp
 gvim
 htop
+hunspell
+hunspell-en_us
+hunspell-nl
 i3lock-color-git
 imagemagick
 inetutils

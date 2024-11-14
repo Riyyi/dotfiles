@@ -192,9 +192,10 @@
        c++-mode       ; clangd
        php-mode       ; nodejs-intelephense
        csharp-mode    ; omnisharp-roslyn-bin
+       go-mode        ; gopls
+       kotlin-mode    ; kotlin-language-server
        lua-mode       ; lua-language-server
        latex-mode     ; texlab
-       kotlin-mode    ; kotlin-language-server
        swift-mode     ; swift-bin
        web-mode)
     (:hook lsp-deferred))
@@ -343,6 +344,10 @@
 
 (elpaca-setup glsl-mode)
 
+;;; Golang
+
+(elpaca-setup go-mode)
+
 ;;; HTML
 
 (elpaca-setup web-mode)
@@ -365,7 +370,7 @@
 
 (elpaca-setup restclient)
 (elpaca-setup restclient-jq
-  (:load-ater restclient))
+  (:load-after restclient))
 
 ;;; Python
 

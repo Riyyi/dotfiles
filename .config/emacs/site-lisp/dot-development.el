@@ -144,7 +144,11 @@
            "Return project name."
            (let ((project (project-current)))
              (if project
-                 (file-name-nondirectory (directory-file-name (project-root project)))
+                 (let* ((project (file-truename (directory-file-name (project-root (project-current)))))
+                        (parent-dir-full (file-name-directory (directory-file-name project)))
+                        (parent-dir (file-name-nondirectory (substring parent-dir-full 0 -1)))
+                        (filename (file-name-nondirectory project)))
+                   (concat filename "/" parent-dir))
                "-")))
 
          (defun dot/project-save-project-buffers ()
@@ -350,7 +354,9 @@
 
 ;;; HTML
 
-(elpaca-setup web-mode)
+(elpaca-setup web-mode
+  (:file-match "\\.ts")
+  (:file-match "\\.vue"))
 
 ;;; Kotlin
 

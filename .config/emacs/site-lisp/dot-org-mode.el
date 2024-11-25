@@ -190,6 +190,7 @@ When ANYWHERE is non-nil, search beyond the preamble."
 (elpaca-nil (setup ox-latex ; built-in
        (:when-loaded
          ;; Define how minted (highlighted src code) is added to src code blocks
+         ;; Requires packages: texlive-bin, texlive-latexextra and python-pygments
          (setq org-latex-listings 'minted)
          (setq org-latex-minted-options '(("frame" "lines") ("linenos=true")))
          ;; Set 'Table of Contents' layout

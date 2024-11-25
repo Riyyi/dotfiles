@@ -41,6 +41,7 @@
         "M-j" nil
         "M-k" nil
         "M-l" nil
+        "<pinch>" nil ; Do not scale text when pinching touchpad
         )))
 
 (elpaca-nil (setup org

@@ -64,7 +64,7 @@ M.setup = function()
 	K("n", "<leader><space>", builtin.commands, { desc = "Execute command" })
 
 
-	-- F.wk("<leader>b", "buffer/bookmark")
+	F.wk("<leader>b", "buffer/bookmark")
 	K("n", "<leader>bb", builtin.buffers, { desc = "Switch buffer" })
 	K("n", "<leader>bd", F.buffer_dashboard, { desc = "Dashboard" })
 
@@ -119,29 +119,30 @@ M.setup = function()
 
 
 	K({ "n", "v" }, "<leader>w", "<C-W>", { remap = true }) -- keymap and which-key should *both* be triggered
-	wk.register({
-		w = {
-			name = "window",
-			s = "Split window",
-			v = "Split window vertically",
-			w = "Switch windows",
-			q = "Quit a window",
-			o = "Close all other windows",
-			T = "Break out into a new tab",
-			x = "Swap current with next",
-			["-"] = "Decrease height",
-			["+"] = "Increase height",
-			["<lt>"] = "Decrease width",
-			[">"] = "Increase width",
-			["|"] = "Max out the width",
-			["_"] = "Max out the height",
-			["="] = "Equally high and wide",
-			h = "Go to the left window",
-			l = "Go to the right window",
-			k = "Go to the up window",
-			j = "Go to the down window",
+	wk.add({
+		{
+			mode = { "n", "v" },
+			{ "<leader>w", group = "window" },
+			{ "<leader>w+", desc = "Increase height" },
+			{ "<leader>w-", desc = "Decrease height" },
+			{ "<leader>w<", desc = "Decrease width" },
+			{ "<leader>w=", desc = "Equally high and wide" },
+			{ "<leader>w>", desc = "Increase width" },
+			{ "<leader>wT", desc = "Break out into a new tab" },
+			{ "<leader>w_", desc = "Max out the height" },
+			{ "<leader>wh", desc = "Go to the left window" },
+			{ "<leader>wj", desc = "Go to the down window" },
+			{ "<leader>wk", desc = "Go to the up window" },
+			{ "<leader>wl", desc = "Go to the right window" },
+			{ "<leader>wo", desc = "Close all other windows" },
+			{ "<leader>wq", desc = "Quit a window" },
+			{ "<leader>ws", desc = "Split window" },
+			{ "<leader>wv", desc = "Split window vertically" },
+			{ "<leader>ww", desc = "Switch windows" },
+			{ "<leader>wx", desc = "Swap current with next" },
+			{ "<leader>w|", desc = "Max out the width" },
 		},
-	}, { mode = { "n", "v" }, prefix = "<leader>", preset = true })
+	})
 	-- https://github.com/folke/which-key.nvim/issues/270
 	-- https://github.com/folke/which-key.nvim/blob/main/lua/which-key/plugins/presets/misc.lua
 end

@@ -13,9 +13,9 @@ end
 
 -- Set which-key key section description
 M.wk = function(keybind, description, bufnr)
-	require("which-key").register({
-		[keybind] = { name = description, _ = "which_key_ignore" },
-	}, { mode = { "n", "v" }, buffer = bufnr }) -- bufnr = nil means global
+	require("which-key").add({
+		{ keybind, group = description, mode = { "n", "v" }, buffer = bufnr },
+	})
 end
 
 M.buffer_close = function()

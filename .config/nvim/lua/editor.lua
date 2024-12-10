@@ -43,12 +43,6 @@ return {
 		cmd = "ASToggle",                   -- defer, until run command
 		event = { "InsertLeave", "TextChanged" }, -- defer, until event trigger
 		opts = {
-			execution_message = {
-				enabled = true,
-				message = function()
-					return [["]] .. vim.fn.bufname() .. [[" written]]
-				end,
-			},
 			debounce_delay = 5000, -- delay for `defer_save`, in ms
 			condition = function(buf)
 				-- Dont save special-buffers

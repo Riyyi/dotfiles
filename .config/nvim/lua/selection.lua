@@ -15,6 +15,7 @@ return {
 				end,
 			},
 			-- Extensions
+			"nvim-telescope/telescope-file-browser.nvim",
 			"smartpde/telescope-recent-files",
 		},
 		extensions = {
@@ -38,10 +39,17 @@ return {
 						path = vim.fn.stdpath("cache") .. "/telescope_history",
 					},
 
-					mappings = require("keybinds").telescope_default_mappings()
+					mappings = require("keybinds").telescope_default_mappings(),
+				},
+				extensions = {
+					file_browser = {
+						hide_parent_dir = true, -- hide "../"
+						prompt_path = true, -- set path as prompt prefix
+					},
 				},
 			})
 			require("telescope").load_extension("fzf")
+			require("telescope").load_extension "file_browser"
 			require("telescope").load_extension("recent_files")
 
 			--- ┌──────────────────────────────────────────────────┐
@@ -85,7 +93,7 @@ return {
 				-- Width
 				prompt.width = max_columns - (bs ~= 0 and search_condensed == 0 and bs or 0)
 				results.width = max_columns - (bs ~= 0 and search_condensed == 0 and bs or 0)
-				preview.width = math.floor(max_columns * 0.5)
+				preview.width = math.floor(max_columns * 0.75)
 
 				-- Line (position), coordinates start at top-left
 				prompt.line = max_lines - results.height + search_condensed - bs -- take overlapping border into account

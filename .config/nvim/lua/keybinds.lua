@@ -85,7 +85,6 @@ M.setup = function()
 	K("n", "<leader>fc", F.file_config, { desc = "Config file" })
 	K("n", "<leader>ff", F.file_find, { desc = "Find file" })
 	K("n", "<leader>fh", F.file_find_home, { desc = "Find file in ~" })
-	K("n", "<leader>f/", F.file_find_root, { desc = "Find file in root" })
 	K("n", "<leader>fr", F.file_find_recent, { desc = "Find recent file" })
 	K("n", "<leader>fs", F.file_save, { desc = "Save file" })
 
@@ -220,11 +219,19 @@ end
 M.telescope_default_mappings = function()
 	local actions = require("telescope.actions")
 	return {
+		n = {
+			["<M-h>"] = actions.close,
+			["<M-j>"] = actions.move_selection_next,
+			["<M-k>"] = actions.move_selection_previous,
+			["<M-l>"] = actions.select_default,
+		},
 		i = {
 			["<M-h>"] = actions.close,
 			["<M-j>"] = actions.move_selection_next,
 			["<M-k>"] = actions.move_selection_previous,
 			["<M-l>"] = actions.select_default,
+
+			["<Tab>"] = actions.select_default,
 		}
 	}
 end

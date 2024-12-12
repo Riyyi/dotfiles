@@ -33,7 +33,7 @@ end
 M.file_config = function()
 	builtin.find_files({
 		prompt_title = "Nvim Config",
-		cwd = "~/.config/nvim",
+		cwd = vim.fn.stdpath("config"),
 		hidden = true,
 		no_ignore = true,
 		-- path_display = { "shorten" },
@@ -41,7 +41,7 @@ M.file_config = function()
 end
 
 M.file_find = function()
-	builtin.find_files({
+	telescope.extensions.file_browser.file_browser({
 		cwd = F.get_current_directory(),
 		hidden = true,
 		no_ignore = true,
@@ -49,16 +49,11 @@ M.file_find = function()
 end
 
 M.file_find_home = function()
-	builtin.find_files({
+	telescope.extensions.file_browser.file_browser({
 		cwd = "~",
 		hidden = true,
 		no_ignore = true,
 	})
-end
-
-M.file_find_root = function()
-	local cwd = F.get_current_directory():gsub("^/", "")
-	builtin.find_files({ default_text = cwd, cwd = "/" })
 end
 
 M.file_find_recent = function()

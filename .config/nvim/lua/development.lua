@@ -66,6 +66,8 @@ return {
 	{ -- https://github.com/neovim/nvim-lspconfig
 		"neovim/nvim-lspconfig",
 		dependencies = {
+			-- Improve the built-in LSP UI
+			"nvimdev/lspsaga.nvim",
 			-- Additional lua configuration, makes Nvim stuff amazing!
 			"folke/neodev.nvim",
 			-- C# "Goto Definition" with decompilation support
@@ -73,6 +75,7 @@ return {
 		},
 		config = function()
 			-- Setup neovim Lua configuration
+			require("lspsaga").setup() -- ?? does this do anything with doc hover
 			require("neodev").setup()
 
 			-- Vim process
@@ -103,6 +106,39 @@ return {
 						["textDocument/definition"] = require('omnisharp_extended').handler,
 					},
 				},
+				ts_ls = {
+					init_options = {
+						plugins = {
+							{
+								name = '@vue/typescript-plugin',
+								location = '/home/rick/.cache/.bun/install/global/node_modules/@vue/language-server',
+								languages = { 'vue' },
+							},
+						},
+					},
+					filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx', 'vue', },
+					-- filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+					-- requires: bun install -g typescript-language-server
+					-- TODO: Update which-key config, maybe other packages
+					-- Sources:
+					--   https://github.com/vuejs/language-tools?tab=readme-ov-file#hybrid-mode-configuration-requires-vuelanguage-server-version-200
+					--   https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/ts_ls.lua#L4
+				},
+				volar = {
+					-- init_options = {
+					-- 	vue = {
+					-- 		hybridMode = false,
+					-- 	},
+					-- },
+				},
+				-- volar = {
+				-- 	-- init_options = {
+				-- 	-- 	typescript = {
+				-- 	-- 		serverPath = '/home/rick/.cache/.bun/install/global/node_modules/typescript/lib//tsserverlibrary.js'
+				-- 	-- 	}
+				-- 	-- },
+				-- 	-- filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'}
+				-- },
 			}
 
 			-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
@@ -114,6 +150,8 @@ return {
 					capabilities = capabilities,
 					on_attach = require("keybinds").lspconfig_on_attach,
 				})
+				-- P(server)
+				-- P(opts)
 				require("lspconfig")[server].setup(opts)
 			end
 		end,

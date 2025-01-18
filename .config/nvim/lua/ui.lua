@@ -64,8 +64,21 @@ return {
 				globalstatus = true,
 			},
 			sections = {
-				lualine_b = { "branch" },
-				lualine_x = { "diagnostics", "encoding", "fileformat", "filetype" },
+				lualine_a = { "mode" },
+				lualine_b = { "encoding", "filename" },
+				lualine_c = {
+					{
+						-- TODO: nvim alternate file stuff and closing files is busted
+						"project",
+						fmt = function()
+							local path = require("core.functions").find_project_root() or ""
+							return path:match("([^/]+)$")
+						end,
+					},
+				},
+				lualine_x = { "diagnostics", "fileformat" },
+				lualine_y = { "filetype" },
+				lualine_z = { "progress", "location" },
 			},
 		},
 	},
@@ -80,14 +93,6 @@ return {
 		opts = {
 			config = {
 				header = {
-					-- "                                                    ",
-					-- " ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
-					-- " ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ",
-					-- " ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ",
-					-- " ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ",
-					-- " ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
-					-- " ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
-					-- "____________________________________________________",
 					"      .          .      ",
 					"    ';;,.        ::'    ",
 					"  ,:::;,,        :ccc,  ",
@@ -101,7 +106,9 @@ return {
 					" .;ooo:       ;cclooo:. ",
 					"   .;oc        'coo;.   ",
 					"     .'         .,.     ",
-					"____________________________________________________",
+					"",
+					"   _______________________________________________________",
+					"",
 					"",
 				},
 				shortcut = {

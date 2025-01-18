@@ -160,6 +160,9 @@ M.lspconfig_on_attach = function(_, bufnr)
 	nnoremap("<leader>lf", F.lsp_format_buffer, "Format buffer")
 	nnoremap("<leader>lr", vim.lsp.buf.rename, "Rename")
 
+	nnoremap("<leader>ld", "<cmd>Lspsaga hover_doc<CR>", "Show documentation")
+	-- vim.keymap.set("n", "<leader>ld", "<cmd>Lspsaga hover_doc<CR>", { desc = "Show documentation" })
+
 	F.wk("<leader>lg", "goto", bufnr)
 	nnoremap("<leader>lga", builtin.lsp_dynamic_workspace_symbols, "Workspace symbols")
 	nnoremap("<leader>lgd", vim.lsp.buf.declaration, "Declaration")

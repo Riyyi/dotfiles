@@ -297,8 +297,13 @@ M.vc_select_repo = function()
 end
 
 M.vc_status = function()
-	-- Open the repository of the current file
-	require("neogit").open({ cwd = "%:p:h" })
+	if F.find_project_root() then
+		-- Open the repository of the current file
+		require("neogit").open({ cwd = "%:p:h" })
+	else
+		-- Pick a project to open
+		M.vc_select_repo()
+	end
 end
 
 return M

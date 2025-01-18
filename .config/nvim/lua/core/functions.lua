@@ -32,11 +32,14 @@ M.find_project_root = function()
 
 	local directory = current_directory
 	while directory ~= "/" do
-		local git_directory = directory .. "/.git"
-		local project_file = directory .. "/.project"
+		local git_path = vim.loop.fs_stat(directory .. "/.git")
+		if git_path then
+			return directory:gsub("/$", "") -- remove trailing slash
+		end
 
-		if vim.fn.isdirectory(git_directory) == 1 or vim.fn.filereadable(project_file) == 1 then
-			return directory
+		local project_file = vim.loop.fs_stat(directory .. "/.project")
+		if project_file and project_file.type == "file" then
+			return directory:gsub("/$", "") -- remove trailing slash
 		end
 
 		directory = vim.fn.fnamemodify(directory, ":h")

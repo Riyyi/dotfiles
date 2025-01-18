@@ -1,3 +1,5 @@
+local F = require("core.functions")
+
 --------------------------------------------
 --- Commands ---
 
@@ -13,10 +15,9 @@ vim.cmd [[
 --- Autocommands ---
 
 -- Cut off trailing whitespace and trailing blank lines
-local core = require("core.functions")
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	pattern = "*",
-	callback = core.trim_buffer,
+	callback = F.trim_buffer,
 })
 
 -- Highlight on yank
@@ -29,14 +30,24 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- Show message when autosaving
-local group = vim.api.nvim_create_augroup('autosave', {})
-vim.api.nvim_create_autocmd('User', {
-    pattern = 'AutoSaveWritePost',
-    group = group,
-    callback = function(opts)
-        if opts.data.saved_buffer ~= nil then
-            local filename = vim.api.nvim_buf_get_name(opts.data.saved_buffer)
-            vim.notify("Wrote " .. filename, vim.log.levels.INFO)
-        end
-    end,
+local autosave_group = vim.api.nvim_create_augroup("autosave", {})
+vim.api.nvim_create_autocmd("User", {
+	pattern = "AutoSaveWritePost",
+	group = autosave_group,
+	callback = function(opts)
+		if opts.data.saved_buffer ~= nil then
+			local filename = vim.api.nvim_buf_get_name(opts.data.saved_buffer)
+			vim.notify("Wrote " .. filename, vim.log.levels.INFO)
+		end
+	end,
+})
+
+-- Create an autocommand for full window buffers
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	-- callback = require("core.buffers").add_buffer
+	callback = function()
+		require("core.buffers").add_buffer()
+		LOG(require("core.buffers").buffers)
+	end,
+    desc = "Track all full window buffers visited",
 })

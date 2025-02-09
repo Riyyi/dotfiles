@@ -1,0 +1,228 @@
+@define-color black            #000;
+@define-color red              #a54242; /*  1 */
+@define-color orange           #de935f; /*  3 */
+@define-color blue             #5f819d; /*  4 */
+@define-color green            #b5bd68; /* 10 */
+
+@define-color bgcolor          #404552;
+@define-color bgcolor-inactive #2b2e39;
+@define-color bgcolor-urgent   #dc7a43;
+@define-color fgcolor          #fff;
+@define-color fgcolor-inactive #676e7d;
+
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: FontAwesome, DejaVu Sans Serif;
+    font-size: 12px;
+}
+
+window#waybar {
+    background-color: @bgcolor-inactive;
+    color: @fgcolor;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+button {
+    /* Use box-shadow instead of border so the text isn't offset */
+    box-shadow: inset 0 -3px transparent;
+    /* Avoid rounded borders under each button name */
+    border: none;
+    border-radius: 0;
+}
+
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+button:hover {
+    background: inherit;
+    box-shadow: inset 0 -3px @fgcolor;
+}
+
+#custom-btc,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#backlight,
+#network,
+#battery,
+#clock,
+#tray,
+#custom-power {
+    padding: 0 6px;
+    color: @fgcolor;
+}
+
+#window,
+#workspaces {
+    margin: 0 4px;
+}
+
+@keyframes blink {
+    to {
+        background-color: @fgcolor;
+        color: @black;
+    }
+}
+
+label:focus {
+    background-color: @black;
+}
+
+/* -------------------------------------- */
+/* Workspaces module */
+
+#workspaces button {
+    padding: 0 5px;
+    background-color: transparent;
+    color: @fgcolor-inactive;
+    box-shadow: none;
+}
+
+#workspaces button:hover {
+    background-color: @bgcolor;
+}
+
+#workspaces button.active {
+    background-color: @bgcolor;
+    box-shadow: inset 0 -3px @blue;
+    color: @fgcolor;
+}
+
+#workspaces button.focused {
+    background-color: @bgcolor;
+}
+
+#workspaces button.urgent {
+    background-color: @bgcolor-urgent;
+}
+
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+}
+
+/* -------------------------------------- */
+/* BTC module */
+
+#custom-btc:hover {
+    background-color: @bgcolor;
+}
+
+/* -------------------------------------- */
+/* Media modules */
+
+#pulseaudio, #wireplumber {
+    color: @fgcolor;
+}
+
+#pulseaudio:hover, #wireplumber:hover {
+    background-color: @bgcolor;
+}
+
+#pulseaudio.muted, #wireplumber.muted {
+    color: @fgcolor-inactive
+}
+
+#custom-media {
+    color: @green;
+    min-width: 100px;
+}
+
+#custom-media.custom-spotify {
+    color: @green;
+}
+
+#custom-media.custom-vlc {
+    color: @orange;
+}
+
+/* -------------------------------------- */
+/* Backlight module */
+
+#backlight:hover {
+    background-color: @bgcolor;
+}
+
+/* -------------------------------------- */
+/* Network module */
+
+#network:hover {
+    background-color: @bgcolor;
+}
+
+#network.disconnected {
+    background-color: @bgcolor-inactive;
+}
+
+/* -------------------------------------- */
+/* Battery module */
+
+#battery:hover {
+    background-color: @bgcolor;
+}
+
+#battery.good {
+	color: @green;
+}
+
+/* Using steps() instead of linear as a timing function to limit cpu usage */
+#battery.critical:not(.charging) {
+    background-color: @bgcolor-urgent;
+    animation-name: blink;
+    animation-duration: 2s;
+    animation-timing-function: steps(3);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* -------------------------------------- */
+/* Clock module */
+
+#clock:hover {
+    background-color: @bgcolor;
+}
+
+/* -------------------------------------- */
+/* Tray module */
+
+#tray:hover {
+    background-color: @bgcolor;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @bgcolor-urgent;
+}
+
+/* -------------------------------------- */
+/* Power module */
+
+#custom-power {
+    color: @red;
+}
+
+#custom-power:hover {
+    background-color: @bgcolor;
+}
+
+/* If power module is the leftmost module, set left margin */
+.modules-left > widget:first-child > #custom-power {
+    margin-left: 6px;
+}
+
+/* If power module is the rightmost module, set right margin */
+.modules-right > widget:last-child > #custom-power {
+    margin-right: 6px;
+}

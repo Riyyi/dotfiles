@@ -1,7 +1,7 @@
 #+TITLE: Dotfiles
 #+OPTIONS: toc:nil
 
-This is a collection of dotfiles and scripts for my i3/bspwm setup, previewed below:
+This is a collection of dotfiles and scripts for my i3/bspwm/hyprland setup, previewed below:
 
 [[screenshot.png]]
 

@@ -24,6 +24,11 @@ export R_ENVIRON_USER="$XDG_CONFIG_HOME/R/Renviron"
 # export HIDPI=true
 # <<<
 
+# Wayland
+# >>> system=wayland
+# export WAYLAND=true
+# <<<
+
 #--- Program Specific ---#
 
 # Android
@@ -79,7 +84,12 @@ if [ "$HIDPI" = true ]; then
 	export QT_AUTO_SCREEN_SCALE_FACTOR=0
 	export QT_SCREEN_SCALE_FACTORS=2
 fi
-export QT_QPA_PLATFORMTHEME="qt5gtk2"
+if [ "$WAYLAND" = true ]; then
+	export QT_QPA_PLATFORM="wayland"
+fi
+export QT_QPA_PLATFORMTHEME="qt5ct"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+export QT_STYLE_OVERRIDE="kvantum"
 
 # Rust
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
@@ -104,7 +114,11 @@ export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 export WINEPREFIX="$XDG_DATA_HOME/wine"
 
 # WM
-export WM="bspwm"
+if [ "$WAYLAND" = true ]; then
+	export WM="hyprland"
+else
+	export WM="bspwm"
+fi
 
 # Xorg
 export XINITRC="$XDG_CONFIG_HOME/xorg/xinitrc"

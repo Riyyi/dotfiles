@@ -1,6 +1,6 @@
 #!/bin/sh
 
-file="/tmp/polybar-btc-module"
+file="/tmp/panel-btc-module"
 
 # Enable mathematics in POSIX shell
 calc() { awk "BEGIN { printf(\"%.2f\", $*) }"; }
@@ -27,7 +27,12 @@ output() {
 	fi
 
 	# Result
+	# >>> session=xorg
 	echo "%{F$color}$symbol $difference%%{F$COLOR15}"
+	# <<<
+	# >>> session=wayland
+	# echo "<span color='$color'>$symbol $difference%</span>"
+	# <<<
 }
 
 if [ ! -f "$file" ]; then

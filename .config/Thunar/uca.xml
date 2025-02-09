@@ -4,8 +4,15 @@
 	<icon>utilities-terminal</icon>
 	<name>Open Terminal Here</name>
 	<unique-id>1594675818593070-1</unique-id>
-	<command>urxvt -cd %f</command>
 	<description>Open Terminal in the Current Directory</description>
+
+	<!-- >>> session=xorg -->
+	<command>urxvt -cd %f</command>
+	<!-- <<< -->
+	<!-- >>> session=wayland -->
+	<!-- <command>ghostty -e &quot;sh -c &apos;cd %f &amp;&amp; exec $SHELL&apos;&quot;</command> -->
+	<!-- <<< -->
+
 	<patterns>*</patterns>
 	<startup-notify/>
 	<directories/>

@@ -1,12 +1,17 @@
 #!/bin/sh
 
 # Take a screenshot with the configured program
-# Depends: scrot / maim, xdotool / magick, xdotool
+# Depends: rofi and scrot / maim, xdotool / magick, xdotool / grim, slurp, jq
 
 # User-config---------------------------
 
-# scrot / maim / magick import
+# scrot / maim / magick import / grim
+# >>> session=xorg
 screenshotter="maim"
+# <<<
+# >>> session=wayland
+# screenshotter="grim"
+# <<<
 
 # --------------------------------------
 
@@ -25,6 +30,12 @@ elif [ "$screenshotter" = "magick import" ] || [ "$screenshotter" = "import" ]; 
 	selection=""
 	activeWindow="-window \$(xdotool getactivewindow)"
 	filename="$CAPTURE/$(date '+%Y-%m-%d-%H%M%S')_import.png"
+elif [ "$screenshotter" = "grim" ]; then
+	screenshotter="" # start of command needs to be overwritten
+	fullscreen="grim"
+	selection="slurp | grim -g -"
+	activeWindow="hyprctl -j activewindow | jq -r '\"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])\"' | grim -g -"
+	filename="$CAPTURE/$(date '+%Y-%m-%d-%H%M%S')_grim.png"
 else
 	echo "Printscreen configuration is invalid"
 	exit 1

@@ -222,7 +222,8 @@ When ANYWHERE is non-nil, search beyond the preamble."
 
 ;;; Org Roam
 
-(elpaca-setup emacsql-sqlite-builtin)
+(elpaca-setup emacsql
+  (:also-load emacsql-sqlite-builtin))
 
 (elpaca-setup org-roam
   (:autoload org-roam-node-find) ;; TODO, is this enough?

@@ -1,0 +1,10 @@
+confirm-close-surface = false
+copy-on-select = clipboard
+cursor-style-blink = false
+font-family = DejaVuSansM Nerd Font Mono
+font-size = 10
+link-url = true
+selection-invert-fg-bg = true
+theme = terminal-sexy
+window-decoration = false
+window-inherit-working-directory = true

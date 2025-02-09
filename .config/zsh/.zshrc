@@ -73,10 +73,14 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
 bindkey '\eOc' forward-word                               # ctrl-right
+bindkey '\e[1;5C' forward-word                            # ctrl-right
 bindkey '\eOd' backward-word                              # ctrl-left
+bindkey '\e[1;5D' backward-word                           # ctrl-left
 bindkey '\e[3~' delete-char                               # del
 bindkey '\e[7~' beginning-of-line                         # home
+bindkey '\e[H' beginning-of-line                          # home
 bindkey '\e[8~' end-of-line                               # end
+bindkey '\e[F' end-of-line                                # end
 bindkey '\e[A' history-beginning-search-backward-end      # up
 bindkey '\e[B' history-beginning-search-forward-end       # down
 bindkey '\e[Z' reverse-menu-complete                      # shift-tab

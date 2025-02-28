@@ -237,7 +237,12 @@ if [ $qualityOption -eq 1 ]; then
 fi
 
 # Set url to clipboard if none provided
+# >>> session=xorg
 clip="$(xclip -selection clipboard -out)"
+# <<<
+# >>> session=wayland
+# clip="$(wl-paste)"
+# <<<
 if [ "$#" -eq 0 ]; then
 	eval set -- "$clip"
 fi
@@ -257,7 +262,12 @@ elif [ $queueOption -eq 1 ]; then
 	queue "$*"
 else
 	if [ "$*" = "" ]; then
+		# >>> session=xorg
 		play "$(xclip -o)"
+		# <<<
+		# >>> session=wayland
+		# play "$(wl-paste)"
+		# <<<
 	else
 		for url in "$@"; do
 			play "$url"

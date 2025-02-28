@@ -27,7 +27,7 @@
         "disable-scroll": false,
         "on-scroll-up": "hyprctl dispatch workspace -1",
         "on-scroll-down": "hyprctl dispatch workspace +1",
-        "all-outputs": true,
+        "all-outputs": false,
         "warp-on-scroll": false,
         "format": "{icon}",
         "format-icons": {
@@ -40,14 +40,10 @@
             "7": "七",
             "8": "八",
             "9": "九",
-            "0": "十",
+            "10": "十",
             "urgent": "",
             "focused": "",
             "default": ""
-            // "persistent-workspaces": {
-			// 	"*": 5, // 5 workspaces by default on every monitor
-			// 	"HDMI-A-1": 3 // but only three on HDMI-A-1
-            // }
         }
     },
     "custom/btc": {

@@ -2,6 +2,11 @@
 
 LOCK="$XDG_CACHE_HOME/lock.png"
 
+if [ "$WM" = "hyprland" ]; then
+	hyprlock
+	exit 0
+fi
+
 # Cache the lock image
 if [ ! -f "$LOCK" ]; then
 	touch "$LOCK"

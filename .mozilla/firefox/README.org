@@ -26,39 +26,39 @@ Manual interventions needed to setup Firefox.
 Tree Style Tab style rules.
 
 #+BEGIN_SRC css
-  #tabbar {
-	  background: #2b2e39;
-  }
+#tabbar {
+	background: #2b2e39;
+}
 
-  .tab {
-	  height: 23px;
-	  margin-bottom: 1px;
-	  background: #404552;
-	  border: 0px;
-	  color: #c5c8c6;
-  }
+.tab {
+	height: 25px;
+	margin-bottom: 1px;
+	background: #404552;
+	border: 0px;
+	color: #c5c8c6;
+}
 
-  .tab .label {
-	  line-height: 1.15;
-	  margin-bottom: 1px;
-	  margin-left: 0.25em;
-  }
+.tab .label {
+	line-height: 1.75;
+	margin-bottom: 1px;
+	margin-left: 0.25em;
+}
 
-  .tab .closebox {
-	  display: none;
-  }
+.tab .closebox {
+	display: none;
+}
 
-  .tab.active {
-	  background: #2b2e39 !important;
-  }
+.tab.active {
+	background: #2b2e39 !important;
+}
 
-  .tab:hover {
-	  background: #2b2e39;
-  }
+.tab:hover {
+	background: #2b2e39;
+}
 
-  .newtab-button-box {
-	  display: none;
-  }
+.newtab-button-box {
+	display: none;
+}
 #+END_SRC
 
 * Ublock Origin Filters

@@ -6,6 +6,7 @@ font-family = DejaVuSansM Nerd Font Mono
 font-size = 10
 link-url = true
 selection-invert-fg-bg = true
+term = xterm-256color
 theme = terminal-sexy
 window-decoration = false
 window-inherit-working-directory = true

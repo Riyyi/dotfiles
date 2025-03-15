@@ -79,10 +79,14 @@ bindkey '\e[1;5D' backward-word                           # ctrl-left
 bindkey '\e[3~' delete-char                               # del
 bindkey '\e[7~' beginning-of-line                         # home
 bindkey '\e[H' beginning-of-line                          # home
+bindkey '\eOH' beginning-of-line                          # home
 bindkey '\e[8~' end-of-line                               # end
 bindkey '\e[F' end-of-line                                # end
+bindkey '\eOF' end-of-line                                # end
 bindkey '\e[A' history-beginning-search-backward-end      # up
+bindkey '\eOA' history-beginning-search-backward-end      # up
 bindkey '\e[B' history-beginning-search-forward-end       # down
+bindkey '\eOB' history-beginning-search-forward-end       # down
 bindkey '\e[Z' reverse-menu-complete                      # shift-tab
 bindkey '\eh' kill-whole-line                             # meta-h
 bindkey '\ej' history-beginning-search-forward-end        # meta-j

@@ -8,9 +8,7 @@ end
 
 M.normalize_path = function(path)
 	if not path then return nil end
-	return string.find(vim.loop.os_uname().sysname, "NT")
-		and path:gsub("\\", "/")
-		or path
+	return IS_WINDOWS() and path:gsub("\\", "/") or path
 end
 
 M.get_file_path = function()

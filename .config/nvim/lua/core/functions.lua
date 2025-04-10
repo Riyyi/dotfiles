@@ -8,7 +8,7 @@ end
 
 M.normalize_path = function(path)
 	if not path then return nil end
-	return vim.loop.os_uname().sysname == "Windows_NT"
+	return string.find(vim.loop.os_uname().sysname, "NT")
 		and path:gsub("\\", "/")
 		or path
 end
@@ -36,9 +36,8 @@ end
 
 M.find_project_root = function()
 	local current_directory = M.get_current_directory()
-
 	local directory = current_directory
-	while directory ~= "/" do
+	while directory ~= "/" and not directory:match("^%a:[/\\]?$") do
 		local git_path = vim.loop.fs_stat(directory .. "/.git")
 		if git_path then
 			return M.normalize_path(directory:gsub("/$", "")) -- remove trailing slash

@@ -9,9 +9,9 @@ return {
 			-- Fuzzy Finder Algorithm which requires local dependencies to be built.
 			{
 				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
+				build = IS_WINDOWS() and "mingw32-make" or "make",
 				cond = function()
-					return vim.fn.executable "make" == 1
+					return vim.fn.executable(IS_WINDOWS() and "mingw32-make" or "make") == 1
 				end,
 			},
 			-- Extensions

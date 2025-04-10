@@ -1,3 +1,7 @@
+IS_WINDOWS = function()
+	return string.find(vim.loop.os_uname().sysname, "NT")
+end
+
 -- Usage:
 --   :lua P("Hello World!")
 P = function(v)
@@ -15,5 +19,5 @@ R = function(name)
 end
 
 LOG = function(v)
-	vim.fn.writefile({ vim.inspect(v) }, "/tmp/nvim-log", "a")
+	vim.fn.writefile({ vim.inspect(v) }, vim.fn.stdpath("cache") .. "/log", "a")
 end

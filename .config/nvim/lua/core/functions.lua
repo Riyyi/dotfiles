@@ -6,13 +6,20 @@ M.is_buffer_a_file = function()
 	return buffer_name ~= "" and vim.fn.filereadable(buffer_name) == 1
 end
 
+M.normalize_path = function(path)
+	if not path then return nil end
+	return vim.loop.os_uname().sysname == "Windows_NT"
+		and path:gsub("\\", "/")
+		or path
+end
+
 M.get_file_path = function()
 	if not M.is_buffer_a_file() then
 		return nil
 	end
 	local file_path = vim.fn.expand("%:p")
 
-	return vim.fn.fnamemodify(file_path, ":h") .. "/"
+	return M.normalize_path(vim.fn.fnamemodify(file_path, ":h")) .. "/"
 end
 
 M.get_netrw_path = function() -- b:netrw_curdir
@@ -20,11 +27,11 @@ M.get_netrw_path = function() -- b:netrw_curdir
 		return nil
 	end
 
-	return vim.fn.fnamemodify(vim.fn.bufname(), ":p")
+	return M.normalize_path(vim.fn.fnamemodify(vim.fn.bufname(), ":p"))
 end
 
 M.get_current_directory = function()
-	return M.get_file_path() or M.get_netrw_path() or vim.fn.getcwd()
+	return M.get_file_path() or M.get_netrw_path() or M.normalize_path(vim.fn.getcwd())
 end
 
 M.find_project_root = function()
@@ -34,15 +41,15 @@ M.find_project_root = function()
 	while directory ~= "/" do
 		local git_path = vim.loop.fs_stat(directory .. "/.git")
 		if git_path then
-			return directory:gsub("/$", "") -- remove trailing slash
+			return M.normalize_path(directory:gsub("/$", "")) -- remove trailing slash
 		end
 
 		local project_file = vim.loop.fs_stat(directory .. "/.project")
 		if project_file and project_file.type == "file" then
-			return directory:gsub("/$", "") -- remove trailing slash
+			return M.normalize_path(directory:gsub("/$", "")) -- remove trailing slash
 		end
 
-		directory = vim.fn.fnamemodify(directory, ":h")
+		directory = M.normalize_path(vim.fn.fnamemodify(directory, ":h"))
 	end
 
 	return nil, current_directory

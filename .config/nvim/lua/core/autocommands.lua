@@ -42,12 +42,18 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
--- Create an autocommand for full window buffers
 vim.api.nvim_create_autocmd("BufWinEnter", {
-	-- callback = require("core.buffers").add_buffer
 	callback = function()
+	-- Buffer tracking
 		require("core.buffers").add_buffer()
-		LOG(require("core.buffers").buffers)
 	end,
     desc = "Track all full window buffers visited",
+})
+
+vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
+	callback = function(opts)
+		-- Buffer tracking
+		require("core.buffers").remove_buffer(opts.match)
+	end,
+    desc = "Track all full window buffers killed",
 })

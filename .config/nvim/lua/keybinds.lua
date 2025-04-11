@@ -1,6 +1,7 @@
 local K = vim.keymap.set
 
 local builtin
+local bs = require("core.buffers")
 local wk = require("which-key")
 
 local F = require("keybind-functions")
@@ -57,6 +58,14 @@ M.setup = function()
 	K("i", "<BS>", F.hungry_delete_backspace())
 	K("i", "<Del>", F.hungry_delete())
 
+	-- Navigation
+	K("n", "<M-h>", bs.buffer_move_left)
+	K("n", "<M-j>", bs.buffer_group_move_down)
+	K("n", "<M-k>", bs.buffer_group_move_up)
+	K("n", "<M-l>", bs.buffer_move_right)
+	K("n", "<M-H>", bs.buffer_swap_left)
+	K("n", "<M-L>", bs.buffer_swap_right)
+
 	----------------------------------------
 	--- Leader keys ---
 
@@ -66,6 +75,7 @@ M.setup = function()
 
 	F.wk("<leader>b", "buffer/bookmark")
 	K("n", "<leader>bb", builtin.buffers, { desc = "Switch buffer" })
+	K("n", "<leader>bB", bs.buffer_pick_buffer, { desc = "Switch tab group buffer" })
 	K("n", "<leader>bd", F.buffer_dashboard, { desc = "Dashboard" })
 
 
@@ -110,6 +120,10 @@ M.setup = function()
 	F.wk("<leader>s", "search")
 	K("n", "<leader>ss", F.search_buffer, { desc = "Search buffer" })
 	K("n", "<leader>sq", ":nohlsearch<CR>", { desc = "Stop search", silent = true })
+
+
+	F.wk("<leader>t", "tabs/toggle")
+	K("n", "<leader>tg", bs.buffer_pick_group, { desc = "Switch tab group" })
 
 
 	F.wk("<leader>v", "git") -- version control

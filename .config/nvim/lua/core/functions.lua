@@ -1,5 +1,21 @@
 local M = {}
 
+M.execute_command = function(command)
+	if not command then return end
+
+	local job = require("plenary.job")
+	job:new({
+		command = command,
+		on_exit = function(j, _)
+			vim.schedule(function()
+					vim.api.nvim_echo({
+						{ table.concat(j:result(), "\n"), "Normal" }
+					}, false, {})
+			end)
+		end,
+	}):start()
+end
+
 M.is_buffer_a_file = function()
 	local buffer_name = vim.fn.bufname()
 

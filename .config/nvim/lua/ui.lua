@@ -187,6 +187,7 @@ return {
 	{
 		"akinsho/toggleterm.nvim",
 		config = function()
+			vim.cmd [[let &shellcmdflag = '-s']] -- required for Windows
 			require("toggleterm").setup({
 				auto_scroll = true,
 				direction = "float",

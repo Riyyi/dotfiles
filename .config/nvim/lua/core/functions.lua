@@ -1,21 +1,5 @@
 local M = {}
 
-M.execute_command = function(command)
-	if not command then return end
-
-	local job = require("plenary.job")
-	job:new({
-		command = command,
-		on_exit = function(j, _)
-			vim.schedule(function()
-					vim.api.nvim_echo({
-						{ table.concat(j:result(), "\n"), "Normal" }
-					}, false, {})
-			end)
-		end,
-	}):start()
-end
-
 M.is_buffer_a_file = function()
 	local buffer_name = vim.fn.bufname()
 
@@ -50,6 +34,8 @@ end
 
 M.find_project_root = function()
 	local current_directory = M.get_current_directory()
+	if current_directory:match("^term://") then return nil, current_directory end
+
 	local directory = current_directory
 	while directory ~= "/" and not directory:match("^%a:[/\\]?$") do
 		local git_path = vim.loop.fs_stat(directory .. "/.git")

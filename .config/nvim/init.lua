@@ -6,4 +6,5 @@ require("packages").setup({
 	require("development"),
 	require("git"),
 })
+require("terminal").setup()
 require("keybinds").setup()

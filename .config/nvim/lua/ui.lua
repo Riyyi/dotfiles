@@ -183,4 +183,26 @@ return {
 		opts = {},
 	}, -- :ColorizerToggle
 
+	-- Popup terminal
+	{
+		"akinsho/toggleterm.nvim",
+		config = function()
+			require("toggleterm").setup({
+				auto_scroll = true,
+				direction = "float",
+				float_opts = {
+					border = "curved",
+					row = function() return vim.o.lines - 4 end,
+					width = function() return vim.o.columns - 6 end,
+					height = 20,
+					winblend = 0,
+				},
+				hide_numbers = true,
+				open_mapping = nil,
+				persist_mode = true,
+				size = 20,
+				start_in_insert = true,
+			})
+		end,
+	}
 }

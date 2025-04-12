@@ -223,6 +223,10 @@ M.search_buffer = function()
 	})
 end
 
+M.toggle_term = function()
+	vim.api.nvim_command("ToggleTerm")
+end
+
 -- TODO: Temporary copy/pasted until project_nvim exposes this function
 -- https://github.com/ahmedkhalf/project.nvim/issues/145
 -- TODO: Create a Telescope extension out of this, for telescope-all-recent

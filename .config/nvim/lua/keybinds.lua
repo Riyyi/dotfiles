@@ -66,6 +66,10 @@ M.setup = function()
 	K("n", "<M-H>", bs.buffer_swap_left)
 	K("n", "<M-L>", bs.buffer_swap_right)
 
+	-- Terminal
+	K("n", "<C-\\>", F.toggle_term)
+	K("t", "<C-\\>", F.toggle_term)
+
 	----------------------------------------
 	--- Leader keys ---
 
@@ -251,6 +255,19 @@ M.telescope_default_mappings = function()
 			["<Tab>"] = actions.select_default,
 		}
 	}
+end
+
+-- Keybindings for toggleterm.nvim
+M.toggleterm_nvim = function()
+	local keymaps = function()
+		local opts = { buffer = 0 }
+		K("t", "<Esc>", [[<C-\><C-n>]], opts)
+	end
+
+	vim.api.nvim_create_autocmd("TermOpen", {
+		pattern = "term://*toggleterm#*",
+		callback = keymaps,
+	})
 end
 
 return M

@@ -1,5 +1,11 @@
+// This option has a memory leak
+user_pref("accessibility.force_disabled", 1);
+
 // Download directory
 user_pref("browser.download.dir", "~/downloads");
+
+// Disable LLM
+user_pref("browser.ml.chat.enabled", false);
 
 // Display a blank new tab
 user_pref("browser.newtabpage.enabled", false);
@@ -8,17 +14,26 @@ user_pref("browser.newtab.url", "about:blank");
 // Disable Ctrl+q browser close shortcut
 user_pref("browser.quitShortcut.disabled", true);
 
+// Resume session at the next application start, but not again
+user_pref("browser.sessionstore.resume_session_once", true);
+
 // Old style URL bar
 user_pref("browser.urlbar.openViewOnFocus", false);
 user_pref("browser.urlbar.update1", false);
 user_pref("browser.urlbar.update1.interventions", false);
 user_pref("browser.urlbar.update1.searchTips", false);
 
+// VPN ad
+user_pref("browser.vpn_promo.enabled", false);
+
 // Disable extension recommendations
 user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
 
 // No full screen warning
 user_pref("full-screen-api.warning.timeout", 0);
+
+// Enable middle-click scrolling
+user_pref("general.autoScroll", true);
 
 // Disable video autoplay
 user_pref("media.autoplay.blocking_policy", 2);
@@ -44,7 +59,7 @@ user_pref("ui.key.menuAccessKeyFocuses", false);
 user_pref("ui.prefersReducedMotion", true);
 
 // Fix dark GTK themes
-user_pref("widget.content.gtk-theme-override", "Arc");
+user_pref("widget.content.gtk-theme-override", "Arc-Dark");
 
 // Disable tracking
 user_pref("privacy.resistFingerprinting", true);

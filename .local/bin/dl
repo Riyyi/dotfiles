@@ -74,24 +74,29 @@ done
 
 embedAudioThumbnail()
 {
-	# Get file name
-	fileName="$(youtube-dl --get-filename "$1")"
-	fileName="${fileName%.*}"
+	# Get file names
+	youtube-dl --get-filename "$1" |
+		while IFS= read -r fileName; do
+			fileName="${fileName%.*}"
 
-	# Convert thumbnail to actually be a jpg
-	yes y | ffmpeg -i "${fileName}.webp" "${fileName}_converted.jpg" > /dev/null 2>&1
-	yes y | ffmpeg -i "${fileName}.jpg" "${fileName}_converted.jpg" > /dev/null 2>&1
+			# Skip if no thumbnail
+			[ ! -f "${fileName}.webp" ] && [ ! -f "${fileName}.jpg" ] && continue
 
-	# Embed thumbnail into mp3
-	yes y | ffmpeg -i "${fileName}.mp3" -i "${fileName}_converted.jpg" \
-				  -map 0:0 -map 1:0 -c copy -id3v2_version 3 \
-				  -metadata:s:v title="Album cover" \
-				  -metadata:s:v comment="Cover (front)" \
-				  "${fileName}_embed.mp3" > /dev/null 2>&1
+			# Convert thumbnail to actually be a jpg
+			yes y | ffmpeg -i "${fileName}.webp" "${fileName}_converted.jpg" > /dev/null 2>&1
+			yes y | ffmpeg -i "${fileName}.jpg" "${fileName}_converted.jpg" > /dev/null 2>&1
 
-	# Remove left over files
-	rm -f "./${fileName}_converted.jpg" "./${fileName}.jpg" "./${fileName}.mp3"
-	mv "${fileName}_embed.mp3" "${fileName}.mp3"
+			# Embed thumbnail into mp3
+			yes y | ffmpeg -i "${fileName}.mp3" -i "${fileName}_converted.jpg" \
+						-map 0:0 -map 1:0 -c copy -id3v2_version 3 \
+						-metadata:s:v title="Album cover" \
+						-metadata:s:v comment="Cover (front)" \
+						"${fileName}_embed.mp3" > /dev/null 2>&1
+
+			# Remove left over files
+			rm -f "./${fileName}_converted.jpg" "./${fileName}.jpg" "./${fileName}.webp"
+			mv -f "${fileName}_embed.mp3" "${fileName}.mp3"
+		done
 }
 
 downloadAudio()

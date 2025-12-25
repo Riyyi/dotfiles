@@ -124,13 +124,13 @@ return {
 					--   https://github.com/vuejs/language-tools?tab=readme-ov-file#hybrid-mode-configuration-requires-vuelanguage-server-version-200
 					--   https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/ts_ls.lua#L4
 				},
-				volar = {
-					-- init_options = {
-					-- 	vue = {
-					-- 		hybridMode = false,
-					-- 	},
-					-- },
-				},
+				-- volar = {
+				-- 	-- init_options = {
+				-- 	-- 	vue = {
+				-- 	-- 		hybridMode = false,
+				-- 	-- 	},
+				-- 	-- },
+				-- },
 				-- volar = {
 				-- 	-- init_options = {
 				-- 	-- 	typescript = {
@@ -139,6 +139,7 @@ return {
 				-- 	-- },
 				-- 	-- filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'}
 				-- },
+				vue_ls = {},
 			}
 
 			-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
@@ -152,7 +153,12 @@ return {
 				})
 				-- P(server)
 				-- P(opts)
-				require("lspconfig")[server].setup(opts)
+				if vim.lsp.config then
+					vim.lsp.config(server, opts)
+					vim.lsp.enable(server)
+				else
+					require("lspconfig")[server].setup(opts)
+				end
 			end
 		end,
 	},

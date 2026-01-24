@@ -11,13 +11,10 @@ if [ "$WAYLAND" = true ]; then
 	setsid -f hyprpaper
 
 	# Wait until hyprpaper is available
-	while true; do
-		output=$(hyprctl hyprpaper)
-		if ! echo "$output" | grep -q ".sock"; then
-			break
-		fi
+	while [ -z "$(find "$XDG_RUNTIME_DIR/hypr" -name ".hyprpaper.sock")" ]; do
 		sleep 0.1
 	done
+	sleep 0.1
 
 	hyprctl hyprpaper preload "$WALLPAPER"
 	hyprctl hyprpaper wallpaper ",$WALLPAPER"

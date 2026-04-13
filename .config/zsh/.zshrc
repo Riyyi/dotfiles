@@ -177,8 +177,8 @@ alias gd="git diff"
 alias gdc="git diff --cached"
 alias gds="git diff --staged"
 alias gf="git fetch"
-alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
-alias gle="git log --graph --stat --format=format:'%C(bold blue)commit %H%C(reset)%C(bold yellow)%d %C(reset)%nAuthor: %C(dim white)%an <%ae>%C(reset)%nDate:   %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
+alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d    %C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an <%cn>%C(reset)' --all"
+alias gle="git log --graph --stat --format=format:'%C(bold blue)commit %H%C(reset)%C(bold yellow)%d %C(reset)%nAuthor:    %C(dim white)%an <%ae>%C(reset)%nCommitter: %C(dim white)%cn <%ce>%C(reset)%nDate:      %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
 alias gm="git merge"
 alias gp="git pull"
 alias gps='git push || git push origin $(git branch --show-current)'
@@ -186,7 +186,7 @@ alias gpsa='git remote | xargs -I remotes git push remotes $(git branch --show-c
 alias gpsaf='git remote | xargs -I remotes git push --force remotes $(git branch --show-current)'
 alias gr="git reset"
 alias gs="git status"
-alias gsh="git show --format=format:'%C(bold blue)commit %H%C(reset) %C(bold yellow)%d %C(reset)%nAuthor: %C(dim white)%an <%ae>%C(reset)%nDate:   %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
+alias gsh="git show --format=format:'%C(bold blue)commit %H%C(reset) %C(bold yellow)%d %C(reset)%nAuthor:    %C(dim white)%an <%ae>%C(reset)%nCommitter: %C(dim white)%cn <%ce>%C(reset)%nDate:      %C(bold cyan)%ai%C(reset) %C(bold green)(%ar)%C(reset)%n%n%w(64,4,4)%B'"
 alias gt='git ls-tree -r --name-only $(git branch --show-current) .'
 
 # Scripts
